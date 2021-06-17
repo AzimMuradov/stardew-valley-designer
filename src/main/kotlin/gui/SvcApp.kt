@@ -25,7 +25,8 @@ import javax.imageio.ImageIO
 
 fun SvcApp() {
     Window(
-        icon = getIcon()
+        title = "Stardew Valley Cartographer",
+        icon = getIcon(),
     ) {
         ScreenHandler.invoke(ScreenHandler())
     }
