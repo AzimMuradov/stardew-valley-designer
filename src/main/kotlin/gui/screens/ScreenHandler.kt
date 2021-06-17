@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-package gui
+package gui.screens
 
-import androidx.compose.desktop.Window
-import gui.screens.ScreenHandler
-import java.awt.image.BufferedImage
-import java.io.File
-import javax.imageio.ImageIO
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 
 
-fun SvcApp() {
-    Window(
-        icon = getIcon()
-    ) {
-        ScreenHandler.invoke(ScreenHandler())
+class ScreenHandler {
+
+    var currentScreen: Screen by mutableStateOf(Welcome)
+
+    companion object {
+        @Composable
+        operator fun invoke(sh: ScreenHandler = ScreenHandler()) {
+            when (sh.currentScreen) {
+                Welcome -> Welcome(sh)
+                Menu -> Menu(sh)
+                Cartographer -> Cartographer(sh)
+            }
+        }
     }
-}
-
-fun getIcon(): BufferedImage = try {
-    ImageIO.read(File("src/main/resources/icon.png"))
-} catch (e: Exception) {
-    // Image file does not exist
-    BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB)
 }

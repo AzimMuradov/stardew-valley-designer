@@ -35,20 +35,7 @@ object Welcome : Screen {
     private const val ICON_RES_PATH = "icon.png"
 
     @Composable
-    operator fun invoke() {
-        Row(Modifier.fillMaxSize()) {
-            Spacer(Modifier.weight(SPACE_WEIGHT).fillMaxHeight())
-            Column(Modifier.weight(ICON_WEIGHT).fillMaxHeight()) {
-                Spacer(Modifier.weight(SPACE_WEIGHT).fillMaxWidth())
-                Box(modifier = Modifier.weight(ICON_WEIGHT)) { LogoAnimation() }
-                Spacer(Modifier.weight(SPACE_WEIGHT).fillMaxWidth())
-            }
-            Spacer(Modifier.weight(SPACE_WEIGHT).fillMaxHeight())
-        }
-    }
-
-    @Composable
-    fun LogoAnimation() {
+    operator fun invoke(sh: ScreenHandler) {
         var visible by remember { mutableStateOf(false) }
         var isGone by remember { mutableStateOf(false) }
         val alpha: Float by animateFloatAsState(
@@ -58,14 +45,30 @@ object Welcome : Screen {
             if (visible && it == Transparency.MAX) {
                 visible = false
                 isGone = true
-            } else if (!isGone && !visible && it == Transparency.MIN) {
-                visible = true
+            } else if (!visible && it == Transparency.MIN) {
+                if (!isGone) {
+                    visible = true
+                } else {
+                    sh.currentScreen = Menu
+                }
             }
         }
 
         AppManager.windows.first().events.onOpen = { visible = !visible }
 
-        Image(imageResource(ICON_RES_PATH), contentDescription = "Icon", modifier = Modifier.alpha(alpha).fillMaxSize())
+
+        Row(Modifier.fillMaxSize()) {
+            Spacer(Modifier.weight(SPACE_WEIGHT).fillMaxHeight())
+            Column(Modifier.weight(ICON_WEIGHT).fillMaxHeight()) {
+                Spacer(Modifier.weight(SPACE_WEIGHT).fillMaxWidth())
+                Image(
+                    imageResource(ICON_RES_PATH), contentDescription = "Icon",
+                    modifier = Modifier.weight(ICON_WEIGHT).fillMaxWidth().alpha(alpha)
+                )
+                Spacer(Modifier.weight(SPACE_WEIGHT).fillMaxWidth())
+            }
+            Spacer(Modifier.weight(SPACE_WEIGHT).fillMaxHeight())
+        }
     }
 
     object Transparency {

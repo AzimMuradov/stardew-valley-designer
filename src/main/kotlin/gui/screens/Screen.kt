@@ -16,19 +16,8 @@
 
 package gui.screens
 
-import androidx.compose.runtime.Composable
-
 
 sealed interface Screen {
 
     fun title(): String? = null
-
-    companion object {
-        @Composable
-        operator fun invoke(screen: Screen) {
-            when (screen) {
-                Welcome -> Welcome()
-            }
-        }
-    }
 }
