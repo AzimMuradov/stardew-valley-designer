@@ -38,7 +38,7 @@ object Menu : Screen {
 
         Row(Modifier.fillMaxSize()) {
             Column(Modifier.weight(1f).fillMaxHeight().background(color = Color(0xFF6B4A37))) {
-                NewPlanButton()
+                NewPlanButton(sh)
                 PlansButton()
                 Spacer(Modifier.weight(2f).fillMaxWidth().padding(padding))
                 Row(Modifier.weight(1f).fillMaxWidth()) {
@@ -58,9 +58,11 @@ object Menu : Screen {
 
 
     @Composable
-    fun ColumnScope.NewPlanButton() {
+    fun ColumnScope.NewPlanButton(sh: ScreenHandler) {
         Box(Modifier.weight(1f).fillMaxSize().padding(padding)) {
-            IconButton(modifier = Modifier.fillMaxSize().background(buttonColor), onClick = {}) { Text("New Plan") }
+            IconButton(modifier = Modifier.fillMaxSize().background(buttonColor), onClick = {
+                sh.currentScreen = Cartographer
+            }) { Text("New Plan") }
         }
     }
 
