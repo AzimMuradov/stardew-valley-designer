@@ -18,10 +18,22 @@ package gui
 
 import androidx.compose.desktop.Window
 import androidx.compose.material.Text
+import java.awt.image.BufferedImage
+import java.io.File
+import javax.imageio.ImageIO
 
 
 fun SvcApp() {
-    Window {
+    Window(
+        icon = getIcon()
+    ) {
         Text("SVC")
     }
+}
+
+fun getIcon(): BufferedImage = try {
+    ImageIO.read(File("src/main/resources/icon.png"))
+} catch (e: Exception) {
+    // Image file does not exist
+    BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB)
 }
