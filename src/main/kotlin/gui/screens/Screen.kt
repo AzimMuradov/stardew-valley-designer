@@ -14,27 +14,21 @@
  * limitations under the License.
  */
 
-package gui
+package gui.screens
 
-import androidx.compose.desktop.Window
-import gui.screens.Screen
-import gui.screens.Welcome
-import java.awt.image.BufferedImage
-import java.io.File
-import javax.imageio.ImageIO
+import androidx.compose.runtime.Composable
 
 
-fun SvcApp() {
-    Window(
-        icon = getIcon()
-    ) {
-        Screen(Welcome)
+sealed interface Screen {
+
+    fun title(): String? = null
+
+    companion object {
+        @Composable
+        operator fun invoke(screen: Screen) {
+            when (screen) {
+                Welcome -> Welcome()
+            }
+        }
     }
-}
-
-fun getIcon(): BufferedImage = try {
-    ImageIO.read(File("src/main/resources/icon.png"))
-} catch (e: Exception) {
-    // Image file does not exist
-    BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB)
 }
