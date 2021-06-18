@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package gui.screens
+package gui.settings
 
 import gui.settings.languages.Language
+import gui.settings.languages.Ru
 
 
-sealed interface Screen {
-
-    fun title(language: Language): String
+abstract class Settings(val language: Language) {
+    companion object DefaultSettings : Settings(language = Ru) {
+        //
+    }
 }

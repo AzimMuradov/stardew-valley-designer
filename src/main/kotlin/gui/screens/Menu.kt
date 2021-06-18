@@ -24,27 +24,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import gui.settings.Settings
+import gui.settings.languages.Language
 
 
 object Menu : Screen {
+
+    override fun title(language: Language): String = "${language.menuScreen} | ${language.appName}"
+
 
     private val padding = 20.dp
     private val buttonColor = Color(0xFFF4D21F)
 
     @Composable
-    operator fun invoke(onClick: () -> Unit) {
+    operator fun invoke(settings: Settings, onClick: () -> Unit) {
         Row(Modifier.fillMaxSize()) {
             Column(Modifier.weight(1f).fillMaxHeight().background(color = Color(0xFF6B4A37))) {
-                NewPlanButton(onClick)
-                PlansButton()
+                NewPlanButton(settings.language, onClick)
+                PlansButton(settings.language)
                 Spacer(Modifier.weight(2f).fillMaxWidth().padding(padding))
                 Row(Modifier.weight(1f).fillMaxWidth()) {
-                    ResourcesButton()
-                    SettingsButton()
+                    ResourcesButton(settings.language)
+                    SettingsButton(settings.language)
                 }
                 Row(Modifier.weight(1f).fillMaxWidth()) {
-                    AboutButton()
-                    DonateButton()
+                    AboutButton(settings.language)
+                    DonateButton(settings.language)
                 }
             }
             Column(Modifier.weight(2f).fillMaxHeight().background(color = Color(0xFFBF9999))) {
@@ -55,47 +60,57 @@ object Menu : Screen {
 
 
     @Composable
-    fun ColumnScope.NewPlanButton(onClick: () -> Unit) {
+    fun ColumnScope.NewPlanButton(language: Language, onClick: () -> Unit) {
         Box(Modifier.weight(1f).fillMaxSize().padding(padding)) {
             IconButton(modifier = Modifier.fillMaxSize().background(buttonColor), onClick = onClick) {
-                Text("New Plan")
+                Text(language.menuButtons.newPlan)
             }
         }
     }
 
     @Composable
-    fun ColumnScope.PlansButton() {
+    fun ColumnScope.PlansButton(language: Language) {
         Box(Modifier.weight(1f).fillMaxSize().padding(padding)) {
-            IconButton(modifier = Modifier.fillMaxSize().background(buttonColor), onClick = {}) { Text("Plans") }
+            IconButton(modifier = Modifier.fillMaxSize().background(buttonColor), onClick = {}) {
+                Text(language.menuButtons.plans)
+            }
         }
     }
 
 
     @Composable
-    fun RowScope.ResourcesButton() {
+    fun RowScope.ResourcesButton(language: Language) {
         Box(Modifier.weight(1f).fillMaxSize().padding(padding)) {
-            IconButton(modifier = Modifier.fillMaxSize().background(buttonColor), onClick = {}) { Text("Resources") }
+            IconButton(modifier = Modifier.fillMaxSize().background(buttonColor), onClick = {}) {
+                Text(language.menuButtons.resources)
+            }
         }
     }
 
     @Composable
-    fun RowScope.SettingsButton() {
+    fun RowScope.SettingsButton(language: Language) {
         Box(Modifier.weight(1f).fillMaxSize().padding(padding)) {
-            IconButton(modifier = Modifier.fillMaxSize().background(buttonColor), onClick = {}) { Text("Settings") }
+            IconButton(modifier = Modifier.fillMaxSize().background(buttonColor), onClick = {}) {
+                Text(language.menuButtons.settings)
+            }
         }
     }
 
     @Composable
-    fun RowScope.AboutButton() {
+    fun RowScope.AboutButton(language: Language) {
         Box(Modifier.weight(1f).fillMaxSize().padding(padding)) {
-            IconButton(modifier = Modifier.fillMaxSize().background(buttonColor), onClick = {}) { Text("About") }
+            IconButton(modifier = Modifier.fillMaxSize().background(buttonColor), onClick = {}) {
+                Text(language.menuButtons.about)
+            }
         }
     }
 
     @Composable
-    fun RowScope.DonateButton() {
+    fun RowScope.DonateButton(language: Language) {
         Box(Modifier.weight(1f).fillMaxSize().padding(padding)) {
-            IconButton(modifier = Modifier.fillMaxSize().background(buttonColor), onClick = {}) { Text("Donate") }
+            IconButton(modifier = Modifier.fillMaxSize().background(buttonColor), onClick = {}) {
+                Text(language.menuButtons.donate)
+            }
         }
     }
 }

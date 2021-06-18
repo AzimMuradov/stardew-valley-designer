@@ -26,9 +26,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import gui.settings.languages.Language
 
 
 object Cartographer : Screen {
+
+    override fun title(language: Language): String = "${language.cartographerScreen} | ${language.appName}"
+
 
     @Composable
     operator fun invoke() {

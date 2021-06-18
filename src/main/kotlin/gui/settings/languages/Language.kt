@@ -14,12 +14,28 @@
  * limitations under the License.
  */
 
-package gui.screens
-
-import gui.settings.languages.Language
+package gui.settings.languages
 
 
-sealed interface Screen {
+sealed interface Language {
+    val appName: String
+    val authorName: String
 
-    fun title(language: Language): String
+    val currentLanguage: String
+
+    val menuScreen: String
+    val cartographerScreen: String
+
+
+    sealed interface MenuButtons {
+        val newPlan: String
+        val plans: String
+
+        val resources: String
+        val settings: String
+        val about: String
+        val donate: String
+    }
+
+    val menuButtons: MenuButtons
 }

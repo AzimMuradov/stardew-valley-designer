@@ -16,8 +16,18 @@
 
 package gui
 
+import androidx.compose.desktop.AppManager
 import androidx.compose.desktop.Window
-import gui.screens.AppScreen
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import gui.screens.Cartographer
+import gui.screens.Menu
+import gui.screens.Screen
+import gui.screens.Welcome
+import gui.settings.Settings
+import gui.settings.Settings.DefaultSettings
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
@@ -28,7 +38,17 @@ fun SvcApp() {
         title = "Stardew Valley Cartographer",
         icon = getIcon(),
     ) {
-        AppScreen()
+        val settings: Settings by remember { mutableStateOf(DefaultSettings) }
+
+        var currentScreen: Screen by remember { mutableStateOf(Welcome) }
+
+        AppManager.windows.first().setTitle(currentScreen.title(settings.language))
+
+        when (currentScreen) {
+            Welcome -> Welcome { currentScreen = Menu }
+            Menu -> Menu(settings) { currentScreen = Cartographer }
+            Cartographer -> Cartographer()
+        }
     }
 }
 
