@@ -17,7 +17,4 @@
 package gui.screens
 
 
-sealed interface Screen {
-
-    fun title(): String? = null
-}
+sealed interface Screen

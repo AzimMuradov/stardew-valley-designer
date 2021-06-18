@@ -16,7 +16,6 @@
 
 package gui.screens
 
-import androidx.compose.desktop.AppManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.IconButton
@@ -33,12 +32,10 @@ object Menu : Screen {
     private val buttonColor = Color(0xFFF4D21F)
 
     @Composable
-    operator fun invoke(sh: ScreenHandler) {
-        AppManager.windows.first().setTitle("Menu | Stardew Valley Cartographer")
-
+    operator fun invoke(onClick: () -> Unit) {
         Row(Modifier.fillMaxSize()) {
             Column(Modifier.weight(1f).fillMaxHeight().background(color = Color(0xFF6B4A37))) {
-                NewPlanButton(sh)
+                NewPlanButton(onClick)
                 PlansButton()
                 Spacer(Modifier.weight(2f).fillMaxWidth().padding(padding))
                 Row(Modifier.weight(1f).fillMaxWidth()) {
@@ -58,11 +55,11 @@ object Menu : Screen {
 
 
     @Composable
-    fun ColumnScope.NewPlanButton(sh: ScreenHandler) {
+    fun ColumnScope.NewPlanButton(onClick: () -> Unit) {
         Box(Modifier.weight(1f).fillMaxSize().padding(padding)) {
-            IconButton(modifier = Modifier.fillMaxSize().background(buttonColor), onClick = {
-                sh.currentScreen = Cartographer
-            }) { Text("New Plan") }
+            IconButton(modifier = Modifier.fillMaxSize().background(buttonColor), onClick = onClick) {
+                Text("New Plan")
+            }
         }
     }
 

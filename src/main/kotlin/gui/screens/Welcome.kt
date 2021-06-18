@@ -18,10 +18,10 @@ package gui.screens
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.desktop.AppManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.imageResource
@@ -32,47 +32,50 @@ object Welcome : Screen {
     private const val ICON_WEIGHT = 7f
     private const val SPACE_WEIGHT = 10f
 
-    private const val ICON_RES_PATH = "icon.png"
-
     @Composable
-    operator fun invoke(sh: ScreenHandler) {
-        var visible by remember { mutableStateOf(false) }
-        var isGone by remember { mutableStateOf(false) }
-        val alpha: Float by animateFloatAsState(
-            targetValue = if (visible) Transparency.MAX else Transparency.MIN,
-            animationSpec = spring(stiffness = 7f)
-        ) {
-            if (visible && it == Transparency.MAX) {
-                visible = false
-                isGone = true
-            } else if (!visible && it == Transparency.MIN) {
-                if (!isGone) {
-                    visible = true
-                } else {
-                    sh.currentScreen = Menu
-                }
-            }
-        }
-
-        AppManager.windows.first().events.onOpen = { visible = !visible }
-
-
+    operator fun invoke(ias: IconAnimationState, animationListener: ((Float) -> Unit)) {
         Row(Modifier.fillMaxSize()) {
             Spacer(Modifier.weight(SPACE_WEIGHT).fillMaxHeight())
             Column(Modifier.weight(ICON_WEIGHT).fillMaxHeight()) {
                 Spacer(Modifier.weight(SPACE_WEIGHT).fillMaxWidth())
-                Image(
-                    imageResource(ICON_RES_PATH), contentDescription = "Icon",
-                    modifier = Modifier.weight(ICON_WEIGHT).fillMaxWidth().alpha(alpha)
-                )
+                Box(Modifier.weight(ICON_WEIGHT).fillMaxWidth()) {
+                    AnimatedIcon(ias, animationListener)
+                }
                 Spacer(Modifier.weight(SPACE_WEIGHT).fillMaxWidth())
             }
             Spacer(Modifier.weight(SPACE_WEIGHT).fillMaxHeight())
         }
     }
 
+
+    enum class IconAnimationState {
+        None,
+        Appearing,
+        Disappearing,
+    }
+
+    private const val ICON_RES_PATH = "icon.png"
+
     object Transparency {
         const val MAX = 1.0f
         const val MIN = 0.0f
+    }
+
+    @Composable
+    fun AnimatedIcon(ias: IconAnimationState, animationListener: ((Float) -> Unit)) {
+        val alpha: Float by animateFloatAsState(
+            targetValue = when (ias) {
+                IconAnimationState.None -> Transparency.MIN
+                IconAnimationState.Appearing -> Transparency.MAX
+                IconAnimationState.Disappearing -> Transparency.MIN
+            },
+            animationSpec = spring(stiffness = 7f),
+            finishedListener = animationListener,
+        )
+
+        Image(
+            imageResource(ICON_RES_PATH), contentDescription = "Icon",
+            modifier = Modifier.fillMaxSize().alpha(alpha)
+        )
     }
 }

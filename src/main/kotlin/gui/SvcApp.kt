@@ -17,7 +17,7 @@
 package gui
 
 import androidx.compose.desktop.Window
-import gui.screens.ScreenHandler
+import gui.screens.AppScreen
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
@@ -28,7 +28,7 @@ fun SvcApp() {
         title = "Stardew Valley Cartographer",
         icon = getIcon(),
     ) {
-        ScreenHandler.invoke(ScreenHandler())
+        AppScreen()
     }
 }
 

@@ -16,24 +16,45 @@
 
 package gui.screens
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.desktop.AppManager
+import androidx.compose.runtime.*
+import gui.screens.Welcome.Transparency
+import gui.screens.Welcome.IconAnimationState as IAS
 
 
-class ScreenHandler {
+@Composable
+fun AppScreen() {
+    var current: Screen by remember { mutableStateOf(Welcome) }
 
-    var currentScreen: Screen by mutableStateOf(Welcome)
 
-    companion object {
-        @Composable
-        operator fun invoke(sh: ScreenHandler = ScreenHandler()) {
-            when (sh.currentScreen) {
-                Welcome -> Welcome(sh)
-                Menu -> Menu(sh)
-                Cartographer -> Cartographer(sh)
+    AppManager.windows.first().setTitle(
+        when (current) {
+            Welcome -> "Stardew Valley Cartographer"
+            Menu -> "Menu | Stardew Valley Cartographer"
+            Cartographer -> "Cartographer | Stardew Valley Cartographer"
+        }
+    )
+
+
+    var ias by remember { mutableStateOf(IAS.None) }
+
+    AppManager.windows.first().events.onOpen = { ias = IAS.Appearing }
+
+    when (current) {
+        Welcome -> Welcome(ias) {
+            when (ias) {
+                IAS.Appearing -> if (it == Transparency.MAX) {
+                    ias = IAS.Disappearing
+                }
+                IAS.Disappearing -> if (it == Transparency.MIN) {
+                    current = Menu
+                }
+                else -> Unit
             }
         }
+        Menu -> Menu(onClick = {
+            current = Cartographer
+        })
+        Cartographer -> Cartographer()
     }
 }

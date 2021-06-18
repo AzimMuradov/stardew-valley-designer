@@ -16,7 +16,7 @@
 
 package gui.screens
 
-import androidx.compose.desktop.AppManager
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,21 +24,30 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 
 
 object Cartographer : Screen {
 
     @Composable
-    operator fun invoke(sh: ScreenHandler) {
-        AppManager.windows.first().setTitle("Cartographer | Stardew Valley Cartographer")
-
+    operator fun invoke() {
         Row(Modifier.fillMaxSize()) {
             Column(Modifier.weight(1f).fillMaxHeight().background(color = Color.Blue)) {
-                //
+                // Layout
             }
             Column(Modifier.weight(5f).fillMaxHeight().background(color = Color.Cyan)) {
-                //
+                Canvas(modifier = Modifier.fillMaxSize()) {
+                    val canvasWidth = size.width
+                    val canvasHeight = size.height
+
+                    drawLine(
+                        start = Offset(x = canvasWidth, y = 0f),
+                        end = Offset(x = 0f, y = canvasHeight),
+                        color = Color.Black,
+                        strokeWidth = 3.0f
+                    )
+                }
             }
             Column(Modifier.weight(1f).fillMaxHeight().background(color = Color.Blue)) {
                 //
