@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package gui.settings.languages
+package me.azimmuradov.svc.settings.languages
 
 
 object Ru : Language {

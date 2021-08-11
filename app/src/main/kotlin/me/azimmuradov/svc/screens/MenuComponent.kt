@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-package gui.screens
+package me.azimmuradov.svc.screens
 
-import gui.settings.languages.Language
+import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.value.Value
+import me.azimmuradov.svc.settings.Settings
 
 
-sealed interface Screen {
+class MenuComponent(settings: Settings, override val onCartographerScreenCall: () -> Unit) : Menu {
 
-    fun title(language: Language): String
+    private val _models: MutableValue<Menu.Model> = MutableValue(Menu.Model(settings))
+    override val models: Value<Menu.Model> = _models
 }

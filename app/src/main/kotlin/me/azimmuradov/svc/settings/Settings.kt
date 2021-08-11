@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 
-import gui.SvcApp
+package me.azimmuradov.svc.settings
+
+import me.azimmuradov.svc.settings.languages.Language
+import me.azimmuradov.svc.settings.languages.Ru
 
 
-fun main() = SvcApp()
+abstract class Settings(val language: Language) {
+    companion object DefaultSettings : Settings(language = Ru) {
+        //
+    }
+}

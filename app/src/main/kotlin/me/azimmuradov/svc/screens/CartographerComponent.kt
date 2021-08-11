@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package gui.settings
+package me.azimmuradov.svc.screens
 
-import gui.settings.languages.Language
-import gui.settings.languages.Ru
+import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.value.Value
+import me.azimmuradov.svc.settings.Settings
 
 
-abstract class Settings(val language: Language) {
-    companion object DefaultSettings : Settings(language = Ru) {
-        //
-    }
+class CartographerComponent(settings: Settings, override val onCartographerScreenReturn: () -> Unit) : Cartographer {
+
+    private val _models: MutableValue<Cartographer.Model> = MutableValue(Cartographer.Model(settings))
+    override val models: Value<Cartographer.Model> = _models
 }

@@ -3,8 +3,8 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.10"
-    id("org.jetbrains.compose") version "0.4.0"
+    kotlin("jvm") version V.P_KOTLIN
+    id("org.jetbrains.compose") version V.P_COMPOSE
 }
 
 group = "me.azimmuradov"
@@ -12,12 +12,19 @@ version = "0.0.0"
 
 repositories {
     mavenCentral()
-    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    google()
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
+    implementation(kotlin("stdlib-jdk8"))
+
     implementation(compose.desktop.currentOs)
+
+    implementation("com.arkivanov.decompose:decompose:${V.DECOMPOSE}")
+    implementation("com.arkivanov.decompose:extensions-compose-jetbrains:${V.DECOMPOSE}")
+
+    testImplementation(kotlin("test"))
 }
 
 tasks.test {
@@ -25,12 +32,15 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "13"
+    kotlinOptions {
+        jvmTarget = "16"
+        freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
+    }
 }
 
 compose.desktop {
     application {
-        mainClass = "MainKt"
+        mainClass = "me.azimmuradov.svc.MainKt"
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "stardew-valley-cartographer"
