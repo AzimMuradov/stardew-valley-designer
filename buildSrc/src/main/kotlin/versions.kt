@@ -6,4 +6,7 @@ object V {
 
     // For main
     const val DECOMPOSE: String = "0.3.1"
+
+    // For SV-API
+    const val JACKSON: String = "2.13.+"
 }
