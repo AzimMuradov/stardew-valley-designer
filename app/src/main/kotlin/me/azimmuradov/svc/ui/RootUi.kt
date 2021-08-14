@@ -21,8 +21,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
-import me.azimmuradov.svc.Root
-import me.azimmuradov.svc.RootComponent
+import me.azimmuradov.svc.components.Root.Child.*
+import me.azimmuradov.svc.components.RootComponent
 import me.azimmuradov.svc.ui.screens.CartographerUi
 import me.azimmuradov.svc.ui.screens.MenuUi
 import me.azimmuradov.svc.ui.screens.WelcomeUi
@@ -32,11 +32,11 @@ import me.azimmuradov.svc.ui.screens.WelcomeUi
 fun RootUi(component: RootComponent) {
 
     Box(modifier = Modifier.fillMaxSize()) {
-        Children(routerState = component.routerState) {
-            when (val screen = it.instance) {
-                is Root.Screen.WelcomeScreen -> WelcomeUi(screen.component)
-                is Root.Screen.MenuScreen -> MenuUi(screen.component)
-                is Root.Screen.CartographerScreen -> CartographerUi(screen.component)
+        Children(routerState = component.routerState) { (_, child) ->
+            when (child) {
+                is WelcomeChild -> WelcomeUi(child.component)
+                is MenuChild -> MenuUi(child.component)
+                is CartographerChild -> CartographerUi(child.component)
             }
         }
     }

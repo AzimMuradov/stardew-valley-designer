@@ -27,7 +27,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope.Companion.DefaultBlendMode
 import androidx.compose.ui.graphics.drawscope.Stroke
-import me.azimmuradov.svc.screens.Cartographer
+import me.azimmuradov.svc.components.cartographer.Cartographer
 
 
 @Composable

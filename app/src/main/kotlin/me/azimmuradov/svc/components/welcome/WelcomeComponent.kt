@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.screens
+package me.azimmuradov.svc.components.welcome
 
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
+import me.azimmuradov.svc.components.welcome.Welcome.IconAnimationState.APPEARING
+import me.azimmuradov.svc.components.welcome.Welcome.Model
 import me.azimmuradov.svc.settings.Settings
 
 
-class MenuComponent(settings: Settings, override val onCartographerScreenCall: () -> Unit) : Menu {
+class WelcomeComponent(
+    override val onWelcomeScreenEnd: () -> Unit,
+    settings: Settings,
+) : Welcome {
 
-    private val _models: MutableValue<Menu.Model> = MutableValue(Menu.Model(settings))
-    override val models: Value<Menu.Model> = _models
+    override val models: Value<Model> by lazy { _models }
+
+    private val _models: MutableValue<Model> = MutableValue(Model(
+        iconAnimationState = APPEARING,
+        settings,
+    ))
 }

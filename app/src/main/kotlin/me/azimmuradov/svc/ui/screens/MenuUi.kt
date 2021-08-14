@@ -26,7 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import me.azimmuradov.svc.screens.Menu
+import me.azimmuradov.svc.components.menu.Menu
 import me.azimmuradov.svc.settings.languages.Language
 
 val padding = 20.dp
@@ -38,7 +38,7 @@ fun MenuUi(component: Menu) {
 
     val models by component.models.subscribeAsState()
 
-    val settings = models.settings
+    val (settings) = models
 
 
     Row(Modifier.fillMaxSize()) {

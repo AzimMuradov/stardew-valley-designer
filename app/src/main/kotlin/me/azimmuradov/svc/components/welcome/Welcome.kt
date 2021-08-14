@@ -14,15 +14,26 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.screens
+package me.azimmuradov.svc.components.welcome
 
-import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
-import me.azimmuradov.svc.screens.Welcome.Model
+import me.azimmuradov.svc.settings.Settings
 
 
-class WelcomeComponent(override val onWelcomeScreenEnd: () -> Unit) : Welcome {
+interface Welcome {
 
-    private val _models: MutableValue<Model> = MutableValue(Model())
-    override val models: Value<Model> = _models
+    val onWelcomeScreenEnd: () -> Unit
+
+
+    val models: Value<Model>
+
+    data class Model(
+        var iconAnimationState: IconAnimationState,
+        val settings: Settings,
+    )
+
+    enum class IconAnimationState {
+        APPEARING,
+        DISAPPEARING,
+    }
 }

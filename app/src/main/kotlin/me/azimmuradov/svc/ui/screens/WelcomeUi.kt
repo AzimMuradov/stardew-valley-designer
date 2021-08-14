@@ -28,9 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import me.azimmuradov.svc.screens.Welcome
-import me.azimmuradov.svc.screens.Welcome.IconAnimationState.APPEARING
-import me.azimmuradov.svc.screens.Welcome.IconAnimationState.FADING
+import me.azimmuradov.svc.components.welcome.Welcome
+import me.azimmuradov.svc.components.welcome.Welcome.IconAnimationState.APPEARING
+import me.azimmuradov.svc.components.welcome.Welcome.IconAnimationState.DISAPPEARING
 
 
 @Composable
@@ -60,15 +60,15 @@ private fun AnimatedIcon(component: Welcome) {
         alpha.animateTo(
             targetValue = when (models.iconAnimationState) {
                 APPEARING -> Transparency.MAX
-                FADING -> Transparency.MIN
+                DISAPPEARING -> Transparency.MIN
             },
             animationSpec = spring(stiffness = 7f)
         ) {
             when (models.iconAnimationState) {
                 APPEARING -> if (alpha.value == Transparency.MAX) {
-                    models.iconAnimationState = FADING
+                    models.iconAnimationState = DISAPPEARING
                 }
-                FADING -> if (alpha.value == Transparency.MIN) {
+                DISAPPEARING -> if (alpha.value == Transparency.MIN) {
                     component.onWelcomeScreenEnd()
                 }
             }
@@ -87,8 +87,8 @@ private const val ICON_WEIGHT = 7f
 private const val SPACE_WEIGHT = 10f
 
 private object Transparency {
-    const val MAX = 1.0f
     const val MIN = 0.0f
+    const val MAX = 1.0f
 }
 
 private const val ICON_RES_PATH = "icon.png"

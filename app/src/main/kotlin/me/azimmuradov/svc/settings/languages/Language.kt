@@ -18,6 +18,7 @@ package me.azimmuradov.svc.settings.languages
 
 
 sealed interface Language {
+
     val appName: String
     val authorName: String
 

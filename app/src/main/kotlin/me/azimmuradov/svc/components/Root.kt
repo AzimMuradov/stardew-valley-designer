@@ -14,28 +14,17 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc
+package me.azimmuradov.svc.components
 
 import com.arkivanov.decompose.RouterState
 import com.arkivanov.decompose.value.Value
-import me.azimmuradov.svc.screens.Cartographer
-import me.azimmuradov.svc.screens.Menu
-import me.azimmuradov.svc.screens.Welcome
+import me.azimmuradov.svc.components.cartographer.Cartographer
+import me.azimmuradov.svc.components.menu.Menu
+import me.azimmuradov.svc.components.welcome.Welcome
 import me.azimmuradov.svc.settings.Settings
 
 
 interface Root {
-
-    val model: Value<Model>
-
-    data class Model(
-        val settings: Settings = Settings.DefaultSettings,
-        val title: String = Screen.WelcomeScreen.title(settings),
-    )
-
-
-    val routerState: Value<RouterState<*, Screen>>
-
 
     fun onWelcomeScreenEnd()
 
@@ -44,9 +33,19 @@ interface Root {
     fun onCartographerScreenReturn()
 
 
-    sealed class Screen {
+    val models: Value<Model>
 
-        class WelcomeScreen(val component: Welcome) : Screen() {
+    data class Model(
+        var settings: Settings,
+        var title: String,
+    )
+
+
+    val routerState: Value<RouterState<*, Child>>
+
+    sealed class Child {
+
+        class WelcomeChild(val component: Welcome) : Child() {
 
             companion object {
 
@@ -54,7 +53,7 @@ interface Root {
             }
         }
 
-        class MenuScreen(val component: Menu) : Screen() {
+        class MenuChild(val component: Menu) : Child() {
 
             companion object {
 
@@ -62,7 +61,7 @@ interface Root {
             }
         }
 
-        class CartographerScreen(val component: Cartographer) : Screen() {
+        class CartographerChild(val component: Cartographer) : Child() {
 
             companion object {
 

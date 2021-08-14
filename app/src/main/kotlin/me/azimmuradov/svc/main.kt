@@ -23,6 +23,7 @@ import androidx.compose.ui.window.application
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
+import me.azimmuradov.svc.components.RootComponent
 import me.azimmuradov.svc.ui.RootUi
 
 
@@ -32,7 +33,7 @@ fun main() {
     )
 
     application {
-        val rootModel by root.model.subscribeAsState()
+        val rootModel by root.models.subscribeAsState()
 
         Window(
             onCloseRequest = ::exitApplication,

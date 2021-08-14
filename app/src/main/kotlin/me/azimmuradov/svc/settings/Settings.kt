@@ -16,12 +16,13 @@
 
 package me.azimmuradov.svc.settings
 
+import me.azimmuradov.svc.settings.languages.En
 import me.azimmuradov.svc.settings.languages.Language
-import me.azimmuradov.svc.settings.languages.Ru
 
 
 abstract class Settings(val language: Language) {
-    companion object DefaultSettings : Settings(language = Ru) {
+
+    companion object DefaultSettings : Settings(language = En) {
         //
     }
 }

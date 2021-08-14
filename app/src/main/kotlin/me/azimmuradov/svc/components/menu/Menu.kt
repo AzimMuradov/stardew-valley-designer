@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.screens
+package me.azimmuradov.svc.components.menu
 
 import com.arkivanov.decompose.value.Value
 import me.azimmuradov.svc.settings.Settings
@@ -22,12 +22,12 @@ import me.azimmuradov.svc.settings.Settings
 
 interface Menu {
 
-    val models: Value<Model>
+    val onCartographerScreenCall: () -> Unit
 
+
+    val models: Value<Model>
 
     data class Model(
         var settings: Settings,
     )
-
-    val onCartographerScreenCall: () -> Unit
 }

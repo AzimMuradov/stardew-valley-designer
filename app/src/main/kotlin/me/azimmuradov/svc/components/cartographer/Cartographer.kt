@@ -14,39 +14,20 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.screens
+package me.azimmuradov.svc.components.cartographer
 
 import com.arkivanov.decompose.value.Value
-import me.azimmuradov.svc.screens.Welcome.IconAnimationState.APPEARING
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
-import kotlin.time.ExperimentalTime
+import me.azimmuradov.svc.settings.Settings
 
 
-interface Welcome {
+interface Cartographer {
+
+    val onCartographerScreenReturn: () -> Unit
+
 
     val models: Value<Model>
 
-
     data class Model(
-        var iconAnimationState: IconAnimationState = APPEARING,
+        val settings: Settings,
     )
-
-    enum class IconAnimationState {
-        APPEARING,
-        FADING,
-    }
-
-
-    val onWelcomeScreenEnd: () -> Unit
-
-
-    companion object {
-
-        @ExperimentalTime
-        val APPEAR_TIME: Duration = seconds(5)
-
-        @ExperimentalTime
-        val FADE_TIME: Duration = seconds(5)
-    }
 }

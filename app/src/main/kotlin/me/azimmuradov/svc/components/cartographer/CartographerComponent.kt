@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.screens
+package me.azimmuradov.svc.components.cartographer
 
+import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
+import me.azimmuradov.svc.components.cartographer.Cartographer.Model
 import me.azimmuradov.svc.settings.Settings
 
 
-interface Cartographer {
+class CartographerComponent(
+    override val onCartographerScreenReturn: () -> Unit,
+    settings: Settings,
+) : Cartographer {
 
-    val models: Value<Model>
+    override val models: Value<Model> by lazy { _models }
 
-
-    data class Model(
-        var settings: Settings,
-    )
-
-    val onCartographerScreenReturn: () -> Unit
+    private val _models: MutableValue<Model> = MutableValue(Model(
+        settings,
+    ))
 }

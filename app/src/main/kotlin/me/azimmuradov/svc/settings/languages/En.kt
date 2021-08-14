@@ -18,6 +18,7 @@ package me.azimmuradov.svc.settings.languages
 
 
 object En : Language {
+
     override val appName: String = "Stardew Valley Cartographer"
     override val authorName: String = "Azim Muradov"
 
