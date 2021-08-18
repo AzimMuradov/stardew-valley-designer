@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.svapi
+package io.svapi.savedata
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty

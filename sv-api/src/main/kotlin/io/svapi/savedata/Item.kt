@@ -14,24 +14,13 @@
  * limitations under the License.
  */
 
-package io.svapi
+package io.svapi.savedata
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
-
-
-data class SaveGame(
-    val player: Player,
-    private var _locations: List<GameLocation> = listOf(),
-) {
-
-    @get:JacksonXmlElementWrapper(localName = "locations")
-    @get:JacksonXmlProperty(localName = "GameLocation")
-    var locations: List<GameLocation> = listOf()
-        private set
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 
 
-    init {
-        _locations = locations
-    }
-}
+@JacksonXmlRootElement(localName = "item")
+data class Item<K, V>(
+    val key: K? = null,
+    val value: V? = null,
+)

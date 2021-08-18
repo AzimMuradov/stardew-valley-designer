@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
-package io.svapi
-
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
+package io.svapi.savedata
 
 
-@JacksonXmlRootElement(localName = "item")
-data class Item<K, V>(
-    val key: K? = null,
-    val value: V? = null,
+data class Player(
+    val name: String,
 )

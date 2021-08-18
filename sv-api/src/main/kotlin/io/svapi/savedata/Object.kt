@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
-package io.svapi
+package io.svapi.savedata
+
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 
 
-data class Player(
-    val name: String,
+@JacksonXmlRootElement(localName = "Object")
+data class Obj(
+    @JacksonXmlProperty(isAttribute = true) val type: String? = null,
+    val name: String? = null,
+    val tileLocation: Position? = null,
 )

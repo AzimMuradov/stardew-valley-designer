@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
-package io.svapi
+package io.svapi.savedata
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 
 
-data class Position(
-    @JacksonXmlProperty(localName = "X") val x: Int,
-    @JacksonXmlProperty(localName = "Y") val y: Int,
+@JacksonXmlRootElement(localName = "Furniture")
+data class Furniture(
+    @JacksonXmlProperty(isAttribute = true) val type: String? = null,
+    val name: String? = null,
+    val tileLocation: Position? = null,
+    val rotations: Int? = null,
+    val currentRotation: Int? = null,
 )
