@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.svapi.editor.impl.entities
+package io.svapi.editor.impl.entity
 
 
-sealed interface CartographerEntityId
+sealed interface CartographerEntityType

@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
-package io.svapi.editor
+package io.svapi.editor.impl.rectmap
 
+import io.svapi.editor.Coordinate
+import io.svapi.editor.MutableRectMap
+import io.svapi.editor.Rect
+import io.svapi.editor.RectMap
+import io.svapi.editor.impl.contains
+import io.svapi.editor.impl.generateCoordinates
+import io.svapi.editor.impl.minMaxCoordinates
 import java.util.function.BiFunction
 import java.util.function.Function
 

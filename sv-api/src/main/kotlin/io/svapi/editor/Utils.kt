@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package io.svapi.editor.impl.entities
-
-import io.svapi.editor.Entity
-import io.svapi.editor.Rect
+package io.svapi.editor
 
 
-data class CartographerEntity<out EId : CartographerEntityId, out EType : CartographerEntityType>(
-    override val size: Rect,
-    override val id: EId,
-    val type: EType,
-) : Entity<EId>
+data class Coordinate(val x: Int, val y: Int)
+
+data class Rect(val w: Int, val h: Int)
+
+
+fun xy(x: Int, y: Int): Coordinate = Coordinate(x, y)

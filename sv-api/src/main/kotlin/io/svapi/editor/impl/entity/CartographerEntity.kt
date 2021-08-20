@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 
-package io.svapi.editor.impl.entities
+package io.svapi.editor.impl.entity
+
+import io.svapi.editor.Entity
+import io.svapi.editor.Rect
 
 
-sealed interface CartographerEntityType
+data class CartographerEntity<out EId : CartographerEntityId, out EType : CartographerEntityType>(
+    override val size: Rect,
+    override val id: EId,
+    val type: EType,
+) : Entity<EId>

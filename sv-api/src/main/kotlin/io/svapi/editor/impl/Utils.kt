@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package io.svapi.editor
+package io.svapi.editor.impl
+
+import io.svapi.editor.Coordinate
+import io.svapi.editor.Rect
+import io.svapi.editor.xy
 
 
-data class Coordinate(val x: Int, val y: Int)
+// Internal utils
 
-data class Rect(val w: Int, val h: Int)
-
-
-fun xy(x: Int, y: Int): Coordinate = Coordinate(x, y)
-
-
-operator fun Rect.contains(coordinate: Coordinate): Boolean = with(coordinate) {
+internal operator fun Rect.contains(coordinate: Coordinate): Boolean = with(coordinate) {
     x in 0 until w && y in 0 until h
 }
 
 
-fun generateCoordinates(source: Coordinate, rect: Rect): List<Coordinate> {
+internal fun generateCoordinates(source: Coordinate, rect: Rect): List<Coordinate> {
     val (x, y) = source
     val (w, h) = rect
 
@@ -41,14 +39,14 @@ fun generateCoordinates(source: Coordinate, rect: Rect): List<Coordinate> {
 }
 
 
-fun minMaxCoordinates(source: Coordinate, rect: Rect): Pair<Coordinate, Coordinate> {
+internal fun minMaxCoordinates(source: Coordinate, rect: Rect): Pair<Coordinate, Coordinate> {
     val (x, y) = source
     val (w, h) = rect
 
     return source to xy(x + w, y + h)
 }
 
-fun minMaxCoordinates(coordinates: Iterable<Coordinate>): Pair<Coordinate, Coordinate> {
+internal fun minMaxCoordinates(coordinates: Iterable<Coordinate>): Pair<Coordinate, Coordinate> {
     val first = coordinates.firstOrNull()
 
     requireNotNull(first)
