@@ -20,7 +20,19 @@ package io.svapi.editor
 /**
  * Mutable editor layer.
  */
-interface MutableLayer<EId, E : Entity<EId>> : Layer<EId, E>, MutableMap<Coordinate, E> {
+interface MutableLayer<out EId, E : Entity<EId>, out EH : EntityHolder<EId, E>> : Layer<EId, E, EH> {
 
-    override val layout: MutableRectMap<E>
+    operator fun set(key: Coordinate, value: E): E?
+
+    fun remove(key: Coordinate): E?
+
+    fun putAll(from: RectMap<E>)
+
+    fun removeAll(keys: Iterable<Coordinate>)
+
+    fun clear()
 }
+
+
+fun <EId, E : Entity<EId>, EH : EntityHolder<EId, E>> MutableLayer<EId, E, EH>.put(key: Coordinate, value: E): E? =
+    set(key, value)
