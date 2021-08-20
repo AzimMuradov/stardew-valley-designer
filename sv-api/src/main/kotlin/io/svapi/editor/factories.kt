@@ -37,7 +37,7 @@ private class RectMapImpl<T>(
 ) : RectMap<T>, Map<Coordinate, T> by map {
 
     init {
-        require(map.keys.all { it in rect }, ::ERR_MSG_COORDINATE_OUT_OF_BOUNDS)
+        require(map.keys in rect, ::ERR_MSG_COORDINATE_OUT_OF_BOUNDS)
     }
 }
 
@@ -47,7 +47,7 @@ private class MutableRectMapImpl<T>(
 ) : MutableRectMap<T>, MutableMap<Coordinate, T> by map {
 
     init {
-        require(map.keys.all { it in rect }, ::ERR_MSG_COORDINATE_OUT_OF_BOUNDS)
+        require(map.keys in rect, ::ERR_MSG_COORDINATE_OUT_OF_BOUNDS)
     }
 
 
@@ -73,15 +73,37 @@ private class MutableRectMapImpl<T>(
     }
 
     override fun putAll(from: Map<out Coordinate, T>) {
-        require(from.keys.all { it in rect }, ::ERR_MSG_COORDINATE_OUT_OF_BOUNDS)
-        return map.putAll(from)
+        require(from.keys in rect, ::ERR_MSG_COORDINATE_OUT_OF_BOUNDS)
+        map.putAll(from)
+    }
+
+    override fun putOnAllRectCells(keySource: Coordinate, keyRect: Rect, value: T) {
+        require(minMaxCoordinates(keySource, keyRect).toList() in keyRect, ::ERR_MSG_COORDINATE_OUT_OF_BOUNDS)
+        map.putAll(generateCoordinates(keySource, keyRect).associateWith { value })
     }
 
     override fun putIfAbsent(key: Coordinate, value: T): T? {
         require(key in rect, ::ERR_MSG_COORDINATE_OUT_OF_BOUNDS)
         return map.putIfAbsent(key, value)
     }
+
+
+    override fun removeAll(keys: Iterable<Coordinate>) {
+        for (c in keys) {
+            map.remove(c)
+        }
+    }
+
+    override fun removeOnAllRectCells(keySource: Coordinate, keyRect: Rect) =
+        removeAll(generateCoordinates(keySource, keyRect))
 }
 
 
 private const val ERR_MSG_COORDINATE_OUT_OF_BOUNDS: String = "Coordinate is out of bounds"
+
+private operator fun Rect.contains(coordinates: Iterable<Coordinate>): Boolean {
+    // Check that iterable is not empty
+    coordinates.firstOrNull() ?: return true
+
+    return minMaxCoordinates(coordinates).toList().all(this::contains)
+}

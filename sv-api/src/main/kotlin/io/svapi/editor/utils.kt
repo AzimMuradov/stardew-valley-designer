@@ -24,6 +24,50 @@ data class Rect(val w: Int, val h: Int)
 
 fun xy(x: Int, y: Int): Coordinate = Coordinate(x, y)
 
+
 operator fun Rect.contains(coordinate: Coordinate): Boolean = with(coordinate) {
     x in 0 until w && y in 0 until h
 }
+
+
+fun generateCoordinates(source: Coordinate, rect: Rect): List<Coordinate> {
+    val (x, y) = source
+    val (w, h) = rect
+
+    val xs = x until x + w
+    val ys = y until y + h
+
+    return xs.cartesianProduct(ys).map { (x, y) -> xy(x, y) }
+}
+
+
+fun minMaxCoordinates(source: Coordinate, rect: Rect): Pair<Coordinate, Coordinate> {
+    val (x, y) = source
+    val (w, h) = rect
+
+    return source to xy(x + w, y + h)
+}
+
+fun minMaxCoordinates(coordinates: Iterable<Coordinate>): Pair<Coordinate, Coordinate> {
+    val first = coordinates.firstOrNull()
+
+    requireNotNull(first)
+
+    var (minX: Int, minY: Int) = first
+    var (maxX: Int, maxY: Int) = first
+
+    for ((x, y) in coordinates) {
+        minX = minOf(minX, x)
+        maxX = maxOf(maxX, x)
+        minY = minOf(minY, y)
+        maxY = maxOf(maxY, y)
+    }
+
+    return xy(minX, maxX) to xy(minY, maxY)
+}
+
+
+// Private utils
+
+private fun <A, B> Iterable<A>.cartesianProduct(rhs: Iterable<B>): List<Pair<A, B>> =
+    flatMap { e1 -> rhs.map { e2 -> e1 to e2 } }

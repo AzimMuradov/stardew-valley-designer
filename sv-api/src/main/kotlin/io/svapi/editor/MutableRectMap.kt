@@ -20,4 +20,11 @@ package io.svapi.editor
 /**
  * Mutable map with rectangular field.
  */
-interface MutableRectMap<T> : RectMap<T>, MutableMap<Coordinate, T>
+interface MutableRectMap<T> : RectMap<T>, MutableMap<Coordinate, T> {
+
+    fun putOnAllRectCells(keySource: Coordinate, keyRect: Rect, value: T)
+
+    fun removeAll(keys: Iterable<Coordinate>)
+
+    fun removeOnAllRectCells(keySource: Coordinate, keyRect: Rect)
+}
