@@ -17,4 +17,7 @@
 package io.svapi.editor.impl.entity
 
 
-sealed interface CartographerEntityId
+sealed interface CartographerEntityId<out EType : CartographerEntityType> {
+
+    val type: EType
+}

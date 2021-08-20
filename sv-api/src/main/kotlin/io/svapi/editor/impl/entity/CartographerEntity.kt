@@ -20,8 +20,7 @@ import io.svapi.editor.Entity
 import io.svapi.editor.Rect
 
 
-data class CartographerEntity<out EId : CartographerEntityId, out EType : CartographerEntityType>(
-    override val size: Rect,
+data class CartographerEntity<out EId : CartographerEntityId<EType>, out EType : CartographerEntityType>(
     override val id: EId,
-    val type: EType,
+    override val size: Rect,
 ) : Entity<EId>
