@@ -38,7 +38,7 @@ fun <T> mutableRectMapOf(
 ): MutableRectMap<T> = MutableRectMapImpl(rect = size, map)
 
 
-private class RectMapImpl<T>(
+private class RectMapImpl<out T>(
     override val rect: Rect,
     private val map: Map<Coordinate, T>,
 ) : RectMap<T>, Map<Coordinate, T> by map {
