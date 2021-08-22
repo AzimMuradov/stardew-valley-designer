@@ -17,14 +17,13 @@
 package io.svapi.editor.impl.entity
 
 import io.svapi.editor.Coordinate
-import io.svapi.editor.EntityHolder
 import io.svapi.editor.impl.generateCoordinates
 
 
 data class CartographerEntityHolder<out EId : CartographerEntityId<EType>, out EType : CartographerEntityType>(
-    override val entity: CartographerEntity<EId, EType>,
-    override val source: Coordinate,
-) : EntityHolder<EId, CartographerEntity<EId, EType>> {
+    val entity: CartographerEntity<EId, EType>,
+    val source: Coordinate,
+) {
 
     val coordinates: List<Coordinate> by lazy { generateCoordinates(source, rect = entity.size) }
 }
