@@ -22,9 +22,9 @@ package io.svapi.editor
  */
 interface MutableEditorOperations<E : Entity<*>> : EditorOperations<E> {
 
-    operator fun set(key: Coordinate, value: E): E?
+    operator fun set(key: Coordinate, value: E)
 
-    fun remove(key: Coordinate): E?
+    fun remove(key: Coordinate)
 
     fun putAll(from: RectMap<E>)
 
@@ -32,6 +32,3 @@ interface MutableEditorOperations<E : Entity<*>> : EditorOperations<E> {
 
     fun clear()
 }
-
-
-fun <E : Entity<*>> MutableEditorOperations<E>.put(key: Coordinate, value: E): E? = set(key, value)
