@@ -20,8 +20,8 @@ import io.svapi.editor.Coordinate
 import io.svapi.editor.impl.generateCoordinates
 
 
-data class CartographerEntityHolder<out EId : CartographerEntityId<EType>, out EType : CartographerEntityType>(
-    val entity: CartographerEntity<EId, EType>,
+data class CartographerEntityHolder<out EType : CartographerEntityType>(
+    val entity: CartographerEntity<EType>,
     val source: Coordinate,
 ) {
 
