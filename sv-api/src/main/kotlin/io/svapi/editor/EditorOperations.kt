@@ -18,24 +18,9 @@ package io.svapi.editor
 
 
 /**
- * Editor layer.
+ * Available immutable editor operations.
  */
-interface Layer<out EId, out E : Entity<EId>, out EH : EntityHolder<EId, E>> {
-
-    val renderedMap: RectMap<EH>
-
-    val map: RectMap<E>
-
+interface EditorOperations<out E : Entity<*>> {
 
     operator fun get(key: Coordinate): E?
 }
-
-
-val Layer<*, *, *>.layoutSize: Rect get() = renderedMap.rect
-
-
-val Layer<*, *, *>.entitiesCount: Int get() = map.size
-
-fun Layer<*, *, *>.isEmpty(): Boolean = map.isEmpty()
-
-fun Layer<*, *, *>.isNotEmpty(): Boolean = map.isNotEmpty()

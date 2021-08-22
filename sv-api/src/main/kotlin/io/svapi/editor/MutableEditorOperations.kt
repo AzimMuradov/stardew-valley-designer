@@ -18,9 +18,9 @@ package io.svapi.editor
 
 
 /**
- * Mutable editor layer.
+ * Available mutable editor operations.
  */
-interface MutableLayer<out EId, E : Entity<EId>, out EH : EntityHolder<EId, E>> : Layer<EId, E, EH> {
+interface MutableEditorOperations<E : Entity<*>> : EditorOperations<E> {
 
     operator fun set(key: Coordinate, value: E): E?
 
@@ -34,5 +34,4 @@ interface MutableLayer<out EId, E : Entity<EId>, out EH : EntityHolder<EId, E>> 
 }
 
 
-fun <EId, E : Entity<EId>, EH : EntityHolder<EId, E>> MutableLayer<EId, E, EH>.put(key: Coordinate, value: E): E? =
-    set(key, value)
+fun <E : Entity<*>> MutableEditorOperations<E>.put(key: Coordinate, value: E): E? = set(key, value)
