@@ -27,7 +27,6 @@ internal operator fun Rect.contains(coordinate: Coordinate): Boolean = with(coor
     x in 0 until w && y in 0 until h
 }
 
-
 internal fun generateCoordinates(source: Coordinate, rect: Rect): List<Coordinate> {
     val (x, y) = source
     val (w, h) = rect
@@ -39,29 +38,10 @@ internal fun generateCoordinates(source: Coordinate, rect: Rect): List<Coordinat
 }
 
 
-internal fun minMaxCoordinates(source: Coordinate, rect: Rect): Pair<Coordinate, Coordinate> {
-    val (x, y) = source
-    val (w, h) = rect
-
-    return source to xy(x + w, y + h)
-}
-
-internal fun minMaxCoordinates(coordinates: Iterable<Coordinate>): Pair<Coordinate, Coordinate> {
-    val first = coordinates.firstOrNull()
-
-    requireNotNull(first)
-
-    var (minX: Int, minY: Int) = first
-    var (maxX: Int, maxY: Int) = first
-
-    for ((x, y) in coordinates) {
-        minX = minOf(minX, x)
-        maxX = maxOf(maxX, x)
-        minY = minOf(minY, y)
-        maxY = maxOf(maxY, y)
+internal fun <K, V> MutableMap<K, V>.removeAll(keys: Iterable<K>) {
+    for (k in keys) {
+        remove(k)
     }
-
-    return xy(minX, maxX) to xy(minY, maxY)
 }
 
 

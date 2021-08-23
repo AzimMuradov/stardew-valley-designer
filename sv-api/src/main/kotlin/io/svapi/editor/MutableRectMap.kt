@@ -22,9 +22,9 @@ package io.svapi.editor
  */
 interface MutableRectMap<T> : RectMap<T>, MutableMap<Coordinate, T> {
 
-    fun putOnAllRectCells(keySource: Coordinate, keyRect: Rect, value: T)
+    // fun putRect(...)
 
-    fun removeAll(keys: Iterable<Coordinate>)
+    // fun removeAll(...)
 
-    fun removeOnAllRectCells(keySource: Coordinate, keyRect: Rect)
+    // fun removeRect(...)
 }

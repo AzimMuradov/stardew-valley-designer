@@ -26,7 +26,8 @@ interface MutableEditorOperations<E : Entity<*>> : EditorOperations<E> {
 
     fun remove(key: Coordinate)
 
-    fun putAll(from: RectMap<E>)
+
+    fun setAll(from: Map<Coordinate, E>)
 
     fun removeAll(keys: Iterable<Coordinate>)
 

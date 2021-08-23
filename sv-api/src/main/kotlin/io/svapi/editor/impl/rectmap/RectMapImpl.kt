@@ -16,15 +16,8 @@
 
 package io.svapi.editor.impl.rectmap
 
-import io.svapi.editor.Coordinate
-import io.svapi.editor.MutableRectMap
-import io.svapi.editor.Rect
-import io.svapi.editor.RectMap
+import io.svapi.editor.*
 import io.svapi.editor.impl.contains
-import io.svapi.editor.impl.generateCoordinates
-import io.svapi.editor.impl.minMaxCoordinates
-import java.util.function.BiFunction
-import java.util.function.Function
 
 
 fun <T> rectMapOf(
@@ -44,7 +37,7 @@ private class RectMapImpl<out T>(
 ) : RectMap<T>, Map<Coordinate, T> by map {
 
     init {
-        require(map.keys in rect, ::ERR_MSG_COORDINATE_OUT_OF_BOUNDS)
+        actOnSuccessOf(map.keys in rect, action = {})
     }
 }
 
@@ -54,63 +47,42 @@ private class MutableRectMapImpl<T>(
 ) : MutableRectMap<T>, MutableMap<Coordinate, T> by map {
 
     init {
-        require(map.keys in rect, ::ERR_MSG_COORDINATE_OUT_OF_BOUNDS)
+        actOnSuccessOf(check = map.keys in rect) {}
     }
 
 
-    override fun compute(key: Coordinate, remappingFunction: BiFunction<in Coordinate, in T?, out T?>): T? {
-        require(key in rect, ::ERR_MSG_COORDINATE_OUT_OF_BOUNDS)
-        return map.compute(key, remappingFunction)
+    override fun put(key: Coordinate, value: T): T? = actOnSuccessOf(check = key in rect) {
+        map.put(key, value)
     }
 
-    override fun computeIfAbsent(key: Coordinate, mappingFunction: Function<in Coordinate, out T>): T {
-        require(key in rect, ::ERR_MSG_COORDINATE_OUT_OF_BOUNDS)
-        return map.computeIfAbsent(key, mappingFunction)
-    }
-
-    override fun merge(key: Coordinate, value: T, remappingFunction: BiFunction<in T, in T, out T?>): T? {
-        requireNotNull(value)
-        require(key in rect, ::ERR_MSG_COORDINATE_OUT_OF_BOUNDS)
-        return map.merge(key, value, remappingFunction)
-    }
-
-    override fun put(key: Coordinate, value: T): T? {
-        require(key in rect, ::ERR_MSG_COORDINATE_OUT_OF_BOUNDS)
-        return map.put(key, value)
-    }
-
-    override fun putAll(from: Map<out Coordinate, T>) {
-        require(from.keys in rect, ::ERR_MSG_COORDINATE_OUT_OF_BOUNDS)
+    override fun putAll(from: Map<out Coordinate, T>) = actOnSuccessOf(check = from.keys in rect) {
         map.putAll(from)
     }
-
-    override fun putOnAllRectCells(keySource: Coordinate, keyRect: Rect, value: T) {
-        require(minMaxCoordinates(keySource, keyRect).toList() in keyRect, ::ERR_MSG_COORDINATE_OUT_OF_BOUNDS)
-        map.putAll(generateCoordinates(keySource, keyRect).associateWith { value })
-    }
-
-    override fun putIfAbsent(key: Coordinate, value: T): T? {
-        require(key in rect, ::ERR_MSG_COORDINATE_OUT_OF_BOUNDS)
-        return map.putIfAbsent(key, value)
-    }
-
-
-    override fun removeAll(keys: Iterable<Coordinate>) {
-        for (c in keys) {
-            map.remove(c)
-        }
-    }
-
-    override fun removeOnAllRectCells(keySource: Coordinate, keyRect: Rect) =
-        removeAll(generateCoordinates(keySource, keyRect))
 }
 
 
-private const val ERR_MSG_COORDINATE_OUT_OF_BOUNDS: String = "Coordinate is out of bounds"
+private fun <T> actOnSuccessOf(check: Boolean, action: () -> T): T {
+    require(check) { "Coordinate is out of bounds" }
+    return action()
+}
 
 private operator fun Rect.contains(coordinates: Iterable<Coordinate>): Boolean {
     // Check that iterable is not empty
-    coordinates.firstOrNull() ?: return true
+    val first = coordinates.firstOrNull() ?: return true
 
-    return minMaxCoordinates(coordinates).toList().all(this::contains)
+    val (min, max) = run {
+        var (minX: Int, minY: Int) = first
+        var (maxX: Int, maxY: Int) = first
+
+        for ((x, y) in coordinates) {
+            minX = minOf(minX, x)
+            maxX = maxOf(maxX, x)
+            minY = minOf(minY, y)
+            maxY = maxOf(maxY, y)
+        }
+
+        xy(minX, maxX) to xy(minY, maxY)
+    }
+
+    return contains(min) && contains(max)
 }

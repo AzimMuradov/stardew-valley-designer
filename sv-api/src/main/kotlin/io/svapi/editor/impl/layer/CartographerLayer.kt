@@ -16,8 +16,9 @@
 
 package io.svapi.editor.impl.layer
 
+import io.svapi.editor.Coordinate
 import io.svapi.editor.EditorOperations
-import io.svapi.editor.RectMap
+import io.svapi.editor.Rect
 import io.svapi.editor.impl.entity.CartographerEntity
 import io.svapi.editor.impl.entity.CartographerEntityHolder
 import io.svapi.editor.impl.entity.CartographerEntityType
@@ -25,14 +26,17 @@ import io.svapi.editor.impl.entity.CartographerEntityType
 
 interface CartographerLayer<out EType : CartographerEntityType> : EditorOperations<CartographerEntity<EType>> {
 
-    val map: RectMap<CartographerEntity<EType>>
+    val rect: Rect
 
-    val renderedMap: RectMap<CartographerEntityHolder<EType>>
+
+    val map: Map<Coordinate, CartographerEntity<EType>>
+
+    val renderedMap: Map<Coordinate, CartographerEntityHolder<EType>>
 
 
     // Restrictions for the Layer
 
-    val disallowedEntityTypes: RectMap<Set<EType>?>
+    val disallowedEntityTypes: Map<Coordinate, Set<EType>?>
 
     val behaviour: CartographerLayerBehaviour
 }
