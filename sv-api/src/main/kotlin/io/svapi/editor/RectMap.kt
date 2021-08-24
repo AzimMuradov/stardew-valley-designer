@@ -17,6 +17,8 @@
 package io.svapi.editor
 
 
+// TODO : Use efficient data structure
+
 /**
  * Map with rectangular field.
  */

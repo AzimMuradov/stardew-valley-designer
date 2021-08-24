@@ -16,19 +16,24 @@
 
 package io.svapi.editor.impl.rectmap
 
-import io.svapi.editor.*
+import io.svapi.editor.Coordinate
+import io.svapi.editor.Rect
+import io.svapi.editor.RectMap
 import io.svapi.editor.impl.contains
+import io.svapi.editor.xy
 
+
+// TODO : Use efficient data structure
 
 fun <T> rectMapOf(
     size: Rect,
     map: Map<Coordinate, T> = mapOf(),
 ): RectMap<T> = RectMapImpl(rect = size, map)
 
-fun <T> mutableRectMapOf(
-    size: Rect,
-    map: MutableMap<Coordinate, T> = mutableMapOf(),
-): MutableRectMap<T> = MutableRectMapImpl(rect = size, map)
+// fun <T> mutableRectMapOf(
+//     size: Rect,
+//     map: MutableMap<Coordinate, T> = mutableMapOf(),
+// ): MutableRectMap<T> = MutableRectMapImpl(rect = size, map)
 
 
 private class RectMapImpl<out T>(
@@ -41,27 +46,27 @@ private class RectMapImpl<out T>(
     }
 }
 
-private class MutableRectMapImpl<T>(
-    override val rect: Rect,
-    private val map: MutableMap<Coordinate, T>,
-) : MutableRectMap<T>, MutableMap<Coordinate, T> by map {
+// private class MutableRectMapImpl<T>(
+//     override val rect: Rect,
+//     private val map: MutableMap<Coordinate, T>,
+// ) : MutableRectMap<T>, MutableMap<Coordinate, T> by map {
+//
+//     init {
+//         actOnSuccessOf(check = map.keys in rect) {}
+//     }
+//
+//
+//     override fun put(key: Coordinate, value: T): T? = actOnSuccessOf(check = key in rect) {
+//         map.put(key, value)
+//     }
+//
+//     override fun putAll(from: Map<out Coordinate, T>) = actOnSuccessOf(check = from.keys in rect) {
+//         map.putAll(from)
+//     }
+// }
 
-    init {
-        actOnSuccessOf(check = map.keys in rect) {}
-    }
 
-
-    override fun put(key: Coordinate, value: T): T? = actOnSuccessOf(check = key in rect) {
-        map.put(key, value)
-    }
-
-    override fun putAll(from: Map<out Coordinate, T>) = actOnSuccessOf(check = from.keys in rect) {
-        map.putAll(from)
-    }
-}
-
-
-private fun <T> actOnSuccessOf(check: Boolean, action: () -> T): T {
+private inline fun <T> actOnSuccessOf(check: Boolean, action: () -> T): T {
     require(check) { "Coordinate is out of bounds" }
     return action()
 }

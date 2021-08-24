@@ -17,14 +17,16 @@
 package io.svapi.editor
 
 
-/**
- * Mutable map with rectangular field.
- */
-interface MutableRectMap<T> : RectMap<T>, MutableMap<Coordinate, T> {
+// TODO : Use efficient data structure
 
-    // fun putRect(...)
-
-    // fun removeAll(...)
-
-    // fun removeRect(...)
-}
+// /**
+//  * Mutable map with rectangular field.
+//  */
+// interface MutableRectMap<T> : RectMap<T>, MutableMap<Coordinate, T> {
+//
+//     fun putRect(...)
+//
+//     fun removeAll(...)
+//
+//     fun removeRect(...)
+// }
