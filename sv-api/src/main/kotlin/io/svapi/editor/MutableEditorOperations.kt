@@ -22,12 +22,16 @@ package io.svapi.editor
  */
 interface MutableEditorOperations<E : Entity<*>> : EditorOperations<E> {
 
-    operator fun set(key: Coordinate, value: E)
+    // Modification Operations
 
-    fun remove(key: Coordinate)
+    fun put(key: Coordinate, value: E): E?
+
+    fun remove(key: Coordinate): E?
 
 
-    fun setAll(from: Map<Coordinate, E>)
+    // Bulk Modification Operations
+
+    fun putAll(from: Map<out Coordinate, E>)
 
     fun removeAll(keys: Iterable<Coordinate>)
 

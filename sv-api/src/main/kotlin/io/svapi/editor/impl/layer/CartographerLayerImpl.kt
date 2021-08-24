@@ -40,67 +40,73 @@ private class MutableCartographerLayerImpl<EType : CartographerEntityType>(
 
     override val rect: Rect = disallowedEntityTypes.rect
 
-
-    private val _map: MutableMap<Coordinate, CartographerEntity<EType>> = mutableMapOf()
-    override val map: Map<Coordinate, CartographerEntity<EType>> = _map
-
-    private val _renderedMap: MutableMap<Coordinate, CartographerEntityHolder<EType>> = mutableMapOf()
-    override val renderedMap: Map<Coordinate, CartographerEntityHolder<EType>> = _renderedMap
-
-
     override var behaviour: CartographerLayerBehaviour = CartographerLayerBehaviour.skipper
 
 
-    override fun get(key: Coordinate): CartographerEntity<EType>? = renderedMap[key]?.entity
+    private val map: MutableMap<Coordinate, CartographerEntity<EType>> = mutableMapOf()
+    private val generatedMap: MutableMap<Coordinate, CartographerEntityHolder<EType>> = mutableMapOf()
 
-    override fun set(key: Coordinate, value: CartographerEntity<EType>) {
-        checkOutOfBounds(key, value)
-        checkDisallowed(key, value)
-        checkInternallyConflict(key, value)
 
-        putUnsafe(key, value)
+    override fun get(key: Coordinate): CartographerEntity<EType>? = generatedMap[key]?.entity
+
+    override val keys: Set<Coordinate> get() = map.keys
+    override val values: Collection<CartographerEntity<EType>> get() = map.values
+    override val entries: Set<Map.Entry<Coordinate, CartographerEntity<EType>>> get() = map.entries
+
+    override fun put(key: Coordinate, value: CartographerEntity<EType>): CartographerEntity<EType>? {
+        TODO("Not yet implemented")
+        //     checkOutOfBounds(key, value)
+        //     checkDisallowed(key, value)
+        //     checkInternallyConflict(key, value)
+        //
+        //     putUnsafe(key, value)
     }
 
-    override fun remove(key: Coordinate) {
-        renderedMap[key]?.let { eh ->
-            _map.remove(eh.source)
-            _renderedMap.removeAll(eh.coordinates)
-        }
+    override fun remove(key: Coordinate): CartographerEntity<EType>? {
+        TODO("Not yet implemented")
+        //     renderedMap[key]?.let { eh ->
+        //         map.remove(eh.source)
+        //         renderedMap.removeAll(eh.coordinates)
+        //     }
     }
 
-    override fun setAll(from: Map<Coordinate, CartographerEntity<EType>>) {
-        for ((k, v) in from) {
-            checkOutOfBounds(k, v)
-            checkDisallowed(k, v)
-        }
-        for ((k, v) in from) {
-            checkInternallyConflict(k, v)
-        }
-
-        for ((k, v) in from) {
-            putUnsafe(k, v)
-        }
+    override fun putAll(from: Map<out Coordinate, CartographerEntity<EType>>) {
+        TODO("Not yet implemented")
+        //     for ((k, v) in from) {
+        //         checkOutOfBounds(k, v)
+        //         checkDisallowed(k, v)
+        //     }
+        //     for ((k, v) in from) {
+        //         checkInternallyConflict(k, v)
+        //     }
+        //
+        //     for ((k, v) in from) {
+        //         putUnsafe(k, v)
+        //     }
     }
 
     override fun removeAll(keys: Iterable<Coordinate>) {
-        val setOfEh = keys.mapNotNull { renderedMap[it] }.toSet()
-        for (eh in setOfEh) {
-            _map.remove(eh.source)
-            _renderedMap.removeAll(eh.coordinates)
-        }
+        TODO("Not yet implemented")
+        //     val setOfEh = keys.mapNotNull { renderedMap[it] }.toSet()
+        //     for (eh in setOfEh) {
+        //         map.remove(eh.source)
+        //         renderedMap.removeAll(eh.coordinates)
+        //     }
     }
 
     override fun clear() {
-        _map.clear()
-        _renderedMap.clear()
+        map.clear()
+        generatedMap.clear()
     }
 
 
+    // Utilities
+
     private fun putUnsafe(key: Coordinate, value: CartographerEntity<EType>) {
-        _map[key] = value
+        map[key] = value
 
         val eh = CartographerEntityHolder(entity = value, source = key)
-        _renderedMap.putAll(eh.coordinates.associateWith { eh })
+        generatedMap.putAll(eh.coordinates.associateWith { eh })
     }
 
 
@@ -115,8 +121,9 @@ private class MutableCartographerLayerImpl<EType : CartographerEntityType>(
         }
 
         if (!(min in rect && max in rect)) {
-            if (behaviour.onOutOfBounds == OnOutOfBounds.THROW_EXCEPTION) {
-                throw IllegalStateException()
+            when (behaviour.onOutOfBounds) {
+                OnOutOfBounds.THROW_EXCEPTION -> throw IllegalStateException()
+                OnOutOfBounds.SKIP -> TODO()
             }
         }
     }
@@ -126,21 +133,22 @@ private class MutableCartographerLayerImpl<EType : CartographerEntityType>(
             disallowedEntityTypes[c]?.let { value.id.type in it } ?: true
 
         if (generateCoordinates(key, value.size).none(::isDisallowed)) {
-            if (behaviour.onDisallowed == OnDisallowed.THROW_EXCEPTION) {
-                throw IllegalStateException()
+            when (behaviour.onDisallowed) {
+                OnDisallowed.THROW_EXCEPTION -> throw IllegalStateException()
+                OnDisallowed.SKIP -> TODO()
             }
         }
     }
 
     private fun checkInternallyConflict(key: Coordinate, value: CartographerEntity<EType>) {
-        val conflictingEh = generateCoordinates(key, value.size).mapNotNull { renderedMap[it] }.toSet()
+        val conflictingEh = generateCoordinates(key, value.size).mapNotNull { generatedMap[it] }.toSet()
 
         if (conflictingEh.isNotEmpty()) {
             when (behaviour.onInternalConflict) {
                 OnInternalConflict.THROW_EXCEPTION -> throw IllegalStateException()
                 OnInternalConflict.OVERWRITE -> for (eh in conflictingEh) {
-                    _map.remove(eh.source)
-                    _renderedMap.removeAll(eh.coordinates)
+                    map.remove(eh.source)
+                    generatedMap.removeAll(eh.coordinates)
                 }
                 OnInternalConflict.SKIP -> Unit
             }

@@ -22,5 +22,24 @@ package io.svapi.editor
  */
 interface EditorOperations<out E : Entity<*>> {
 
+    // Query Operations
+
+    // val size: Int
+
+    // fun isEmpty(): Boolean
+
+    // fun containsKey(key: Coordinate): Boolean
+
+    // fun containsValue(value: @UnsafeVariance E): Boolean
+
     operator fun get(key: Coordinate): E?
+
+
+    // Views
+
+    val keys: Set<Coordinate>
+
+    val values: Collection<E>
+
+    val entries: Set<Map.Entry<Coordinate, E>>
 }
