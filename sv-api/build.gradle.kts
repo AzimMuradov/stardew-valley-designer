@@ -1,3 +1,7 @@
+@file:Suppress("SuspiciousCollectionReassignment")
+
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     kotlin("jvm") version V.P_KOTLIN
 
@@ -15,4 +19,13 @@ dependencies {
     implementation(kotlin("reflect", V.P_KOTLIN))
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${V.JACKSON}")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${V.JACKSON}")
+}
+
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        languageVersion = "1.6"
+        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        jvmTarget = "16"
+    }
 }
