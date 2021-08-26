@@ -19,8 +19,8 @@ package io.svapi.editor.impl.layout.layouts
 import io.svapi.editor.Coordinate
 import io.svapi.editor.Rect
 import io.svapi.editor.impl.entity.CartographerEntityType
-import io.svapi.editor.impl.entity.FlooringAndGrassType.GrassType
-import io.svapi.editor.impl.entity.ObjectLikeType.FurnitureType.BedType
+import io.svapi.editor.impl.entity.FloorType.GrassType
+import io.svapi.editor.impl.entity.ObjectType.FurnitureType.BedType
 import io.svapi.editor.impl.layout.CartographerLayout
 import io.svapi.editor.impl.layout.CartographerLayoutType.BigShed
 import io.svapi.editor.impl.layout.CartographerLayoutType.Shed
@@ -33,8 +33,8 @@ private val shedRect = Rect(w = 11, h = 10)
 internal val Shed: CartographerLayout = CartographerLayout(
     type = Shed,
     shedRect,
-    rulesForFlooringAndGrassLayer = buildRules(shedRect, setOf(GrassType)),
-    rulesForObjectLikeLayer = buildRules(shedRect, setOf(BedType)),
+    rulesForFlooringLayer = buildRules(shedRect, setOf(GrassType)),
+    rulesForObjectsLayer = buildRules(shedRect, setOf(BedType)),
 )
 
 
@@ -43,8 +43,8 @@ private val bigShedRect = Rect(w = 17, h = 13)
 internal val BigShed: CartographerLayout = CartographerLayout(
     type = BigShed,
     bigShedRect,
-    rulesForFlooringAndGrassLayer = buildRules(bigShedRect, setOf(GrassType)),
-    rulesForObjectLikeLayer = buildRules(bigShedRect, setOf(BedType)),
+    rulesForFlooringLayer = buildRules(bigShedRect, setOf(GrassType)),
+    rulesForObjectsLayer = buildRules(bigShedRect, setOf(BedType)),
 )
 
 

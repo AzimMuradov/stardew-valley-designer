@@ -25,9 +25,9 @@ interface BasicCartographerEditor {
 
     var behaviour: CartographerEditorBehaviour
 
-    val flooringAndGrassLayer: CartographerLayer<FlooringAndGrassType>
-    val objectLikeLayer: CartographerLayer<ObjectLikeType>
-    val cropsLayer: CartographerLayer<CropsType>
+    val flooringLayer: CartographerLayer<FloorType>
+    val objectsLayer: CartographerLayer<ObjectType>
+    val cropsLayer: CartographerLayer<CropType>
     val bigEntitiesLayer: CartographerLayer<BigEntityType>
 
 

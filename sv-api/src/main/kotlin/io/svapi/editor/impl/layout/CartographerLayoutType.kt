@@ -17,7 +17,7 @@
 package io.svapi.editor.impl.layout
 
 import io.svapi.editor.impl.entity.CartographerEntityType
-import io.svapi.editor.impl.entity.FlooringAndGrassType
+import io.svapi.editor.impl.entity.FloorType
 
 
 sealed interface CartographerLayoutType {
@@ -27,11 +27,11 @@ sealed interface CartographerLayoutType {
 
     object Shed : CartographerLayoutType {
 
-        override val disallowedEntityTypes: Set<CartographerEntityType> = setOf(FlooringAndGrassType.GrassType)
+        override val disallowedEntityTypes: Set<CartographerEntityType> = setOf(FloorType.GrassType)
     }
 
     object BigShed : CartographerLayoutType {
 
-        override val disallowedEntityTypes: Set<CartographerEntityType> = setOf(FlooringAndGrassType.GrassType)
+        override val disallowedEntityTypes: Set<CartographerEntityType> = setOf(FloorType.GrassType)
     }
 }

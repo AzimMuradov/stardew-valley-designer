@@ -18,3 +18,41 @@ package io.svapi.editor.impl.entity
 
 
 sealed interface CartographerEntityType
+
+
+sealed interface FloorType : CartographerEntityType {
+
+    object DecorType : FloorType
+
+    object GrassType : FloorType
+}
+
+
+sealed interface ObjectType : CartographerEntityType {
+
+    object EquipmentType : ObjectType
+
+    sealed interface FurnitureType : ObjectType {
+
+        object BedType : FurnitureType
+
+        object FurnitureThatCanBePlacedOutsideType : FurnitureType
+
+        object FurnitureThatCannotBePlacedOutsideType : FurnitureType
+    }
+}
+
+
+object CropType : CartographerEntityType
+
+
+sealed interface BigEntityType : CartographerEntityType {
+
+    object BuildingType : BigEntityType
+
+    object TreeType : BigEntityType
+
+    object FruitTreeType : BigEntityType
+
+    object TerrainEntityType : BigEntityType
+}

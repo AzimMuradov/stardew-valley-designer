@@ -19,9 +19,9 @@ package io.svapi.editor.impl.layout
 import io.svapi.editor.Rect
 import io.svapi.editor.RectMap
 import io.svapi.editor.impl.entity.BigEntityType
-import io.svapi.editor.impl.entity.CropsType
-import io.svapi.editor.impl.entity.FlooringAndGrassType
-import io.svapi.editor.impl.entity.ObjectLikeType
+import io.svapi.editor.impl.entity.CropType
+import io.svapi.editor.impl.entity.FloorType
+import io.svapi.editor.impl.entity.ObjectType
 import io.svapi.editor.impl.layout.layouts.BigShed
 import io.svapi.editor.impl.layout.layouts.Shed
 import io.svapi.editor.impl.rectmap.rectMapOf
@@ -30,16 +30,16 @@ import io.svapi.editor.impl.rectmap.rectMapOf
 data class CartographerLayout(
     val type: CartographerLayoutType,
     val size: Rect,
-    val rulesForFlooringAndGrassLayer: RectMap<Set<FlooringAndGrassType>?> = rectMapOf(size),
-    val rulesForObjectLikeLayer: RectMap<Set<ObjectLikeType>?> = rectMapOf(size),
-    val rulesForCropsLayer: RectMap<Set<CropsType>?> = rectMapOf(size),
+    val rulesForFlooringLayer: RectMap<Set<FloorType>?> = rectMapOf(size),
+    val rulesForObjectsLayer: RectMap<Set<ObjectType>?> = rectMapOf(size),
+    val rulesForCropsLayer: RectMap<Set<CropType>?> = rectMapOf(size),
     val rulesForBigEntitiesLayer: RectMap<Set<BigEntityType>?> = rectMapOf(size),
 ) {
 
     init {
         val listOfRules = listOf(
-            rulesForFlooringAndGrassLayer,
-            rulesForObjectLikeLayer,
+            rulesForFlooringLayer,
+            rulesForObjectsLayer,
             rulesForCropsLayer,
             rulesForBigEntitiesLayer,
         )

@@ -16,8 +16,133 @@
 
 package io.svapi.editor.impl.entity
 
+import io.svapi.editor.impl.entity.FloorType.DecorType
+import io.svapi.editor.impl.entity.FloorType.GrassType
+import io.svapi.editor.impl.entity.ObjectType.EquipmentType
+
 
 sealed interface CartographerEntityId<out EType : CartographerEntityType> {
 
     val type: EType
+}
+
+
+enum class Decor : CartographerEntityId<DecorType> {
+    WoodFloor,
+    RusticPlankFloor,
+    StrawFloor,
+    WeatheredFloor,
+    CrystalFloor,
+    StoneFloor,
+    StoneWalkwayFloor,
+    BrickFloor,
+
+    WoodPath,
+    GravelPath,
+    CobblestonePath,
+    SteppingStonePath,
+    CrystalPath;
+
+    override val type: DecorType = DecorType
+}
+
+
+object Grass : CartographerEntityId<GrassType> {
+
+    override val type: GrassType = GrassType
+}
+
+
+enum class Equipment : CartographerEntityId<EquipmentType> {
+
+    // Fences
+    Gate,
+    WoodFence,
+    StoneFence,
+    IronFence,
+    HardwoodFence,
+
+    // Sprinklers
+    Sprinkler,
+    QualitySprinkler,
+    IridiumSprinkler,
+
+    // Artisan Equipment
+    MayonnaiseMachine,
+    BeeHouse,
+    PreservesJar,
+    CheesePress,
+    Loom,
+    Keg,
+    OilMaker,
+    Cask,
+
+    // CrabPot,
+
+    // Lighting
+    Torch,
+    Campfire,
+    WoodenBrazier,
+    StoneBrazier,
+    GoldBrazier,
+    CarvedBrazier,
+    StumpBrazier,
+    BarrelBrazier,
+    SkullBrazier,
+    MarbleBrazier,
+    WoodLampPost,
+    IronLampPost,
+    JackOLantern,
+
+    // Refining Equipment
+    CharcoalKiln,
+    Crystalarium,
+    Furnace,
+    LightningRod,
+    SolarPanel,
+    RecyclingMachine,
+    SeedMaker,
+    SlimeIncubator,
+    OstrichIncubator,
+    SlimeEggPress,
+
+    // Tapper,
+    // HeavyTapper,
+
+    WormBin,
+    BoneMill,
+    GeodeCrusher,
+
+    // Furniture
+    TubOFlowers,
+    WickedStatue,
+    FluteBlock,
+    DrumBlock,
+
+    // Storage Equipment
+    Chest,
+    StoneChest,
+    JunimoChest,
+
+    // Signs
+    WoodSign,
+    StoneSign,
+    DarkSign,
+
+    // Misc
+    GardenPot,
+    Scarecrow,
+    DeluxeScarecrow,
+    MiniJukebox,
+    MiniObelisk,
+    FarmComputer,
+    Hopper,
+
+    // Other Tools
+    Heater,
+    AutoGrabber,
+    AutoPetter,
+    ;
+
+    override val type: EquipmentType = EquipmentType
 }

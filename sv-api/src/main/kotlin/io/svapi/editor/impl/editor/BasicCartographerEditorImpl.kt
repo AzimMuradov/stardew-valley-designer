@@ -22,8 +22,6 @@ import io.svapi.editor.Coordinate
 import io.svapi.editor.impl.editor.CartographerEditorBehaviour.Companion.rewriter
 import io.svapi.editor.impl.editor.CartographerEditorBehaviour.OnConflict
 import io.svapi.editor.impl.entity.*
-import io.svapi.editor.impl.entity.FlooringAndGrassType.GrassType
-import io.svapi.editor.impl.entity.ObjectLikeType.ObjectType.GrassHatingObjectType
 import io.svapi.editor.impl.layer.CartographerLayer
 import io.svapi.editor.impl.layer.MutableCartographerLayer
 import io.svapi.editor.impl.layer.mutableLayerOf
@@ -44,22 +42,22 @@ private class BasicCartographerEditorImpl(layout: CartographerLayout) : BasicCar
     }
 
 
-    private val _flooringAndGrassLayer = mutableLayerOf(layout.rulesForFlooringAndGrassLayer)
-    override val flooringAndGrassLayer: CartographerLayer<FlooringAndGrassType> = _flooringAndGrassLayer
+    private val _flooringLayer = mutableLayerOf(layout.rulesForFlooringLayer)
+    override val flooringLayer: CartographerLayer<FloorType> = _flooringLayer
 
-    private val _objectLikeLayer = mutableLayerOf(layout.rulesForObjectLikeLayer)
-    override val objectLikeLayer: CartographerLayer<ObjectLikeType> = _objectLikeLayer
+    private val _objectsLayer = mutableLayerOf(layout.rulesForObjectsLayer)
+    override val objectsLayer: CartographerLayer<ObjectType> = _objectsLayer
 
     private val _cropsLayer = mutableLayerOf(layout.rulesForCropsLayer)
-    override val cropsLayer: CartographerLayer<CropsType> = _cropsLayer
+    override val cropsLayer: CartographerLayer<CropType> = _cropsLayer
 
     private val _bigEntitiesLayer = mutableLayerOf(layout.rulesForBigEntitiesLayer)
     override val bigEntitiesLayer: CartographerLayer<BigEntityType> = _bigEntitiesLayer
 
 
     private val layers: Sequence<MutableCartographerLayer<*>> = sequenceOf(
-        _flooringAndGrassLayer,
-        _objectLikeLayer,
+        _flooringLayer,
+        _objectsLayer,
         _cropsLayer,
         _bigEntitiesLayer,
     )
@@ -71,9 +69,9 @@ private class BasicCartographerEditorImpl(layout: CartographerLayout) : BasicCar
 
     override fun get(type: CartographerEntityType, key: Coordinate): CartographerEntity<*>? =
         when (type) {
-            is FlooringAndGrassType -> _flooringAndGrassLayer[key]
-            is ObjectLikeType -> _objectLikeLayer[key]
-            is CropsType -> _cropsLayer[key]
+            is FloorType -> _flooringLayer[key]
+            is ObjectType -> _objectsLayer[key]
+            CropType -> _cropsLayer[key]
             is BigEntityType -> _bigEntitiesLayer[key]
         }
 
@@ -82,26 +80,18 @@ private class BasicCartographerEditorImpl(layout: CartographerLayout) : BasicCar
 
     override fun put(key: Coordinate, value: CartographerEntity<*>) = withChecks(key, value, onFail = {}) {
         when (value.id.type) {
-            is FlooringAndGrassType -> {
-                _flooringAndGrassLayer[key] = value as CartographerEntity<FlooringAndGrassType>
-            }
-            is ObjectLikeType -> {
-                _objectLikeLayer[key] = value as CartographerEntity<ObjectLikeType>
-            }
-            is CropsType -> {
-                _cropsLayer[key] = value as CartographerEntity<CropsType>
-            }
-            is BigEntityType -> {
-                _bigEntitiesLayer[key] = value as CartographerEntity<BigEntityType>
-            }
+            is FloorType -> _flooringLayer[key] = value as CartographerEntity<FloorType>
+            is ObjectType -> _objectsLayer[key] = value as CartographerEntity<ObjectType>
+            CropType -> _cropsLayer[key] = value as CartographerEntity<CropType>
+            is BigEntityType -> _bigEntitiesLayer[key] = value as CartographerEntity<BigEntityType>
         }
     }
 
     override fun remove(type: CartographerEntityType, key: Coordinate) {
         when (type) {
-            is FlooringAndGrassType -> _flooringAndGrassLayer.remove(key)
-            is ObjectLikeType -> _objectLikeLayer.remove(key)
-            is CropsType -> _cropsLayer.remove(key)
+            is FloorType -> _flooringLayer.remove(key)
+            is ObjectType -> _objectsLayer.remove(key)
+            CropType -> _cropsLayer.remove(key)
             is BigEntityType -> _bigEntitiesLayer.remove(key)
         }
     }
@@ -120,9 +110,9 @@ private class BasicCartographerEditorImpl(layout: CartographerLayout) : BasicCar
 
     override fun removeAll(type: CartographerEntityType, keys: Iterable<Coordinate>) {
         when (type) {
-            is FlooringAndGrassType -> _flooringAndGrassLayer.removeAll(keys)
-            is ObjectLikeType -> _objectLikeLayer.removeAll(keys)
-            is CropsType -> _cropsLayer.removeAll(keys)
+            is FloorType -> _flooringLayer.removeAll(keys)
+            is ObjectType -> _objectsLayer.removeAll(keys)
+            CropType -> _cropsLayer.removeAll(keys)
             is BigEntityType -> _bigEntitiesLayer.removeAll(keys)
         }
     }
@@ -136,9 +126,9 @@ private class BasicCartographerEditorImpl(layout: CartographerLayout) : BasicCar
 
     override fun clear(type: CartographerEntityType) {
         when (type) {
-            is FlooringAndGrassType -> _flooringAndGrassLayer.clear()
-            is ObjectLikeType -> _objectLikeLayer.clear()
-            is CropsType -> _cropsLayer.clear()
+            is FloorType -> _flooringLayer.clear()
+            is ObjectType -> _objectsLayer.clear()
+            CropType -> _cropsLayer.clear()
             is BigEntityType -> _bigEntitiesLayer.clear()
         }
     }
@@ -169,38 +159,14 @@ private class BasicCartographerEditorImpl(layout: CartographerLayout) : BasicCar
 
         when (behaviour.onConflict) {
             OnConflict.SKIP -> {
-                if (
-                    if (type is ObjectLikeType) {
-                        type == GrassHatingObjectType && _flooringAndGrassLayer[key]?.id?.type == GrassType
-                    } else {
-                        key in _flooringAndGrassLayer.keys
-                    }
-                ) return onFail()
-                if (
-                    if (type is FlooringAndGrassType) {
-                        type == GrassType && _objectLikeLayer[key]?.id?.type == GrassHatingObjectType
-                    } else {
-                        key in _objectLikeLayer.keys
-                    }
-                ) return onFail()
+                if (type !is ObjectType && key in _flooringLayer.keys) return onFail()
+                if (type !is FloorType && key in _objectsLayer.keys) return onFail()
                 if (key in _cropsLayer.keys) return onFail()
                 if (key in _bigEntitiesLayer.keys) return onFail()
             }
             OnConflict.OVERWRITE -> {
-                if (
-                    if (type is ObjectLikeType) {
-                        type == GrassHatingObjectType && _flooringAndGrassLayer[key]?.id?.type == GrassType
-                    } else {
-                        true
-                    }
-                ) _flooringAndGrassLayer.remove(key)
-                if (
-                    if (type is FlooringAndGrassType) {
-                        type == GrassType && _objectLikeLayer[key]?.id?.type == GrassHatingObjectType
-                    } else {
-                        true
-                    }
-                ) _objectLikeLayer.remove(key)
+                if (type !is ObjectType) _flooringLayer.remove(key)
+                if (type !is FloorType) _objectsLayer.remove(key)
                 _cropsLayer.remove(key)
                 _bigEntitiesLayer.remove(key)
             }
