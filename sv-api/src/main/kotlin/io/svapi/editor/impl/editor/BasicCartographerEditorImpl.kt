@@ -16,11 +16,11 @@
 
 @file:Suppress("UNCHECKED_CAST")
 
-package io.svapi.editor.impl
+package io.svapi.editor.impl.editor
 
 import io.svapi.editor.Coordinate
-import io.svapi.editor.impl.CartographerEditorBehaviour.Companion.rewriter
-import io.svapi.editor.impl.CartographerEditorBehaviour.OnConflict
+import io.svapi.editor.impl.editor.CartographerEditorBehaviour.Companion.rewriter
+import io.svapi.editor.impl.editor.CartographerEditorBehaviour.OnConflict
 import io.svapi.editor.impl.entity.*
 import io.svapi.editor.impl.entity.FlooringAndGrassType.GrassType
 import io.svapi.editor.impl.entity.ObjectLikeType.ObjectType.GrassHatingObjectType
@@ -32,9 +32,12 @@ import io.svapi.editor.set
 import kotlin.properties.Delegates.observable
 
 
-class CartographerEditor(layout: CartographerLayout) {
+fun basicCartographerEditor(layout: CartographerLayout): BasicCartographerEditor = BasicCartographerEditorImpl(layout)
 
-    var behaviour: CartographerEditorBehaviour by observable(initialValue = rewriter) { _, old, new ->
+
+private class BasicCartographerEditorImpl(layout: CartographerLayout) : BasicCartographerEditor {
+
+    override var behaviour: CartographerEditorBehaviour by observable(initialValue = rewriter) { _, old, new ->
         if (old != new) {
             updateLayersBehaviour()
         }
@@ -42,16 +45,16 @@ class CartographerEditor(layout: CartographerLayout) {
 
 
     private val _flooringAndGrassLayer = mutableLayerOf(layout.rulesForFlooringAndGrassLayer)
-    val flooringAndGrassLayer: CartographerLayer<FlooringAndGrassType> = _flooringAndGrassLayer
+    override val flooringAndGrassLayer: CartographerLayer<FlooringAndGrassType> = _flooringAndGrassLayer
 
     private val _objectLikeLayer = mutableLayerOf(layout.rulesForObjectLikeLayer)
-    val objectLikeLayer: CartographerLayer<ObjectLikeType> = _objectLikeLayer
+    override val objectLikeLayer: CartographerLayer<ObjectLikeType> = _objectLikeLayer
 
     private val _cropsLayer = mutableLayerOf(layout.rulesForCropsLayer)
-    val cropsLayer: CartographerLayer<CropsType> = _cropsLayer
+    override val cropsLayer: CartographerLayer<CropsType> = _cropsLayer
 
     private val _bigEntitiesLayer = mutableLayerOf(layout.rulesForBigEntitiesLayer)
-    val bigEntitiesLayer: CartographerLayer<BigEntityType> = _bigEntitiesLayer
+    override val bigEntitiesLayer: CartographerLayer<BigEntityType> = _bigEntitiesLayer
 
 
     private val layers: Sequence<MutableCartographerLayer<*>> = sequenceOf(
@@ -66,7 +69,7 @@ class CartographerEditor(layout: CartographerLayout) {
     }
 
 
-    fun get(type: CartographerEntityType, key: Coordinate): CartographerEntity<*>? =
+    override fun get(type: CartographerEntityType, key: Coordinate): CartographerEntity<*>? =
         when (type) {
             is FlooringAndGrassType -> _flooringAndGrassLayer[key]
             is ObjectLikeType -> _objectLikeLayer[key]
@@ -74,10 +77,10 @@ class CartographerEditor(layout: CartographerLayout) {
             is BigEntityType -> _bigEntitiesLayer[key]
         }
 
-    fun get(key: Coordinate): CartographerEntity<*>? =
+    override fun get(key: Coordinate): CartographerEntity<*>? =
         layers.firstNotNullOfOrNull { it[key] }
 
-    fun put(key: Coordinate, value: CartographerEntity<*>) = withChecks(key, value, onFail = {}) {
+    override fun put(key: Coordinate, value: CartographerEntity<*>) = withChecks(key, value, onFail = {}) {
         when (value.id.type) {
             is FlooringAndGrassType -> {
                 _flooringAndGrassLayer[key] = value as CartographerEntity<FlooringAndGrassType>
@@ -94,7 +97,7 @@ class CartographerEditor(layout: CartographerLayout) {
         }
     }
 
-    fun remove(type: CartographerEntityType, key: Coordinate) {
+    override fun remove(type: CartographerEntityType, key: Coordinate) {
         when (type) {
             is FlooringAndGrassType -> _flooringAndGrassLayer.remove(key)
             is ObjectLikeType -> _objectLikeLayer.remove(key)
@@ -103,19 +106,19 @@ class CartographerEditor(layout: CartographerLayout) {
         }
     }
 
-    fun remove(key: Coordinate) {
+    override fun remove(key: Coordinate) {
         for (layer in layers) {
             layer.remove(key)
         }
     }
 
-    fun putAll(from: Map<Coordinate, CartographerEntity<*>>) {
+    override fun putAll(from: Map<Coordinate, CartographerEntity<*>>) {
         for ((k, v) in from) {
             put(k, v)
         }
     }
 
-    fun removeAll(type: CartographerEntityType, keys: Iterable<Coordinate>) {
+    override fun removeAll(type: CartographerEntityType, keys: Iterable<Coordinate>) {
         when (type) {
             is FlooringAndGrassType -> _flooringAndGrassLayer.removeAll(keys)
             is ObjectLikeType -> _objectLikeLayer.removeAll(keys)
@@ -124,14 +127,14 @@ class CartographerEditor(layout: CartographerLayout) {
         }
     }
 
-    fun removeAll(keys: Iterable<Coordinate>) {
+    override fun removeAll(keys: Iterable<Coordinate>) {
         for (layer in layers) {
             layer.removeAll(keys)
         }
     }
 
 
-    fun clear(type: CartographerEntityType) {
+    override fun clear(type: CartographerEntityType) {
         when (type) {
             is FlooringAndGrassType -> _flooringAndGrassLayer.clear()
             is ObjectLikeType -> _objectLikeLayer.clear()
@@ -140,7 +143,7 @@ class CartographerEditor(layout: CartographerLayout) {
         }
     }
 
-    fun clear() {
+    override fun clear() {
         for (layer in layers) {
             layer.clear()
         }

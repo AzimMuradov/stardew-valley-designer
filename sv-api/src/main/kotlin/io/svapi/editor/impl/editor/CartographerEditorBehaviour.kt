@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package io.svapi.editor.impl
+package io.svapi.editor.impl.editor
 
-import io.svapi.editor.impl.CartographerEditorBehaviour.OnConflict
+import io.svapi.editor.impl.editor.CartographerEditorBehaviour.OnConflict
 import io.svapi.editor.impl.layer.CartographerLayerBehaviour.OnInternalConflict
 
 
