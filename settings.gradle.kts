@@ -7,3 +7,6 @@ pluginManagement {
 
 include(":app")
 include(":sv-api")
+
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

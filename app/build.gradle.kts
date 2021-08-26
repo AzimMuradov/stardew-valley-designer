@@ -1,14 +1,17 @@
+@file:Suppress("SuspiciousCollectionReassignment")
+
 import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+
 plugins {
-    kotlin("jvm") version V.P_KOTLIN
+    kotlin("jvm") version V.P_KOTLIN_FOR_COMPOSE
     id("org.jetbrains.compose") version V.P_COMPOSE
 }
 
-group = "me.azimmuradov"
-version = "0.0.0"
+group = SVC.GROUP
+version = SVC.VERSION
 
 repositories {
     mavenCentral()
@@ -17,15 +20,20 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin(module = "stdlib-jdk8", version = V.P_KOTLIN_FOR_COMPOSE))
 
     implementation(compose.desktop.currentOs)
 
     implementation("com.arkivanov.decompose:decompose:${V.DECOMPOSE}")
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains:${V.DECOMPOSE}")
 
-    testImplementation(kotlin("test"))
+
+    implementation(projects.svApi)
+
+
+    // testImplementation(kotlin(module = "test", version = V.P_KOTLIN_FOR_COMPOSE))
 }
+
 
 tasks.test {
     useJUnitPlatform()
@@ -33,18 +41,29 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        jvmTarget = "16"
-        freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
+        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        jvmTarget = V.JVM
     }
 }
 
 compose.desktop {
     application {
         mainClass = "me.azimmuradov.svc.MainKt"
+        // jvmArgs += listOf("-Xmx2G")
+        // args += listOf("-customArgument")
+
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "stardew-valley-cartographer"
-            packageVersion = "1.0.0"
+            packageName = SVC.NAME
+            packageVersion = SVC.VERSION
+            description = SVC.DESCRIPTION
+            copyright = SVC.COPYRIGHT
+            // vendor = ""
+
+            targetFormats(
+                TargetFormat.Deb, TargetFormat.Rpm,
+                TargetFormat.Exe, TargetFormat.Msi,
+                /*TargetFormat.Dmg, TargetFormat.Pkg,*/
+            )
         }
     }
 }

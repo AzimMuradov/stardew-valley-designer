@@ -2,6 +2,7 @@
 
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+
 plugins {
     kotlin("jvm") version V.P_KOTLIN
 
@@ -13,10 +14,12 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8", V.P_KOTLIN))
+    implementation(kotlin(module = "stdlib-jdk8", version = V.P_KOTLIN))
+
 
     // For XML
-    implementation(kotlin("reflect", V.P_KOTLIN))
+
+    implementation(kotlin(module = "reflect", version = V.P_KOTLIN))
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${V.JACKSON}")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${V.JACKSON}")
 }
@@ -26,6 +29,6 @@ tasks.withType<KotlinCompile> {
     kotlinOptions {
         languageVersion = "1.6"
         freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
-        jvmTarget = "16"
+        jvmTarget = V.JVM
     }
 }
