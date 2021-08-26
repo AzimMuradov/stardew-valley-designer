@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
 plugins {
-    kotlin("jvm") version V.P_KOTLIN_FOR_COMPOSE
+    kotlin("jvm")
     id("org.jetbrains.compose") version V.P_COMPOSE
 }
 
@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin(module = "stdlib-jdk8", version = V.P_KOTLIN_FOR_COMPOSE))
+    implementation(kotlin(module = "stdlib-jdk8", version = V.P_KOTLIN))
 
     implementation(compose.desktop.currentOs)
 
@@ -31,13 +31,13 @@ dependencies {
     implementation(projects.svApi)
 
 
-    // testImplementation(kotlin(module = "test", version = V.P_KOTLIN_FOR_COMPOSE))
+    // testImplementation(kotlin(module = "test", version = V.P_KOTLIN))
 }
 
 
-tasks.test {
-    useJUnitPlatform()
-}
+// tasks.test {
+//     useJUnitPlatform()
+// }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
