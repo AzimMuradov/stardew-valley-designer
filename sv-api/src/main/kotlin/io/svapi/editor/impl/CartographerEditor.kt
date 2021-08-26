@@ -66,7 +66,7 @@ class CartographerEditor(layout: CartographerLayout) {
     }
 
 
-    fun get(key: Coordinate, type: CartographerEntityType): CartographerEntity<*>? =
+    fun get(type: CartographerEntityType, key: Coordinate): CartographerEntity<*>? =
         when (type) {
             is FlooringAndGrassType -> _flooringAndGrassLayer[key]
             is ObjectLikeType -> _objectLikeLayer[key]
@@ -94,7 +94,7 @@ class CartographerEditor(layout: CartographerLayout) {
         }
     }
 
-    fun remove(key: Coordinate, type: CartographerEntityType) {
+    fun remove(type: CartographerEntityType, key: Coordinate) {
         when (type) {
             is FlooringAndGrassType -> _flooringAndGrassLayer.remove(key)
             is ObjectLikeType -> _objectLikeLayer.remove(key)

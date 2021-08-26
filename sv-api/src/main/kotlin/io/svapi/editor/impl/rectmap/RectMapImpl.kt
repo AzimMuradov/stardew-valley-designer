@@ -42,7 +42,7 @@ private class RectMapImpl<out T>(
 ) : RectMap<T>, Map<Coordinate, T> by map {
 
     init {
-        actOnSuccessOf(map.keys in rect, action = {})
+        withChecks(map.keys in rect, onSuccess = {})
     }
 }
 
@@ -66,9 +66,9 @@ private class RectMapImpl<out T>(
 // }
 
 
-private inline fun <T> actOnSuccessOf(check: Boolean, action: () -> T): T {
-    require(check) { "Coordinate is out of bounds" }
-    return action()
+private inline fun <T> withChecks(checkCondition: Boolean, onSuccess: () -> T): T {
+    require(checkCondition) { "Coordinate is out of bounds" }
+    return onSuccess()
 }
 
 private operator fun Rect.contains(coordinates: Iterable<Coordinate>): Boolean {
