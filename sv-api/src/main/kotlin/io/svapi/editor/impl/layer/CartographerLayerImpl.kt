@@ -40,7 +40,7 @@ private class MutableCartographerLayerImpl<EType : CartographerEntityType>(
 
     override val rect: Rect = disallowedEntityTypes.rect
 
-    override var behaviour: CartographerLayerBehaviour = CartographerLayerBehaviour.skipper
+    override var behaviour: CartographerLayerBehaviour = CartographerLayerBehaviour.rewriter
 
 
     private val map: MutableMap<Coordinate, CartographerEntity<EType>> = mutableMapOf()

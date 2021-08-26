@@ -37,3 +37,8 @@ interface MutableEditorOperations<E : Entity<*>> : EditorOperations<E> {
 
     fun clear()
 }
+
+
+operator fun <E : Entity<*>> MutableEditorOperations<E>.set(key: Coordinate, value: E) {
+    put(key, value)
+}
