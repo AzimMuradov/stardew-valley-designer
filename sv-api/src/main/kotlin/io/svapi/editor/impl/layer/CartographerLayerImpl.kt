@@ -53,45 +53,31 @@ private class MutableCartographerLayerImpl<EType : CartographerEntityType>(
     override val values: Collection<CartographerEntity<EType>> get() = map.values
     override val entries: Set<Map.Entry<Coordinate, CartographerEntity<EType>>> get() = map.entries
 
-    override fun put(key: Coordinate, value: CartographerEntity<EType>): CartographerEntity<EType>? {
-        TODO("Not yet implemented")
-        //     checkOutOfBounds(key, value)
-        //     checkDisallowed(key, value)
-        //     checkInternallyConflict(key, value)
-        //
-        //     putUnsafe(key, value)
-    }
+    override fun put(key: Coordinate, value: CartographerEntity<EType>): CartographerEntity<EType>? =
+        withChecks(key, value, onFail = { null }) {
+            putUnsafe(key, value)
+        }
 
-    override fun remove(key: Coordinate): CartographerEntity<EType>? {
-        TODO("Not yet implemented")
-        //     renderedMap[key]?.let { eh ->
-        //         map.remove(eh.source)
-        //         renderedMap.removeAll(eh.coordinates)
-        //     }
-    }
+    override fun remove(key: Coordinate): CartographerEntity<EType>? =
+        generatedMap[key]?.apply {
+            map.remove(source)
+            generatedMap.removeAll(coordinates)
+        }?.entity
 
     override fun putAll(from: Map<out Coordinate, CartographerEntity<EType>>) {
-        TODO("Not yet implemented")
-        //     for ((k, v) in from) {
-        //         checkOutOfBounds(k, v)
-        //         checkDisallowed(k, v)
-        //     }
-        //     for ((k, v) in from) {
-        //         checkInternallyConflict(k, v)
-        //     }
-        //
-        //     for ((k, v) in from) {
-        //         putUnsafe(k, v)
-        //     }
+        for ((key, value) in from) {
+            withChecks(key, value, onFail = {}) {
+                putUnsafe(key, value)
+            }
+        }
     }
 
     override fun removeAll(keys: Iterable<Coordinate>) {
-        TODO("Not yet implemented")
-        //     val setOfEh = keys.mapNotNull { renderedMap[it] }.toSet()
-        //     for (eh in setOfEh) {
-        //         map.remove(eh.source)
-        //         renderedMap.removeAll(eh.coordinates)
-        //     }
+        val setOfEh = keys.mapNotNull(generatedMap::get).toSet()
+        for ((_, source, coordinates) in setOfEh) {
+            map.remove(source)
+            generatedMap.removeAll(coordinates)
+        }
     }
 
     override fun clear() {
@@ -102,56 +88,58 @@ private class MutableCartographerLayerImpl<EType : CartographerEntityType>(
 
     // Utilities
 
-    private fun putUnsafe(key: Coordinate, value: CartographerEntity<EType>) {
-        map[key] = value
+    private fun putUnsafe(key: Coordinate, value: CartographerEntity<EType>): CartographerEntity<EType>? {
+        val retValue = map.put(key, value)
 
         val eh = CartographerEntityHolder(entity = value, source = key)
         generatedMap.putAll(eh.coordinates.associateWith { eh })
+
+        return retValue
     }
 
-
-    // Utilities for checking the invariant
-
-    private fun checkOutOfBounds(key: Coordinate, value: CartographerEntity<EType>) {
+    private inline fun <T> withChecks(
+        key: Coordinate, value: CartographerEntity<EType>,
+        onFail: () -> T,
+        onSuccess: () -> T,
+    ): T {
         val (min, max) = run {
             val (x, y) = key
             val (w, h) = value.size
 
             key to xy(x + w, y + h)
         }
+        val coordinates = generateCoordinates(key, value.size)
+
+
+        // Check out of bounds
 
         if (!(min in rect && max in rect)) {
-            when (behaviour.onOutOfBounds) {
-                OnOutOfBounds.THROW_EXCEPTION -> throw IllegalStateException()
-                OnOutOfBounds.SKIP -> TODO()
+            return when (behaviour.onOutOfBounds) {
+                OnOutOfBounds.SKIP -> onFail()
             }
         }
-    }
 
-    private fun checkDisallowed(key: Coordinate, value: CartographerEntity<EType>) {
-        fun isDisallowed(c: Coordinate): Boolean =
-            disallowedEntityTypes[c]?.let { value.id.type in it } ?: true
+        // Check disallowed
 
-        if (generateCoordinates(key, value.size).none(::isDisallowed)) {
-            when (behaviour.onDisallowed) {
-                OnDisallowed.THROW_EXCEPTION -> throw IllegalStateException()
-                OnDisallowed.SKIP -> TODO()
+        if (coordinates.none { c -> disallowedEntityTypes[c]?.let { value.id.type in it } != false }) {
+            return when (behaviour.onDisallowed) {
+                OnDisallowed.SKIP -> onFail()
             }
         }
-    }
 
-    private fun checkInternallyConflict(key: Coordinate, value: CartographerEntity<EType>) {
-        val conflictingEh = generateCoordinates(key, value.size).mapNotNull { generatedMap[it] }.toSet()
+        // Check internal conflicts
 
-        if (conflictingEh.isNotEmpty()) {
-            when (behaviour.onInternalConflict) {
-                OnInternalConflict.THROW_EXCEPTION -> throw IllegalStateException()
-                OnInternalConflict.OVERWRITE -> for (eh in conflictingEh) {
-                    map.remove(eh.source)
-                    generatedMap.removeAll(eh.coordinates)
+        if (coordinates.any(generatedMap::contains)) {
+            return when (behaviour.onInternalConflict) {
+                OnInternalConflict.SKIP -> onFail()
+                OnInternalConflict.OVERWRITE -> {
+                    removeAll(coordinates)
+                    onSuccess()
                 }
-                OnInternalConflict.SKIP -> Unit
             }
         }
+
+
+        return onSuccess()
     }
 }

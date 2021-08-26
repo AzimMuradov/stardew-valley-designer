@@ -24,17 +24,17 @@ data class CartographerLayerBehaviour(
 ) {
 
     enum class OnOutOfBounds {
-        THROW_EXCEPTION,
+        // CANCEL,
         SKIP,
     }
 
     enum class OnDisallowed {
-        THROW_EXCEPTION,
+        // CANCEL,
         SKIP,
     }
 
     enum class OnInternalConflict {
-        THROW_EXCEPTION,
+        // CANCEL,
         SKIP,
         OVERWRITE,
     }
@@ -42,11 +42,11 @@ data class CartographerLayerBehaviour(
 
     companion object {
 
-        val thrower: CartographerLayerBehaviour = CartographerLayerBehaviour(
-            onOutOfBounds = OnOutOfBounds.THROW_EXCEPTION,
-            onDisallowed = OnDisallowed.THROW_EXCEPTION,
-            onInternalConflict = OnInternalConflict.THROW_EXCEPTION,
-        )
+        // val canceler: CartographerLayerBehaviour = CartographerLayerBehaviour(
+        //     onOutOfBounds = OnOutOfBounds.CANCEL,
+        //     onDisallowed = OnDisallowed.CANCEL,
+        //     onInternalConflict = OnInternalConflict.CANCEL,
+        // )
 
         val skipper: CartographerLayerBehaviour = CartographerLayerBehaviour(
             onOutOfBounds = OnOutOfBounds.SKIP,
