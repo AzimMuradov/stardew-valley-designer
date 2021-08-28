@@ -53,21 +53,29 @@ object Grass : CartographerEntityId<GrassType> {
 }
 
 
+// ObjectType
+
 enum class Equipment : CartographerEntityId<EquipmentType> {
 
     // Fences
+
     Gate,
     WoodFence,
     StoneFence,
     IronFence,
     HardwoodFence,
 
+
     // Sprinklers
+
     Sprinkler,
     QualitySprinkler,
     IridiumSprinkler,
+    IridiumSprinklerWithPressureNozzle,
+
 
     // Artisan Equipment
+
     MayonnaiseMachine,
     BeeHouse,
     PreservesJar,
@@ -77,9 +85,12 @@ enum class Equipment : CartographerEntityId<EquipmentType> {
     OilMaker,
     Cask,
 
-    // CrabPot,
+
+    // TODO (?) : CrabPot,
+
 
     // Lighting
+
     Torch,
     Campfire,
     WoodenBrazier,
@@ -94,7 +105,9 @@ enum class Equipment : CartographerEntityId<EquipmentType> {
     IronLampPost,
     JackOLantern,
 
+
     // Refining Equipment
+
     CharcoalKiln,
     Crystalarium,
     Furnace,
@@ -105,44 +118,104 @@ enum class Equipment : CartographerEntityId<EquipmentType> {
     SlimeIncubator,
     OstrichIncubator,
     SlimeEggPress,
-
-    // Tapper,
-    // HeavyTapper,
-
     WormBin,
     BoneMill,
     GeodeCrusher,
+    WoodChipper,
+
+
+    // TODO (?) : Tapper,
+    // TODO (?) : HeavyTapper,
+
 
     // Furniture
-    TubOFlowers,
+
+    BasicLog,
+    LogSection,
+    OrnamentalHayBale,
+    SignOfTheVessel,
     WickedStatue,
-    FluteBlock,
+    BigGreenCane,
+    BigRedCane,
+    GreenCanes,
+    RedCanes,
+    MixedCane,
+    LawnFlamingo,
+    PlushBunny,
+    SeasonalDecor,
+    TubOFlowers,
     DrumBlock,
+    FluteBlock,
+    GraveStone,
+    StoneCairn,
+    StoneFrog,
+    StoneJunimo,
+    StoneOwl,
+    StoneParrot,
+    SuitOfArmor,
+    Foroguemon,
+    HMTGF,
+    PinkyLemon,
+    SolidGoldLewis,
+    StatueOfEndlessFortune,
+    StatueOfPerfection,
+    StatueOfTruePerfection,
+    SodaMachine,
+    StardewHeroTrophy,
+    JunimoKartArcadeSystem,
+    PrairieKingArcadeSystem,
+    SingingStone,
+    SecretStoneOwl,
+    SecretStrangeCapsule,
+    SecretEmptyCapsule,
+
 
     // Storage Equipment
+
     Chest,
     StoneChest,
     JunimoChest,
 
+
     // Signs
+
     WoodSign,
     StoneSign,
     DarkSign,
 
+
     // Misc
+
     GardenPot,
     Scarecrow,
     DeluxeScarecrow,
+    Rarecrow1,
+    Rarecrow2,
+    Rarecrow3,
+    Rarecrow4,
+    Rarecrow5,
+    Rarecrow6,
+    Rarecrow7,
+    Rarecrow8,
     MiniJukebox,
     MiniObelisk,
     FarmComputer,
     Hopper,
+    Deconstructor,
+    CoffeeMaker,
+    Telephone,
+    SewingMachine,
+    Workbench,
+    MiniShippingBin,
+
 
     // Other Tools
+
     Heater,
     AutoGrabber,
     AutoPetter,
     ;
+
 
     override val type: EquipmentType = EquipmentType
 }
