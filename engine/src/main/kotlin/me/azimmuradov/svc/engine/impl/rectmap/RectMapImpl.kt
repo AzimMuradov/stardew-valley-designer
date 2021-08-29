@@ -86,7 +86,7 @@ private operator fun Rect.contains(coordinates: Iterable<Coordinate>): Boolean {
             maxY = maxOf(maxY, y)
         }
 
-        xy(minX, maxX) to xy(minY, maxY)
+        xy(minX, minY) to xy(maxX, maxY)
     }
 
     return contains(min) && contains(max)
