@@ -28,7 +28,7 @@ dependencies {
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains:${V.DECOMPOSE}")
 
 
-    implementation(projects.svApi)
+    implementation(projects.engine)
 
 
     // testImplementation(kotlin(module = "test", version = V.P_KOTLIN))

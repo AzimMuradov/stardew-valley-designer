@@ -11,12 +11,9 @@ object V {
     const val JVM: String = "16"
 
 
-    // For `app`
+    // Dependencies
 
     const val DECOMPOSE: String = "0.3.1"
-
-
-    // For `sv-api`
 
     const val JACKSON: String = "2.13.+"
 }
