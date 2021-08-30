@@ -16,9 +16,9 @@
 
 package me.azimmuradov.svc.engine.impl.entity
 
-import me.azimmuradov.svc.engine.impl.entity.FloorType.DecorType
-import me.azimmuradov.svc.engine.impl.entity.FloorType.GrassType
+import me.azimmuradov.svc.engine.impl.entity.EntityWithoutFloorType.BuildingType
 import me.azimmuradov.svc.engine.impl.entity.ObjectType.EquipmentType
+import me.azimmuradov.svc.engine.impl.entity.ObjectType.FurnitureType.*
 
 
 sealed interface CartographerEntityId<out EType : CartographerEntityType> {
@@ -27,7 +27,12 @@ sealed interface CartographerEntityId<out EType : CartographerEntityType> {
 }
 
 
-enum class Decor : CartographerEntityId<DecorType> {
+// FloorType
+
+enum class Floor : CartographerEntityId<FloorType> {
+
+    // Floors
+
     WoodFloor,
     RusticPlankFloor,
     StrawFloor,
@@ -37,19 +42,81 @@ enum class Decor : CartographerEntityId<DecorType> {
     StoneWalkwayFloor,
     BrickFloor,
 
+
+    // Paths
+
     WoodPath,
     GravelPath,
     CobblestonePath,
     SteppingStonePath,
-    CrystalPath;
+    CrystalPath,
 
-    override val type: DecorType = DecorType
+
+    // Grass
+
+    Grass,
+    ;
+
+
+    override val type: FloorType = FloorType
 }
 
 
-object Grass : CartographerEntityId<GrassType> {
+// FloorFurnitureType
 
-    override val type: GrassType = GrassType
+enum class FloorFurniture : CartographerEntityId<FloorFurnitureType> {
+
+    // Rugs
+
+    BambooMat,
+    BurlapRug,
+    WoodcutRug,
+    NauticalRug,
+    DarkRug,
+    RedRug,
+    LargeRedRug,
+    MonsterRug,
+    LightGreenRug,
+    BlossomRug,
+    LargeGreenRug,
+    OldWorldRug,
+    LargeCottageRug,
+    GreenCottageRug,
+    RedCottageRug,
+    MysticRug,
+    BoneRug,
+    SnowyRug,
+    PirateRug,
+    PatchworkRug,
+    FruitSaladRug,
+    OceanicRug,
+    IcyRug,
+    FunkyRug,
+    ModernRug,
+
+
+    // Floor Dividers
+
+    FloorDivider1R,
+    FloorDivider1L,
+    FloorDivider2R,
+    FloorDivider2L,
+    FloorDivider3R,
+    FloorDivider3L,
+    FloorDivider4R,
+    FloorDivider4L,
+    FloorDivider5R,
+    FloorDivider5L,
+    FloorDivider6R,
+    FloorDivider6L,
+    FloorDivider7R,
+    FloorDivider7L,
+    FloorDivider8R,
+    FloorDivider8L,
+    ;
+
+
+    override val type: FloorFurnitureType = FloorFurnitureType
 }
 
 
@@ -144,6 +211,12 @@ enum class Equipment : CartographerEntityId<EquipmentType> {
     PlushBunny,
     SeasonalDecor,
     TubOFlowers,
+    SeasonalPlant1,
+    SeasonalPlant2,
+    SeasonalPlant3,
+    SeasonalPlant4,
+    SeasonalPlant5,
+    SeasonalPlant6,
     DrumBlock,
     FluteBlock,
     GraveStone,
@@ -219,3 +292,321 @@ enum class Equipment : CartographerEntityId<EquipmentType> {
 
     override val type: EquipmentType = EquipmentType
 }
+
+enum class HouseFurniture : CartographerEntityId<HouseFurnitureType> {
+
+    // Beds
+
+    ChildBed,
+    SingleBed,
+    DoubleBed,
+    BirchDoubleBed,
+    DeluxeRedDoubleBed,
+    ExoticDoubleBed,
+    FisherDoubleBed,
+    ModernDoubleBed,
+    PirateDoubleBed,
+    StarryDoubleBed,
+    StrawberryDoubleBed,
+    TropicalBed,
+    TropicalDoubleBed,
+    WildDoubleBed,
+
+
+    // Others
+
+    MiniFridge, // TODO : Not a furniture
+    ;
+
+
+    override val type: HouseFurnitureType = HouseFurnitureType
+}
+
+enum class IndoorFurniture : CartographerEntityId<IndoorFurnitureType> {
+
+    // Couches & Armchairs
+
+    BlueCouch,
+    BrownCouch,
+    GreenCouch,
+    RedCouch,
+    YellowCouch,
+    DarkCouch,
+    WoodsyCouch,
+    WizardCouch,
+    LargeBrownCouch,
+    BlueArmchair,
+    BrownArmchair,
+    GreenArmchair,
+    RedArmchair,
+    YellowArmchair,
+
+
+    // Bookcases & Dressers
+
+    ArtistBookcase,
+    ModernBookcase,
+    LuxuryBookcase,
+    DarkBookcase,
+    BirchDresser,
+    OakDresser,
+    WalnutDresser,
+    MahoganyDresser,
+
+
+    // Fireplaces
+
+    BrickFireplace,
+    ElegantFireplace,
+    IridiumFireplace,
+    MonsterFireplace,
+    StoneFireplace,
+    StoveFireplace,
+
+
+    // Floor Lamps
+
+    CountryLamp,
+    ModernLamp,
+    ClassicLamp,
+    BoxLamp,
+    CandleLamp,
+    OrnateLamp,
+
+
+    // TVs
+
+    FloorTV,
+    BudgetTV,
+    PlasmaTV,
+    TropicalTV,
+
+
+    // Fish Tanks
+
+    SmallFishTank,
+    ModernFishTank,
+    LargeFishTank,
+    DeluxeFishTank,
+    AquaticSanctuary,
+
+
+    // Misc
+
+    ChinaCabinet,
+
+    // TODO : IndustrialPipe,
+    ;
+
+
+    override val type: IndoorFurnitureType = IndoorFurnitureType
+}
+
+enum class UniversalFurniture : CartographerEntityId<UniversalFurnitureType> {
+
+    // Chairs
+
+    OakChair,
+    WalnutChair,
+    BirchChair,
+    MahoganyChair,
+    RedDinerChair,
+    BlueDinerChair,
+    CountryChair,
+    BreakfastChair,
+    PinkOfficeChair,
+    PurpleOfficeChair,
+    GreenOfficeStool,
+    OrangeOfficeStool,
+    DarkThrone,
+    DiningChairYellow,
+    DiningChairRed,
+    GreenPlushSeat,
+    PinkPlushSeat,
+    WinterChair,
+    GroovyChair,
+    CuteChair,
+    StumpSeat,
+    MetalChair,
+    GreenStool,
+    BlueStool,
+    KingChair,
+    CrystalChair,
+    TropicalChair,
+
+
+    // Benches
+
+    BirchBench,
+    OakBench,
+    WalnutBench,
+    MahoganyBench,
+    ModernBench,
+
+
+    // Tables
+
+    OakTable,
+    OakTeaTable,
+    OakEndTable,
+    BirchTable,
+    BirchTeaTable,
+    BirchEndTable,
+    MahoganyTable,
+    MahoganyTeaTable,
+    MahoganyEndTable,
+    WalnutTable,
+    WalnutTeaTable,
+    WalnutEndTable,
+    ModernTable,
+    ModernTeaTable,
+    ModernEndTable,
+    PuzzleTable,
+    SunTable,
+    MoonTable,
+    LuxuryTable,
+    DivinerTable,
+    GrandmotherEndTable,
+    PubTable,
+    LuauTable,
+    DarkTable,
+    CandyTable,
+    WinterTable,
+    WinterEndTable,
+    NeolithicTable,
+    CoffeeTable,
+    StoneSlab,
+
+
+    // Long Tables
+
+    ModernDiningTable,
+    MahoganyDiningTable,
+    FestiveDiningTable,
+    WinterDiningTable,
+
+
+    // House Plants
+
+    HousePlant1,
+    HousePlant2,
+    HousePlant3,
+    HousePlant4,
+    HousePlant5,
+    HousePlant6,
+    HousePlant7,
+    HousePlant8,
+    HousePlant9,
+    HousePlant10,
+    HousePlant11,
+    HousePlant12,
+    HousePlant13,
+    HousePlant14,
+    HousePlant15,
+
+
+    // Freestanding Decorative Plants
+
+    DriedSunflowers,
+    BonsaiTree,
+    SmallPine,
+    TreeColumn,
+    SmallPlant,
+    TablePlant,
+    DeluxeTree,
+    ExoticTree,
+    IndoorPalm,
+    TopiaryTree,
+    ManicuredPine,
+    TreeOfTheWinterStar,
+    LongCactus,
+    LongPalm,
+
+
+    // Torches
+
+    JungleTorch,
+    PlainTorch,
+    StumpTorch,
+
+
+    // Misc
+
+    CeramicPillar,
+    GoldPillar,
+    TotemPole,
+    DecorativeBowl,
+    DecorativeLantern,
+    Globe,
+    ModelShip,
+    SmallCrystal,
+    FutanBear,
+    DecorativeTrashCan,
+
+
+    // Other Decorations
+
+    BearStatue,
+    ChickenStatue,
+    LgFutanBear,
+    ObsidianVase,
+    SkeletonStatue,
+    SlothSkeletonL,
+    SlothSkeletonM,
+    SlothSkeletonR,
+    StandingGeode,
+    ButterflyHutch,
+    LeahSculpture,
+    SamBoombox,
+    FutanRabbit,
+    SmallJunimoPlush1,
+    SmallJunimoPlush2,
+    SmallJunimoPlush3,
+    SmallJunimoPlush4,
+    GreenSerpentStatue,
+    PurpleSerpentStatue,
+    BoboStatue,
+    WumbusStatue,
+    JunimoPlush,
+    GourmandStatue,
+    IridiumKrobus,
+    SquirrelFigurine,
+
+
+    // Catalogues
+
+    Catalogue,
+    FurnitureCatalogue,
+    ;
+
+
+    override val type: UniversalFurnitureType = UniversalFurnitureType
+}
+
+
+// EntityWithoutFloorType
+
+enum class Building : CartographerEntityId<BuildingType> {
+
+    // TODO
+    ;
+
+
+    override val type: BuildingType = BuildingType
+}
+
+
+// TODO (?) : Supply Crate
+
+// TODO : WallFurniture
+// Wall Lamps & Windows
+// Decorative Hanging Plants
+// Paintings
+// Night Market Paintings
+// Movie Posters
+// Banners
+// Wall Hangings
+
+// TODO : Flooring [1-56]
+
+// TODO : Wallpaper [1-112]

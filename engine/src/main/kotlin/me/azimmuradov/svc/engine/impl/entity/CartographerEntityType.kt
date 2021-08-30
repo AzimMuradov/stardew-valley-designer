@@ -20,13 +20,9 @@ package me.azimmuradov.svc.engine.impl.entity
 sealed interface CartographerEntityType
 
 
-sealed interface FloorType : CartographerEntityType {
+object FloorType : CartographerEntityType
 
-    object DecorType : FloorType
-
-    object GrassType : FloorType
-}
-
+object FloorFurnitureType : CartographerEntityType
 
 sealed interface ObjectType : CartographerEntityType {
 
@@ -34,25 +30,32 @@ sealed interface ObjectType : CartographerEntityType {
 
     sealed interface FurnitureType : ObjectType {
 
-        object BedType : FurnitureType
+        object HouseFurnitureType : FurnitureType
 
-        object FurnitureThatCanBePlacedOutsideType : FurnitureType
+        object IndoorFurnitureType : FurnitureType
 
-        object FurnitureThatCannotBePlacedOutsideType : FurnitureType
+        object UniversalFurnitureType : FurnitureType
     }
 }
 
+sealed interface EntityWithoutFloorType : CartographerEntityType {
 
-object CropType : CartographerEntityType
+    object BuildingType : EntityWithoutFloorType
 
-
-sealed interface BigEntityType : CartographerEntityType {
-
-    object BuildingType : BigEntityType
-
-    object TreeType : BigEntityType
-
-    object FruitTreeType : BigEntityType
-
-    object TerrainEntityType : BigEntityType
+    // TODO
+    //
+    // object CropType : EntityWithoutFloorType
+    //
+    // object TreeType : EntityWithoutFloorType
+    //
+    // object FruitTreeType : EntityWithoutFloorType
+    //
+    // object TerrainEntityType : EntityWithoutFloorType // Bushes, Boulders, Rocks, Meteorites
 }
+
+
+// TODO : WallFurniture
+
+// TODO : Flooring
+
+// TODO : Wallpaper
