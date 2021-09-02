@@ -106,7 +106,7 @@ private class MutableCartographerLayerImpl<EType : CartographerEntityType>(
             val (x, y) = key
             val (w, h) = value.id.size
 
-            key to xy(x + w, y + h)
+            key to xy(x + w - 1, y + h - 1)
         }
         val coordinates = generateCoordinates(key, value.id.size)
 
@@ -121,7 +121,7 @@ private class MutableCartographerLayerImpl<EType : CartographerEntityType>(
 
         // Check disallowed
 
-        if (coordinates.none { c -> disallowedEntityTypes[c]?.let { value.id.type in it } != false }) {
+        if (coordinates.mapNotNull(disallowedEntityTypes::get).any { value.id.type in it }) {
             return when (behaviour.onDisallowed) {
                 OnDisallowed.SKIP -> onFail()
             }
