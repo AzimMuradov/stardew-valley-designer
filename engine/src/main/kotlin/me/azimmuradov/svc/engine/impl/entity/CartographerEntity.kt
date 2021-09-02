@@ -17,10 +17,9 @@
 package me.azimmuradov.svc.engine.impl.entity
 
 import me.azimmuradov.svc.engine.Entity
-import me.azimmuradov.svc.engine.Rect
+import me.azimmuradov.svc.engine.impl.entity.ids.CartographerEntityId
 
 
 data class CartographerEntity<out EType : CartographerEntityType>(
     override val id: CartographerEntityId<EType>,
-    override val size: Rect,
 ) : Entity<CartographerEntityId<EType>>

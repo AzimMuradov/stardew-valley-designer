@@ -104,11 +104,11 @@ private class MutableCartographerLayerImpl<EType : CartographerEntityType>(
     ): T {
         val (min, max) = run {
             val (x, y) = key
-            val (w, h) = value.size
+            val (w, h) = value.id.size
 
             key to xy(x + w, y + h)
         }
-        val coordinates = generateCoordinates(key, value.size)
+        val coordinates = generateCoordinates(key, value.id.size)
 
 
         // Check out of bounds

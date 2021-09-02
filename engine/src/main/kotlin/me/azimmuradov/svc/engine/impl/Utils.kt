@@ -23,6 +23,31 @@ import me.azimmuradov.svc.engine.xy
 
 // Internal utils
 
+object Rects {
+
+    val RECT_1x1: Rect = Rect(w = 1, h = 1)
+
+    val RECT_1x2: Rect = Rect(w = 1, h = 2)
+
+    val RECT_1x3: Rect = Rect(w = 1, h = 3)
+
+    val RECT_2x1: Rect = Rect(w = 2, h = 1)
+
+    val RECT_2x2: Rect = Rect(w = 2, h = 2)
+
+    val RECT_2x3: Rect = Rect(w = 2, h = 3)
+
+    val RECT_3x1: Rect = Rect(w = 3, h = 1)
+
+    val RECT_3x2: Rect = Rect(w = 3, h = 2)
+
+    val RECT_3x3: Rect = Rect(w = 3, h = 3)
+}
+
+
+data class Color(val r: UByte, val g: UByte, val b: UByte)
+
+
 internal operator fun Rect.contains(coordinate: Coordinate): Boolean = with(coordinate) {
     x in 0 until w && y in 0 until h
 }

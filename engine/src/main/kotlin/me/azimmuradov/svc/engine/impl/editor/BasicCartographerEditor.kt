@@ -26,9 +26,9 @@ interface BasicCartographerEditor {
     var behaviour: CartographerEditorBehaviour
 
     val flooringLayer: CartographerLayer<FloorType>
+    val floorFurnitureLayer: CartographerLayer<FloorFurnitureType>
     val objectsLayer: CartographerLayer<ObjectType>
-    val cropsLayer: CartographerLayer<CropType>
-    val bigEntitiesLayer: CartographerLayer<BigEntityType>
+    val standaloneEntitiesLayer: CartographerLayer<EntityWithoutFloorType>
 
 
     fun get(type: CartographerEntityType, key: Coordinate): CartographerEntity<*>?

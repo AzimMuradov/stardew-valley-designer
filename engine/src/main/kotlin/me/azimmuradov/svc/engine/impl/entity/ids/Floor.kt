@@ -1,0 +1,56 @@
+/*
+ * Copyright 2021-2021 Azim Muradov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package me.azimmuradov.svc.engine.impl.entity.ids
+
+import me.azimmuradov.svc.engine.Rect
+import me.azimmuradov.svc.engine.impl.Rects.RECT_1x1
+import me.azimmuradov.svc.engine.impl.entity.FloorType
+
+
+enum class Floor : CartographerEntityId<FloorType> {
+
+    // Floors
+
+    WoodFloor,
+    RusticPlankFloor,
+    StrawFloor,
+    WeatheredFloor,
+    CrystalFloor,
+    StoneFloor,
+    StoneWalkwayFloor,
+    BrickFloor,
+
+
+    // Paths
+
+    WoodPath,
+    GravelPath,
+    CobblestonePath,
+    SteppingStonePath,
+    CrystalPath,
+
+
+    // Grass
+
+    Grass,
+    ;
+
+
+    override val type: FloorType = FloorType
+
+    override val size: Rect = RECT_1x1
+}

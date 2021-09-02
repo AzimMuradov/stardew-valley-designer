@@ -38,6 +38,7 @@ sealed interface ObjectType : CartographerEntityType {
     }
 }
 
+
 sealed interface EntityWithoutFloorType : CartographerEntityType {
 
     object BuildingType : EntityWithoutFloorType

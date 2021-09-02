@@ -22,6 +22,7 @@ import me.azimmuradov.svc.engine.Coordinate
 import me.azimmuradov.svc.engine.impl.editor.CartographerEditorBehaviour.Companion.rewriter
 import me.azimmuradov.svc.engine.impl.editor.CartographerEditorBehaviour.OnConflict
 import me.azimmuradov.svc.engine.impl.entity.*
+import me.azimmuradov.svc.engine.impl.generateCoordinates
 import me.azimmuradov.svc.engine.impl.layer.CartographerLayer
 import me.azimmuradov.svc.engine.impl.layer.MutableCartographerLayer
 import me.azimmuradov.svc.engine.impl.layer.mutableLayerOf
@@ -45,21 +46,21 @@ private class BasicCartographerEditorImpl(layout: CartographerLayout) : BasicCar
     private val _flooringLayer = mutableLayerOf(layout.rulesForFlooringLayer)
     override val flooringLayer: CartographerLayer<FloorType> = _flooringLayer
 
+    private val _floorFurnitureLayer = mutableLayerOf(layout.rulesForFloorFurnitureLayer)
+    override val floorFurnitureLayer: CartographerLayer<FloorFurnitureType> = _floorFurnitureLayer
+
     private val _objectsLayer = mutableLayerOf(layout.rulesForObjectsLayer)
     override val objectsLayer: CartographerLayer<ObjectType> = _objectsLayer
 
-    private val _cropsLayer = mutableLayerOf(layout.rulesForCropsLayer)
-    override val cropsLayer: CartographerLayer<CropType> = _cropsLayer
-
-    private val _bigEntitiesLayer = mutableLayerOf(layout.rulesForBigEntitiesLayer)
-    override val bigEntitiesLayer: CartographerLayer<BigEntityType> = _bigEntitiesLayer
+    private val _standaloneEntitiesLayer = mutableLayerOf(layout.rulesForBigEntitiesLayer)
+    override val standaloneEntitiesLayer: CartographerLayer<EntityWithoutFloorType> = _standaloneEntitiesLayer
 
 
     private val layers: Sequence<MutableCartographerLayer<*>> = sequenceOf(
         _flooringLayer,
+        _floorFurnitureLayer,
         _objectsLayer,
-        _cropsLayer,
-        _bigEntitiesLayer,
+        _standaloneEntitiesLayer,
     )
 
     init {
@@ -69,10 +70,10 @@ private class BasicCartographerEditorImpl(layout: CartographerLayout) : BasicCar
 
     override fun get(type: CartographerEntityType, key: Coordinate): CartographerEntity<*>? =
         when (type) {
-            is FloorType -> _flooringLayer[key]
+            FloorType -> _flooringLayer[key]
+            FloorFurnitureType -> _floorFurnitureLayer[key]
             is ObjectType -> _objectsLayer[key]
-            CropType -> _cropsLayer[key]
-            is BigEntityType -> _bigEntitiesLayer[key]
+            is EntityWithoutFloorType -> _standaloneEntitiesLayer[key]
         }
 
     override fun get(key: Coordinate): CartographerEntity<*>? =
@@ -80,19 +81,20 @@ private class BasicCartographerEditorImpl(layout: CartographerLayout) : BasicCar
 
     override fun put(key: Coordinate, value: CartographerEntity<*>) = withChecks(key, value, onFail = {}) {
         when (value.id.type) {
-            is FloorType -> _flooringLayer[key] = value as CartographerEntity<FloorType>
+            FloorType -> _flooringLayer[key] = value as CartographerEntity<FloorType>
+            FloorFurnitureType -> _floorFurnitureLayer[key] = value as CartographerEntity<FloorFurnitureType>
             is ObjectType -> _objectsLayer[key] = value as CartographerEntity<ObjectType>
-            CropType -> _cropsLayer[key] = value as CartographerEntity<CropType>
-            is BigEntityType -> _bigEntitiesLayer[key] = value as CartographerEntity<BigEntityType>
+            is EntityWithoutFloorType -> _standaloneEntitiesLayer[key] =
+                value as CartographerEntity<EntityWithoutFloorType>
         }
     }
 
     override fun remove(type: CartographerEntityType, key: Coordinate) {
         when (type) {
-            is FloorType -> _flooringLayer.remove(key)
+            FloorType -> _flooringLayer.remove(key)
+            FloorFurnitureType -> _floorFurnitureLayer.remove(key)
             is ObjectType -> _objectsLayer.remove(key)
-            CropType -> _cropsLayer.remove(key)
-            is BigEntityType -> _bigEntitiesLayer.remove(key)
+            is EntityWithoutFloorType -> _standaloneEntitiesLayer.remove(key)
         }
     }
 
@@ -110,10 +112,10 @@ private class BasicCartographerEditorImpl(layout: CartographerLayout) : BasicCar
 
     override fun removeAll(type: CartographerEntityType, keys: Iterable<Coordinate>) {
         when (type) {
-            is FloorType -> _flooringLayer.removeAll(keys)
+            FloorType -> _flooringLayer.removeAll(keys)
+            FloorFurnitureType -> _floorFurnitureLayer.removeAll(keys)
             is ObjectType -> _objectsLayer.removeAll(keys)
-            CropType -> _cropsLayer.removeAll(keys)
-            is BigEntityType -> _bigEntitiesLayer.removeAll(keys)
+            is EntityWithoutFloorType -> _standaloneEntitiesLayer.removeAll(keys)
         }
     }
 
@@ -126,10 +128,10 @@ private class BasicCartographerEditorImpl(layout: CartographerLayout) : BasicCar
 
     override fun clear(type: CartographerEntityType) {
         when (type) {
-            is FloorType -> _flooringLayer.clear()
+            FloorType -> _flooringLayer.clear()
+            FloorFurnitureType -> _floorFurnitureLayer.clear()
             is ObjectType -> _objectsLayer.clear()
-            CropType -> _cropsLayer.clear()
-            is BigEntityType -> _bigEntitiesLayer.clear()
+            is EntityWithoutFloorType -> _standaloneEntitiesLayer.clear()
         }
     }
 
@@ -155,20 +157,24 @@ private class BasicCartographerEditorImpl(layout: CartographerLayout) : BasicCar
         onFail: () -> T,
         onSuccess: () -> T,
     ): T {
+        val coordinates = generateCoordinates(key, value.id.size)
         val type = value.id.type
 
-        when (behaviour.onConflict) {
-            OnConflict.SKIP -> {
-                if (type !is ObjectType && key in _flooringLayer.keys) return onFail()
-                if (type !is FloorType && key in _objectsLayer.keys) return onFail()
-                if (key in _cropsLayer.keys) return onFail()
-                if (key in _bigEntitiesLayer.keys) return onFail()
-            }
-            OnConflict.OVERWRITE -> {
-                if (type !is ObjectType) _flooringLayer.remove(key)
-                if (type !is FloorType) _objectsLayer.remove(key)
-                _cropsLayer.remove(key)
-                _bigEntitiesLayer.remove(key)
+        val checks = listOf(
+            _flooringLayer to (type == FloorType || type is EntityWithoutFloorType),
+            _floorFurnitureLayer to (type == FloorFurnitureType || type is EntityWithoutFloorType),
+            _objectsLayer to (type is ObjectType || type is EntityWithoutFloorType),
+            _standaloneEntitiesLayer to true,
+        ).map { (layer, mayConflict) ->
+            layer to (mayConflict && coordinates.any(layer.keys::contains))
+        }
+
+        for ((layer, hasConflicts) in checks) {
+            if (hasConflicts) {
+                when (behaviour.onConflict) {
+                    OnConflict.SKIP -> return onFail()
+                    OnConflict.OVERWRITE -> layer.removeAll(coordinates)
+                }
             }
         }
 

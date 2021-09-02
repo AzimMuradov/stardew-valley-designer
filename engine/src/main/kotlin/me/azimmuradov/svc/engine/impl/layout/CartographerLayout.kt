@@ -18,8 +18,8 @@ package me.azimmuradov.svc.engine.impl.layout
 
 import me.azimmuradov.svc.engine.Rect
 import me.azimmuradov.svc.engine.RectMap
-import me.azimmuradov.svc.engine.impl.entity.BigEntityType
-import me.azimmuradov.svc.engine.impl.entity.CropType
+import me.azimmuradov.svc.engine.impl.entity.EntityWithoutFloorType
+import me.azimmuradov.svc.engine.impl.entity.FloorFurnitureType
 import me.azimmuradov.svc.engine.impl.entity.FloorType
 import me.azimmuradov.svc.engine.impl.entity.ObjectType
 import me.azimmuradov.svc.engine.impl.layout.layouts.BigShed
@@ -31,16 +31,16 @@ data class CartographerLayout(
     val type: CartographerLayoutType,
     val size: Rect,
     val rulesForFlooringLayer: RectMap<Set<FloorType>?> = rectMapOf(size),
+    val rulesForFloorFurnitureLayer: RectMap<Set<FloorFurnitureType>?> = rectMapOf(size),
     val rulesForObjectsLayer: RectMap<Set<ObjectType>?> = rectMapOf(size),
-    val rulesForCropsLayer: RectMap<Set<CropType>?> = rectMapOf(size),
-    val rulesForBigEntitiesLayer: RectMap<Set<BigEntityType>?> = rectMapOf(size),
+    val rulesForBigEntitiesLayer: RectMap<Set<EntityWithoutFloorType>?> = rectMapOf(size),
 ) {
 
     init {
         val listOfRules = listOf(
             rulesForFlooringLayer,
+            rulesForFloorFurnitureLayer,
             rulesForObjectsLayer,
-            rulesForCropsLayer,
             rulesForBigEntitiesLayer,
         )
 

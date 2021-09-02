@@ -25,7 +25,7 @@ data class CartographerEntityHolder<out EType : CartographerEntityType>(
     val source: Coordinate,
 ) {
 
-    val coordinates: List<Coordinate> by lazy { generateCoordinates(source, rect = entity.size) }
+    val coordinates: List<Coordinate> by lazy { generateCoordinates(source, rect = entity.id.size) }
 
     operator fun component3(): List<Coordinate> = coordinates
 }

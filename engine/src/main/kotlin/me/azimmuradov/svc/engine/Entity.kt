@@ -23,6 +23,4 @@ package me.azimmuradov.svc.engine
 interface Entity<out EId> {
 
     val id: EId
-
-    val size: Rect
 }

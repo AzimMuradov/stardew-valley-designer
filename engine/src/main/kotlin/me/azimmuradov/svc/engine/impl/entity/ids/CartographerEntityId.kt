@@ -14,15 +14,31 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine
+package me.azimmuradov.svc.engine.impl.entity.ids
+
+import me.azimmuradov.svc.engine.Rect
+import me.azimmuradov.svc.engine.impl.entity.CartographerEntityType
 
 
-data class Coordinate(val x: Int, val y: Int)
+sealed interface CartographerEntityId<out EType : CartographerEntityType> {
 
-data class Rect(val w: Int, val h: Int) {
+    val type: EType
 
-    fun rotated() = Rect(w = h, h = w)
+    val size: Rect
 }
 
 
-fun xy(x: Int, y: Int): Coordinate = Coordinate(x, y)
+// TODO : EntityWithoutFloorType
+
+// TODO : WallFurniture
+// Wall Lamps & Windows
+// Decorative Hanging Plants
+// Paintings
+// Night Market Paintings
+// Movie Posters
+// Banners
+// Wall Hangings
+
+// TODO : Flooring [1-56]
+
+// TODO : Wallpaper [1-112]
