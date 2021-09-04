@@ -25,6 +25,7 @@ import me.azimmuradov.svc.engine.impl.Rects.RECT_3x2
 import me.azimmuradov.svc.engine.impl.entity.FloorFurnitureType
 import me.azimmuradov.svc.engine.impl.entity.ids.RotatableFlavor.RotatableFlavor2
 import me.azimmuradov.svc.engine.impl.entity.ids.RotatableFlavor.Rotations.Rotations2
+import me.azimmuradov.svc.engine.rotated
 
 
 sealed interface FloorFurniture : CartographerEntityId<FloorFurnitureType> {
