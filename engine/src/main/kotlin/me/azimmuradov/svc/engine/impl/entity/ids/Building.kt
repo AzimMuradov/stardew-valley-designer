@@ -78,8 +78,8 @@ sealed interface Building : CartographerEntityId<BuildingType> {
 
         Mill(size = Rect(w = 4, h = 2)),
         Silo(size = Rect(w = 3, h = 3)),
-        SlimeHutch(size = Rect(w = 11, h = 6)),
         Well(size = Rect(w = 3, h = 3)),
+        SlimeHutch(size = Rect(w = 11, h = 6)),
         ShippingBin(size = Rect(w = 2, h = 1)),
     }
 

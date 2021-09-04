@@ -23,21 +23,27 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import me.azimmuradov.svc.components.cartographer.Cartographer
 import me.azimmuradov.svc.components.cartographer.menus.BuildingsMenu
 import me.azimmuradov.svc.components.cartographer.menus.MenuRoot
 import me.azimmuradov.svc.components.cartographer.menus.filterElements
 import me.azimmuradov.svc.engine.impl.entity.CartographerEntityType
+import me.azimmuradov.svc.settings.languages.Language
 import me.azimmuradov.svc.ui.utils.CascadingDropdownMenu
 
 
 @Composable
 fun TopMenu(component: Cartographer, modifier: Modifier = Modifier) {
+    val models by component.models.subscribeAsState()
+    val language = models.settings.language
+
     Row(modifier) {
-        TopMenuCell(root = BuildingsMenu)
+        TopMenuCell(languageCartographer = language.cartographer, root = BuildingsMenu)
         // TopMenuCell(root = BuildingsMenu)
         // TopMenuCell(root = BuildingsMenu)
         // TopMenuCell(root = BuildingsMenu)
@@ -48,6 +54,7 @@ fun TopMenu(component: Cartographer, modifier: Modifier = Modifier) {
 
 @Composable
 private fun RowScope.TopMenuCell(
+    languageCartographer: Language.Cartographer,
     root: MenuRoot,
     disallowedTypes: List<CartographerEntityType>? = null,
 ) {
@@ -62,7 +69,7 @@ private fun RowScope.TopMenuCell(
         cellModifier = Modifier
             .padding(horizontal = 10.dp, vertical = 5.dp),
         titleCellContent = { title ->
-            Text(text = title.toString(), modifier = Modifier.padding(5.dp))
+            Text(text = languageCartographer.menuTitle(title), modifier = Modifier.padding(5.dp))
         },
         valueCellContent = { value ->
             // TODO
@@ -73,7 +80,7 @@ private fun RowScope.TopMenuCell(
             //     )
             // }
             Text(
-                text = value.id.toString(),
+                text = languageCartographer.entity(value.id),
                 modifier = Modifier.weight(9f).padding(start = 5.dp),
                 color = Color.Black,
             )

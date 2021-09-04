@@ -113,7 +113,7 @@ private fun MenuElements(
 }
 
 
-private val REQUIRED_DROPDOWN_MENU_WIDTH: Dp = 250.dp
+private val REQUIRED_DROPDOWN_MENU_WIDTH: Dp = 275.dp
 private val REQUIRED_MAX_DROPDOWN_MENU_HEIGHT: Dp = 300.dp
 
 private val DROPDOWN_MENU_MODIFIER: Modifier =
