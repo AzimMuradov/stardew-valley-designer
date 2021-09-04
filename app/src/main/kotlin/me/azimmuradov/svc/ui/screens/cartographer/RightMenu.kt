@@ -14,33 +14,17 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.ui.screens
+package me.azimmuradov.svc.ui.screens.cartographer
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import me.azimmuradov.svc.components.cartographer.Cartographer
-import me.azimmuradov.svc.ui.screens.cartographer.BottomPart
-import me.azimmuradov.svc.ui.screens.cartographer.TopMenu
 
 
 @Composable
-fun CartographerUi(component: Cartographer) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        TopMenu(
-            component,
-            modifier = Modifier
-                .fillMaxWidth().weight(1f)
-                .background(color = MaterialTheme.colors.background),
-        )
-        BottomPart(
-            component,
-            modifier = Modifier
-                .fillMaxWidth().weight(12f),
-        )
+fun RightMenu(component: Cartographer, modifier: Modifier = Modifier) {
+    Column(modifier) {
+        // TODO
     }
 }

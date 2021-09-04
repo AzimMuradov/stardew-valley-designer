@@ -17,6 +17,7 @@
 package me.azimmuradov.svc.components.cartographer
 
 import com.arkivanov.decompose.value.Value
+import me.azimmuradov.svc.engine.impl.editor.CartographerEditor
 import me.azimmuradov.svc.settings.Settings
 
 
@@ -29,5 +30,6 @@ interface Cartographer {
 
     data class Model(
         val settings: Settings,
+        val editor: CartographerEditor,
     )
 }

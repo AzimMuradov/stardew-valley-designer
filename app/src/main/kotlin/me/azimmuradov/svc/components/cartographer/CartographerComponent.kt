@@ -19,6 +19,9 @@ package me.azimmuradov.svc.components.cartographer
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import me.azimmuradov.svc.components.cartographer.Cartographer.Model
+import me.azimmuradov.svc.engine.impl.editor.cartographerEditor
+import me.azimmuradov.svc.engine.impl.layout.CartographerLayoutType.Shed
+import me.azimmuradov.svc.engine.impl.layout.layout
 import me.azimmuradov.svc.settings.Settings
 
 
@@ -31,5 +34,10 @@ class CartographerComponent(
 
     private val _models: MutableValue<Model> = MutableValue(Model(
         settings,
+        cartographerEditor(defaultLayout()),
     ))
 }
+
+
+// TODO : Change
+fun defaultLayout() = layout(type = Shed)

@@ -14,33 +14,36 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.ui.screens
+package me.azimmuradov.svc.ui.screens.cartographer
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.components.cartographer.Cartographer
-import me.azimmuradov.svc.ui.screens.cartographer.BottomPart
-import me.azimmuradov.svc.ui.screens.cartographer.TopMenu
+import me.azimmuradov.svc.engine.aspectRatio
 
 
 @Composable
-fun CartographerUi(component: Cartographer) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        TopMenu(
+fun MainPart(component: Cartographer, modifier: Modifier = Modifier) {
+    val ratio = component.models.value.editor.layout.size.aspectRatio
+
+    Box(modifier) {
+        EditorLayout(
             component,
             modifier = Modifier
-                .fillMaxWidth().weight(1f)
-                .background(color = MaterialTheme.colors.background),
-        )
-        BottomPart(
-            component,
-            modifier = Modifier
-                .fillMaxWidth().weight(12f),
+                .aspectRatio(ratio)
+                .border(width = 1.dp, color = Color.Black)
+                .fillMaxSize()
+                .align(Alignment.Center)
+                // .clipToBounds()
+                .background(color = Color.White),
         )
     }
 }

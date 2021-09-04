@@ -14,33 +14,40 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.ui.screens
+package me.azimmuradov.svc.ui.screens.cartographer
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.components.cartographer.Cartographer
-import me.azimmuradov.svc.ui.screens.cartographer.BottomPart
-import me.azimmuradov.svc.ui.screens.cartographer.TopMenu
 
 
 @Composable
-fun CartographerUi(component: Cartographer) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        TopMenu(
+fun BottomPart(component: Cartographer, modifier: Modifier = Modifier) {
+    Row(modifier) {
+        LeftMenu(
             component,
             modifier = Modifier
-                .fillMaxWidth().weight(1f)
-                .background(color = MaterialTheme.colors.background),
+                .fillMaxHeight().weight(1f)
+                .background(color = Color.Blue),
         )
-        BottomPart(
+        MainPart(
             component,
             modifier = Modifier
-                .fillMaxWidth().weight(12f),
+                .fillMaxHeight().weight(5f)
+                .background(color = Color.Cyan)
+                .padding(20.dp),
+        )
+        RightMenu(
+            component,
+            modifier = Modifier
+                .fillMaxHeight().weight(1f)
+                .background(color = Color.Blue),
         )
     }
 }
