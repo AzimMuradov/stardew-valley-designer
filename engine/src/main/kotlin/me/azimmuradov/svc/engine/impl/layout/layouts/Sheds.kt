@@ -19,8 +19,7 @@ package me.azimmuradov.svc.engine.impl.layout.layouts
 import me.azimmuradov.svc.engine.Coordinate
 import me.azimmuradov.svc.engine.Rect
 import me.azimmuradov.svc.engine.impl.entity.CartographerEntityType
-import me.azimmuradov.svc.engine.impl.entity.FloorType.GrassType
-import me.azimmuradov.svc.engine.impl.entity.ObjectType.FurnitureType.BedType
+import me.azimmuradov.svc.engine.impl.entity.ObjectType.FurnitureType.HouseFurnitureType
 import me.azimmuradov.svc.engine.impl.layout.CartographerLayout
 import me.azimmuradov.svc.engine.impl.layout.CartographerLayoutType.BigShed
 import me.azimmuradov.svc.engine.impl.layout.CartographerLayoutType.Shed
@@ -33,8 +32,8 @@ private val shedRect = Rect(w = 11, h = 10)
 internal val Shed: CartographerLayout = CartographerLayout(
     type = Shed,
     shedRect,
-    rulesForFlooringLayer = buildRules(shedRect, setOf(GrassType)),
-    rulesForObjectsLayer = buildRules(shedRect, setOf(BedType)),
+    rulesForFlooringLayer = buildRules(shedRect, disallowed = null),
+    rulesForObjectsLayer = buildRules(shedRect, setOf(HouseFurnitureType)),
 )
 
 
@@ -43,18 +42,20 @@ private val bigShedRect = Rect(w = 17, h = 13)
 internal val BigShed: CartographerLayout = CartographerLayout(
     type = BigShed,
     bigShedRect,
-    rulesForFlooringLayer = buildRules(bigShedRect, setOf(GrassType)),
-    rulesForObjectsLayer = buildRules(bigShedRect, setOf(BedType)),
+    rulesForFlooringLayer = buildRules(bigShedRect, disallowed = null),
+    rulesForObjectsLayer = buildRules(bigShedRect, setOf(HouseFurnitureType)),
 )
 
 
 @OptIn(ExperimentalStdlibApi::class)
-private fun <EType : CartographerEntityType> buildRules(rect: Rect, disallowed: Set<EType>) =
+private fun <EType : CartographerEntityType> buildRules(rect: Rect, disallowed: Set<EType>?) =
     rectMapOf(rect, map = buildMap<Coordinate, Set<EType>?> {
-        repeat(times = rect.w) { x ->
-            repeat(times = rect.h - 1) { y ->
-                put(xy(x, y), disallowed)
+        if (disallowed != null) {
+            repeat(times = rect.w) { x ->
+                repeat(times = rect.h - 1) { y ->
+                    put(xy(x, y), disallowed)
+                }
             }
+            put(xy(x = rect.w / 2, y = rect.h - 1), disallowed)
         }
-        put(xy(x = rect.w / 2, y = rect.h - 1), disallowed)
     })

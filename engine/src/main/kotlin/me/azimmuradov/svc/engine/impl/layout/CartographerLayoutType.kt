@@ -17,7 +17,8 @@
 package me.azimmuradov.svc.engine.impl.layout
 
 import me.azimmuradov.svc.engine.impl.entity.CartographerEntityType
-import me.azimmuradov.svc.engine.impl.entity.FloorType
+import me.azimmuradov.svc.engine.impl.entity.EntityWithoutFloorType
+import me.azimmuradov.svc.engine.impl.entity.ObjectType
 
 
 sealed interface CartographerLayoutType {
@@ -27,11 +28,20 @@ sealed interface CartographerLayoutType {
 
     object Shed : CartographerLayoutType {
 
-        override val disallowedEntityTypes: Set<CartographerEntityType> = setOf(FloorType.GrassType)
+        override val disallowedEntityTypes: Set<CartographerEntityType> = shedDisallowedEntityTypes
     }
 
     object BigShed : CartographerLayoutType {
 
-        override val disallowedEntityTypes: Set<CartographerEntityType> = setOf(FloorType.GrassType)
+        override val disallowedEntityTypes: Set<CartographerEntityType> = shedDisallowedEntityTypes
+    }
+
+
+    private companion object {
+
+        val shedDisallowedEntityTypes: Set<CartographerEntityType> = setOf(
+            ObjectType.FurnitureType.HouseFurnitureType,
+            EntityWithoutFloorType.BuildingType,
+        )
     }
 }
