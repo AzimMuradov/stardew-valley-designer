@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine
+package me.azimmuradov.svc.engine.llsvc.layer
 
-import me.azimmuradov.svc.engine.rectmap.RectObject
+import me.azimmuradov.svc.engine.MutableLayer
+import me.azimmuradov.svc.engine.llsvc.entity.SvcEntity
+import me.azimmuradov.svc.engine.llsvc.entity.SvcEntityType
 
 
-/**
- * Editor entity.
- */
-interface Entity<out EId> : RectObject<EId> {
+interface MutableSvcLayer<EType : SvcEntityType> : SvcLayer<EType>, MutableLayer<SvcEntity<EType>> {
 
-    val id: EId
+    override val behaviour: MutableSvcLayerBehaviour
 }

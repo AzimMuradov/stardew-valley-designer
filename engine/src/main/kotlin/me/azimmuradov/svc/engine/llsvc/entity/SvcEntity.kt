@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine
+package me.azimmuradov.svc.engine.llsvc.entity
 
-import me.azimmuradov.svc.engine.rectmap.RectObject
+import me.azimmuradov.svc.engine.Entity
+import me.azimmuradov.svc.engine.Rect
+import me.azimmuradov.svc.engine.llsvc.entity.ids.SvcEntityId
 
 
-/**
- * Editor entity.
- */
-interface Entity<out EId> : RectObject<EId> {
+data class SvcEntity<out EType : SvcEntityType>(
+    override val id: SvcEntityId<EType>,
+) : Entity<SvcEntityId<EType>> {
 
-    val id: EId
+    override val size: Rect = id.size
 }

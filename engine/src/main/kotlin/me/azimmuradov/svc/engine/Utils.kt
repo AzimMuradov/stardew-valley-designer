@@ -17,14 +17,18 @@
 package me.azimmuradov.svc.engine
 
 
+// TODO : Use inline classes
+
+
+/**
+ * 2D coordinate.
+ */
 data class Coordinate(val x: Int, val y: Int)
-
-data class Rect(val w: Int, val h: Int)
-
 
 fun xy(x: Int, y: Int): Coordinate = Coordinate(x, y)
 
 
-val Rect.aspectRatio get() = w.toFloat() / h.toFloat()
-
-fun Rect.rotated() = Rect(w = h, h = w)
+/**
+ * Rectangle with no coordinate to place.
+ */
+data class Rect(val w: Int, val h: Int)

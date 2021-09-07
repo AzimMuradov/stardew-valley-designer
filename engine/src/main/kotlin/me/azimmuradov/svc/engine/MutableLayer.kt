@@ -16,13 +16,10 @@
 
 package me.azimmuradov.svc.engine
 
-import me.azimmuradov.svc.engine.rectmap.RectObject
+import me.azimmuradov.svc.engine.rectmap.MutableRectMap
 
 
 /**
- * Editor entity.
+ * Mutable editor layer.
  */
-interface Entity<out EId> : RectObject<EId> {
-
-    val id: EId
-}
+interface MutableLayer<E : Entity<*>> : Layer<E>, MutableRectMap<Any?, E>

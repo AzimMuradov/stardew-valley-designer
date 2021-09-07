@@ -14,15 +14,25 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine
+package me.azimmuradov.svc.engine.llsvc.layer
 
-import me.azimmuradov.svc.engine.rectmap.RectObject
+import me.azimmuradov.svc.engine.llsvc.layer.SvcLayerBehaviour.OnDisallowed
+import me.azimmuradov.svc.engine.rectmap.MutableRectMapBehaviour
+import me.azimmuradov.svc.engine.rectmap.RectMapBehaviour
 
 
-/**
- * Editor entity.
- */
-interface Entity<out EId> : RectObject<EId> {
+interface SvcLayerBehaviour : RectMapBehaviour {
 
-    val id: EId
+    val onDisallowed: OnDisallowed
+
+
+    enum class OnDisallowed {
+        SKIP,
+    }
+}
+
+
+interface MutableSvcLayerBehaviour : SvcLayerBehaviour, MutableRectMapBehaviour {
+
+    override var onDisallowed: OnDisallowed
 }

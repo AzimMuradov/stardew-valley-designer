@@ -14,15 +14,26 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine
+package me.azimmuradov.svc.engine.llsvc
 
-import me.azimmuradov.svc.engine.rectmap.RectObject
+import me.azimmuradov.svc.engine.llsvc.SvcBehaviour.OnBetweenLayersConflict
+import me.azimmuradov.svc.engine.llsvc.layer.MutableSvcLayerBehaviour
+import me.azimmuradov.svc.engine.llsvc.layer.SvcLayerBehaviour
 
 
-/**
- * Editor entity.
- */
-interface Entity<out EId> : RectObject<EId> {
+interface SvcBehaviour : SvcLayerBehaviour {
 
-    val id: EId
+    val onBetweenLayersConflict: OnBetweenLayersConflict
+
+
+    enum class OnBetweenLayersConflict {
+        SKIP,
+        OVERWRITE,
+    }
+}
+
+
+interface MutableSvcBehaviour : SvcBehaviour, MutableSvcLayerBehaviour {
+
+    override var onBetweenLayersConflict: OnBetweenLayersConflict
 }

@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine
+package me.azimmuradov.svc.engine.rectmap
 
-import me.azimmuradov.svc.engine.rectmap.RectObject
+import me.azimmuradov.svc.engine.Rect
 
 
 /**
- * Editor entity.
+ * Rectangular object.
  */
-interface Entity<out EId> : RectObject<EId> {
+interface RectObject<out T> {
 
-    val id: EId
+    val size: Rect
 }
