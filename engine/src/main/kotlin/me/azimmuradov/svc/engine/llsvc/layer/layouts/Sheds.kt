@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.llsvc.layer.layoutrules
+package me.azimmuradov.svc.engine.llsvc.layer.layouts
 
 import me.azimmuradov.svc.engine.Rect
 import me.azimmuradov.svc.engine.llsvc.entity.EntityWithoutFloorType
 import me.azimmuradov.svc.engine.llsvc.entity.ObjectType.FurnitureType.HouseFurnitureType
-import me.azimmuradov.svc.engine.llsvc.layer.SvcLayoutRules
+import me.azimmuradov.svc.engine.llsvc.layer.SvcLayout
 import me.azimmuradov.svc.engine.xy
 
 
-internal val ShedLayoutRules: SvcLayoutRules = shedLayoutRulesOf(size = Rect(w = 11, h = 10))
+internal val ShedLayout: SvcLayout = shedLayoutOf(size = Rect(w = 11, h = 10))
 
-internal val BigShedLayoutRules: SvcLayoutRules = shedLayoutRulesOf(size = Rect(w = 17, h = 13))
+internal val BigShedLayout: SvcLayout = shedLayoutOf(size = Rect(w = 17, h = 13))
 
 
-private fun shedLayoutRulesOf(size: Rect) = SvcLayoutRules(
+private fun shedLayoutOf(size: Rect) = SvcLayout(
     size,
     disallowedTypes = setOf(HouseFurnitureType) + EntityWithoutFloorType.all,
     disallowedTypesMap = mapOf(),

@@ -17,7 +17,6 @@
 package me.azimmuradov.svc.engine.llsvc.layer
 
 import me.azimmuradov.svc.engine.Coordinate
-import me.azimmuradov.svc.engine.Rect
 import me.azimmuradov.svc.engine.llsvc.coordinatesFrom
 import me.azimmuradov.svc.engine.llsvc.entity.SvcEntity
 import me.azimmuradov.svc.engine.llsvc.entity.SvcEntityType
@@ -28,10 +27,9 @@ import me.azimmuradov.svc.engine.rectmap.RectMapBehaviour.OnOutOfBounds
 
 
 fun <EType : SvcEntityType> mutableSvcLayerOf(
-    size: Rect,
-    layoutRules: SvcLayoutRules,
+    layout: SvcLayout,
     behaviour: SvcLayerBehaviour = DefaultSvcLayerBehaviour.rewriter,
-): MutableSvcLayer<EType> = MutableSvcLayerImpl(size, layoutRules, behaviour)
+): MutableSvcLayer<EType> = MutableSvcLayerImpl(layout, behaviour)
 
 
 object DefaultSvcLayerBehaviour {
@@ -61,16 +59,19 @@ fun SvcLayerBehaviour.toMutableSvcLayerBehaviour(): MutableSvcLayerBehaviour = M
 private class SvcLayerImpl<EType : SvcEntityType>(svcLayer: SvcLayer<EType>) : SvcLayer<EType> by svcLayer
 
 private class MutableSvcLayerImpl<EType : SvcEntityType> private constructor(
-    override val rect: Rect,
-    override val layoutRules: SvcLayoutRules,
+    layout: SvcLayout,
     behaviour: SvcLayerBehaviour,
     private val rectMap: MutableRectMap<Any?, SvcEntity<EType>>,
 ) : MutableSvcLayer<EType>, MutableRectMap<Any?, SvcEntity<EType>> by rectMap {
 
-    override val behaviour: MutableSvcLayerBehaviour = behaviour.toMutableSvcLayerBehaviour()
+    override val rect = layout.size
 
-    constructor(rect: Rect, layoutRules: SvcLayoutRules, behaviour: SvcLayerBehaviour) :
-        this(rect, layoutRules, behaviour, mutableRectMapOf(rect))
+    override val layoutRules = layout
+
+    override val behaviour = behaviour.toMutableSvcLayerBehaviour()
+
+    constructor(layout: SvcLayout, behaviour: SvcLayerBehaviour) :
+        this(layout, behaviour, mutableRectMapOf(layout.size))
 
 
     // Modification operations with additional `SvcLayer`-specific checks

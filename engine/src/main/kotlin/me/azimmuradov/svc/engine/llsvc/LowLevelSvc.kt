@@ -17,18 +17,15 @@
 package me.azimmuradov.svc.engine.llsvc
 
 import me.azimmuradov.svc.engine.Coordinate
-import me.azimmuradov.svc.engine.Rect
 import me.azimmuradov.svc.engine.llsvc.entity.SvcEntity
 import me.azimmuradov.svc.engine.llsvc.layer.SvcLayer
 import me.azimmuradov.svc.engine.llsvc.layer.SvcLayerType
-import me.azimmuradov.svc.engine.llsvc.layer.SvcLayoutRules
+import me.azimmuradov.svc.engine.llsvc.layer.SvcLayout
 
 
 interface LowLevelSvc {
 
-    val size: Rect
-
-    val layoutRules: SvcLayoutRules
+    val layout: SvcLayout
 
     val behaviour: MutableSvcBehaviour
 

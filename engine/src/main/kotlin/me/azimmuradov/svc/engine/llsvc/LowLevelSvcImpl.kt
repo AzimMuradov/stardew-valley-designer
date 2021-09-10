@@ -19,7 +19,6 @@
 package me.azimmuradov.svc.engine.llsvc
 
 import me.azimmuradov.svc.engine.Coordinate
-import me.azimmuradov.svc.engine.Rect
 import me.azimmuradov.svc.engine.llsvc.SvcBehaviour.OnBetweenLayersConflict
 import me.azimmuradov.svc.engine.llsvc.entity.*
 import me.azimmuradov.svc.engine.llsvc.layer.*
@@ -29,10 +28,9 @@ import me.azimmuradov.svc.engine.rectmap.RectMapBehaviour.OnOutOfBounds
 
 
 fun lowLevelSvcOf(
-    size: Rect,
-    layoutRules: SvcLayoutRules,
+    layout: SvcLayout,
     behaviour: SvcBehaviour = DefaultSvcBehaviour.rewriter,
-): LowLevelSvc = LowLevelSvcImpl(size, layoutRules, behaviour)
+): LowLevelSvc = LowLevelSvcImpl(layout, behaviour)
 
 
 object DefaultSvcBehaviour {
@@ -63,8 +61,7 @@ fun SvcBehaviour.toMutableSvcBehaviour(): MutableSvcBehaviour = MutableSvcBehavi
 // Actual private implementations
 
 private class LowLevelSvcImpl(
-    override val size: Rect,
-    override val layoutRules: SvcLayoutRules,
+    override val layout: SvcLayout,
     behaviour: SvcBehaviour,
 ) : LowLevelSvc {
 
@@ -76,10 +73,10 @@ private class LowLevelSvcImpl(
     private fun _layerOf(type: SvcLayerType<*>) = _layers[SvcLayerType.all.indexOf(type)]
 
     private val _layers: List<MutableSvcLayer<*>> = listOf(
-        mutableSvcLayerOf<FloorType>(size, layoutRules, behaviour),
-        mutableSvcLayerOf<FloorFurnitureType>(size, layoutRules, behaviour),
-        mutableSvcLayerOf<ObjectType>(size, layoutRules, behaviour),
-        mutableSvcLayerOf<EntityWithoutFloorType>(size, layoutRules, behaviour),
+        mutableSvcLayerOf<FloorType>(layout, behaviour),
+        mutableSvcLayerOf<FloorFurnitureType>(layout, behaviour),
+        mutableSvcLayerOf<ObjectType>(layout, behaviour),
+        mutableSvcLayerOf<EntityWithoutFloorType>(layout, behaviour),
     )
 
     private val SvcEntity<*>.layer get() = _layerOf(id.type.toSvcLayerType())

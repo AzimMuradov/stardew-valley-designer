@@ -16,22 +16,14 @@
 
 package me.azimmuradov.svc.engine.llsvc.layer
 
-import me.azimmuradov.svc.engine.llsvc.layer.SvcLayoutRulesProvider.SvcLayoutRulesType.BigShed
-import me.azimmuradov.svc.engine.llsvc.layer.SvcLayoutRulesProvider.SvcLayoutRulesType.Shed
-import me.azimmuradov.svc.engine.llsvc.layer.layoutrules.BigShedLayoutRules
-import me.azimmuradov.svc.engine.llsvc.layer.layoutrules.ShedLayoutRules
+import me.azimmuradov.svc.engine.Coordinate
+import me.azimmuradov.svc.engine.Rect
+import me.azimmuradov.svc.engine.llsvc.entity.SvcEntityType
 
 
-object SvcLayoutRulesProvider {
-
-    fun svcLayoutRulesOf(type: SvcLayoutRulesType): SvcLayoutRules = when (type) {
-        Shed -> ShedLayoutRules
-        BigShed -> BigShedLayoutRules
-    }
-
-
-    enum class SvcLayoutRulesType {
-        Shed,
-        BigShed,
-    }
-}
+class SvcLayout(
+    val size: Rect,
+    disallowedTypes: Set<SvcEntityType> = setOf(),
+    disallowedTypesMap: Map<Coordinate, Set<SvcEntityType>> = mapOf(),
+    disallowedCoordinates: Set<Coordinate> = setOf(),
+) : SvcLayoutRules(size, disallowedTypes, disallowedTypesMap, disallowedCoordinates)
