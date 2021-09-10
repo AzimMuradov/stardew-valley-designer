@@ -23,7 +23,7 @@ import me.azimmuradov.svc.engine.llsvc.entity.ids.RectsProvider.rectOf
 
 enum class Floor : SvcEntityId<FloorType> {
 
-    // Floors
+    // Floors (Floors + Paths + Grass)
 
     WoodFloor,
     RusticPlankFloor,
@@ -34,17 +34,11 @@ enum class Floor : SvcEntityId<FloorType> {
     StoneWalkwayFloor,
     BrickFloor,
 
-
-    // Paths
-
     WoodPath,
     GravelPath,
     CobblestonePath,
     SteppingStonePath,
     CrystalPath,
-
-
-    // Grass
 
     Grass,
     ;

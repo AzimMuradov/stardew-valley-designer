@@ -16,8 +16,8 @@
 
 package me.azimmuradov.svc.settings.languages
 
-import me.azimmuradov.svc.components.cartographer.menus.MenuTitle
-import me.azimmuradov.svc.engine.impl.entity.ids.CartographerEntityId
+import me.azimmuradov.svc.components.cartographer.menus.entityselection.EntitySelectionMenuTitle
+import me.azimmuradov.svc.engine.llsvc.entity.ids.SvcEntityId
 
 
 sealed interface Language {
@@ -48,9 +48,9 @@ sealed interface Language {
 
     sealed interface Cartographer {
 
-        fun menuTitle(x: MenuTitle): String
+        fun menuTitle(x: EntitySelectionMenuTitle): String
 
-        fun entity(x: CartographerEntityId<*>): String
+        fun entity(x: SvcEntityId<*>): String
     }
 
     val cartographer: Cartographer

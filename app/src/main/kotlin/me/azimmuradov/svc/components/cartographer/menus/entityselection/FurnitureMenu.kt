@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.components.cartographer.menus
+package me.azimmuradov.svc.components.cartographer.menus.entityselection
+
+import me.azimmuradov.svc.components.cartographer.menus.menu
+import me.azimmuradov.svc.components.cartographer.menus.entityselection.EntitySelectionMenuTitle as T
 
 
-data class Menu<out Title, out V>(
-    val title: Title,
-    val elements: List<MenuElement<Title, V>>,
-)
-
-sealed interface MenuElement<out Title, out V> {
-
-    data class SubMenu<out Title, out V>(
-        val title: Title,
-        val elements: List<MenuElement<Title, V>>,
-    ) : MenuElement<Title, V>
-
-    data class Item<out Title, out V>(val value: V) : MenuElement<Title, V>
-}
+val FurnitureMenu: EntitySelectionMenu =
+    menu(title = T.Furniture) {
+        // TODO
+    }

@@ -28,24 +28,8 @@ sealed interface Equipment : SvcEntityId<EquipmentType> {
 
     enum class SimpleEquipment : Equipment {
 
-        // Fences
-
-        Gate,
-        WoodFence,
-        StoneFence,
-        IronFence,
-        HardwoodFence,
-
-
-        // Sprinklers
-
-        Sprinkler,
-        QualitySprinkler,
-        IridiumSprinkler,
-        IridiumSprinklerWithPressureNozzle,
-
-
-        // Artisan Equipment
+        // Common Equipment
+        // (Artisan Equipment + Other Tools + Refining Equipment + Misc + Storage Equipment)
 
         MayonnaiseMachine,
         BeeHouse,
@@ -56,28 +40,10 @@ sealed interface Equipment : SvcEntityId<EquipmentType> {
         OilMaker,
         Cask,
 
-
-        // TODO (?) : CrabPot,
-
-
-        // Lighting
-
-        Torch,
-        Campfire,
-        WoodenBrazier,
-        StoneBrazier,
-        GoldBrazier,
-        CarvedBrazier,
-        StumpBrazier,
-        BarrelBrazier,
-        SkullBrazier,
-        MarbleBrazier,
-        WoodLampPost,
-        IronLampPost,
-        JackOLantern,
-
-
-        // Refining Equipment
+        GardenPot,
+        Heater,
+        AutoGrabber,
+        AutoPetter,
 
         CharcoalKiln,
         Crystalarium,
@@ -94,9 +60,68 @@ sealed interface Equipment : SvcEntityId<EquipmentType> {
         GeodeCrusher,
         WoodChipper,
 
+        MiniJukebox,
+        MiniObelisk,
+        FarmComputer,
+        Hopper,
+        Deconstructor,
+        CoffeeMaker,
+        Telephone,
+        SewingMachine,
+        Workbench,
+        MiniShippingBin,
 
+        // TODO (?) : CrabPot,
         // TODO (?) : Tapper,
         // TODO (?) : HeavyTapper,
+
+        JunimoChest,
+
+
+        // Farm Elements (Scarecrows + Sprinklers)
+
+        Scarecrow,
+        DeluxeScarecrow,
+        Rarecrow1,
+        Rarecrow2,
+        Rarecrow3,
+        Rarecrow4,
+        Rarecrow5,
+        Rarecrow6,
+        Rarecrow7,
+        Rarecrow8,
+
+        Sprinkler,
+        QualitySprinkler,
+        IridiumSprinkler,
+        IridiumSprinklerWithPressureNozzle,
+
+
+        // Terrain Elements (Fences + Signs + Lighting)
+
+        Gate,
+        WoodFence,
+        StoneFence,
+        IronFence,
+        HardwoodFence,
+
+        WoodSign,
+        StoneSign,
+        DarkSign,
+
+        Torch,
+        Campfire,
+        WoodenBrazier,
+        StoneBrazier,
+        GoldBrazier,
+        CarvedBrazier,
+        StumpBrazier,
+        BarrelBrazier,
+        SkullBrazier,
+        MarbleBrazier,
+        WoodLampPost,
+        IronLampPost,
+        JackOLantern,
 
 
         // Furniture
@@ -145,50 +170,6 @@ sealed interface Equipment : SvcEntityId<EquipmentType> {
         SecretStoneOwl,
         SecretStrangeCapsule,
         SecretEmptyCapsule,
-
-
-        // Storage Equipment (without colored chests and mini-fridge)
-
-        JunimoChest,
-
-
-        // Signs
-
-        WoodSign,
-        StoneSign,
-        DarkSign,
-
-
-        // Misc
-
-        GardenPot,
-        Scarecrow,
-        DeluxeScarecrow,
-        Rarecrow1,
-        Rarecrow2,
-        Rarecrow3,
-        Rarecrow4,
-        Rarecrow5,
-        Rarecrow6,
-        Rarecrow7,
-        Rarecrow8,
-        MiniJukebox,
-        MiniObelisk,
-        FarmComputer,
-        Hopper,
-        Deconstructor,
-        CoffeeMaker,
-        Telephone,
-        SewingMachine,
-        Workbench,
-        MiniShippingBin,
-
-
-        // Other Tools
-
-        Heater,
-        AutoGrabber,
-        AutoPetter,
     }
 
     data class Chest(override var color: ChestColors = Default) : Equipment, ColoredChestFlavor()
