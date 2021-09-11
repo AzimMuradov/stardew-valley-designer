@@ -29,6 +29,8 @@ dependencies {
 
 
     implementation(projects.engine)
+    implementation(projects.savedata)
+    implementation(projects.renderer)
 
 
     // testImplementation(kotlin(module = "test", version = V.P_KOTLIN))
@@ -41,7 +43,8 @@ dependencies {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        languageVersion = "1.6"
+        freeCompilerArgs += listOf("-Xopt-in=kotlin.RequiresOptIn")
         jvmTarget = V.JVM
     }
 }

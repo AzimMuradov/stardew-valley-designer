@@ -20,8 +20,8 @@ dependencies {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        // languageVersion = "1.6"
-        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        languageVersion = "1.6"
+        freeCompilerArgs += listOf("-Xopt-in=kotlin.RequiresOptIn")
         jvmTarget = V.JVM
     }
 }
