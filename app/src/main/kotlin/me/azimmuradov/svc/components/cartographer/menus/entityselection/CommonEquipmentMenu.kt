@@ -33,9 +33,12 @@ val CommonEquipmentMenu: EntitySelectionMenu =
             Equipment.SimpleEquipment.Keg,
             Equipment.SimpleEquipment.OilMaker,
             Equipment.SimpleEquipment.Cask,
+
+            Equipment.SimpleEquipment.GardenPot,
             Equipment.SimpleEquipment.Heater,
             Equipment.SimpleEquipment.AutoGrabber,
             Equipment.SimpleEquipment.AutoPetter,
+
             Equipment.SimpleEquipment.CharcoalKiln,
             Equipment.SimpleEquipment.Crystalarium,
             Equipment.SimpleEquipment.Furnace,
@@ -50,7 +53,7 @@ val CommonEquipmentMenu: EntitySelectionMenu =
             Equipment.SimpleEquipment.BoneMill,
             Equipment.SimpleEquipment.GeodeCrusher,
             Equipment.SimpleEquipment.WoodChipper,
-            Equipment.SimpleEquipment.GardenPot,
+
             Equipment.SimpleEquipment.MiniJukebox,
             Equipment.SimpleEquipment.MiniObelisk,
             Equipment.SimpleEquipment.FarmComputer,
@@ -61,6 +64,11 @@ val CommonEquipmentMenu: EntitySelectionMenu =
             Equipment.SimpleEquipment.SewingMachine,
             Equipment.SimpleEquipment.Workbench,
             Equipment.SimpleEquipment.MiniShippingBin,
+
+            // TODO (?) : CrabPot,
+            // TODO (?) : Tapper,
+            // TODO (?) : HeavyTapper,
+
             Equipment.Chest(),
             Equipment.StoneChest(),
             Equipment.SimpleEquipment.JunimoChest,
