@@ -16,14 +16,15 @@
 
 package me.azimmuradov.svc.components.cartographer.menus.entityselection
 
-import me.azimmuradov.svc.components.cartographer.menus.menu
+import me.azimmuradov.svc.components.cartographer.menus.EntitySelectionMenu
 import me.azimmuradov.svc.engine.llsvc.entity.ids.Equipment
-import me.azimmuradov.svc.components.cartographer.menus.entityselection.EntitySelectionMenuTitle as T
+import me.azimmuradov.svc.utils.menu.menu
+import me.azimmuradov.svc.components.cartographer.menus.EntitySelectionRoot as Root
 
 
 // TODO : Add submenus
 val CommonEquipmentMenu: EntitySelectionMenu =
-    menu(title = T.CommonEquipment) {
+    menu(root = Root.CommonEquipment) {
         items(
             Equipment.SimpleEquipment.MayonnaiseMachine,
             Equipment.SimpleEquipment.BeeHouse,

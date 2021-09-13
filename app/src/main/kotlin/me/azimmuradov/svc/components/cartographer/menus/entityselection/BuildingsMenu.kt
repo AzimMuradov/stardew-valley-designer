@@ -16,14 +16,15 @@
 
 package me.azimmuradov.svc.components.cartographer.menus.entityselection
 
-import me.azimmuradov.svc.components.cartographer.menus.menu
+import me.azimmuradov.svc.components.cartographer.menus.EntitySelectionMenu
 import me.azimmuradov.svc.engine.llsvc.entity.ids.Building
-import me.azimmuradov.svc.components.cartographer.menus.entityselection.EntitySelectionMenuTitle as T
+import me.azimmuradov.svc.utils.menu.menu
+import me.azimmuradov.svc.components.cartographer.menus.EntitySelectionRoot as Root
 
 
 val BuildingsMenu: EntitySelectionMenu =
-    menu(title = T.Buildings) {
-        submenu(title = T.BuildingsBarns) {
+    menu(root = Root.Buildings) {
+        submenu(root = Root.BuildingsBarns) {
             items(
                 Building.SimpleBuilding.Barn1,
                 Building.SimpleBuilding.Barn2,
@@ -31,7 +32,7 @@ val BuildingsMenu: EntitySelectionMenu =
             )
         }
 
-        submenu(title = T.BuildingsCoops) {
+        submenu(root = Root.BuildingsCoops) {
             items(
                 Building.SimpleBuilding.Coop1,
                 Building.SimpleBuilding.Coop2,
@@ -39,14 +40,14 @@ val BuildingsMenu: EntitySelectionMenu =
             )
         }
 
-        submenu(title = T.BuildingsSheds) {
+        submenu(root = Root.BuildingsSheds) {
             items(
                 Building.SimpleBuilding.Shed1,
                 Building.Shed2(),
             )
         }
 
-        submenu(title = T.BuildingsCabins) {
+        submenu(root = Root.BuildingsCabins) {
             items(
                 Building.SimpleBuilding.StoneCabin1,
                 Building.SimpleBuilding.StoneCabin2,
@@ -60,7 +61,7 @@ val BuildingsMenu: EntitySelectionMenu =
             )
         }
 
-        submenu(title = T.BuildingsMagical) {
+        submenu(root = Root.BuildingsMagical) {
             items(
                 Building.SimpleBuilding.EarthObelisk,
                 Building.SimpleBuilding.WaterObelisk,

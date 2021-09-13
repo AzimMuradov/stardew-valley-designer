@@ -16,15 +16,16 @@
 
 package me.azimmuradov.svc.components.cartographer.menus.entityselection
 
-import me.azimmuradov.svc.components.cartographer.menus.menu
+import me.azimmuradov.svc.components.cartographer.menus.EntitySelectionMenu
 import me.azimmuradov.svc.engine.llsvc.entity.ids.Equipment
 import me.azimmuradov.svc.engine.llsvc.entity.ids.Floor
-import me.azimmuradov.svc.components.cartographer.menus.entityselection.EntitySelectionMenuTitle as T
+import me.azimmuradov.svc.utils.menu.menu
+import me.azimmuradov.svc.components.cartographer.menus.EntitySelectionRoot as Root
 
 
 val TerrainElementsMenu: EntitySelectionMenu =
-    menu(title = T.TerrainElements) {
-        submenu(title = T.TerrainElementsFloors) {
+    menu(root = Root.TerrainElements) {
+        submenu(root = Root.TerrainElementsFloors) {
             items(
                 Floor.WoodFloor,
                 Floor.RusticPlankFloor,
@@ -43,7 +44,7 @@ val TerrainElementsMenu: EntitySelectionMenu =
             )
         }
 
-        submenu(title = T.TerrainElementsFences) {
+        submenu(root = Root.TerrainElementsFences) {
             items(
                 Equipment.SimpleEquipment.Gate,
                 Equipment.SimpleEquipment.WoodFence,
@@ -53,7 +54,7 @@ val TerrainElementsMenu: EntitySelectionMenu =
             )
         }
 
-        submenu(title = T.TerrainElementsSigns) {
+        submenu(root = Root.TerrainElementsSigns) {
             items(
                 Equipment.SimpleEquipment.WoodSign,
                 Equipment.SimpleEquipment.StoneSign,
@@ -61,7 +62,7 @@ val TerrainElementsMenu: EntitySelectionMenu =
             )
         }
 
-        submenu(title = T.TerrainElementsLighting) {
+        submenu(root = Root.TerrainElementsLighting) {
             items(
                 Equipment.SimpleEquipment.Torch,
                 Equipment.SimpleEquipment.Campfire,

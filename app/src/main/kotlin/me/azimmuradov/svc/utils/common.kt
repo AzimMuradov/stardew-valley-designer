@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.components.cartographer.menus.entityselection
+package me.azimmuradov.svc.utils
 
-import me.azimmuradov.svc.components.cartographer.menus.EntitySelectionMenu
-import me.azimmuradov.svc.utils.menu.menu
-import me.azimmuradov.svc.components.cartographer.menus.EntitySelectionRoot as Root
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.unit.IntSize
 
 
-val FurnitureMenu: EntitySelectionMenu =
-    menu(root = Root.Furniture) {
-        // TODO
-    }
+val Size.ratio: Float get() = width / height
+
+val IntSize.ratio: Float get() = width.toFloat() / height.toFloat()

@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.components.cartographer.menus
+package me.azimmuradov.svc.utils.menu
 
 
-data class Menu<out Title, out V>(
-    val title: Title,
-    val elements: List<MenuElement<Title, V>>,
+data class Menu<out MenuRoot, out SubmenuRoot, out ItemValue>(
+    val root: MenuRoot,
+    val elements: List<MenuElement<SubmenuRoot, ItemValue>>,
 )
 
-sealed interface MenuElement<out Title, out V> {
+sealed interface MenuElement<out SubmenuRoot, out ItemValue> {
 
-    data class SubMenu<out Title, out V>(
-        val title: Title,
-        val elements: List<MenuElement<Title, V>>,
-    ) : MenuElement<Title, V>
+    data class Submenu<out SubmenuRoot, out ItemValue>(
+        val root: SubmenuRoot,
+        val elements: List<MenuElement<SubmenuRoot, ItemValue>>,
+    ) : MenuElement<SubmenuRoot, ItemValue>
 
-    data class Item<out Title, out V>(val value: V) : MenuElement<Title, V>
+    data class Item<out SubmenuRoot, out ItemValue>(
+        val value: ItemValue,
+    ) : MenuElement<SubmenuRoot, ItemValue>
 }

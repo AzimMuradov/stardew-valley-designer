@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.components.cartographer.menus.entityselection
+package me.azimmuradov.svc.components.cartographer.menus
 
-import me.azimmuradov.svc.components.cartographer.menus.Menu
-import me.azimmuradov.svc.components.cartographer.menus.MenuElement
-import me.azimmuradov.svc.components.cartographer.menus.MenuElement.Item
-import me.azimmuradov.svc.components.cartographer.menus.MenuElement.SubMenu
 import me.azimmuradov.svc.engine.llsvc.entity.SvcEntityType
 import me.azimmuradov.svc.engine.llsvc.entity.ids.SvcEntityId
+import me.azimmuradov.svc.utils.menu.Menu
+import me.azimmuradov.svc.utils.menu.MenuElement
+import me.azimmuradov.svc.utils.menu.MenuElement.Item
+import me.azimmuradov.svc.utils.menu.MenuElement.Submenu
 
 
-typealias EntitySelectionMenu = Menu<EntitySelectionMenuTitle, SvcEntityId<*>>
-typealias EntitySelectionMenuElement = MenuElement<EntitySelectionMenuTitle, SvcEntityId<*>>
-// typealias EntitySelectionSubMenu = SubMenu<EntitySelectionMenuTitle, SvcEntityId<*>>
+typealias EntitySelectionMenu = Menu<EntitySelectionRoot, EntitySelectionRoot, SvcEntityId<*>>
+typealias EntitySelectionMenuElement = MenuElement<EntitySelectionRoot, SvcEntityId<*>>
+// typealias EntitySelectionSubmenu = Submenu<EntitySelectionMenuTitle, SvcEntityId<*>>
 // typealias EntitySelectionItem = Item<EntitySelectionMenuTitle, SvcEntityId<*>>
 
-enum class EntitySelectionMenuTitle {
+enum class EntitySelectionRoot {
 
     // Buildings Menu
 
@@ -80,14 +80,14 @@ enum class EntitySelectionMenuTitle {
 
 fun EntitySelectionMenu.filterElements(
     disallowedTypes: List<SvcEntityType>,
-): EntitySelectionMenu = Menu(title, elements.mapNotNull { it.filter(disallowedTypes) })
+): EntitySelectionMenu = Menu(root, elements.mapNotNull { it.filter(disallowedTypes) })
 
 private fun EntitySelectionMenuElement.filter(
     disallowedTypes: List<SvcEntityType>,
 ): EntitySelectionMenuElement? = when (this) {
-    is SubMenu -> elements
+    is Submenu -> elements
         .mapNotNull { it.filter(disallowedTypes) }
         .takeIf(List<EntitySelectionMenuElement>::isNotEmpty)
-        ?.let { SubMenu(title, it) }
+        ?.let { Submenu(root, it) }
     is Item -> takeIf { it.value.type !in disallowedTypes }
 }

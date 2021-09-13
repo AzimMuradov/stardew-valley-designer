@@ -16,22 +16,23 @@
 
 package me.azimmuradov.svc.components.cartographer.menus.entityselection
 
-import me.azimmuradov.svc.components.cartographer.menus.menu
+import me.azimmuradov.svc.components.cartographer.menus.EntitySelectionMenu
 import me.azimmuradov.svc.engine.llsvc.entity.ids.Equipment
-import me.azimmuradov.svc.components.cartographer.menus.entityselection.EntitySelectionMenuTitle as T
+import me.azimmuradov.svc.utils.menu.menu
+import me.azimmuradov.svc.components.cartographer.menus.EntitySelectionRoot as Root
 
 
 val FarmElementsMenu: EntitySelectionMenu =
-    menu(title = T.FarmElements) {
-        submenu(title = T.FarmElementsCrops) {
+    menu(root = Root.FarmElements) {
+        submenu(root = Root.FarmElementsCrops) {
             // TODO
         }
 
-        submenu(title = T.FarmElementsForaging) {
+        submenu(root = Root.FarmElementsForaging) {
             // TODO
         }
 
-        submenu(title = T.FarmElementsScarecrows) {
+        submenu(root = Root.FarmElementsScarecrows) {
             items(
                 Equipment.SimpleEquipment.Scarecrow,
                 Equipment.SimpleEquipment.DeluxeScarecrow,
@@ -46,7 +47,7 @@ val FarmElementsMenu: EntitySelectionMenu =
             )
         }
 
-        submenu(title = T.FarmElementsSprinklers) {
+        submenu(root = Root.FarmElementsSprinklers) {
             items(
                 Equipment.SimpleEquipment.Sprinkler,
                 Equipment.SimpleEquipment.QualitySprinkler,
