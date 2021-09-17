@@ -14,13 +14,24 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.rectmap
+package me.azimmuradov.svc.engine.layout
+
+import me.azimmuradov.svc.engine.contains
+import me.azimmuradov.svc.engine.entity.EntityType
+import me.azimmuradov.svc.engine.rectmap.Coordinate
+import me.azimmuradov.svc.engine.rectmap.Rect
 
 
-/**
- * Rectangular object.
- */
-interface RectObject<out T> {
+open class LayoutRules internal constructor(
+    size: Rect,
+    val disallowedTypes: Set<EntityType>,
+    val disallowedTypesMap: Map<Coordinate, Set<EntityType>>,
+    val disallowedCoordinates: Set<Coordinate>,
+) {
 
-    val size: Rect
+    init {
+        require(disallowedTypesMap.keys in size && disallowedCoordinates in size) {
+            "Wrong `LayoutRules` definition"
+        }
+    }
 }

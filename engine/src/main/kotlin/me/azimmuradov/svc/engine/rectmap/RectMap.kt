@@ -16,9 +16,6 @@
 
 package me.azimmuradov.svc.engine.rectmap
 
-import me.azimmuradov.svc.engine.Coordinate
-import me.azimmuradov.svc.engine.Rect
-
 
 // TODO : Use a more efficient data structure
 

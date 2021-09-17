@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.rectmap
+package me.azimmuradov.svc.engine.layer
+
+import me.azimmuradov.svc.engine.entity.Entity
+import me.azimmuradov.svc.engine.entity.EntityType
+import me.azimmuradov.svc.engine.entity.ids.EntityId
+import me.azimmuradov.svc.engine.rectmap.MutableRectMap
 
 
-/**
- * Rectangular object.
- */
-interface RectObject<out T> {
+interface MutableLayer<EType : EntityType> :
+    Layer<EType>,
+    MutableRectMap<EntityId<EType>, Entity<EType>> {
 
-    val size: Rect
+    override val behaviour: MutableLayerBehaviour
 }

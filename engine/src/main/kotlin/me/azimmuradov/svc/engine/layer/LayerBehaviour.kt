@@ -14,13 +14,25 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.rectmap
+package me.azimmuradov.svc.engine.layer
+
+import me.azimmuradov.svc.engine.layer.LayerBehaviour.OnDisallowed
+import me.azimmuradov.svc.engine.rectmap.MutableRectMapBehaviour
+import me.azimmuradov.svc.engine.rectmap.RectMapBehaviour
 
 
-/**
- * Rectangular object.
- */
-interface RectObject<out T> {
+interface LayerBehaviour : RectMapBehaviour {
 
-    val size: Rect
+    val onDisallowed: OnDisallowed
+
+
+    enum class OnDisallowed {
+        SKIP,
+    }
+}
+
+
+interface MutableLayerBehaviour : LayerBehaviour, MutableRectMapBehaviour {
+
+    override var onDisallowed: OnDisallowed
 }

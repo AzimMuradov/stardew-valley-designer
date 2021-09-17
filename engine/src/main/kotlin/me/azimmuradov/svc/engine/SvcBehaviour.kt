@@ -14,13 +14,26 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.rectmap
+package me.azimmuradov.svc.engine
+
+import me.azimmuradov.svc.engine.SvcBehaviour.OnBetweenLayersConflict
+import me.azimmuradov.svc.engine.layer.LayerBehaviour
+import me.azimmuradov.svc.engine.layer.MutableLayerBehaviour
 
 
-/**
- * Rectangular object.
- */
-interface RectObject<out T> {
+interface SvcBehaviour : LayerBehaviour {
 
-    val size: Rect
+    val onBetweenLayersConflict: OnBetweenLayersConflict
+
+
+    enum class OnBetweenLayersConflict {
+        SKIP,
+        OVERWRITE,
+    }
+}
+
+
+interface MutableSvcBehaviour : SvcBehaviour, MutableLayerBehaviour {
+
+    override var onBetweenLayersConflict: OnBetweenLayersConflict
 }

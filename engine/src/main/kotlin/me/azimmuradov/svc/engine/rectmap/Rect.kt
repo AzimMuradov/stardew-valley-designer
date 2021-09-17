@@ -17,10 +17,10 @@
 package me.azimmuradov.svc.engine.rectmap
 
 
-/**
- * Rectangular object.
- */
-interface RectObject<out T> {
+// TODO : Use inline classes
 
-    val size: Rect
-}
+
+/**
+ * Rectangle with no coordinate to place.
+ */
+data class Rect(val w: Int, val h: Int)

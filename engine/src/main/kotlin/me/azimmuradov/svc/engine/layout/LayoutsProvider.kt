@@ -14,13 +14,24 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.rectmap
+package me.azimmuradov.svc.engine.layout
+
+import me.azimmuradov.svc.engine.layout.LayoutsProvider.LayoutType.BigShed
+import me.azimmuradov.svc.engine.layout.LayoutsProvider.LayoutType.Shed
+import me.azimmuradov.svc.engine.layout.layouts.BigShedLayout
+import me.azimmuradov.svc.engine.layout.layouts.ShedLayout
 
 
-/**
- * Rectangular object.
- */
-interface RectObject<out T> {
+object LayoutsProvider {
 
-    val size: Rect
+    fun layoutOf(type: LayoutType): Layout = when (type) {
+        Shed -> ShedLayout
+        BigShed -> BigShedLayout
+    }
+
+
+    enum class LayoutType {
+        Shed,
+        BigShed,
+    }
 }

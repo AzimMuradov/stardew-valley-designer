@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.rectmap
+package me.azimmuradov.svc.engine.entity
+
+import me.azimmuradov.svc.engine.entity.ids.EntityId
+import me.azimmuradov.svc.engine.rectmap.Rect
+import me.azimmuradov.svc.engine.rectmap.RectObject
 
 
-/**
- * Rectangular object.
- */
-interface RectObject<out T> {
+data class Entity<out EType : EntityType>(
+    val id: EntityId<EType>,
+) : RectObject<EntityId<EType>> {
 
-    val size: Rect
+    override val size: Rect = id.size
 }

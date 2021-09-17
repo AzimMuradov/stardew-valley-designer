@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.rectmap
+package me.azimmuradov.svc.engine.entity.ids
+
+import me.azimmuradov.svc.engine.rectmap.Rect
 
 
-/**
- * Rectangular object.
- */
-interface RectObject<out T> {
+internal object RectsProvider {
 
-    val size: Rect
+    fun rectOf(w: Int, h: Int) = rects.getOrPut(w, ::mutableMapOf).getOrPut(h) { Rect(w, h) }
+
+    fun Rect.rotated() = rectOf(w = h, h = w)
+
+    private val rects: MutableMap<Int, MutableMap<Int, Rect>> = mutableMapOf()
 }

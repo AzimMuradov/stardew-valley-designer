@@ -17,10 +17,12 @@
 package me.azimmuradov.svc.engine.rectmap
 
 
-/**
- * Rectangular object.
- */
-interface RectObject<out T> {
+// TODO : Use inline classes
 
-    val size: Rect
-}
+
+/**
+ * 2D coordinate.
+ */
+data class Coordinate(val x: Int, val y: Int)
+
+fun xy(x: Int, y: Int): Coordinate = Coordinate(x, y)

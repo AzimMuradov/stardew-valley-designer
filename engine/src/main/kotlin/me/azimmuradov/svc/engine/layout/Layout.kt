@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.rectmap
+package me.azimmuradov.svc.engine.layout
+
+import me.azimmuradov.svc.engine.entity.EntityType
+import me.azimmuradov.svc.engine.rectmap.Coordinate
+import me.azimmuradov.svc.engine.rectmap.Rect
 
 
-/**
- * Rectangular object.
- */
-interface RectObject<out T> {
-
-    val size: Rect
-}
+class Layout(
+    val size: Rect,
+    disallowedTypes: Set<EntityType> = setOf(),
+    disallowedTypesMap: Map<Coordinate, Set<EntityType>> = mapOf(),
+    disallowedCoordinates: Set<Coordinate> = setOf(),
+) : LayoutRules(size, disallowedTypes, disallowedTypesMap, disallowedCoordinates)
