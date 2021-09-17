@@ -3,7 +3,7 @@ object V {
     // Plugins
 
     const val P_KOTLIN: String = "1.5.30"
-    const val P_COMPOSE: String = "1.0.0-alpha4-build344"
+    const val P_COMPOSE: String = "1.0.0-alpha4-build348"
 
 
     // Kotlin Compile
