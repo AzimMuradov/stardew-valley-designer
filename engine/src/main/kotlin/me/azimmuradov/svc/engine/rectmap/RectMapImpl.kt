@@ -17,177 +17,79 @@
 package me.azimmuradov.svc.engine.rectmap
 
 import me.azimmuradov.svc.engine.contains
-import me.azimmuradov.svc.engine.coordinatesFrom
-import me.azimmuradov.svc.engine.rectmap.*
-import me.azimmuradov.svc.engine.rectmap.RectMapBehaviour.OnConflict
-import me.azimmuradov.svc.engine.rectmap.RectMapBehaviour.OnOutOfBounds
 
 
-// TODO : Use a more efficient data structure
+fun <T> rectMapOf(size: Rect): RectMap<T> = RectMapImpl(MutableRectMapImpl(size))
 
-
-fun <T, RO : RectObject<T>> mutableRectMapOf(
-    rect: Rect,
-    behaviour: RectMapBehaviour = DefaultRectMapBehaviour.rewriter,
-): MutableRectMap<T, RO> = MutableRectMapImpl(rect, behaviour)
-
-
-object DefaultRectMapBehaviour {
-
-    val skipper: RectMapBehaviour = MutableRectMapBehaviourImpl(
-        onOutOfBounds = OnOutOfBounds.SKIP,
-        onConflict = OnConflict.SKIP,
-    )
-
-    val rewriter: RectMapBehaviour = MutableRectMapBehaviourImpl(
-        onOutOfBounds = OnOutOfBounds.SKIP,
-        onConflict = OnConflict.OVERWRITE,
-    )
-}
-
-fun RectMapBehaviour.toMutableRectMapBehaviour(): MutableRectMapBehaviour = MutableRectMapBehaviourImpl(
-    onOutOfBounds,
-    onConflict,
-)
+fun <T> mutableRectMapOf(size: Rect): MutableRectMap<T> = MutableRectMapImpl(size)
 
 
 // Actual private implementations
 
-private class RectMapImpl<out T, out RO : RectObject<T>>(rectMap: RectMap<T, RO>) : RectMap<T, RO> by rectMap
+private class RectMapImpl<out T>(rectMap: RectMap<T>) : RectMap<T> by rectMap
 
-private class MutableRectMapImpl<T, RO : RectObject<T>>(
-    override val rect: Rect,
-    behaviour: RectMapBehaviour,
-) : MutableRectMap<T, RO> {
+private class MutableRectMapImpl<T>(
+    override val size: Rect,
+) : MutableRectMap<T> {
 
-    override val behaviour = behaviour.toMutableRectMapBehaviour()
-
-    private val map = mutableMapOf<Coordinate, RO>()
-    private val generatedMap = mutableMapOf<Coordinate, RectObjectHolder<T, RO>>()
+    private val map = mutableMapOf<Coordinate, PlacedRectObject<T>>()
 
 
     // Query Operations
 
-    override operator fun get(key: Coordinate) = generatedMap[key]?.ro
+    override operator fun get(c: Coordinate) = map[c]
 
 
     // Bulk Query Operations
 
-    override fun getAll(keys: Iterable<Coordinate>) = keys
-        .mapNotNullTo(mutableSetOf(), generatedMap::get)
-        .map(RectObjectHolder<T, RO>::ro)
+    override fun getAll(cs: Iterable<Coordinate>) = cs
+        .mapNotNullTo(mutableSetOf(), map::get)
+        .toList()
 
 
     // Views
 
-    override val keys get() = map.keys
-
-    override val values get() = map.values
-
-    override val entries get() = map.entries
+    override val occupiedCoordinates: Set<Coordinate> get() = map.keys
 
 
     // Modification Operations
 
-    override fun put(key: Coordinate, value: RO) = withChecks(key, value, onFail = { null }) {
-        putUnsafe(key, value)
+    override fun put(obj: PlacedRectObject<T>): List<PlacedRectObject<T>> {
+        val (_, _, coordinates) = obj
+        val (min, max) = obj.minMaxCorners()
+
+        requireNotOutOfBounds(min in size && max in size)
+
+        val replaced = removeAll(coordinates)
+        map.putAll(coordinates.associateWith { obj })
+
+        return replaced
     }
 
-    override fun remove(key: Coordinate) = generatedMap[key]?.apply {
-        map.remove(source)
-        generatedMap.removeAll(coordinates)
-    }?.ro
+    override fun remove(c: Coordinate) = map[c]?.also { map.removeAll(it.coordinates) }
 
 
     // Bulk Modification Operations
 
-    override fun putAll(from: Map<out Coordinate, RO>) {
-        for ((key, value) in from) {
-            put(key, value)
-        }
-    }
+    override fun putAll(objs: Iterable<PlacedRectObject<T>>) = objs.flatMap(this::put).toList()
 
-    override fun removeAll(keys: Iterable<Coordinate>) {
-        val setOfRoh = keys.mapNotNull(generatedMap::get).toSet()
-        for ((_, source, coordinates) in setOfRoh) {
-            map.remove(source)
-            generatedMap.removeAll(coordinates)
-        }
-    }
+    override fun removeAll(cs: Iterable<Coordinate>) = cs.mapNotNull(this::remove)
 
-    override fun clear() {
-        map.clear()
-        generatedMap.clear()
-    }
+    override fun clear() = map.clear()
 
 
-    // Utilities
+    companion object {
 
-    private fun putUnsafe(key: Coordinate, value: RO): RO? {
-        val retValue = map.put(key, value)
+        fun PlacedRectObject<*>.minMaxCorners(): Pair<Coordinate, Coordinate> {
+            val (x, y) = place
+            val (w, h) = rectObj.size
 
-        val roh = RectObjectHolder(ro = value, source = key)
-        generatedMap.putAll(roh.coordinates.associateWith { roh })
-
-        return retValue
-    }
-
-    private inline fun <E> withChecks(
-        key: Coordinate, value: RO,
-        onFail: () -> E,
-        onSuccess: () -> E,
-    ): E {
-        val (min, max) = run {
-            val (x, y) = key
-            val (w, h) = value.size
-
-            key to xy(x + w - 1, y + h - 1)
-        }
-        val coordinates = value.size.coordinatesFrom(key)
-
-
-        // Check out of bounds
-
-        if (!(min in rect && max in rect)) {
-            return when (behaviour.onOutOfBounds) {
-                OnOutOfBounds.SKIP -> onFail()
-            }
+            return place to xy(x + w - 1, y + h - 1)
         }
 
-        // Check conflicts
-
-        if (coordinates.any(generatedMap::contains)) {
-            return when (behaviour.onConflict) {
-                OnConflict.SKIP -> onFail()
-                OnConflict.OVERWRITE -> {
-                    removeAll(coordinates)
-                    onSuccess()
-                }
-            }
-        }
-
-        return onSuccess()
+        fun requireNotOutOfBounds(value: Boolean) = require(value) { TODO() }
     }
 }
 
 
-private data class MutableRectMapBehaviourImpl(
-    override var onOutOfBounds: OnOutOfBounds,
-    override var onConflict: OnConflict,
-) : MutableRectMapBehaviour
-
-private data class RectObjectHolder<out T, out RO : RectObject<T>>(
-    val ro: RO,
-    val source: Coordinate,
-) {
-
-    val coordinates: List<Coordinate> by lazy { ro.size.coordinatesFrom(source) }
-
-    operator fun component3() = coordinates
-}
-
-private fun <K> MutableMap<K, *>.removeAll(keys: Iterable<K>) {
-    for (k in keys) {
-        remove(k)
-    }
-}
+private fun <K> MutableMap<K, *>.removeAll(keys: Iterable<K>) = keys.forEach(this::remove)

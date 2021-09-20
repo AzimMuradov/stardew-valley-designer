@@ -22,24 +22,24 @@ import me.azimmuradov.svc.engine.layer.LayerType.*
 
 sealed interface LayerType<out EType : EntityType> {
 
-    object FloorLayer : LayerType<FloorType>
+    object Floor : LayerType<FloorType>
 
-    object FloorFurnitureLayer : LayerType<FloorFurnitureType>
+    object FloorFurniture : LayerType<FloorFurnitureType>
 
-    object ObjectLayer : LayerType<ObjectType>
+    object Object : LayerType<ObjectType>
 
-    object EntityWithoutFloorLayer : LayerType<EntityWithoutFloorType>
+    object EntityWithoutFloor : LayerType<EntityWithoutFloorType>
 
 
     companion object {
 
-        val all = listOf(FloorLayer, FloorFurnitureLayer, ObjectLayer, EntityWithoutFloorLayer)
+        val all = listOf(Floor, FloorFurniture, Object, EntityWithoutFloor)
     }
 }
 
 fun EntityType.toLayerType() = when (this) {
-    FloorType -> FloorLayer
-    FloorFurnitureType -> FloorFurnitureLayer
-    is ObjectType -> ObjectLayer
-    is EntityWithoutFloorType -> EntityWithoutFloorLayer
+    FloorType -> Floor
+    FloorFurnitureType -> FloorFurniture
+    is ObjectType -> Object
+    is EntityWithoutFloorType -> EntityWithoutFloor
 }

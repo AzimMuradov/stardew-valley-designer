@@ -16,16 +16,13 @@
 
 package me.azimmuradov.svc.engine.layer
 
-import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.EntityType
 import me.azimmuradov.svc.engine.entity.ids.EntityId
 import me.azimmuradov.svc.engine.layout.LayoutRules
 import me.azimmuradov.svc.engine.rectmap.RectMap
 
 
-interface Layer<out EType : EntityType> : RectMap<EntityId<EType>, Entity<EType>> {
+interface Layer<out EType : EntityType> : RectMap<EntityId<EType>> {
 
     val layoutRules: LayoutRules
-
-    override val behaviour: LayerBehaviour
 }

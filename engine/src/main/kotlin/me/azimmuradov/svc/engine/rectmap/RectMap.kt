@@ -17,38 +17,25 @@
 package me.azimmuradov.svc.engine.rectmap
 
 
-// TODO : Use a more efficient data structure
-
-
 /**
  * Rectangular map that contains rectangular objects.
  */
-interface RectMap<out T, out RO : RectObject<T>> {
+interface RectMap<out T> {
 
-    val rect: Rect // != size (for compatability with the `Map` interface)
-
-    val behaviour: RectMapBehaviour
+    val size: Rect
 
 
     // Query Operations
 
-    operator fun get(key: Coordinate): RO?
+    operator fun get(c: Coordinate): PlacedRectObject<T>?
 
 
     // Bulk Query Operations
 
-    fun getAll(keys: Iterable<Coordinate>): List<RO>
+    fun getAll(cs: Iterable<Coordinate>): List<PlacedRectObject<T>>
 
 
     // Views
 
-    val keys: Set<Coordinate>
-
-    val values: Collection<RO>
-
-    val entries: Set<Map.Entry<Coordinate, RO>>
+    val occupiedCoordinates: Set<Coordinate>
 }
-
-val RectMap<*, *>.objsNumber: Int get() = keys.size
-
-fun RectMap<*, *>.isEmpty(): Boolean = keys.isEmpty()

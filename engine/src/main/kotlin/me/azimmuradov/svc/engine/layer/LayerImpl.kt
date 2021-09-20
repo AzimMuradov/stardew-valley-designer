@@ -16,45 +16,18 @@
 
 package me.azimmuradov.svc.engine.layer
 
-import me.azimmuradov.svc.engine.coordinatesFrom
-import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.EntityType
+import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.entity.ids.EntityId
-import me.azimmuradov.svc.engine.layer.LayerBehaviour.OnDisallowed
 import me.azimmuradov.svc.engine.layout.Layout
-import me.azimmuradov.svc.engine.rectmap.Coordinate
 import me.azimmuradov.svc.engine.rectmap.MutableRectMap
-import me.azimmuradov.svc.engine.rectmap.RectMapBehaviour.OnConflict
-import me.azimmuradov.svc.engine.rectmap.RectMapBehaviour.OnOutOfBounds
+import me.azimmuradov.svc.engine.rectmap.PlacedRectObject
 import me.azimmuradov.svc.engine.rectmap.mutableRectMapOf
 
 
-fun <EType : EntityType> mutableLayerOf(
-    layout: Layout,
-    behaviour: LayerBehaviour = DefaultLayerBehaviour.rewriter,
-): MutableLayer<EType> = MutableLayerImpl(layout, behaviour)
+fun <EType : EntityType> layerOf(layout: Layout): Layer<EType> = LayerImpl(MutableLayerImpl(layout))
 
-
-object DefaultLayerBehaviour {
-
-    val skipper: LayerBehaviour = MutableLayerBehaviourImpl(
-        onOutOfBounds = OnOutOfBounds.SKIP,
-        onConflict = OnConflict.SKIP,
-        onDisallowed = OnDisallowed.SKIP,
-    )
-
-    val rewriter: LayerBehaviour = MutableLayerBehaviourImpl(
-        onOutOfBounds = OnOutOfBounds.SKIP,
-        onConflict = OnConflict.OVERWRITE,
-        onDisallowed = OnDisallowed.SKIP,
-    )
-}
-
-fun LayerBehaviour.toMutableLayerBehaviour(): MutableLayerBehaviour = MutableLayerBehaviourImpl(
-    onOutOfBounds,
-    onConflict,
-    onDisallowed,
-)
+fun <EType : EntityType> mutableLayerOf(layout: Layout): MutableLayer<EType> = MutableLayerImpl(layout)
 
 
 // Actual private implementations
@@ -63,59 +36,30 @@ private class LayerImpl<EType : EntityType>(layer: Layer<EType>) : Layer<EType> 
 
 private class MutableLayerImpl<EType : EntityType> private constructor(
     layout: Layout,
-    behaviour: LayerBehaviour,
-    private val rectMap: MutableRectMap<EntityId<EType>, Entity<EType>>,
-) : MutableLayer<EType>, MutableRectMap<EntityId<EType>, Entity<EType>> by rectMap {
+    private val rectMap: MutableRectMap<EntityId<EType>>,
+) : MutableLayer<EType>, MutableRectMap<EntityId<EType>> by rectMap {
 
-    override val rect = layout.size
+    override val size = layout.size
 
     override val layoutRules = layout
 
-    override val behaviour = behaviour.toMutableLayerBehaviour()
-
-    constructor(layout: Layout, behaviour: LayerBehaviour) :
-        this(layout, behaviour, mutableRectMapOf(layout.size))
+    constructor(layout: Layout) : this(layout, mutableRectMapOf(layout.size))
 
 
-    // Modification operations with additional `Layer`-specific checks
+    override fun put(obj: PlacedEntity<EType>): List<PlacedRectObject<EntityId<EType>>> {
+        val (entity, _, coordinates) = obj
+        val (id, _) = entity
 
-    override fun put(key: Coordinate, value: Entity<EType>) = withChecks(key, value, onFail = { null }) {
-        rectMap.put(key, value)
-    }
+        requireNotDisallowed(id.type !in layoutRules.disallowedTypes)
+        requireNotDisallowed(coordinates.mapNotNull(layoutRules.disallowedTypesMap::get).none { id.type in it })
+        requireNotDisallowed(coordinates.none(layoutRules.disallowedCoordinates::contains))
 
-    override fun putAll(from: Map<out Coordinate, Entity<EType>>) {
-        for ((key, value) in from) {
-            put(key, value)
-        }
+        return rectMap.put(obj)
     }
 
 
-    // Utilities
+    companion object {
 
-    private inline fun <T> withChecks(
-        key: Coordinate, value: Entity<EType>,
-        onFail: () -> T,
-        onSuccess: () -> T,
-    ): T {
-        val coordinates = value.size.coordinatesFrom(key)
-
-        return if (
-            value.id.type in layoutRules.disallowedTypes ||
-            coordinates.mapNotNull(layoutRules.disallowedTypesMap::get).any { value.id.type in it } ||
-            coordinates.any(layoutRules.disallowedCoordinates::contains)
-        ) {
-            when (behaviour.onDisallowed) {
-                OnDisallowed.SKIP -> onFail()
-            }
-        } else {
-            onSuccess()
-        }
+        fun requireNotDisallowed(value: Boolean) = require(value) { TODO() }
     }
 }
-
-
-private data class MutableLayerBehaviourImpl(
-    override var onOutOfBounds: OnOutOfBounds,
-    override var onConflict: OnConflict,
-    override var onDisallowed: OnDisallowed,
-) : MutableLayerBehaviour

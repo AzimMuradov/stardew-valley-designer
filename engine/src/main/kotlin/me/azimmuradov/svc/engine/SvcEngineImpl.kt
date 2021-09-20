@@ -18,136 +18,97 @@
 
 package me.azimmuradov.svc.engine
 
-import me.azimmuradov.svc.engine.SvcBehaviour.OnBetweenLayersConflict
 import me.azimmuradov.svc.engine.entity.*
-import me.azimmuradov.svc.engine.layer.LayerBehaviour.OnDisallowed
-import me.azimmuradov.svc.engine.layer.LayerType
-import me.azimmuradov.svc.engine.layer.MutableLayer
-import me.azimmuradov.svc.engine.layer.mutableLayerOf
-import me.azimmuradov.svc.engine.layer.toLayerType
+import me.azimmuradov.svc.engine.layer.*
 import me.azimmuradov.svc.engine.layout.Layout
 import me.azimmuradov.svc.engine.rectmap.Coordinate
-import me.azimmuradov.svc.engine.rectmap.RectMapBehaviour.OnConflict
-import me.azimmuradov.svc.engine.rectmap.RectMapBehaviour.OnOutOfBounds
 
 
-fun svcEngineOf(
-    layout: Layout,
-    behaviour: SvcBehaviour = DefaultSvcBehaviour.rewriter,
-): SvcEngine = SvcEngineImpl(layout, behaviour)
-
-
-object DefaultSvcBehaviour {
-
-    val skipper: SvcBehaviour = MutableSvcBehaviourImpl(
-        onOutOfBounds = OnOutOfBounds.SKIP,
-        onConflict = OnConflict.SKIP,
-        onDisallowed = OnDisallowed.SKIP,
-        onBetweenLayersConflict = OnBetweenLayersConflict.SKIP,
-    )
-
-    val rewriter: SvcBehaviour = MutableSvcBehaviourImpl(
-        onOutOfBounds = OnOutOfBounds.SKIP,
-        onConflict = OnConflict.OVERWRITE,
-        onDisallowed = OnDisallowed.SKIP,
-        onBetweenLayersConflict = OnBetweenLayersConflict.OVERWRITE,
-    )
-}
-
-fun SvcBehaviour.toMutableSvcBehaviour(): MutableSvcBehaviour = MutableSvcBehaviourImpl(
-    onOutOfBounds,
-    onConflict,
-    onDisallowed,
-    onBetweenLayersConflict,
-)
+fun svcEngineOf(layout: Layout): SvcEngine = SvcEngineImpl(layout)
 
 
 // Actual private implementations
 
 private class SvcEngineImpl(
     override val layout: Layout,
-    behaviour: SvcBehaviour,
 ) : SvcEngine {
 
-    override val behaviour: MutableSvcBehaviour = behaviour.toMutableSvcBehaviour()
+    override fun layerOf(type: LayerType<*>) = layerByLayerType.getValue(type)
 
-
-    override fun layerOf(type: LayerType<*>) = _layerOf(type)
-
-    private fun _layerOf(type: LayerType<*>) = _layers[LayerType.all.indexOf(type)]
-
-    private val _layers: List<MutableLayer<*>> = listOf(
-        mutableLayerOf<FloorType>(layout, behaviour),
-        mutableLayerOf<FloorFurnitureType>(layout, behaviour),
-        mutableLayerOf<ObjectType>(layout, behaviour),
-        mutableLayerOf<EntityWithoutFloorType>(layout, behaviour),
+    val layerByLayerType = mapOf(
+        LayerType.Floor to mutableLayerOf<FloorType>(layout),
+        LayerType.FloorFurniture to mutableLayerOf<FloorFurnitureType>(layout),
+        LayerType.Object to mutableLayerOf<ObjectType>(layout),
+        LayerType.EntityWithoutFloor to mutableLayerOf<EntityWithoutFloorType>(layout),
     )
-
-    private val Entity<*>.layer get() = _layerOf(id.type.toLayerType())
 
 
     // Operations
 
-    override fun get(type: LayerType<*>, key: Coordinate) = layerOf(type)[key]
+    override fun get(type: LayerType<*>, c: Coordinate) = layerOf(type)[c]
 
-    override fun put(key: Coordinate, value: Entity<*>) = withChecks(key, value, onFail = { null }) {
-        (value.layer as MutableLayer<in EntityType>).put(key, value)
-    }
+    override fun put(obj: PlacedEntity<*>): Map<LayerType<*>, List<PlacedEntity<*>>> {
+        val (entity, _, coordinates) = obj
+        val (id, _) = entity
 
-    override fun remove(type: LayerType<*>, key: Coordinate) = _layerOf(type).remove(key)
+        val entityWithFloorGroup = listOf(
+            LayerType.Floor,
+            LayerType.FloorFurniture,
+            LayerType.Object,
+        )
+        val entityWithoutFloorGroup = listOf(LayerType.EntityWithoutFloor)
 
-
-    // Bulk Operations
-
-    override fun getAll(type: LayerType<*>, keys: Iterable<Coordinate>) = layerOf(type).getAll(keys)
-
-    override fun putAll(from: Map<Coordinate, Entity<*>>) = from.mapNotNull { (key, value) -> put(key, value) }
-
-    override fun removeAll(type: LayerType<*>, keys: Iterable<Coordinate>) = _layerOf(type).removeAll(keys)
-
-    override fun clear(type: LayerType<*>) = _layerOf(type).clear()
+        val eLayerType = id.type.toLayerType()
+        val eLayer = layerOf(eLayerType)
 
 
-    // Utilities
+        val replaced = LayerType.all.associateWith { mutableListOf<PlacedEntity<*>>() }
 
-    // TODO
-    private inline fun <T> withChecks(
-        key: Coordinate, value: Entity<*>,
-        onFail: () -> T,
-        onSuccess: () -> T,
-    ): T {
-        val coordinates = value.size.coordinatesFrom(key)
-        val type = value.id.type
-
-        for ((i, layer) in _layers.withIndex()) {
-            if (blcChecks[i](type, coordinates)) {
-                when (behaviour.onBetweenLayersConflict) {
-                    OnBetweenLayersConflict.SKIP -> return onFail()
-                    OnBetweenLayersConflict.OVERWRITE -> layer.removeAll(coordinates)
+        when (eLayerType) {
+            LayerType.Object, LayerType.Floor, LayerType.FloorFurniture -> {
+                if (coordinates.any(entityWithoutFloorGroup.map(::layerOf).map(Layer<*>::occupiedCoordinates)
+                        .flatten()::contains)
+                ) {
+                    replaced.getValue(LayerType.EntityWithoutFloor) +=
+                        layerOf(LayerType.EntityWithoutFloor).removeAll(coordinates)
+                }
+            }
+            LayerType.EntityWithoutFloor -> {
+                if (coordinates.any(entityWithFloorGroup.map(::layerOf).map(Layer<*>::occupiedCoordinates)
+                        .flatten()::contains)
+                ) {
+                    replaced.getValue(LayerType.Floor) +=
+                        layerOf(LayerType.Floor).removeAll(coordinates)
+                    replaced.getValue(LayerType.FloorFurniture) +=
+                        layerOf(LayerType.FloorFurniture).removeAll(coordinates)
+                    replaced.getValue(LayerType.Object) +=
+                        layerOf(LayerType.Object).removeAll(coordinates)
                 }
             }
         }
 
-        return onSuccess()
+        val replacedInELayer = try {
+            (eLayer as MutableLayer<in EntityType>).put(obj)
+        } catch (e: IllegalArgumentException) {
+            putAll(replaced.values.flatten())
+            throw e
+        }
+
+        replaced.getValue(eLayerType) += replacedInELayer
+
+        return replaced
     }
 
-    private val blcChecks: List<Check> = listOf<SpecificCheck>(
-        { type -> type == FloorType || type is EntityWithoutFloorType },
-        { type -> type == FloorFurnitureType || type is EntityWithoutFloorType },
-        { type -> type is ObjectType || type is EntityWithoutFloorType },
-        { true },
-    ).mapIndexed { i, specificCheck ->
-        { type, cs -> specificCheck(type) && cs.any(_layers[i].keys::contains) }
-    }
+    override fun remove(type: LayerType<*>, c: Coordinate) = layerOf(type).remove(c)
+
+
+    // Bulk Operations
+
+    override fun getAll(type: LayerType<*>, cs: Iterable<Coordinate>) = layerOf(type).getAll(cs)
+
+    override fun putAll(objs: Iterable<PlacedEntity<*>>) = objs.map(this::put).reduce { acc, b -> acc.plus(b) }
+
+    override fun removeAll(type: LayerType<*>, cs: Iterable<Coordinate>) = layerOf(type).removeAll(cs)
+
+    override fun clear(type: LayerType<*>) = layerOf(type).clear()
 }
-
-
-private typealias SpecificCheck = (EntityType) -> Boolean
-private typealias Check = (EntityType, List<Coordinate>) -> Boolean
-
-private data class MutableSvcBehaviourImpl(
-    override var onOutOfBounds: OnOutOfBounds,
-    override var onConflict: OnConflict,
-    override var onDisallowed: OnDisallowed,
-    override var onBetweenLayersConflict: OnBetweenLayersConflict,
-) : MutableSvcBehaviour

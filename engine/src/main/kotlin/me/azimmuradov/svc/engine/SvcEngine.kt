@@ -16,7 +16,7 @@
 
 package me.azimmuradov.svc.engine
 
-import me.azimmuradov.svc.engine.entity.Entity
+import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.layer.Layer
 import me.azimmuradov.svc.engine.layer.LayerType
 import me.azimmuradov.svc.engine.layout.Layout
@@ -27,27 +27,41 @@ interface SvcEngine {
 
     val layout: Layout
 
-    val behaviour: MutableSvcBehaviour
-
     fun layerOf(type: LayerType<*>): Layer<*>
 
 
     // Operations
 
-    fun get(type: LayerType<*>, key: Coordinate): Entity<*>?
+    fun get(type: LayerType<*>, c: Coordinate): PlacedEntity<*>?
 
-    fun put(key: Coordinate, value: Entity<*>): Entity<*>?
+    fun put(obj: PlacedEntity<*>): Map<LayerType<*>, List<PlacedEntity<*>>>
 
-    fun remove(type: LayerType<*>, key: Coordinate): Entity<*>?
+    fun remove(type: LayerType<*>, c: Coordinate): PlacedEntity<*>?
 
 
     // Bulk Operations
 
-    fun getAll(type: LayerType<*>, keys: Iterable<Coordinate>): List<Entity<*>>
+    fun getAll(type: LayerType<*>, cs: Iterable<Coordinate>): List<PlacedEntity<*>>
 
-    fun putAll(from: Map<Coordinate, Entity<*>>): List<Entity<*>>
+    fun putAll(objs: Iterable<PlacedEntity<*>>): Map<LayerType<*>, List<PlacedEntity<*>>>
 
-    fun removeAll(type: LayerType<*>, keys: Iterable<Coordinate>)
+    fun removeAll(type: LayerType<*>, cs: Iterable<Coordinate>): List<PlacedEntity<*>>
 
     fun clear(type: LayerType<*>)
 }
+
+
+fun SvcEngine.get(c: Coordinate): Map<LayerType<*>, PlacedEntity<*>?> =
+    LayerType.all.associateWith { get(it, c) }
+
+fun SvcEngine.remove(c: Coordinate): Map<LayerType<*>, PlacedEntity<*>?> =
+    LayerType.all.associateWith { remove(it, c) }
+
+
+fun SvcEngine.getAll(cs: Iterable<Coordinate>): Map<LayerType<*>, List<PlacedEntity<*>>> =
+    LayerType.all.associateWith { getAll(it, cs) }
+
+fun SvcEngine.removeAll(cs: Iterable<Coordinate>): Map<LayerType<*>, List<PlacedEntity<*>>> =
+    LayerType.all.associateWith { removeAll(it, cs) }
+
+fun SvcEngine.clear() = LayerType.all.forEach(this::clear)

@@ -17,41 +17,27 @@
 package me.azimmuradov.svc.engine.rectmap
 
 
-// TODO : Use a more efficient data structure
-
-
 /**
  * Mutable rectangular map that contains rectangular objects.
  */
-interface MutableRectMap<T, RO : RectObject<T>> : RectMap<T, RO> {
-
-    override val behaviour: MutableRectMapBehaviour
-
+interface MutableRectMap<T> : RectMap<T> {
 
     // Modification Operations
 
-    fun put(key: Coordinate, value: RO): RO?
+    fun put(obj: PlacedRectObject<T>): List<PlacedRectObject<T>>
 
-    fun remove(key: Coordinate): RO?
+    fun remove(c: Coordinate): PlacedRectObject<T>?
 
 
     // Bulk Modification Operations
 
-    fun putAll(from: Map<out Coordinate, RO>)
+    fun putAll(objs: Iterable<PlacedRectObject<T>>): List<PlacedRectObject<T>>
 
-    fun removeAll(keys: Iterable<Coordinate>)
+    fun removeAll(cs: Iterable<Coordinate>): List<PlacedRectObject<T>>
 
     fun clear()
 }
 
-operator fun <T, RO : RectObject<T>> MutableRectMap<T, RO>.set(key: Coordinate, value: RO) {
-    put(key, value)
+operator fun <T> MutableRectMap<T>.set(key: Coordinate, value: RectObject<T>) {
+    put(PlacedRectObject(rectObj = value, place = key))
 }
-
-fun <T, RO : RectObject<T>> MutableRectMap<T, RO>.move(oldKey: Coordinate, newKey: Coordinate): RO? =
-    get(oldKey)?.let { value ->
-        put(newKey, value).also { if (get(newKey) == null) put(oldKey, value) }
-    }
-
-// TODO
-// fun <T, RO : RectObject<T>> MutableRectMap<T, RO>.moveAll(oldKeysToNewKeys: Map<Coordinate, Coordinate>)

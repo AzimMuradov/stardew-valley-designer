@@ -37,15 +37,6 @@ internal inline fun unpackInt1(value: Long) = (value shr 32).toInt()
 internal inline fun unpackInt2(value: Long) = (value and 0xFFFFFFFF).toInt()
 
 
-internal fun Rect.coordinatesFrom(c: Coordinate): List<Coordinate> {
-    val (x, y) = c
-
-    val xs = x until x + w
-    val ys = y until y + h
-
-    return xs.cartesianProduct(ys).map { (x, y) -> xy(x, y) }
-}
-
 internal operator fun Rect.contains(coordinate: Coordinate): Boolean = with(coordinate) {
     x in 0 until w && y in 0 until h
 }
@@ -70,9 +61,3 @@ internal operator fun Rect.contains(coordinates: Iterable<Coordinate>): Boolean 
 
     return contains(min) && contains(max)
 }
-
-
-// Private utils
-
-private fun <A, B> Iterable<A>.cartesianProduct(rhs: Iterable<B>): List<Pair<A, B>> =
-    flatMap { e1 -> rhs.map { e2 -> e1 to e2 } }

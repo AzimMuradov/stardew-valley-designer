@@ -17,28 +17,44 @@
 package me.azimmuradov.svc.engine.rectmap
 
 
-/**
- * Rectangular object.
- */
-data class RectObject<out T>(val obj: T, val size: Rect) {
+data class PlacedRectObject<out T>(val rectObj: RectObject<T>, val place: Coordinate) {
+
+    val coordinates: List<Coordinate> by lazy {
+        val (x, y) = place
+        val (w, h) = rectObj.size
+
+        val xs = x until x + w
+        val ys = y until y + h
+
+        (xs * ys).map(Pair<Int, Int>::toCoordinate)
+    }
+
+    operator fun component3() = coordinates
+
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as RectObject<*>
+        other as PlacedRectObject<*>
 
-        // `obj` and `size` are swapped for efficiency
+        // `rectObj` and `place` are swapped for efficiency
 
-        if (size != other.size) return false
-        if (obj != other.obj) return false
+        if (place != other.place) return false
+        if (rectObj != other.rectObj) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = obj?.hashCode() ?: 0
-        result = 31 * result + size.hashCode()
+        var result = rectObj.hashCode()
+        result = 31 * result + place.hashCode()
         return result
     }
 }
+
+
+// Cartesian product
+
+private operator fun <A, B> Iterable<A>.times(other: Iterable<B>): List<Pair<A, B>> =
+    flatMap { a -> other.map { b -> a to b } }
