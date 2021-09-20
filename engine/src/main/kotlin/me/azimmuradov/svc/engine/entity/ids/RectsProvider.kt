@@ -17,11 +17,12 @@
 package me.azimmuradov.svc.engine.entity.ids
 
 import me.azimmuradov.svc.engine.rectmap.Rect
+import me.azimmuradov.svc.engine.rectmap.rectOf as r
 
 
 internal object RectsProvider {
 
-    fun rectOf(w: Int, h: Int) = rects.getOrPut(w, ::mutableMapOf).getOrPut(h) { Rect(w, h) }
+    fun rectOf(w: Int, h: Int) = rects.getOrPut(w, ::mutableMapOf).getOrPut(h) { r(w, h) }
 
     fun Rect.rotated() = rectOf(w = h, h = w)
 

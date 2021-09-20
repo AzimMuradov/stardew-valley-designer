@@ -16,13 +16,36 @@
 
 package me.azimmuradov.svc.engine.rectmap
 
-
-// TODO : Use inline classes
+import me.azimmuradov.svc.engine.packInts
+import me.azimmuradov.svc.engine.unpackInt1
+import me.azimmuradov.svc.engine.unpackInt2
 
 
 /**
  * 2D coordinate.
  */
-data class Coordinate(val x: Int, val y: Int)
+@JvmInline
+value class Coordinate internal constructor(@PublishedApi internal val packedValue: Long) {
 
-fun xy(x: Int, y: Int): Coordinate = Coordinate(x, y)
+    inline val x: Int get() = unpackInt1(packedValue)
+
+    inline val y: Int get() = unpackInt2(packedValue)
+
+
+    operator fun component1(): Int = x
+
+    operator fun component2(): Int = y
+
+
+    fun copy(x: Int = this.x, y: Int = this.y): Coordinate = xy(x, y)
+
+
+    override fun toString(): String = "(x = $x, y = $y)"
+}
+
+fun xy(x: Int, y: Int): Coordinate = Coordinate(packInts(x, y))
+
+
+fun Coordinate.toPair(): Pair<Int, Int> = x to y
+
+fun Pair<Int, Int>.toCoordinate(): Coordinate = xy(first, second)

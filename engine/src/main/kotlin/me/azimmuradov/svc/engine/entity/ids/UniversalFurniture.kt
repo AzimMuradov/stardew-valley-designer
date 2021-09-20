@@ -219,8 +219,8 @@ sealed interface UniversalFurniture : EntityId<UniversalFurnitureType> {
     )
 
     sealed class LongTable : UniversalFurniture, RotatableFlavor2(
-        regularSize = Rect(w = 2, h = 4),
-        rotatedSize = Rect(w = 5, h = 2),
+        regularSize = rectOf(w = 2, h = 4),
+        rotatedSize = rectOf(w = 5, h = 2),
     ) {
         data class ModernDiningTable(override var rotation: Rotations2 = Rotations2.R0) : LongTable()
         data class MahoganyDiningTable(override var rotation: Rotations2 = Rotations2.R0) : LongTable()

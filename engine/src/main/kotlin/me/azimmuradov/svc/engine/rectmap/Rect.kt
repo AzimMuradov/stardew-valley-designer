@@ -16,11 +16,36 @@
 
 package me.azimmuradov.svc.engine.rectmap
 
-
-// TODO : Use inline classes
+import me.azimmuradov.svc.engine.packInts
+import me.azimmuradov.svc.engine.unpackInt1
+import me.azimmuradov.svc.engine.unpackInt2
 
 
 /**
  * Rectangle with no coordinate to place.
  */
-data class Rect(val w: Int, val h: Int)
+@JvmInline
+value class Rect internal constructor(@PublishedApi internal val packedValue: Long) {
+
+    inline val w: Int get() = unpackInt1(packedValue)
+
+    inline val h: Int get() = unpackInt2(packedValue)
+
+
+    operator fun component1(): Int = w
+
+    operator fun component2(): Int = h
+
+
+    fun copy(w: Int = this.w, h: Int = this.h): Rect = rectOf(w, h)
+
+
+    override fun toString(): String = "(w = $w, h = $h)"
+}
+
+fun rectOf(w: Int, h: Int): Rect = Rect(packInts(w, h))
+
+
+fun Rect.toPair(): Pair<Int, Int> = w to h
+
+fun Pair<Int, Int>.toRect(): Rect = rectOf(first, second)

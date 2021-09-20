@@ -20,12 +20,13 @@ import me.azimmuradov.svc.engine.entity.EntityWithoutFloorType
 import me.azimmuradov.svc.engine.entity.ObjectType.FurnitureType.HouseFurnitureType
 import me.azimmuradov.svc.engine.layout.Layout
 import me.azimmuradov.svc.engine.rectmap.Rect
+import me.azimmuradov.svc.engine.rectmap.rectOf
 import me.azimmuradov.svc.engine.rectmap.xy
 
 
-internal val ShedLayout: Layout = shedLayoutOf(size = Rect(w = 11, h = 10))
+internal val ShedLayout: Layout = shedLayoutOf(size = rectOf(w = 11, h = 10))
 
-internal val BigShedLayout: Layout = shedLayoutOf(size = Rect(w = 17, h = 13))
+internal val BigShedLayout: Layout = shedLayoutOf(size = rectOf(w = 17, h = 13))
 
 
 private fun shedLayoutOf(size: Rect) = Layout(

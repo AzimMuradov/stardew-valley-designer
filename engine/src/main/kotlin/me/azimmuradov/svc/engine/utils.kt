@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package me.azimmuradov.svc.engine
 
 import me.azimmuradov.svc.engine.rectmap.Coordinate
@@ -23,13 +25,25 @@ import me.azimmuradov.svc.engine.rectmap.xy
 
 // Internal utils
 
+@PublishedApi
+internal inline fun packInts(val1: Int, val2: Int): Long {
+    return (val1.toLong() shl 32) or (val2.toLong() and 0xFFFFFFFF)
+}
+
+@PublishedApi
+internal inline fun unpackInt1(value: Long) = (value shr 32).toInt()
+
+@PublishedApi
+internal inline fun unpackInt2(value: Long) = (value and 0xFFFFFFFF).toInt()
+
+
 internal fun Rect.coordinatesFrom(c: Coordinate): List<Coordinate> {
     val (x, y) = c
 
     val xs = x until x + w
     val ys = y until y + h
 
-    return xs.cartesianProduct(ys).map { (x, y) -> Coordinate(x, y) }
+    return xs.cartesianProduct(ys).map { (x, y) -> xy(x, y) }
 }
 
 internal operator fun Rect.contains(coordinate: Coordinate): Boolean = with(coordinate) {

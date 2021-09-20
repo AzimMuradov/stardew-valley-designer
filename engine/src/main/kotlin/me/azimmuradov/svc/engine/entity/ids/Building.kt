@@ -20,6 +20,7 @@ import me.azimmuradov.svc.engine.entity.EntityWithoutFloorType.BuildingType
 import me.azimmuradov.svc.engine.entity.ids.ColoredFlavor.ColoredFishPondFlavor
 import me.azimmuradov.svc.engine.entity.ids.ColoredFlavor.Colors.FishPondColors
 import me.azimmuradov.svc.engine.entity.ids.ColoredFlavor.Colors.FishPondColors.Default
+import me.azimmuradov.svc.engine.entity.ids.RectsProvider.rectOf
 import me.azimmuradov.svc.engine.rectmap.Rect
 
 
@@ -68,11 +69,11 @@ sealed interface Building : EntityId<BuildingType> {
 
         // Others
 
-        Mill(size = Rect(w = 4, h = 2)),
-        Silo(size = Rect(w = 3, h = 3)),
-        Well(size = Rect(w = 3, h = 3)),
-        SlimeHutch(size = Rect(w = 11, h = 6)),
-        ShippingBin(size = Rect(w = 2, h = 1)),
+        Mill(size = rectOf(w = 4, h = 2)),
+        Silo(size = rectOf(w = 3, h = 3)),
+        Well(size = rectOf(w = 3, h = 3)),
+        SlimeHutch(size = rectOf(w = 11, h = 6)),
+        ShippingBin(size = rectOf(w = 2, h = 1)),
     }
 
     sealed class ColoredFarmBuilding(override val size: Rect) : Building, ColoredFarmBuildingFlavor()
@@ -99,7 +100,7 @@ sealed interface Building : EntityId<BuildingType> {
         override var building: Color? = null,
         override var roof: Color? = null,
         override var trim: Color? = null,
-    ) : ColoredFarmBuilding(size = Rect(w = 2, h = 1))
+    ) : ColoredFarmBuilding(size = rectOf(w = 2, h = 1))
 
     data class StoneCabin3(
         override var building: Color? = null,
@@ -121,15 +122,15 @@ sealed interface Building : EntityId<BuildingType> {
 
     data class FishPond(override var color: FishPondColors = Default) : Building, ColoredFishPondFlavor() {
 
-        override val size: Rect = Rect(w = 5, h = 5)
+        override val size: Rect = rectOf(w = 5, h = 5)
     }
 
 
     override val type: BuildingType get() = BuildingType
 }
 
-private val barnSize = Rect(w = 7, h = 4)
-private val coopSize = Rect(w = 6, h = 3)
-private val shedSize = Rect(w = 7, h = 3)
-private val cabinSize = Rect(w = 5, h = 3)
-private val magicalBuildingSize = Rect(w = 3, h = 2)
+private val barnSize = rectOf(w = 7, h = 4)
+private val coopSize = rectOf(w = 6, h = 3)
+private val shedSize = rectOf(w = 7, h = 3)
+private val cabinSize = rectOf(w = 5, h = 3)
+private val magicalBuildingSize = rectOf(w = 3, h = 2)
