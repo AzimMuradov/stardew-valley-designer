@@ -39,6 +39,12 @@ value class Coordinate internal constructor(@PublishedApi internal val packedVal
 
 
     override fun toString(): String = "(x = $x, y = $y)"
+
+
+    companion object {
+
+        val ZERO: Coordinate = xy(x = 0, y = 0)
+    }
 }
 
 fun xy(x: Int, y: Int): Coordinate = Coordinate(packInts(x, y))

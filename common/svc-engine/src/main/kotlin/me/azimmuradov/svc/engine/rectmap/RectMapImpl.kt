@@ -51,6 +51,8 @@ private class MutableRectMapImpl<T>(
 
     override val occupiedCoordinates: Set<Coordinate> get() = map.keys
 
+    override val objs: Collection<PlacedRectObject<T>> get() = map.values
+
 
     // Modification Operations
 

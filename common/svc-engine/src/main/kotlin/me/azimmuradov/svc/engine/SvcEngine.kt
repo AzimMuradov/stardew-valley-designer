@@ -51,6 +51,9 @@ interface SvcEngine {
 }
 
 
+fun SvcEngine.layers() = LayerType.all.associateWith(this::layerOf)
+
+
 fun SvcEngine.get(c: Coordinate): Map<LayerType<*>, PlacedEntity<*>?> =
     LayerType.all.associateWith { get(it, c) }
 

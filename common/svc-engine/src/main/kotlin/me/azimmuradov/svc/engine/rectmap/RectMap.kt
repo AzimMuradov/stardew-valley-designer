@@ -38,4 +38,6 @@ interface RectMap<out T> {
     // Views
 
     val occupiedCoordinates: Set<Coordinate>
+
+    val objs: Collection<PlacedRectObject<T>>
 }

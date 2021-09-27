@@ -44,7 +44,7 @@ sealed class RotatableFlavor private constructor(
         rotatedSize: Rect,
     ) : RotatableFlavor(regularSize, rotatedSize) {
 
-        abstract override var rotation: Rotations2
+        abstract override val rotation: Rotations2
     }
 
     sealed class RotatableFlavor4(
@@ -52,7 +52,7 @@ sealed class RotatableFlavor private constructor(
         rotatedSize: Rect,
     ) : RotatableFlavor(regularSize, rotatedSize) {
 
-        abstract override var rotation: Rotations4
+        abstract override val rotation: Rotations4
     }
 
     sealed interface Rotations {
@@ -68,9 +68,9 @@ sealed class RotatableFlavor private constructor(
 
 
 sealed class ColoredFarmBuildingFlavor : EntityIdFlavor {
-    abstract var building: Color?
-    abstract var roof: Color?
-    abstract var trim: Color?
+    abstract val building: Color?
+    abstract val roof: Color?
+    abstract val trim: Color?
 }
 
 data class Color(val r: UByte, val g: UByte, val b: UByte)
@@ -83,12 +83,12 @@ sealed class ColoredFlavor<out EType : EntityType> private constructor() : Entit
 
     sealed class ColoredFishPondFlavor : ColoredFlavor<BuildingType>() {
 
-        abstract override var color: FishPondColors
+        abstract override val color: FishPondColors
     }
 
     sealed class ColoredChestFlavor : ColoredFlavor<EquipmentType>() {
 
-        abstract override var color: ChestColors
+        abstract override val color: ChestColors
     }
 
     sealed interface Colors {
