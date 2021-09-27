@@ -19,9 +19,7 @@ package me.azimmuradov.svc.engine.layout.layouts
 import me.azimmuradov.svc.engine.entity.EntityWithoutFloorType
 import me.azimmuradov.svc.engine.entity.ObjectType.FurnitureType.HouseFurnitureType
 import me.azimmuradov.svc.engine.layout.Layout
-import me.azimmuradov.svc.engine.rectmap.Rect
-import me.azimmuradov.svc.engine.rectmap.rectOf
-import me.azimmuradov.svc.engine.rectmap.xy
+import me.azimmuradov.svc.engine.rectmap.*
 
 
 internal val ShedLayout: Layout = shedLayoutOf(size = rectOf(w = 11, h = 10))

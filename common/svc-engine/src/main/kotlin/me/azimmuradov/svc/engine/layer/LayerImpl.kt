@@ -20,9 +20,7 @@ import me.azimmuradov.svc.engine.entity.EntityType
 import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.entity.ids.EntityId
 import me.azimmuradov.svc.engine.layout.Layout
-import me.azimmuradov.svc.engine.rectmap.MutableRectMap
-import me.azimmuradov.svc.engine.rectmap.PlacedRectObject
-import me.azimmuradov.svc.engine.rectmap.mutableRectMapOf
+import me.azimmuradov.svc.engine.rectmap.*
 
 
 fun <EType : EntityType> layerOf(layout: Layout): Layer<EType> = LayerImpl(MutableLayerImpl(layout))

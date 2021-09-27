@@ -18,9 +18,7 @@
 
 package me.azimmuradov.svc.engine
 
-import me.azimmuradov.svc.engine.rectmap.Coordinate
-import me.azimmuradov.svc.engine.rectmap.Rect
-import me.azimmuradov.svc.engine.rectmap.xy
+import me.azimmuradov.svc.engine.rectmap.*
 
 
 // Internal utils
