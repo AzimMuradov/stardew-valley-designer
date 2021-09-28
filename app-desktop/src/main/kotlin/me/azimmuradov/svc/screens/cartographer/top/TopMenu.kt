@@ -16,40 +16,64 @@
 
 package me.azimmuradov.svc.screens.cartographer.top
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import me.azimmuradov.svc.components.screens.Cartographer
-import me.azimmuradov.svc.components.screens.cartographer.SessionSettings
+import me.azimmuradov.svc.components.screens.cartographer.Options
 import me.azimmuradov.svc.components.screens.cartographer.menus.MainOptionsMenu
 import me.azimmuradov.svc.components.screens.cartographer.menus.entityselection.*
+import me.azimmuradov.svc.engine.entity.ids.EntityId
+import me.azimmuradov.svc.settings.languages.Language
 
 
 @Composable
 fun TopMenu(
-    model: Cartographer.Model,
-    updateSessionSettings: (SessionSettings) -> Unit,
+    onEntitySelection: (EntityId<*>) -> Unit,
+    options: Options,
+    language: Language,
     modifier: Modifier = Modifier,
 ) {
-    val language = model.settings.language
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        // TODO : File Menu
 
-    Row(modifier) {
-        // TODO : File Menu (it is working title)
-        FileMenu(model, updateSessionSettings, menu = MainOptionsMenu)
-        Spacer(Modifier.weight(1f))
-        EntitySelectionMenu(model.svc.palette, languageCartographer = language.cartographer, menu = BuildingsMenu)
-        Spacer(Modifier.weight(1f))
-        EntitySelectionMenu(model.svc.palette, languageCartographer = language.cartographer, menu = CommonEquipmentMenu)
-        Spacer(Modifier.weight(1f))
-        EntitySelectionMenu(model.svc.palette, languageCartographer = language.cartographer, menu = FurnitureMenu)
-        Spacer(Modifier.weight(1f))
-        EntitySelectionMenu(model.svc.palette, languageCartographer = language.cartographer, menu = FarmElementsMenu)
-        Spacer(Modifier.weight(1f))
-        EntitySelectionMenu(model.svc.palette, languageCartographer = language.cartographer, menu = TerrainElementsMenu)
-        Spacer(Modifier.weight(1f))
+        EntitySelectionMenu(
+            menu = BuildingsMenu,
+            onEntitySelection = onEntitySelection,
+            language = language,
+        )
+
+        EntitySelectionMenu(
+            menu = CommonEquipmentMenu,
+            onEntitySelection = onEntitySelection,
+            language = language,
+        )
+
+        EntitySelectionMenu(
+            menu = FurnitureMenu,
+            onEntitySelection = onEntitySelection,
+            language = language,
+        )
+
+        EntitySelectionMenu(
+            menu = FarmElementsMenu,
+            onEntitySelection = onEntitySelection,
+            language = language,
+        )
+
+        EntitySelectionMenu(
+            menu = TerrainElementsMenu,
+            onEntitySelection = onEntitySelection,
+            language = language,
+        )
+
         // TODO : Entity Search
+
         // TODO : Layout Selection Menu
-        OptionsMenu(model, updateSessionSettings, menu = MainOptionsMenu)
+
+        OptionsMenu(options, language, menu = MainOptionsMenu)
     }
 }

@@ -32,10 +32,10 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.azimmuradov.svc.components.screens.Cartographer
-import me.azimmuradov.svc.components.screens.cartographer.SessionSettings
+import me.azimmuradov.svc.components.screens.cartographer.Options
 import me.azimmuradov.svc.components.screens.cartographer.menus.OptionsItemValue
 import me.azimmuradov.svc.components.screens.cartographer.menus.OptionsMenu
+import me.azimmuradov.svc.settings.languages.Language
 import me.azimmuradov.svc.utils.menu.HoverableCascadingDropdownMenu
 
 
@@ -44,8 +44,8 @@ import me.azimmuradov.svc.utils.menu.HoverableCascadingDropdownMenu
 
 @Composable
 fun RowScope.OptionsMenu(
-    models: Cartographer.Model,
-    updateSessionSettings: (SessionSettings) -> Unit,
+    options: Options,
+    language: Language,
     menu: OptionsMenu,
 ) {
     Box(modifier = Modifier.aspectRatio(1f).fillMaxHeight()) {
@@ -92,8 +92,8 @@ fun RowScope.OptionsMenu(
                     OptionsItemValue.ShowAxis -> {
                         Spacer(modifier = Modifier.width(8.dp))
                         Checkbox(
-                            checked = models.sessionSettings.showAxis,
-                            onCheckedChange = { updateSessionSettings(models.sessionSettings.copy(showAxis = !models.sessionSettings.showAxis)) }
+                            checked = options.showAxis,
+                            onCheckedChange = { options.showAxis = it }
                         )
                         Spacer(modifier = Modifier.width(20.dp))
                         Text(
@@ -105,8 +105,8 @@ fun RowScope.OptionsMenu(
                     OptionsItemValue.ShowGrid -> {
                         Spacer(modifier = Modifier.width(8.dp))
                         Checkbox(
-                            checked = models.sessionSettings.showGrid,
-                            onCheckedChange = { updateSessionSettings(models.sessionSettings.copy(showGrid = !models.sessionSettings.showGrid)) }
+                            checked = options.showGrid,
+                            onCheckedChange = { options.showGrid = it }
                         )
                         Spacer(modifier = Modifier.width(20.dp))
                         Text(

@@ -28,37 +28,15 @@ interface Root {
 
     data class Model(
         val settings: Settings,
-        val title: String,
     )
 
 
     val routerState: Value<RouterState<*, Child>>
 
     sealed class Child {
-
-        class WelcomeChild(val component: Welcome) : Child() {
-
-            companion object {
-
-                fun title(settings: Settings) = settings.language.appName
-            }
-        }
-
-        class MenuChild(val component: Menu) : Child() {
-
-            companion object {
-
-                fun title(settings: Settings) = "${settings.language.menuScreen} | ${settings.language.appName}"
-            }
-        }
-
-        class CartographerChild(val component: Cartographer) : Child() {
-
-            companion object {
-
-                fun title(settings: Settings) = "${settings.language.cartographerScreen} | ${settings.language.appName}"
-            }
-        }
+        class WelcomeChild(val component: Welcome) : Child()
+        class MainMenuChild(val component: MainMenu) : Child()
+        class CartographerChild(val component: Cartographer) : Child()
     }
 
 

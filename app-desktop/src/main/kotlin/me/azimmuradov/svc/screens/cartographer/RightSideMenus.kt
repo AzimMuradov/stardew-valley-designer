@@ -16,18 +16,23 @@
 
 package me.azimmuradov.svc.screens.cartographer
 
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import me.azimmuradov.svc.components.screens.Cartographer
+import androidx.compose.ui.unit.Dp
+import me.azimmuradov.svc.cartographer.Svc
+import me.azimmuradov.svc.settings.Settings
 
 
 @Composable
 fun RightSideMenus(
-    model: Cartographer.Model,
-    modifier: Modifier = Modifier,
+    svc: Svc,
+    settings: Settings,
+    width: Dp,
 ) {
-    SideMenus(modifier) {
+    SideMenus(Modifier.fillMaxHeight().width(width)) {
         menu { Stub(text = "LayersVisibility") }
-        menu(Modifier.weight(1f)) { Stub(text = "Flavors") }
+        // TODO : menu(Modifier.weight(1f)) { Stub(text = "Flavors") }
     }
 }

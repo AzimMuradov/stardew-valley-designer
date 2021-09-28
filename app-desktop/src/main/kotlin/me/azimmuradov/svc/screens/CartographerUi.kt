@@ -18,38 +18,45 @@ package me.azimmuradov.svc.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import me.azimmuradov.svc.components.screens.Cartographer
 import me.azimmuradov.svc.screens.cartographer.*
 
 
 @Composable
 fun CartographerUi(component: Cartographer) {
-    val model by component.model.subscribeAsState()
+    val svc = component.svc
+    val options = component.options
+    val settings = component.settings
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopMenuBar(
-            model,
-            component.updateSessionSettings,
-            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+            onEntitySelection = { id -> svc.palette.putInUse(id) },
+            options = options,
+            language = settings.language,
         )
 
         Row(Modifier.fillMaxWidth().weight(1f)) {
             LeftSideMenus(
-                model,
-                modifier = Modifier.fillMaxHeight().width(300.dp),
+                svc = svc,
+                settings = settings,
+                width = SIDE_MENUS_WIDTH,
             )
             SvcLayout(
-                model,
-                modifier = Modifier.fillMaxHeight().weight(1f).padding(30.dp),
+                svc = svc,
+                options = options,
+                settings = settings,
             )
             RightSideMenus(
-                model,
-                modifier = Modifier.fillMaxHeight().width(300.dp),
+                svc = svc,
+                settings = settings,
+                width = SIDE_MENUS_WIDTH,
             )
         }
     }
 }
+
+
+private val SIDE_MENUS_WIDTH: Dp = 300.dp

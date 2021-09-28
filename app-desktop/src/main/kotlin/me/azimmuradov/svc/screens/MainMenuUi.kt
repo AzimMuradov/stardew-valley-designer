@@ -26,7 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import me.azimmuradov.svc.components.screens.Menu
+import me.azimmuradov.svc.components.screens.MainMenu
 import me.azimmuradov.svc.settings.languages.Language
 
 val padding = 20.dp
@@ -34,8 +34,8 @@ val buttonColor = Color(0xFFF4D21F)
 
 
 @Composable
-fun MenuUi(component: Menu) {
-    val models by component.models.subscribeAsState()
+fun MenuUi(component: MainMenu) {
+    val models by component.model.subscribeAsState()
 
     val (settings) = models
 

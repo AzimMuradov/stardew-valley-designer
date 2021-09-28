@@ -22,12 +22,12 @@ import me.azimmuradov.svc.settings.Settings
 
 interface Welcome {
 
-    val onWelcomeScreenEnd: () -> Unit
-
-
     val model: Value<Model>
 
     data class Model(
         val settings: Settings,
     )
+
+
+    val onWelcomeScreenEnd: () -> Unit
 }

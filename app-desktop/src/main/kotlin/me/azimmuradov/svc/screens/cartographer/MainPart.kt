@@ -22,20 +22,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import me.azimmuradov.svc.components.screens.Cartographer
+import androidx.compose.ui.unit.dp
+import me.azimmuradov.svc.cartographer.Svc
+import me.azimmuradov.svc.components.screens.cartographer.Options
 import me.azimmuradov.svc.engine.rectmap.Rect
 import me.azimmuradov.svc.screens.cartographer.main.EditorLayout
+import me.azimmuradov.svc.settings.Settings
 
-private val Rect.aspectRatio get() = w.toFloat() / h.toFloat()
 
 @Composable
-fun SvcLayout(models: Cartographer.Model, modifier: Modifier = Modifier) {
-    // val ratio = models.svc.layout.size.aspectRatio
-    val ratio = 11f / 10f
+fun RowScope.SvcLayout(
+    svc: Svc,
+    options: Options,
+    settings: Settings,
+) {
+    val ratio = svc.layout.size.aspectRatio
 
-    Box(modifier) {
+    Box(modifier = Modifier.fillMaxHeight().weight(1f).padding(30.dp)) {
         EditorLayout(
-            models,
+            svc = svc,
+            options = options,
+            settings = settings,
             modifier = Modifier
                 .aspectRatio(ratio)
                 .fillMaxSize()
@@ -45,3 +52,6 @@ fun SvcLayout(models: Cartographer.Model, modifier: Modifier = Modifier) {
         )
     }
 }
+
+
+private val Rect.aspectRatio get() = w.toFloat() / h.toFloat()

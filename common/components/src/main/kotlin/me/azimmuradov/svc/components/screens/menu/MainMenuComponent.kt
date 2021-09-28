@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.components.screens.cartographer
+package me.azimmuradov.svc.components.screens.menu
+
+import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.value.Value
+import me.azimmuradov.svc.components.screens.MainMenu
+import me.azimmuradov.svc.components.screens.MainMenu.Model
+import me.azimmuradov.svc.settings.Settings
 
 
-data class SessionSettings(
-    val showAxis: Boolean,
-    val showGrid: Boolean,
-) {
+internal class MainMenuComponent(
+    override val onCartographerScreenCall: () -> Unit,
+    settings: Settings,
+) : MainMenu {
 
-    companion object {
+    private val _model = MutableValue(Model(
+        settings = settings,
+    ))
 
-        val default: SessionSettings = SessionSettings(
-            showAxis = true,
-            showGrid = true,
-        )
-    }
+    override val model: Value<Model> = _model
 }

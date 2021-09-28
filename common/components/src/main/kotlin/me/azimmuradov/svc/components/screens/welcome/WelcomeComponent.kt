@@ -23,13 +23,13 @@ import me.azimmuradov.svc.components.screens.Welcome.Model
 import me.azimmuradov.svc.settings.Settings
 
 
-class WelcomeComponent(
+internal class WelcomeComponent(
     override val onWelcomeScreenEnd: () -> Unit,
     settings: Settings,
 ) : Welcome {
 
-    private val _model: MutableValue<Model> = MutableValue(Model(
-        settings,
+    private val _model = MutableValue(Model(
+        settings = settings,
     ))
 
     override val model: Value<Model> = _model

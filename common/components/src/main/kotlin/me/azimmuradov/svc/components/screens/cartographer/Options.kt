@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.components.screens
+package me.azimmuradov.svc.components.screens.cartographer
 
-import com.arkivanov.decompose.value.Value
-import me.azimmuradov.svc.settings.Settings
-
-
-interface Menu {
-
-    val onCartographerScreenCall: () -> Unit
+import androidx.compose.runtime.*
 
 
-    val models: Value<Model>
+class Options internal constructor() {
 
-    data class Model(
-        val settings: Settings,
-    )
+    var showAxis: Boolean by mutableStateOf(true)
+
+    var showGrid: Boolean by mutableStateOf(true)
+
+
+    companion object {
+        val DEFAULT: Options = Options()
+    }
 }

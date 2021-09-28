@@ -45,15 +45,13 @@ import me.azimmuradov.svc.utils.menu.HoverableCascadingDropdownMenu
 
 
 @Composable
-fun RowScope.EntitySelectionMenu(
-    palette: MutablePalette,
-    languageCartographer: Language.Cartographer,
+fun EntitySelectionMenu(
     menu: EntitySelectionMenu,
     disallowedTypes: List<EntityType>? = null,
+    onEntitySelection: (EntityId<*>) -> Unit,
+    language: Language,
 ) {
     val filteredMenu = disallowedTypes?.let { menu.filterElements(it) } ?: menu
-
-    var myText by remember { mutableStateOf<String?>(null) }
 
     Box(modifier = Modifier.fillMaxHeight().width(REQUIRED_DROPDOWN_MENU_WIDTH)) {
         HoverableCascadingDropdownMenu(
@@ -74,7 +72,7 @@ fun RowScope.EntitySelectionMenu(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = languageCartographer.menuTitle(root),
+                        text = language.menuTitle(root),
                         color = MaterialTheme.colors.onPrimary.copy(alpha = LocalContentAlpha.current),
                         fontSize = 16.sp,
                     )
@@ -91,7 +89,7 @@ fun RowScope.EntitySelectionMenu(
                 val rotation by animateFloatAsState(if (hovered) 180f else 0f)
 
                 Text(
-                    text = languageCartographer.menuTitle(root),
+                    text = language.menuTitle(root),
                     modifier = Modifier.weight(1f),
                     fontSize = 15.sp,
                 )
@@ -110,7 +108,7 @@ fun RowScope.EntitySelectionMenu(
                     .fillMaxSize()
                     .align(Alignment.Center)
                     .background(color = if (hovered) Color.Black.copy(alpha = 0.1f) else Color.Transparent)
-                    .clickable { palette.putInUse(root) }
+                    .clickable { onEntitySelection(root) }
             },
             itemValueContent = { value, _ ->
                 Spacer(modifier = Modifier.width(8.dp))
@@ -129,7 +127,7 @@ fun RowScope.EntitySelectionMenu(
                 }
                 Spacer(modifier = Modifier.width(20.dp))
                 Text(
-                    text = languageCartographer.entity(value),
+                    text = language.entity(value),
                     modifier = Modifier.weight(1f),
                     fontSize = 13.sp,
                 )

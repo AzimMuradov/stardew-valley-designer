@@ -19,22 +19,29 @@ package me.azimmuradov.svc.components
 import com.arkivanov.decompose.*
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.essenty.parcelable.Parcelable
 import me.azimmuradov.svc.components.Root.Child
 import me.azimmuradov.svc.components.Root.Child.*
 import me.azimmuradov.svc.components.Root.Model
 import me.azimmuradov.svc.components.RootComponent.Config.*
 import me.azimmuradov.svc.components.screens.cartographer.CartographerComponent
-import me.azimmuradov.svc.components.screens.menu.MenuComponent
+import me.azimmuradov.svc.components.screens.menu.MainMenuComponent
 import me.azimmuradov.svc.components.screens.welcome.WelcomeComponent
 import me.azimmuradov.svc.settings.Settings
 
 
-class RootComponent(componentContext: ComponentContext) : Root, ComponentContext by componentContext {
+fun rootComponent(): Root = RootComponent(
+    componentContext = DefaultComponentContext(
+        lifecycle = LifecycleRegistry(),
+    ),
+)
 
-    private val _model: MutableValue<Model> = MutableValue(Model(
+
+private class RootComponent(componentContext: ComponentContext) : Root, ComponentContext by componentContext {
+
+    private val _model = MutableValue(Model(
         settings = Settings.DefaultSettings,
-        title = WelcomeChild.title(Settings.DefaultSettings),
     ))
 
     override val model: Value<Model> = _model
@@ -50,17 +57,14 @@ class RootComponent(componentContext: ComponentContext) : Root, ComponentContext
 
 
     override fun onWelcomeScreenEnd() {
-        _model.value = model.value.copy(title = MenuChild.title(model.value.settings))
-        router.replaceCurrent(configuration = MenuConfig)
+        router.replaceCurrent(configuration = MainMenuConfig)
     }
 
     override fun onCartographerScreenCall() {
-        _model.value = model.value.copy(title = CartographerChild.title(model.value.settings))
         router.push(configuration = CartographerConfig)
     }
 
     override fun onCartographerScreenReturn() {
-        _model.value = model.value.copy(title = MenuChild.title(model.value.settings))
         router.pop()
     }
 
@@ -71,7 +75,7 @@ class RootComponent(componentContext: ComponentContext) : Root, ComponentContext
                 this::onWelcomeScreenEnd,
                 model.value.settings,
             ))
-            MenuConfig -> MenuChild(MenuComponent(
+            MainMenuConfig -> MainMenuChild(MainMenuComponent(
                 this::onCartographerScreenCall,
                 model.value.settings,
             ))
@@ -82,11 +86,8 @@ class RootComponent(componentContext: ComponentContext) : Root, ComponentContext
         }
 
     private sealed class Config : Parcelable {
-
         object WelcomeConfig : Config()
-
-        object MenuConfig : Config()
-
+        object MainMenuConfig : Config()
         object CartographerConfig : Config()
     }
 }

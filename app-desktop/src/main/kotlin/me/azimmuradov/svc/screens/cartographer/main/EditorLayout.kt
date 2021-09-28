@@ -36,10 +36,12 @@ import kotlin.math.floor
 
 @Composable
 fun EditorLayout(
-    models: Cartographer.Model,
+    svc: Svc,
+    options: Options,
+    settings: Settings,
     modifier: Modifier = Modifier,
 ) {
-    val (w, h) = models.svc.layout.size
+    val (w, h) = svc.layout.size
 
     val undefined = -1 to -1
 
@@ -47,9 +49,6 @@ fun EditorLayout(
     var mutHoveredId by remember { mutableStateOf(undefined) }
     var mutClickedId by remember { mutableStateOf(undefined) }
 
-
-    val sessionSettings = models.sessionSettings
-    // val svc = models.svc
 
     val hoveredColor = MaterialTheme.colors.secondary
     val clickedColor = MaterialTheme.colors.secondaryVariant
@@ -71,8 +70,8 @@ fun EditorLayout(
                 onClick = {
                     mutClickedId = mutHoveredId
 
-                    val inUse = models.svc.palette.inUse
-                    if (inUse != null) models.svc.put(inUse, mutClickedId.toCoordinate())
+                    val inUse = svc.palette.inUse
+                    if (inUse != null) svc.put(inUse, mutClickedId.toCoordinate())
                 }
             )
     ) {
@@ -87,7 +86,7 @@ fun EditorLayout(
         val offsetsH = List(size = h + 1) { it * stepSize }
 
 
-        for ((_, layer) in models.svc.layers()) {
+        for ((_, layer) in svc.layers()) {
             for (e in layer.objs) {
                 drawSpriteBy(
                     e.rectObj.obj,
@@ -100,7 +99,7 @@ fun EditorLayout(
 
         // Grid
 
-        if (sessionSettings.showGrid) {
+        if (options.showGrid) {
             for (x in offsetsW) {
                 drawLine(
                     color = Color.LightGray,
@@ -135,7 +134,7 @@ fun EditorLayout(
 
             // Axis
 
-            if (sessionSettings.showAxis) {
+            if (options.showAxis) {
                 for (x in hoveredX..hoveredX + 1) {
                     drawLine(
                         color = Color.DarkGray,

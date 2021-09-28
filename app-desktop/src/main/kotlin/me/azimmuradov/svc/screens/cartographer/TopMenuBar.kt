@@ -23,27 +23,30 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import me.azimmuradov.svc.MENU_ELEVATION
-import me.azimmuradov.svc.components.screens.Cartographer
-import me.azimmuradov.svc.components.screens.cartographer.SessionSettings
+import me.azimmuradov.svc.components.screens.cartographer.Options
+import me.azimmuradov.svc.engine.entity.EntityType
+import me.azimmuradov.svc.engine.entity.ids.EntityId
 import me.azimmuradov.svc.screens.cartographer.top.TopMenu
+import me.azimmuradov.svc.settings.languages.Language
 
 
 @Composable
 fun TopMenuBar(
-    model: Cartographer.Model,
-    updateSessionSettings: (SessionSettings) -> Unit,
-    modifier: Modifier = Modifier,
+    onEntitySelection: (EntityId<*>) -> Unit,
+    options: Options,
+    language: Language,
 ) {
-    Surface(
-        // modifier = Modifier.fillMaxHeight().width(240.dp),
-        elevation = MENU_ELEVATION,
-    ) {
+    Surface(elevation = 4.dp) {
         Column(modifier = Modifier.fillMaxWidth().wrapContentHeight()) {
-            Spacer(Modifier.fillMaxWidth().height(24.dp).background(color = MaterialTheme.colors.primaryVariant))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth().height(24.dp)
+                    .background(color = MaterialTheme.colors.primaryVariant),
+            )
             TopMenu(
-                model,
-                updateSessionSettings = updateSessionSettings,
+                onEntitySelection = onEntitySelection,
+                options = options,
+                language = language,
                 modifier = Modifier
                     .fillMaxWidth().height(56.dp)
                     .background(color = MaterialTheme.colors.primary)

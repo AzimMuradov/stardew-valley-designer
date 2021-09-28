@@ -16,24 +16,25 @@
 
 package me.azimmuradov.svc
 
-import androidx.compose.runtime.getValue
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
-import com.arkivanov.decompose.DefaultComponentContext
-import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import com.arkivanov.essenty.lifecycle.LifecycleRegistry
-import me.azimmuradov.svc.components.RootComponent
+import com.arkivanov.decompose.extensions.compose.jetbrains.Children
+import me.azimmuradov.svc.components.Root
+import me.azimmuradov.svc.components.rootComponent
+import me.azimmuradov.svc.screens.*
 
 
 fun main() {
-    val root = RootComponent(
-        componentContext = DefaultComponentContext(lifecycle = LifecycleRegistry())
-    )
+    val root = rootComponent()
 
     application {
-        val rootModel by root.model.subscribeAsState()
+        // val rootModel by root.model.subscribeAsState()
 
         Window(
             onCloseRequest = ::exitApplication,
@@ -41,7 +42,7 @@ fun main() {
                 position = WindowPosition(alignment = Alignment.Center),
                 size = WindowSize(width = 1280.dp, height = 720.dp),
             ),
-            title = rootModel.title,
+            title = "",
             icon = painterResource(ICON_RES_PATH),
             resizable = true,
         ) {
@@ -50,5 +51,18 @@ fun main() {
     }
 }
 
+
+@Composable
+fun RootUi(component: Root) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Children(routerState = component.routerState) { (_, child) ->
+            when (child) {
+                is Root.Child.WelcomeChild -> WelcomeUi(child.component)
+                is Root.Child.MainMenuChild -> MenuUi(child.component)
+                is Root.Child.CartographerChild -> CartographerUi(child.component)
+            }
+        }
+    }
+}
 
 private const val ICON_RES_PATH: String = "icon.png"

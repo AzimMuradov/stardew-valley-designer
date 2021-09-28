@@ -16,21 +16,26 @@
 
 package me.azimmuradov.svc.screens.cartographer
 
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import me.azimmuradov.svc.components.screens.Cartographer
+import androidx.compose.ui.unit.Dp
+import me.azimmuradov.svc.cartographer.Svc
 import me.azimmuradov.svc.screens.cartographer.left.Palette
 import me.azimmuradov.svc.screens.cartographer.left.Toolbar
+import me.azimmuradov.svc.settings.Settings
 
 
 @Composable
 fun LeftSideMenus(
-    model: Cartographer.Model,
-    modifier: Modifier = Modifier,
+    svc: Svc,
+    settings: Settings,
+    width: Dp,
 ) {
-    SideMenus(modifier) {
-        menu { Toolbar(model.svc.toolkit, model.settings.language) }
-        menu { Palette(model.svc.palette, model.settings.language) }
+    SideMenus(modifier = Modifier.fillMaxHeight().width(width)) {
+        menu { Toolbar(svc.toolkit, settings.language) }
+        menu { Palette(svc.palette, settings.language) }
         // TODO : menu(Modifier.weight(1f)) { Stub(text = "Clipboard") }
     }
 }

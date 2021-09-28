@@ -16,40 +16,20 @@
 
 package me.azimmuradov.svc.components.screens.cartographer
 
-import com.arkivanov.decompose.value.MutableValue
-import com.arkivanov.decompose.value.Value
+import androidx.compose.runtime.*
 import me.azimmuradov.svc.cartographer.svcOf
-import me.azimmuradov.svc.cartographer.toolkit.ToolType
 import me.azimmuradov.svc.components.screens.Cartographer
-import me.azimmuradov.svc.components.screens.Cartographer.Model
 import me.azimmuradov.svc.engine.layout.LayoutsProvider.LayoutType.Shed
 import me.azimmuradov.svc.engine.layout.LayoutsProvider.layoutOf
 import me.azimmuradov.svc.settings.Settings
 
 
-class CartographerComponent(
+internal class CartographerComponent(
     override val onCartographerScreenReturn: () -> Unit,
-    settings: Settings,
+    override val settings: Settings,
 ) : Cartographer {
 
-    private val _models: MutableValue<Model> = MutableValue(Model(
-        SessionSettings.default,
-        settings,
-        svcOf(defaultLayout),
-    ))
+    override var svc by mutableStateOf(svcOf(layoutOf(type = Shed)))
 
-    override val model: Value<Model> = _models
-
-    override val updateSessionSettings: (SessionSettings) -> Unit = {
-        _models.value = _models.value.copy(sessionSettings = it)
-    }
-
-
-    init {
-        model.value.svc.toolkit.chooseToolOf(ToolType.Hand)
-    }
+    override val options = Options.DEFAULT
 }
-
-
-// TODO : Change
-val defaultLayout = layoutOf(type = Shed)

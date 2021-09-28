@@ -16,24 +16,19 @@
 
 package me.azimmuradov.svc.components.screens
 
-import com.arkivanov.decompose.value.Value
 import me.azimmuradov.svc.cartographer.Svc
-import me.azimmuradov.svc.components.screens.cartographer.SessionSettings
+import me.azimmuradov.svc.components.screens.cartographer.Options
 import me.azimmuradov.svc.settings.Settings
 
 
 interface Cartographer {
 
+    val svc: Svc
+
+    val options: Options
+
+    val settings: Settings
+
+
     val onCartographerScreenReturn: () -> Unit
-
-
-    val model: Value<Model>
-
-    data class Model(
-        val sessionSettings: SessionSettings,
-        val settings: Settings,
-        val svc: Svc,
-    )
-
-    val updateSessionSettings: (SessionSettings) -> Unit
 }
