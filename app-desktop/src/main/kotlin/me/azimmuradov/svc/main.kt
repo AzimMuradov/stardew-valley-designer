@@ -58,7 +58,7 @@ fun RootUi(component: Root) {
         Children(routerState = component.routerState) { (_, child) ->
             when (child) {
                 is Root.Child.WelcomeChild -> WelcomeUi(child.component)
-                is Root.Child.MainMenuChild -> MenuUi(child.component)
+                is Root.Child.MainMenuChild -> MainMenuUi(child.component)
                 is Root.Child.CartographerChild -> CartographerUi(child.component)
             }
         }
