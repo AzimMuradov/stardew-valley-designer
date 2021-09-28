@@ -31,6 +31,7 @@ import me.azimmuradov.svc.settings.Lang
 
 @Composable
 fun TopMenuBar(
+    disallowedTypes: Set<EntityType>,
     onEntitySelection: (EntityId<*>) -> Unit,
     options: Options,
     lang: Lang,
@@ -43,6 +44,7 @@ fun TopMenuBar(
                     .background(color = MaterialTheme.colors.primaryVariant),
             )
             TopMenu(
+                disallowedTypes = disallowedTypes,
                 onEntitySelection = onEntitySelection,
                 options = options,
                 lang = lang,

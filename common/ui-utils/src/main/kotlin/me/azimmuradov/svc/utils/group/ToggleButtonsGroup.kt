@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun <L : Any> ToggleButtonsGroup(
-    buttonLabels: List<L>,
+    buttonLabels: List<L?>,
     rowSize: UInt,
     modifier: Modifier = Modifier,
     chosenLabel: L?,
@@ -71,7 +71,7 @@ private fun <R, T : R> List<T>.resizedTo(size: Int, spacer: R): List<R> =
     if (this.size >= size) slice(0 until size)
     else this + List(size = size - this.size) { spacer }
 
-private fun <T : Any> List<T>.resizedTo(size: Int): List<T?> =
+private fun <T> List<T>.resizedTo(size: Int): List<T?> =
     if (this.size >= size) slice(0 until size)
     else this + List(size = size - this.size) { null }
 

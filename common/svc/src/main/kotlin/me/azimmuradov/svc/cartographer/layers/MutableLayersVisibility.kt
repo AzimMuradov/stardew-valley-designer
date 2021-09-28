@@ -19,7 +19,7 @@ package me.azimmuradov.svc.cartographer.layers
 import me.azimmuradov.svc.engine.layer.LayerType
 
 
-interface LayersVisibility {
+interface MutableLayersVisibility : LayersVisibility {
 
-    val visible: Set<LayerType<*>>
+    fun changeVisibility(layerType: LayerType<*>, value: Boolean)
 }

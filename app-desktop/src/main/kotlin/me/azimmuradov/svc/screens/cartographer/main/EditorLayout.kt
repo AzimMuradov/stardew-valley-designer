@@ -68,12 +68,7 @@ fun EditorLayout(
                 onEnter = { false },
             )
             .clickable(
-                onClick = {
-                    mutClickedId = mutHoveredId
-
-                    val inUse = svc.palette.inUse
-                    if (inUse != null) svc.put(inUse, mutClickedId.toCoordinate())
-                }
+                onClick = { mutClickedId = mutHoveredId }
             )
     ) {
         mutStepSize = size.width / w

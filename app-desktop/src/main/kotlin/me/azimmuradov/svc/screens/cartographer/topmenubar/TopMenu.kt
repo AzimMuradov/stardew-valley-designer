@@ -23,12 +23,14 @@ import androidx.compose.ui.Modifier
 import me.azimmuradov.svc.components.screens.cartographer.Options
 import me.azimmuradov.svc.components.screens.cartographer.menus.MainOptionsMenu
 import me.azimmuradov.svc.components.screens.cartographer.menus.entityselection.*
+import me.azimmuradov.svc.engine.entity.EntityType
 import me.azimmuradov.svc.engine.entity.ids.EntityId
 import me.azimmuradov.svc.settings.Lang
 
 
 @Composable
 fun TopMenu(
+    disallowedTypes: Set<EntityType>,
     onEntitySelection: (EntityId<*>) -> Unit,
     options: Options,
     lang: Lang,
@@ -42,30 +44,35 @@ fun TopMenu(
 
         EntitySelectionMenu(
             menu = BuildingsMenu,
+            disallowedTypes = disallowedTypes,
             onEntitySelection = onEntitySelection,
             lang = lang,
         )
 
         EntitySelectionMenu(
             menu = CommonEquipmentMenu,
+            disallowedTypes = disallowedTypes,
             onEntitySelection = onEntitySelection,
             lang = lang,
         )
 
         EntitySelectionMenu(
             menu = FurnitureMenu,
+            disallowedTypes = disallowedTypes,
             onEntitySelection = onEntitySelection,
             lang = lang,
         )
 
         EntitySelectionMenu(
             menu = FarmElementsMenu,
+            disallowedTypes = disallowedTypes,
             onEntitySelection = onEntitySelection,
             lang = lang,
         )
 
         EntitySelectionMenu(
             menu = TerrainElementsMenu,
+            disallowedTypes = disallowedTypes,
             onEntitySelection = onEntitySelection,
             lang = lang,
         )

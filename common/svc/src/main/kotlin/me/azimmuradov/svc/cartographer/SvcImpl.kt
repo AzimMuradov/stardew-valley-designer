@@ -18,16 +18,13 @@ package me.azimmuradov.svc.cartographer
 
 import me.azimmuradov.svc.cartographer.*
 import me.azimmuradov.svc.cartographer.history.*
-import me.azimmuradov.svc.cartographer.layers.LayersVisibility
+import me.azimmuradov.svc.cartographer.layers.layersVisibility
 import me.azimmuradov.svc.cartographer.palette.mutablePaletteOf
 import me.azimmuradov.svc.cartographer.toolkit.Hand
 import me.azimmuradov.svc.cartographer.toolkit.Toolkit
 import me.azimmuradov.svc.engine.*
-import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.PlacedEntity
-import me.azimmuradov.svc.engine.entity.ids.EntityId
 import me.azimmuradov.svc.engine.layout.Layout
-import me.azimmuradov.svc.engine.rectmap.Coordinate
 
 
 fun svcOf(layout: Layout): Svc = SvcImpl(layout)
@@ -35,15 +32,9 @@ fun svcOf(layout: Layout): Svc = SvcImpl(layout)
 
 private class SvcImpl(override val layout: Layout) : Svc {
 
-    override var behavior: SvcBehaviour = DefaultSvcBehaviour.rewriter
-
-
     val engine: SvcEngine = svcEngineOf(layout)
 
-    override fun layers() = run {
-        val visibleLayers = layersVisibility.visibleLayers()
-        engine.layers().filter { (lType) -> lType in visibleLayers }
-    }
+    override fun layers() = engine.layers().filter { (lType) -> lType in layersVisibility.visible }
 
     override fun ghostLayers() = ghostEntities
 
@@ -95,15 +86,5 @@ private class SvcImpl(override val layout: Layout) : Svc {
 
     override val palette = mutablePaletteOf(size = 10u)
 
-    override val layersVisibility: LayersVisibility = LayersVisibility()
-
-
-    override fun put(id: EntityId<*>, c: Coordinate) {
-        engine.put(
-            PlacedEntity(
-                rectObj = Entity(obj = id, size = id.size),
-                place = c,
-            )
-        )
-    }
+    override val layersVisibility = layersVisibility()
 }

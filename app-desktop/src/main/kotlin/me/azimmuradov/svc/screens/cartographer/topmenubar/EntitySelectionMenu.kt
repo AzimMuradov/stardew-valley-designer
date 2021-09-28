@@ -30,31 +30,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import me.azimmuradov.svc.cartographer.palette.MutablePalette
+import androidx.compose.ui.unit.*
 import me.azimmuradov.svc.components.screens.cartographer.menus.EntitySelectionMenu
 import me.azimmuradov.svc.components.screens.cartographer.menus.filterElements
 import me.azimmuradov.svc.engine.entity.EntityType
 import me.azimmuradov.svc.engine.entity.ids.EntityId
 import me.azimmuradov.svc.settings.Lang
 import me.azimmuradov.svc.settings.Settings
-import me.azimmuradov.svc.utils.drawSpriteBy
+import me.azimmuradov.svc.utils.Sprite
 import me.azimmuradov.svc.utils.menu.HoverableCascadingDropdownMenu
-
-
-// TODO
 
 
 @Composable
 fun EntitySelectionMenu(
     menu: EntitySelectionMenu,
-    disallowedTypes: List<EntityType>? = null,
+    disallowedTypes: Set<EntityType>,
     onEntitySelection: (EntityId<*>) -> Unit,
     lang: Lang,
 ) {
-    val filteredMenu = disallowedTypes?.let { menu.filterElements(it) } ?: menu
+    val filteredMenu = menu.filterElements(disallowedTypes)
     val wordList = Settings.wordList(lang)
 
     Box(modifier = Modifier.fillMaxHeight().width(REQUIRED_DROPDOWN_MENU_WIDTH)) {
@@ -99,8 +93,8 @@ fun EntitySelectionMenu(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Icon(
-                    Icons.Filled.ArrowDropDown,
-                    null,
+                    imageVector = Icons.Filled.ArrowDropDown,
+                    contentDescription = null,
                     modifier = Modifier.rotate(rotation)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -122,12 +116,7 @@ fun EntitySelectionMenu(
                     border = BorderStroke(1.dp, MaterialTheme.colors.secondaryVariant),
                     elevation = 3.dp,
                 ) {
-                    Canvas(modifier = Modifier.size(36.dp).padding(3.dp)) {
-                        drawSpriteBy(
-                            id = value,
-                            layoutSize = size,
-                        )
-                    }
+                    Sprite(id = value, modifier = Modifier.size(36.dp).padding(3.dp))
                 }
                 Spacer(modifier = Modifier.width(20.dp))
                 Text(

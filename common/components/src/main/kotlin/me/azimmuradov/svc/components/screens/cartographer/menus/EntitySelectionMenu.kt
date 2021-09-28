@@ -77,11 +77,11 @@ enum class EntitySelectionRoot {
 // Filtering
 
 fun EntitySelectionMenu.filterElements(
-    disallowedTypes: List<EntityType>,
+    disallowedTypes: Set<EntityType>,
 ): EntitySelectionMenu = Menu(root, elements.mapNotNull { it.filter(disallowedTypes) })
 
 private fun EntitySelectionMenuElement.filter(
-    disallowedTypes: List<EntityType>,
+    disallowedTypes: Set<EntityType>,
 ): EntitySelectionMenuElement? = when (this) {
     is Submenu -> elements
         .mapNotNull { it.filter(disallowedTypes) }

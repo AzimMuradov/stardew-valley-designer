@@ -14,30 +14,31 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.screens.cartographer.sidemenus
+package me.azimmuradov.svc.utils
 
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Dp
-import me.azimmuradov.svc.cartographer.Svc
-import me.azimmuradov.svc.settings.Settings
+import me.azimmuradov.svc.components.screens.cartographer.res.Sprite
+import me.azimmuradov.svc.engine.entity.ids.EntityId
 
 
 @Composable
-fun RightSideMenus(
-    svc: Svc,
-    settings: Settings,
-    width: Dp,
+fun Sprite(
+    id: EntityId<*>,
+    modifier: Modifier = Modifier,
 ) {
-    SideMenus(Modifier.fillMaxHeight().width(width)) {
-        menu {
-            LayersVisibility(
-                layersVisibility = svc.layersVisibility,
-                lang = settings.lang
-            )
-        }
-        // TODO : menu(Modifier.weight(1f)) { Stub(text = "Flavors") }
+    Canvas(modifier) {
+        drawSpriteBy(id = id, layoutSize = this.size)
+    }
+}
+
+@Composable
+fun Sprite(
+    sprite: Sprite,
+    modifier: Modifier = Modifier,
+) {
+    Canvas(modifier) {
+        drawSprite(sprite = sprite, layoutSize = this.size)
     }
 }

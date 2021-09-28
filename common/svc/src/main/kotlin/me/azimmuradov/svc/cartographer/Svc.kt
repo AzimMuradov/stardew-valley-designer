@@ -17,23 +17,22 @@
 package me.azimmuradov.svc.cartographer
 
 import me.azimmuradov.svc.cartographer.history.ActsHistory
-import me.azimmuradov.svc.cartographer.layers.LayersVisibility
+import me.azimmuradov.svc.cartographer.layers.MutableLayersVisibility
 import me.azimmuradov.svc.cartographer.palette.MutablePalette
 import me.azimmuradov.svc.cartographer.toolkit.Toolkit
 import me.azimmuradov.svc.engine.entity.PlacedEntity
-import me.azimmuradov.svc.engine.entity.ids.EntityId
 import me.azimmuradov.svc.engine.layer.Layer
 import me.azimmuradov.svc.engine.layer.LayerType
 import me.azimmuradov.svc.engine.layout.Layout
-import me.azimmuradov.svc.engine.rectmap.Coordinate
 
 
 interface Svc {
 
-    /**
-     * Behavior of the SVC.
-     */
-    var behavior: SvcBehaviour
+    // TODO
+    // /**
+    //  * Behavior of the SVC.
+    //  */
+    // var behavior: SvcBehaviour
 
     /**
      * Visible layers.
@@ -74,8 +73,5 @@ interface Svc {
     /**
      * You can change visibility of the layers using it.
      */
-    val layersVisibility: LayersVisibility
-
-
-    fun put(id: EntityId<*>, c: Coordinate)
+    val layersVisibility: MutableLayersVisibility
 }

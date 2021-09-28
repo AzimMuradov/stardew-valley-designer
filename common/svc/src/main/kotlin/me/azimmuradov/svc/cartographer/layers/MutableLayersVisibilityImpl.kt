@@ -16,10 +16,26 @@
 
 package me.azimmuradov.svc.cartographer.layers
 
+import androidx.compose.runtime.mutableStateMapOf
 import me.azimmuradov.svc.engine.layer.LayerType
 
 
-interface LayersVisibility {
+fun layersVisibility(): MutableLayersVisibility = MutableLayersVisibilityImpl()
 
-    val visible: Set<LayerType<*>>
+
+private class MutableLayersVisibilityImpl : MutableLayersVisibility {
+
+    val visibilityMap = mutableStateMapOf(
+        LayerType.Floor to true,
+        LayerType.FloorFurniture to true,
+        LayerType.Object to true,
+        LayerType.EntityWithoutFloor to true,
+    )
+
+    override val visible: Set<LayerType<*>>
+        get() = visibilityMap.entries.mapNotNull { if (it.value) it.key else null }.toSet()
+
+    override fun changeVisibility(layerType: LayerType<*>, value: Boolean) {
+        visibilityMap[layerType] = value
+    }
 }
