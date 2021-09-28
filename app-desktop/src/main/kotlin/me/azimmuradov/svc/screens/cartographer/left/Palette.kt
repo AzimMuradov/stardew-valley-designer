@@ -16,7 +16,6 @@
 
 package me.azimmuradov.svc.screens.cartographer.left
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -32,8 +31,7 @@ import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.cartographer.palette.MutablePalette
 import me.azimmuradov.svc.engine.rectmap.Rect
 import me.azimmuradov.svc.settings.languages.Language
-import me.azimmuradov.svc.utils.drawSpriteBy
-import me.azimmuradov.svc.utils.group.ButtonsGroup
+import me.azimmuradov.svc.utils.Sprite
 
 
 @Composable
@@ -43,7 +41,7 @@ fun Palette(
     modifier: Modifier = Modifier,
 ) {
     val inUse = palette.inUse
-    val hotbar = palette.hotbar
+    // TODO : hotbar feature (val hotbar = palette.hotbar)
 
     Box(modifier) {
         Column(
@@ -52,12 +50,12 @@ fun Palette(
         ) {
             Card(elevation = 0.dp) {
                 Row(
-                    Modifier.fillMaxWidth().padding(8.dp),
+                    modifier = Modifier.fillMaxWidth().padding(8.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Button(
-                        onClick = { /* TODO */ },
+                        onClick = { /* TODO : hotbar feature */ },
                         modifier = Modifier
                             .size(56.dp)
                             .border(
@@ -69,51 +67,49 @@ fun Palette(
                         shape = CircleShape,
                         colors = ButtonDefaults.outlinedButtonColors(),
                         contentPadding = PaddingValues(12.dp),
-                        enabled = inUse != null,
+                        enabled = false, /* TODO : hotbar feature (inUse != null) */
                     ) {
                         if (inUse != null) {
-                            Canvas(modifier = Modifier.fillMaxSize()) {
-                                drawSpriteBy(
-                                    id = inUse,
-                                    layoutSize = size,
-                                )
-                            }
+                            Sprite(id = inUse, modifier = Modifier.fillMaxSize())
                         } else {
-                            Icon(Icons.Default.Clear, null, Modifier.fillMaxSize())
+                            Icon(
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = null,
+                                modifier = Modifier.fillMaxSize().padding(4.dp),
+                            )
                         }
                     }
-                    Column {
-                        Text(
-                            text = if (inUse != null) language.cartographer.entity(inUse) else "",
-                            color = MaterialTheme.colors.secondaryVariant,
-                            fontWeight = FontWeight.Bold,
-                            style = MaterialTheme.typography.subtitle1,
-                        )
-                        Spacer(Modifier.height(8.dp))
-                        Text(
-                            text = inUse?.size?.toShortString() ?: "",
-                            style = MaterialTheme.typography.body2,
-                        )
+
+                    if (inUse != null) {
+                        Column {
+                            Text(
+                                text = language.cartographer.entity(id = inUse),
+                                color = MaterialTheme.colors.secondaryVariant,
+                                fontWeight = FontWeight.Bold,
+                                style = MaterialTheme.typography.subtitle1,
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = inUse.size.toShortString(),
+                                style = MaterialTheme.typography.body2,
+                            )
+                        }
                     }
                 }
             }
 
-            Spacer(Modifier.height(8.dp))
 
-
-            ButtonsGroup(
-                buttonLabels = hotbar,
-                rowSize = 5u,
-                onButtonClick = { },
-                spaceContent = { Icon(Icons.Default.Clear, null, Modifier.fillMaxSize()) }
-            ) { entityId ->
-                Canvas(Modifier.fillMaxSize()) {
-                    drawSpriteBy(
-                        id = entityId,
-                        layoutSize = size,
-                    )
-                }
-            }
+            // TODO : hotbar feature
+            //
+            // Spacer(modifier = Modifier.height(8.dp))
+            //
+            // ButtonsGroup(
+            //     buttonLabels = hotbar,
+            //     rowSize = 5u,
+            //     onButtonClick = { },
+            //     spaceContent = { Icon(Icons.Default.Clear, null, Modifier.fillMaxSize()) },
+            //     buttonContent = { entityId -> Sprite(id = entityId, modifier = Modifier.fillMaxSize()) },
+            // )
         }
     }
 }

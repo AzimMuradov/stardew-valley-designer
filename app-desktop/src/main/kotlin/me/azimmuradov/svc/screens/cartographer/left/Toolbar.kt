@@ -16,19 +16,18 @@
 
 package me.azimmuradov.svc.screens.cartographer.left
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.cartographer.toolkit.Toolkit
-import me.azimmuradov.svc.engine.entity.ids.Equipment
+import me.azimmuradov.svc.components.screens.cartographer.res.MenuSpritesProvider.toolSpriteBy
 import me.azimmuradov.svc.settings.languages.Language
-import me.azimmuradov.svc.utils.drawSpriteBy
+import me.azimmuradov.svc.utils.Sprite
 import me.azimmuradov.svc.utils.group.ToggleButtonsGroup
 
 
@@ -38,7 +37,7 @@ fun Toolbar(
     language: Language,
     modifier: Modifier = Modifier,
 ) {
-    val es = List(size = 5) { it }
+    val labels = toolkit.availableToolTypes
 
     Box(modifier) {
         Column(
@@ -46,34 +45,37 @@ fun Toolbar(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Row(
-                Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Divider(Modifier.weight(1f))
+                Divider(modifier = Modifier.weight(1f))
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(toolkit.tool?.type.toString())
+                Text(text = language.cartographer.tool(toolkit.tool?.type))
                 Spacer(modifier = Modifier.width(8.dp))
-                Divider(Modifier.weight(1f))
+                Divider(modifier = Modifier.weight(1f))
             }
 
-            Spacer(Modifier.height(16.dp))
-
-            var chosenLabel by remember { mutableStateOf<Int?>(null) }
+            Spacer(modifier = Modifier.height(16.dp))
 
             ToggleButtonsGroup(
-                buttonLabels = es,
+                buttonLabels = labels,
                 rowSize = 5u,
-                chosenLabel = chosenLabel,
-                onButtonClick = { chosenLabel = it },
-                spaceContent = { Icon(Icons.Default.Clear, null, Modifier.fillMaxSize().padding(8.dp)) }
-            ) {
-                Canvas(Modifier.fillMaxSize().padding(8.dp)) {
-                    drawSpriteBy(
-                        id = Equipment.SimpleEquipment.Furnace,
-                        layoutSize = size,
+                chosenLabel = toolkit.tool?.type,
+                onButtonClick = { toolkit.chooseToolOf(type = it) },
+                spaceContent = {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize().padding(8.dp),
+                    )
+                },
+                buttonContent = { toolType ->
+                    Sprite(
+                        sprite = toolSpriteBy(toolType),
+                        modifier = Modifier.fillMaxSize().padding(4.dp),
                     )
                 }
-            }
+            )
         }
     }
 }
