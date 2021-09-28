@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.screens.cartographer.top
+package me.azimmuradov.svc.screens.cartographer.topmenubar
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

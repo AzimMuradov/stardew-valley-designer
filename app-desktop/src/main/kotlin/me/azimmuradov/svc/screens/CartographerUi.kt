@@ -22,7 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.components.screens.Cartographer
-import me.azimmuradov.svc.screens.cartographer.*
+import me.azimmuradov.svc.screens.cartographer.main.SvcLayout
+import me.azimmuradov.svc.screens.cartographer.sidemenus.LeftSideMenus
+import me.azimmuradov.svc.screens.cartographer.sidemenus.RightSideMenus
+import me.azimmuradov.svc.screens.cartographer.topmenubar.TopMenuBar
 
 
 @Composable

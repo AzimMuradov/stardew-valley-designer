@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.screens.cartographer
+package me.azimmuradov.svc.screens.cartographer.topmenubar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.components.screens.cartographer.Options
 import me.azimmuradov.svc.engine.entity.EntityType
 import me.azimmuradov.svc.engine.entity.ids.EntityId
-import me.azimmuradov.svc.screens.cartographer.top.TopMenu
 import me.azimmuradov.svc.settings.Lang
 
 

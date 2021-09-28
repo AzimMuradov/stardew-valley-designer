@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.screens.cartographer
+package me.azimmuradov.svc.screens.cartographer.sidemenus
 
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.width
@@ -22,8 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import me.azimmuradov.svc.cartographer.Svc
-import me.azimmuradov.svc.screens.cartographer.left.Palette
-import me.azimmuradov.svc.screens.cartographer.left.Toolbar
 import me.azimmuradov.svc.settings.Settings
 
 

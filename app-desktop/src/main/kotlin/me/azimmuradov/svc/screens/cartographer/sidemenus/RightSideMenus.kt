@@ -14,33 +14,25 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.screens.cartographer
+package me.azimmuradov.svc.screens.cartographer.sidemenus
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import me.azimmuradov.svc.MENU_ELEVATION
+import androidx.compose.ui.unit.Dp
+import me.azimmuradov.svc.cartographer.Svc
+import me.azimmuradov.svc.settings.Settings
 
 
 @Composable
-internal fun SideMenuCard(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        elevation = MENU_ELEVATION,
-        content = content,
-    )
-}
-
-@Composable
-fun Stub(text: String) {
-    Box(
-        modifier = Modifier.padding(10.dp),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(text)
+fun RightSideMenus(
+    svc: Svc,
+    settings: Settings,
+    width: Dp,
+) {
+    SideMenus(Modifier.fillMaxHeight().width(width)) {
+        menu { Stub(text = "LayersVisibility") }
+        // TODO : menu(Modifier.weight(1f)) { Stub(text = "Flavors") }
     }
 }

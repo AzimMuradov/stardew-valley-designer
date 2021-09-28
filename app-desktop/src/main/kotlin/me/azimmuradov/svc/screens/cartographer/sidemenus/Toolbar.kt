@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.screens.cartographer.left
+package me.azimmuradov.svc.screens.cartographer.sidemenus
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*

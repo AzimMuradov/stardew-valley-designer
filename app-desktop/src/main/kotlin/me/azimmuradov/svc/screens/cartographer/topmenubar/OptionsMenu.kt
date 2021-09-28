@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.screens.cartographer.top
+package me.azimmuradov.svc.screens.cartographer.topmenubar
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
