@@ -16,33 +16,11 @@
 
 package me.azimmuradov.svc.settings
 
-import androidx.compose.runtime.*
-import me.azimmuradov.svc.settings.wordlists.*
-
 
 /**
- * Application settings.
+ * Application language.
  */
-class Settings private constructor(
-    lang: Lang,
-) {
-
-    /**
-     * Application language.
-     */
-    var lang: Lang by mutableStateOf(lang)
-
-
-    companion object {
-
-        val DEFAULT: Settings = Settings(
-            lang = Lang.EN,
-        )
-
-
-        fun wordList(lang: Lang): WordList = when (lang) {
-            Lang.EN -> EnWordList
-            Lang.RU -> RuWordList
-        }
-    }
+enum class Lang {
+    EN,
+    RU,
 }

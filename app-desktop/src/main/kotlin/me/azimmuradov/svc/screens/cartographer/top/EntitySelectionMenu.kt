@@ -23,7 +23,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -36,7 +37,9 @@ import me.azimmuradov.svc.cartographer.palette.MutablePalette
 import me.azimmuradov.svc.components.screens.cartographer.menus.EntitySelectionMenu
 import me.azimmuradov.svc.components.screens.cartographer.menus.filterElements
 import me.azimmuradov.svc.engine.entity.EntityType
-import me.azimmuradov.svc.settings.languages.Language
+import me.azimmuradov.svc.engine.entity.ids.EntityId
+import me.azimmuradov.svc.settings.Lang
+import me.azimmuradov.svc.settings.Settings
 import me.azimmuradov.svc.utils.drawSpriteBy
 import me.azimmuradov.svc.utils.menu.HoverableCascadingDropdownMenu
 
@@ -49,9 +52,10 @@ fun EntitySelectionMenu(
     menu: EntitySelectionMenu,
     disallowedTypes: List<EntityType>? = null,
     onEntitySelection: (EntityId<*>) -> Unit,
-    language: Language,
+    lang: Lang,
 ) {
     val filteredMenu = disallowedTypes?.let { menu.filterElements(it) } ?: menu
+    val wordList = Settings.wordList(lang)
 
     Box(modifier = Modifier.fillMaxHeight().width(REQUIRED_DROPDOWN_MENU_WIDTH)) {
         HoverableCascadingDropdownMenu(
@@ -72,7 +76,7 @@ fun EntitySelectionMenu(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = language.menuTitle(root),
+                        text = wordList.menuTitle(root),
                         color = MaterialTheme.colors.onPrimary.copy(alpha = LocalContentAlpha.current),
                         fontSize = 16.sp,
                     )
@@ -89,7 +93,7 @@ fun EntitySelectionMenu(
                 val rotation by animateFloatAsState(if (hovered) 180f else 0f)
 
                 Text(
-                    text = language.menuTitle(root),
+                    text = wordList.menuTitle(root),
                     modifier = Modifier.weight(1f),
                     fontSize = 15.sp,
                 )
@@ -127,7 +131,7 @@ fun EntitySelectionMenu(
                 }
                 Spacer(modifier = Modifier.width(20.dp))
                 Text(
-                    text = language.entity(value),
+                    text = wordList.entity(value),
                     modifier = Modifier.weight(1f),
                     fontSize = 13.sp,
                 )

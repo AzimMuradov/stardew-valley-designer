@@ -24,14 +24,14 @@ import me.azimmuradov.svc.components.screens.cartographer.Options
 import me.azimmuradov.svc.components.screens.cartographer.menus.MainOptionsMenu
 import me.azimmuradov.svc.components.screens.cartographer.menus.entityselection.*
 import me.azimmuradov.svc.engine.entity.ids.EntityId
-import me.azimmuradov.svc.settings.languages.Language
+import me.azimmuradov.svc.settings.Lang
 
 
 @Composable
 fun TopMenu(
     onEntitySelection: (EntityId<*>) -> Unit,
     options: Options,
-    language: Language,
+    lang: Lang,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -43,37 +43,41 @@ fun TopMenu(
         EntitySelectionMenu(
             menu = BuildingsMenu,
             onEntitySelection = onEntitySelection,
-            language = language,
+            lang = lang,
         )
 
         EntitySelectionMenu(
             menu = CommonEquipmentMenu,
             onEntitySelection = onEntitySelection,
-            language = language,
+            lang = lang,
         )
 
         EntitySelectionMenu(
             menu = FurnitureMenu,
             onEntitySelection = onEntitySelection,
-            language = language,
+            lang = lang,
         )
 
         EntitySelectionMenu(
             menu = FarmElementsMenu,
             onEntitySelection = onEntitySelection,
-            language = language,
+            lang = lang,
         )
 
         EntitySelectionMenu(
             menu = TerrainElementsMenu,
             onEntitySelection = onEntitySelection,
-            language = language,
+            lang = lang,
         )
 
         // TODO : Entity Search
 
         // TODO : Layout Selection Menu
 
-        OptionsMenu(options, language, menu = MainOptionsMenu)
+        OptionsMenu(
+            options = options,
+            lang = lang,
+            menu = MainOptionsMenu,
+        )
     }
 }

@@ -14,48 +14,49 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.settings.languages
+package me.azimmuradov.svc.settings.wordlists
 
 import me.azimmuradov.svc.cartographer.toolkit.ToolType
 import me.azimmuradov.svc.components.screens.cartographer.menus.EntitySelectionRoot
 import me.azimmuradov.svc.engine.entity.ids.EntityId
+import me.azimmuradov.svc.engine.layer.LayerType
 
 
-sealed interface Language {
+/**
+ * WordList profile.
+ */
+sealed interface WordList {
 
-    val appName: String
-    val authorName: String
+    /**
+     * Application name.
+     */
+    val application: String
 
-    val currentLanguage: String
-
-    val menuScreen: String
-    val cartographerScreen: String
-
-
-    sealed interface MenuButtons {
-        val newPlan: String
-        val plans: String
-
-        val resources: String
-        val settings: String
-        val about: String
-        val donate: String
-    }
-
-    val menuButtons: MenuButtons
+    /**
+     * Author full name.
+     */
+    val author: String
 
 
     // Cartographer Screen
 
-    sealed interface Cartographer {
+    /**
+     * Menu title by its root.
+     */
+    fun menuTitle(root: EntitySelectionRoot): String
 
-        fun menuTitle(x: EntitySelectionRoot): String
+    /**
+     * Entity name by its id.
+     */
+    fun entity(id: EntityId<*>): String
 
-        fun entity(x: EntityId<*>): String
+    /**
+     * Tool by its type.
+     */
+    fun tool(type: ToolType?): String
 
-
-        fun tool(type: ToolType): String
-    }
-
-    val cartographer: Cartographer
+    /**
+     * Layer by its type.
+     */
+    fun layer(type: LayerType<*>): String
 }

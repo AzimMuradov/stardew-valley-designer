@@ -41,7 +41,7 @@ fun rootComponent(): Root = RootComponent(
 private class RootComponent(componentContext: ComponentContext) : Root, ComponentContext by componentContext {
 
     private val _model = MutableValue(Model(
-        settings = Settings.DefaultSettings,
+        settings = Settings.DEFAULT,
     ))
 
     override val model: Value<Model> = _model

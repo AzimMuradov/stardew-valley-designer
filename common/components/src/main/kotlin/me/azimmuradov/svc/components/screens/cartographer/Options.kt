@@ -19,14 +19,21 @@ package me.azimmuradov.svc.components.screens.cartographer
 import androidx.compose.runtime.*
 
 
-class Options internal constructor() {
+class Options private constructor(
+    showAxis: Boolean,
+    showGrid: Boolean,
+) {
 
-    var showAxis: Boolean by mutableStateOf(true)
+    var showAxis: Boolean by mutableStateOf(showAxis)
 
-    var showGrid: Boolean by mutableStateOf(true)
+    var showGrid: Boolean by mutableStateOf(showGrid)
 
 
     companion object {
-        val DEFAULT: Options = Options()
+
+        val DEFAULT: Options = Options(
+            showAxis = true,
+            showGrid = true,
+        )
     }
 }

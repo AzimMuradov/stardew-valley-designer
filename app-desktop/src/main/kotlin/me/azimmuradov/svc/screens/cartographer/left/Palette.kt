@@ -30,18 +30,20 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.cartographer.palette.MutablePalette
 import me.azimmuradov.svc.engine.rectmap.Rect
-import me.azimmuradov.svc.settings.languages.Language
+import me.azimmuradov.svc.settings.Lang
+import me.azimmuradov.svc.settings.Settings
 import me.azimmuradov.svc.utils.Sprite
 
 
 @Composable
 fun Palette(
     palette: MutablePalette,
-    language: Language,
+    lang: Lang,
     modifier: Modifier = Modifier,
 ) {
     val inUse = palette.inUse
     // TODO : hotbar feature (val hotbar = palette.hotbar)
+    val wordList = Settings.wordList(lang)
 
     Box(modifier) {
         Column(
@@ -83,7 +85,7 @@ fun Palette(
                     if (inUse != null) {
                         Column {
                             Text(
-                                text = language.cartographer.entity(id = inUse),
+                                text = wordList.entity(id = inUse),
                                 color = MaterialTheme.colors.secondaryVariant,
                                 fontWeight = FontWeight.Bold,
                                 style = MaterialTheme.typography.subtitle1,

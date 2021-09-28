@@ -27,14 +27,14 @@ import me.azimmuradov.svc.components.screens.cartographer.Options
 import me.azimmuradov.svc.engine.entity.EntityType
 import me.azimmuradov.svc.engine.entity.ids.EntityId
 import me.azimmuradov.svc.screens.cartographer.top.TopMenu
-import me.azimmuradov.svc.settings.languages.Language
+import me.azimmuradov.svc.settings.Lang
 
 
 @Composable
 fun TopMenuBar(
     onEntitySelection: (EntityId<*>) -> Unit,
     options: Options,
-    language: Language,
+    lang: Lang,
 ) {
     Surface(elevation = 4.dp) {
         Column(modifier = Modifier.fillMaxWidth().wrapContentHeight()) {
@@ -46,7 +46,7 @@ fun TopMenuBar(
             TopMenu(
                 onEntitySelection = onEntitySelection,
                 options = options,
-                language = language,
+                lang = lang,
                 modifier = Modifier
                     .fillMaxWidth().height(56.dp)
                     .background(color = MaterialTheme.colors.primary)

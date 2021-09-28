@@ -35,7 +35,7 @@ fun CartographerUi(component: Cartographer) {
         TopMenuBar(
             onEntitySelection = { id -> svc.palette.putInUse(id) },
             options = options,
-            language = settings.language,
+            lang = settings.lang,
         )
 
         Row(Modifier.fillMaxWidth().weight(1f)) {

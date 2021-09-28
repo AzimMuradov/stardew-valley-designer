@@ -26,7 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.cartographer.toolkit.Toolkit
 import me.azimmuradov.svc.components.screens.cartographer.res.MenuSpritesProvider.toolSpriteBy
-import me.azimmuradov.svc.settings.languages.Language
+import me.azimmuradov.svc.settings.Lang
+import me.azimmuradov.svc.settings.Settings
 import me.azimmuradov.svc.utils.Sprite
 import me.azimmuradov.svc.utils.group.ToggleButtonsGroup
 
@@ -34,10 +35,11 @@ import me.azimmuradov.svc.utils.group.ToggleButtonsGroup
 @Composable
 fun Toolbar(
     toolkit: Toolkit,
-    language: Language,
+    lang: Lang,
     modifier: Modifier = Modifier,
 ) {
     val labels = toolkit.availableToolTypes
+    val wordList = Settings.wordList(lang)
 
     Box(modifier) {
         Column(
@@ -50,7 +52,7 @@ fun Toolbar(
             ) {
                 Divider(modifier = Modifier.weight(1f))
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text = language.cartographer.tool(toolkit.tool?.type))
+                Text(text = wordList.tool(toolkit.tool?.type))
                 Spacer(modifier = Modifier.width(8.dp))
                 Divider(modifier = Modifier.weight(1f))
             }

@@ -34,8 +34,8 @@ fun LeftSideMenus(
     width: Dp,
 ) {
     SideMenus(modifier = Modifier.fillMaxHeight().width(width)) {
-        menu { Toolbar(svc.toolkit, settings.language) }
-        menu { Palette(svc.palette, settings.language) }
+        menu { Toolbar(svc.toolkit, settings.lang) }
+        menu { Palette(svc.palette, settings.lang) }
         // TODO : menu(Modifier.weight(1f)) { Stub(text = "Clipboard") }
     }
 }

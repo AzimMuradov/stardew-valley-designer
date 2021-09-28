@@ -27,8 +27,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerMoveFilter
-import me.azimmuradov.svc.components.screens.Cartographer
-import me.azimmuradov.svc.engine.rectmap.toCoordinate
+import me.azimmuradov.svc.cartographer.Svc
+import me.azimmuradov.svc.components.screens.cartographer.Options
+import me.azimmuradov.svc.settings.Settings
 import me.azimmuradov.svc.utils.drawSpriteBy
 import me.azimmuradov.svc.utils.toIntOffset
 import kotlin.math.floor
