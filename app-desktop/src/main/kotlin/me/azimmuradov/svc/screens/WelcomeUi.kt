@@ -21,9 +21,11 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.components.screens.Welcome
 import me.azimmuradov.svc.screens.IconAnimationState.APPEARING
 import me.azimmuradov.svc.screens.IconAnimationState.DISAPPEARING
@@ -31,61 +33,46 @@ import me.azimmuradov.svc.screens.IconAnimationState.DISAPPEARING
 
 @Composable
 fun WelcomeUi(component: Welcome) {
-    val iconWeight = 7f
-    val spaceWeight = 10f
-
-    Row(Modifier.fillMaxSize()) {
-        Spacer(Modifier.weight(spaceWeight).fillMaxHeight())
-        Column(Modifier.weight(iconWeight).fillMaxHeight()) {
-            Spacer(Modifier.weight(spaceWeight).fillMaxWidth())
-            AnimatedIcon(component, modifier = Modifier.weight(iconWeight).fillMaxWidth())
-            Spacer(Modifier.weight(spaceWeight).fillMaxWidth())
-        }
-        Spacer(Modifier.weight(spaceWeight).fillMaxHeight())
-    }
-}
-
-
-@Composable
-private fun AnimatedIcon(component: Welcome, modifier: Modifier = Modifier) {
-    val minTransparency = 0.0f
-    val maxTransparency = 1.0f
-    val stiffness = 7f
-
     var iconAnimationState by remember { mutableStateOf(APPEARING) }
-    val alpha = remember { Animatable(minTransparency) }
+    val alpha = remember { Animatable(ICON_MIN_TRANSPARENCY) }
 
     LaunchedEffect(iconAnimationState) {
         alpha.animateTo(
             targetValue = when (iconAnimationState) {
-                APPEARING -> maxTransparency
-                DISAPPEARING -> minTransparency
+                APPEARING -> ICON_MAX_TRANSPARENCY
+                DISAPPEARING -> ICON_MIN_TRANSPARENCY
             },
-            animationSpec = spring(stiffness)
+            animationSpec = spring(ICON_ANIMATION_STIFFNESS)
         ) {
             when (iconAnimationState) {
-                APPEARING -> if (alpha.value == maxTransparency) {
+                APPEARING -> if (alpha.value == ICON_MAX_TRANSPARENCY) {
                     iconAnimationState = DISAPPEARING
                 }
-                DISAPPEARING -> if (alpha.value == minTransparency) {
+                DISAPPEARING -> if (alpha.value == ICON_MIN_TRANSPARENCY) {
                     component.onWelcomeScreenEnd()
                 }
             }
         }
     }
 
-    Image(
-        painter = painterResource(ICON_RES_PATH),
-        contentDescription = contentDescription,
-        modifier = modifier.alpha(alpha.value)
-    )
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        Image(
+            painter = painterResource(ICON_RES_PATH),
+            contentDescription = null,
+            modifier = Modifier.size(200.dp).alpha(alpha.value)
+        )
+    }
 }
 
-enum class IconAnimationState {
-    APPEARING,
-    DISAPPEARING,
-}
+
+private enum class IconAnimationState { APPEARING, DISAPPEARING }
+
+private const val ICON_MIN_TRANSPARENCY = 0.0f
+private const val ICON_MAX_TRANSPARENCY = 1.0f
+private const val ICON_ANIMATION_STIFFNESS = 7f
 
 private const val ICON_RES_PATH = "icon.png"
-
-private const val contentDescription = "Icon"
