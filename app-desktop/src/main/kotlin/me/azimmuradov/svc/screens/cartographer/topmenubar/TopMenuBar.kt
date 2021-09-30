@@ -24,15 +24,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.components.screens.cartographer.Options
+import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.EntityType
-import me.azimmuradov.svc.engine.entity.ids.EntityId
 import me.azimmuradov.svc.settings.Lang
 
 
 @Composable
 fun TopMenuBar(
     disallowedTypes: Set<EntityType>,
-    onEntitySelection: (EntityId<*>) -> Unit,
+    onEntitySelection: (Entity<*>) -> Unit,
     options: Options,
     lang: Lang,
 ) {

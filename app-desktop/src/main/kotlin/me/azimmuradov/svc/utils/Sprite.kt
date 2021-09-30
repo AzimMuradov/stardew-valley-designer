@@ -20,16 +20,16 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import me.azimmuradov.svc.components.screens.cartographer.res.Sprite
-import me.azimmuradov.svc.engine.entity.ids.EntityId
+import me.azimmuradov.svc.engine.entity.Entity
 
 
 @Composable
 fun Sprite(
-    id: EntityId<*>,
+    entity: Entity<*>,
     modifier: Modifier = Modifier,
 ) {
     Canvas(modifier) {
-        drawSpriteBy(id = id, layoutSize = this.size)
+        drawSpriteBy(entity = entity, layoutSize = this.size)
     }
 }
 

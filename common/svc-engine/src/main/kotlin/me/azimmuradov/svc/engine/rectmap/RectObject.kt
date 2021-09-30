@@ -20,25 +20,7 @@ package me.azimmuradov.svc.engine.rectmap
 /**
  * Rectangular object.
  */
-data class RectObject<out T>(val obj: T, val size: Rect) {
+interface RectObject {
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as RectObject<*>
-
-        // `obj` and `size` are swapped for efficiency
-
-        if (size != other.size) return false
-        if (obj != other.obj) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = obj?.hashCode() ?: 0
-        result = 31 * result + size.hashCode()
-        return result
-    }
+    val size: Rect
 }

@@ -17,7 +17,7 @@
 package me.azimmuradov.svc.components.screens.cartographer.menus.entityselection
 
 import me.azimmuradov.svc.components.screens.cartographer.menus.EntitySelectionMenu
-import me.azimmuradov.svc.engine.entity.ids.Equipment
+import me.azimmuradov.svc.engine.entity.Equipment
 import me.azimmuradov.svc.utils.menu.menu
 import me.azimmuradov.svc.components.screens.cartographer.menus.EntitySelectionRoot as Root
 

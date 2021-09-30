@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.entity.ids
+package me.azimmuradov.svc.engine.entity
 
+import me.azimmuradov.svc.engine.entity.ColoredFlavor.ColoredFishPondFlavor
+import me.azimmuradov.svc.engine.entity.ColoredFlavor.Colors.FishPondColors
+import me.azimmuradov.svc.engine.entity.ColoredFlavor.Colors.FishPondColors.Default
 import me.azimmuradov.svc.engine.entity.EntityWithoutFloorType.BuildingType
-import me.azimmuradov.svc.engine.entity.ids.ColoredFlavor.ColoredFishPondFlavor
-import me.azimmuradov.svc.engine.entity.ids.ColoredFlavor.Colors.FishPondColors
-import me.azimmuradov.svc.engine.entity.ids.ColoredFlavor.Colors.FishPondColors.Default
-import me.azimmuradov.svc.engine.entity.ids.RectsProvider.rectOf
+import me.azimmuradov.svc.engine.entity.RectsProvider.rectOf
 import me.azimmuradov.svc.engine.rectmap.Rect
 
 
-sealed interface Building : EntityId<BuildingType> {
+sealed interface Building : Entity<BuildingType> {
 
     enum class SimpleBuilding(override val size: Rect) : Building {
 

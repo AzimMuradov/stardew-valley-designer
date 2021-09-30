@@ -17,37 +17,27 @@
 package me.azimmuradov.svc.cartographer.palette
 
 import androidx.compose.runtime.*
-import me.azimmuradov.svc.engine.entity.ids.EntityId
+import me.azimmuradov.svc.engine.entity.Entity
 
 
 fun mutablePaletteOf(size: UInt): MutablePalette = MutablePaletteImpl(size)
 
 
-private class MutablePaletteImpl(private val size: UInt) : MutablePalette {
+private class MutablePaletteImpl(size: UInt) : MutablePalette {
 
-    override var inUse by mutableStateOf<EntityId<*>?>(null)
+    override var inUse by mutableStateOf<Entity<*>?>(null)
 
-    override var hotbar by mutableStateOf(List<EntityId<*>?>(size.toInt()) { null })
+    override val hotbar = mutableStateListOf(*Array<Entity<*>?>(size.toInt()) { null })
 
 
-    override fun putInUse(item: EntityId<*>) = inUse.also { inUse = item }
+    override fun putInUse(entity: Entity<*>) = inUse.also { inUse = entity }
 
     override fun clearUsed() = inUse.also { inUse = null }
 
-    override fun clearHotbar() = hotbar.also {
-        hotbar = List<EntityId<*>?>(size.toInt()) { null }
-    }
+    override fun clearHotbar() = hotbar.toList().also { hotbar.clear() }
 
 
-    override fun putOnHotbar(index: Int, item: EntityId<*>) = hotbar[index].also {
-        val mutHotbar = hotbar.toMutableList()
-        mutHotbar[index] = item
-        hotbar = mutHotbar
-    }
+    override fun putOnHotbar(index: Int, entity: Entity<*>) = hotbar[index].also { hotbar[index] = entity }
 
-    override fun removeFromHotbar(index: Int) = hotbar[index].also {
-        val mutHotbar = hotbar.toMutableList()
-        mutHotbar[index] = null
-        hotbar = mutHotbar
-    }
+    override fun removeFromHotbar(index: Int) = hotbar[index].also { hotbar[index] = null }
 }

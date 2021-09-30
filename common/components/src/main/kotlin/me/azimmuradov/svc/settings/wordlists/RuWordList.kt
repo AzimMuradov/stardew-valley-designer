@@ -18,7 +18,7 @@ package me.azimmuradov.svc.settings.wordlists
 
 import me.azimmuradov.svc.cartographer.toolkit.ToolType
 import me.azimmuradov.svc.components.screens.cartographer.menus.EntitySelectionRoot
-import me.azimmuradov.svc.engine.entity.ids.*
+import me.azimmuradov.svc.engine.entity.*
 import me.azimmuradov.svc.engine.layer.LayerType
 
 
@@ -75,7 +75,7 @@ object RuWordList : WordList {
         EntitySelectionRoot.TerrainElementsLighting -> "Освещение"
     }.also { menuTitles[root] = it }
 
-    override fun entity(id: EntityId<*>): String = entities[id] ?: when (id) {
+    override fun entity(e: Entity<*>): String = entities[e] ?: when (e) {
 
         // Floor
 
@@ -313,7 +313,7 @@ object RuWordList : WordList {
         is Building.FishPond -> "Рыбный пруд"
         Building.SimpleBuilding.SlimeHutch -> "Вольер для слаймов"
         Building.SimpleBuilding.ShippingBin -> "Ящик для отправки"
-    }.also { entities[id] = it }
+    }.also { entities[e] = it }
 
     override fun tool(type: ToolType?): String = tools[type] ?: when (type) {
         null -> TODO()
@@ -336,7 +336,7 @@ object RuWordList : WordList {
 
     private val menuTitles: MutableMap<EntitySelectionRoot, String> = mutableMapOf()
 
-    private val entities: MutableMap<EntityId<*>, String> = mutableMapOf()
+    private val entities: MutableMap<Entity<*>, String> = mutableMapOf()
 
     private val tools: MutableMap<ToolType?, String> = mutableMapOf()
 

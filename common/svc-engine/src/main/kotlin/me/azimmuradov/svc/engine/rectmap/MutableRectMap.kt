@@ -20,24 +20,24 @@ package me.azimmuradov.svc.engine.rectmap
 /**
  * Mutable rectangular map that contains rectangular objects.
  */
-interface MutableRectMap<T> : RectMap<T> {
+interface MutableRectMap<RO : RectObject> : RectMap<RO> {
 
     // Modification Operations
 
-    fun put(obj: PlacedRectObject<T>): List<PlacedRectObject<T>>
+    fun put(obj: PlacedRectObject<RO>): List<PlacedRectObject<RO>>
 
-    fun remove(c: Coordinate): PlacedRectObject<T>?
+    fun remove(c: Coordinate): PlacedRectObject<RO>?
 
 
     // Bulk Modification Operations
 
-    fun putAll(objs: Iterable<PlacedRectObject<T>>): List<PlacedRectObject<T>>
+    fun putAll(objs: Iterable<PlacedRectObject<RO>>): List<PlacedRectObject<RO>>
 
-    fun removeAll(cs: Iterable<Coordinate>): List<PlacedRectObject<T>>
+    fun removeAll(cs: Iterable<Coordinate>): List<PlacedRectObject<RO>>
 
     fun clear()
 }
 
-operator fun <T> MutableRectMap<T>.set(key: Coordinate, value: RectObject<T>) {
+operator fun <RO : RectObject> MutableRectMap<RO>.set(key: Coordinate, value: RO) {
     put(PlacedRectObject(rectObj = value, place = key))
 }

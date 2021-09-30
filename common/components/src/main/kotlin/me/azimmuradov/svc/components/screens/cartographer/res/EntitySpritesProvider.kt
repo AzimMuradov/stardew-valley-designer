@@ -16,12 +16,12 @@
 
 package me.azimmuradov.svc.components.screens.cartographer.res
 
-import me.azimmuradov.svc.engine.entity.ids.*
+import me.azimmuradov.svc.engine.entity.*
 
 
 object EntitySpritesProvider {
 
-    fun spriteBy(id: EntityId<*>): Sprite = sprites[id] ?: when (id) {
+    fun spriteBy(entity: Entity<*>): Sprite = sprites[entity] ?: when (entity) {
 
         // Floor
 
@@ -97,7 +97,7 @@ object EntitySpritesProvider {
         // TODO (?) : Tapper,
         // TODO (?) : HeavyTapper,
 
-        is Equipment.Chest -> when (id.color) {
+        is Equipment.Chest -> when (entity.color) {
             ColoredFlavor.Colors.ChestColors.Default -> craftable(130)
             ColoredFlavor.Colors.ChestColors.Blue -> TODO()
             ColoredFlavor.Colors.ChestColors.LightBlue -> TODO()
@@ -120,7 +120,7 @@ object EntitySpritesProvider {
             ColoredFlavor.Colors.ChestColors.LightGrey -> TODO()
             ColoredFlavor.Colors.ChestColors.White -> TODO()
         }
-        is Equipment.StoneChest -> when (id.color) {
+        is Equipment.StoneChest -> when (entity.color) {
             ColoredFlavor.Colors.ChestColors.Default -> craftable(232)
             ColoredFlavor.Colors.ChestColors.Blue -> TODO()
             ColoredFlavor.Colors.ChestColors.LightBlue -> TODO()
@@ -303,8 +303,8 @@ object EntitySpritesProvider {
         is Building.FishPond -> TODO()
         Building.SimpleBuilding.SlimeHutch -> TODO()
         Building.SimpleBuilding.ShippingBin -> TODO()
-    }.also { sprites[id] = it }
+    }.also { sprites[entity] = it }
 
 
-    private val sprites: MutableMap<EntityId<*>, Sprite> = mutableMapOf()
+    private val sprites: MutableMap<Entity<*>, Sprite> = mutableMapOf()
 }

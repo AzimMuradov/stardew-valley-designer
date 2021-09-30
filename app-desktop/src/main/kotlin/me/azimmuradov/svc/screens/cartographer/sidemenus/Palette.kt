@@ -70,7 +70,7 @@ fun Palette(
                     enabled = false, /* TODO : hotbar feature (inUse != null) */
                 ) {
                     if (inUse != null) {
-                        Sprite(id = inUse, modifier = Modifier.fillMaxSize())
+                        Sprite(entity = inUse, modifier = Modifier.fillMaxSize())
                     } else {
                         Icon(
                             imageVector = Icons.Default.Clear,
@@ -83,7 +83,7 @@ fun Palette(
                 if (inUse != null) {
                     Column {
                         Text(
-                            text = wordList.entity(id = inUse),
+                            text = wordList.entity(e = inUse),
                             color = MaterialTheme.colors.secondaryVariant,
                             fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.subtitle1,
@@ -108,7 +108,7 @@ fun Palette(
         //     rowSize = 5u,
         //     onButtonClick = { },
         //     spaceContent = { Icon(Icons.Default.Clear, null, Modifier.fillMaxSize()) },
-        //     buttonContent = { entityId -> Sprite(id = entityId, modifier = Modifier.fillMaxSize()) },
+        //     buttonContent = { entity -> Sprite(entity = entity, modifier = Modifier.fillMaxSize()) },
         // )
     }
 }

@@ -47,7 +47,6 @@ private class SvcEngineImpl(override val layout: Layout) : SvcEngine {
 
     override fun put(obj: PlacedEntity<*>): Map<LayerType<*>, List<PlacedEntity<*>>> {
         val (entity, _, coordinates) = obj
-        val (id, _) = entity
 
         val entityWithFloorGroup = listOf(
             LayerType.Floor,
@@ -56,7 +55,7 @@ private class SvcEngineImpl(override val layout: Layout) : SvcEngine {
         )
         val entityWithoutFloorGroup = listOf(LayerType.EntityWithoutFloor)
 
-        val eLayerType = id.type.toLayerType()
+        val eLayerType = entity.type.toLayerType()
         val eLayer = layerOf(eLayerType)
 
 

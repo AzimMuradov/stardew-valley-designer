@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.entity.ids
+package me.azimmuradov.svc.engine.entity
 
-import me.azimmuradov.svc.engine.entity.FloorFurnitureType
-import me.azimmuradov.svc.engine.entity.ids.RectsProvider.rectOf
-import me.azimmuradov.svc.engine.entity.ids.RectsProvider.rotated
-import me.azimmuradov.svc.engine.entity.ids.RotatableFlavor.RotatableFlavor2
-import me.azimmuradov.svc.engine.entity.ids.RotatableFlavor.Rotations.Rotations2
+import me.azimmuradov.svc.engine.entity.RectsProvider.rectOf
+import me.azimmuradov.svc.engine.entity.RectsProvider.rotated
+import me.azimmuradov.svc.engine.entity.RotatableFlavor.RotatableFlavor2
+import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations2
 import me.azimmuradov.svc.engine.rectmap.Rect
 
 
-sealed interface FloorFurniture : EntityId<FloorFurnitureType> {
+sealed interface FloorFurniture : Entity<FloorFurnitureType> {
 
     // Rugs
 

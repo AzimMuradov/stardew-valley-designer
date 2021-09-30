@@ -16,16 +16,16 @@
 
 package me.azimmuradov.svc.components.screens.cartographer.menus
 
+import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.EntityType
-import me.azimmuradov.svc.engine.entity.ids.EntityId
 import me.azimmuradov.svc.utils.menu.Menu
 import me.azimmuradov.svc.utils.menu.MenuElement
 import me.azimmuradov.svc.utils.menu.MenuElement.Item
 import me.azimmuradov.svc.utils.menu.MenuElement.Submenu
 
 
-typealias EntitySelectionMenu = Menu<EntitySelectionRoot, EntitySelectionRoot, EntityId<*>>
-typealias EntitySelectionMenuElement = MenuElement<EntitySelectionRoot, EntityId<*>>
+typealias EntitySelectionMenu = Menu<EntitySelectionRoot, EntitySelectionRoot, Entity<*>>
+typealias EntitySelectionMenuElement = MenuElement<EntitySelectionRoot, Entity<*>>
 
 enum class EntitySelectionRoot {
 

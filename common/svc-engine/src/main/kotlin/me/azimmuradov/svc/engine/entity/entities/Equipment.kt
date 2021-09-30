@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.entity.ids
+package me.azimmuradov.svc.engine.entity
 
+import me.azimmuradov.svc.engine.entity.ColoredFlavor.ColoredChestFlavor
+import me.azimmuradov.svc.engine.entity.ColoredFlavor.Colors.ChestColors
+import me.azimmuradov.svc.engine.entity.ColoredFlavor.Colors.ChestColors.Default
 import me.azimmuradov.svc.engine.entity.ObjectType.EquipmentType
-import me.azimmuradov.svc.engine.entity.ids.ColoredFlavor.ColoredChestFlavor
-import me.azimmuradov.svc.engine.entity.ids.ColoredFlavor.Colors.ChestColors
-import me.azimmuradov.svc.engine.entity.ids.ColoredFlavor.Colors.ChestColors.Default
-import me.azimmuradov.svc.engine.entity.ids.RectsProvider.rectOf
+import me.azimmuradov.svc.engine.entity.RectsProvider.rectOf
 import me.azimmuradov.svc.engine.rectmap.Rect
 
 
-sealed interface Equipment : EntityId<EquipmentType> {
+sealed interface Equipment : Entity<EquipmentType> {
 
     enum class SimpleEquipment : Equipment {
 

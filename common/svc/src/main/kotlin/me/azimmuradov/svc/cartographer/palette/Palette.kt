@@ -16,12 +16,12 @@
 
 package me.azimmuradov.svc.cartographer.palette
 
-import me.azimmuradov.svc.engine.entity.ids.EntityId
+import me.azimmuradov.svc.engine.entity.Entity
 
 
 interface Palette {
 
-    val inUse: EntityId<*>?
+    val inUse: Entity<*>?
 
-    val hotbar: List<EntityId<*>?>
+    val hotbar: List<Entity<*>?>
 }

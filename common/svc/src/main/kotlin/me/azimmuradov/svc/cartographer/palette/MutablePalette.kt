@@ -16,21 +16,21 @@
 
 package me.azimmuradov.svc.cartographer.palette
 
-import me.azimmuradov.svc.engine.entity.ids.EntityId
+import me.azimmuradov.svc.engine.entity.Entity
 
 
 interface MutablePalette : Palette {
 
-    fun putInUse(item: EntityId<*>): EntityId<*>?
+    fun putInUse(entity: Entity<*>): Entity<*>?
 
-    fun clearUsed(): EntityId<*>?
+    fun clearUsed(): Entity<*>?
 
-    fun clearHotbar(): List<EntityId<*>?>
+    fun clearHotbar(): List<Entity<*>?>
 
 
-    fun putOnHotbar(index: Int, item: EntityId<*>): EntityId<*>?
+    fun putOnHotbar(index: Int, entity: Entity<*>): Entity<*>?
 
-    fun removeFromHotbar(index: Int): EntityId<*>?
+    fun removeFromHotbar(index: Int): Entity<*>?
 }
 
 fun MutablePalette.clear() {

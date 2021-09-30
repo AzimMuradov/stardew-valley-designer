@@ -17,7 +17,7 @@
 package me.azimmuradov.svc.engine.rectmap
 
 
-data class PlacedRectObject<out T>(val rectObj: RectObject<T>, val place: Coordinate) {
+data class PlacedRectObject<out RO : RectObject>(val rectObj: RO, val place: Coordinate) {
 
     val coordinates: List<Coordinate> by lazy {
         val (x, y) = place

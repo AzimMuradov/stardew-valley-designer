@@ -37,7 +37,7 @@ fun CartographerUi(component: Cartographer) {
     Column(modifier = Modifier.fillMaxSize()) {
         TopMenuBar(
             disallowedTypes = svc.layout.disallowedTypes,
-            onEntitySelection = { id -> svc.palette.putInUse(id) },
+            onEntitySelection = { entity -> svc.palette.putInUse(entity) },
             options = options,
             lang = settings.lang,
         )

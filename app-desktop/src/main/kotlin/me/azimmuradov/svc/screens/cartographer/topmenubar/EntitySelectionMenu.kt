@@ -33,8 +33,8 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.*
 import me.azimmuradov.svc.components.screens.cartographer.menus.EntitySelectionMenu
 import me.azimmuradov.svc.components.screens.cartographer.menus.filterElements
+import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.EntityType
-import me.azimmuradov.svc.engine.entity.ids.EntityId
 import me.azimmuradov.svc.settings.Lang
 import me.azimmuradov.svc.settings.Settings
 import me.azimmuradov.svc.utils.Sprite
@@ -45,7 +45,7 @@ import me.azimmuradov.svc.utils.menu.HoverableCascadingDropdownMenu
 fun EntitySelectionMenu(
     menu: EntitySelectionMenu,
     disallowedTypes: Set<EntityType>,
-    onEntitySelection: (EntityId<*>) -> Unit,
+    onEntitySelection: (Entity<*>) -> Unit,
     lang: Lang,
 ) {
     val filteredMenu = menu.filterElements(disallowedTypes)
@@ -116,7 +116,7 @@ fun EntitySelectionMenu(
                     border = BorderStroke(1.dp, MaterialTheme.colors.secondaryVariant),
                     elevation = 3.dp,
                 ) {
-                    Sprite(id = value, modifier = Modifier.size(36.dp).padding(3.dp))
+                    Sprite(entity = value, modifier = Modifier.size(36.dp).padding(3.dp))
                 }
                 Spacer(modifier = Modifier.width(20.dp))
                 Text(

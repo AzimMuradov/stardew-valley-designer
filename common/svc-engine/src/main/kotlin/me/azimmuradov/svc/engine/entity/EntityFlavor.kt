@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.entity.ids
+package me.azimmuradov.svc.engine.entity
 
-import me.azimmuradov.svc.engine.entity.EntityType
+import me.azimmuradov.svc.engine.entity.ColoredFlavor.Colors.ChestColors
+import me.azimmuradov.svc.engine.entity.ColoredFlavor.Colors.FishPondColors
 import me.azimmuradov.svc.engine.entity.EntityWithoutFloorType.BuildingType
 import me.azimmuradov.svc.engine.entity.ObjectType.EquipmentType
-import me.azimmuradov.svc.engine.entity.ids.ColoredFlavor.Colors.ChestColors
-import me.azimmuradov.svc.engine.entity.ids.ColoredFlavor.Colors.FishPondColors
-import me.azimmuradov.svc.engine.entity.ids.RotatableFlavor.Rotations.Rotations2
-import me.azimmuradov.svc.engine.entity.ids.RotatableFlavor.Rotations.Rotations4
+import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations2
+import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations4
 import me.azimmuradov.svc.engine.rectmap.Rect
 
 
-sealed interface EntityIdFlavor
+sealed interface EntityFlavor
 
 
 sealed class RotatableFlavor private constructor(
     private val regularSize: Rect,
     private val rotatedSize: Rect,
-) : EntityIdFlavor {
+) : EntityFlavor {
 
     abstract val rotation: Rotations
 
@@ -67,7 +66,7 @@ sealed class RotatableFlavor private constructor(
 }
 
 
-sealed class ColoredFarmBuildingFlavor : EntityIdFlavor {
+sealed class ColoredFarmBuildingFlavor : EntityFlavor {
     abstract val building: Color?
     abstract val roof: Color?
     abstract val trim: Color?
@@ -76,7 +75,7 @@ sealed class ColoredFarmBuildingFlavor : EntityIdFlavor {
 data class Color(val r: UByte, val g: UByte, val b: UByte)
 
 
-sealed class ColoredFlavor<out EType : EntityType> private constructor() : EntityIdFlavor {
+sealed class ColoredFlavor<out EType : EntityType> private constructor() : EntityFlavor {
 
     abstract val color: Colors
 

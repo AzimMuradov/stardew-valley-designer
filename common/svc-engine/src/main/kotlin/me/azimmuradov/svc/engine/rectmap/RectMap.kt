@@ -20,24 +20,24 @@ package me.azimmuradov.svc.engine.rectmap
 /**
  * Rectangular map that contains rectangular objects.
  */
-interface RectMap<out T> {
+interface RectMap<out RO : RectObject> {
 
     val size: Rect
 
 
     // Query Operations
 
-    operator fun get(c: Coordinate): PlacedRectObject<T>?
+    operator fun get(c: Coordinate): PlacedRectObject<RO>?
 
 
     // Bulk Query Operations
 
-    fun getAll(cs: Iterable<Coordinate>): List<PlacedRectObject<T>>
+    fun getAll(cs: Iterable<Coordinate>): List<PlacedRectObject<RO>>
 
 
     // Views
 
     val occupiedCoordinates: Set<Coordinate>
 
-    val objs: Collection<PlacedRectObject<T>>
+    val objs: Collection<PlacedRectObject<RO>>
 }

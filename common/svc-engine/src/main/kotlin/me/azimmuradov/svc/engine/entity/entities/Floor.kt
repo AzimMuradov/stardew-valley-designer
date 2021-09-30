@@ -14,17 +14,36 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.entity.ids
+package me.azimmuradov.svc.engine.entity
 
+import me.azimmuradov.svc.engine.entity.RectsProvider.rectOf
 import me.azimmuradov.svc.engine.rectmap.Rect
-import me.azimmuradov.svc.engine.rectmap.rectOf as r
 
 
-internal object RectsProvider {
+enum class Floor : Entity<FloorType> {
 
-    fun rectOf(w: Int, h: Int) = rects.getOrPut(w, ::mutableMapOf).getOrPut(h) { r(w, h) }
+    // Floors (Floors + Paths + Grass)
 
-    fun Rect.rotated() = rectOf(w = h, h = w)
+    WoodFloor,
+    RusticPlankFloor,
+    StrawFloor,
+    WeatheredFloor,
+    CrystalFloor,
+    StoneFloor,
+    StoneWalkwayFloor,
+    BrickFloor,
 
-    private val rects: MutableMap<Int, MutableMap<Int, Rect>> = mutableMapOf()
+    WoodPath,
+    GravelPath,
+    CobblestonePath,
+    SteppingStonePath,
+    CrystalPath,
+
+    Grass,
+    ;
+
+
+    override val type: FloorType = FloorType
+
+    override val size: Rect = rectOf(w = 1, h = 1)
 }

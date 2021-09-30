@@ -18,7 +18,7 @@ package me.azimmuradov.svc.settings.wordlists
 
 import me.azimmuradov.svc.cartographer.toolkit.ToolType
 import me.azimmuradov.svc.components.screens.cartographer.menus.EntitySelectionRoot
-import me.azimmuradov.svc.engine.entity.ids.EntityId
+import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.layer.LayerType
 
 
@@ -46,9 +46,9 @@ sealed interface WordList {
     fun menuTitle(root: EntitySelectionRoot): String
 
     /**
-     * Entity name by its id.
+     * Get entity name.
      */
-    fun entity(id: EntityId<*>): String
+    fun entity(e: Entity<*>): String
 
     /**
      * Tool by its type.

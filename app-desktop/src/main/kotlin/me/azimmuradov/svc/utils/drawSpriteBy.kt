@@ -20,17 +20,17 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.IntOffset
 import me.azimmuradov.svc.components.screens.cartographer.res.EntitySpritesProvider
-import me.azimmuradov.svc.engine.entity.ids.EntityId
+import me.azimmuradov.svc.engine.entity.Entity
 
 
 fun DrawScope.drawSpriteBy(
-    id: EntityId<*>,
+    entity: Entity<*>,
     offset: IntOffset = IntOffset.Zero,
     layoutSize: Size,
     alpha: Float = 1.0f,
 ) {
     drawSprite(
-        sprite = EntitySpritesProvider.spriteBy(id),
+        sprite = EntitySpritesProvider.spriteBy(entity),
         offset = offset,
         layoutSize = layoutSize,
         alpha = alpha,

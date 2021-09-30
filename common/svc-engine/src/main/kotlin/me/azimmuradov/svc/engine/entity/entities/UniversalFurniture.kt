@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.entity.ids
+package me.azimmuradov.svc.engine.entity
 
 import me.azimmuradov.svc.engine.entity.ObjectType.FurnitureType.UniversalFurnitureType
-import me.azimmuradov.svc.engine.entity.ids.RectsProvider.rectOf
-import me.azimmuradov.svc.engine.entity.ids.RotatableFlavor.RotatableFlavor2
-import me.azimmuradov.svc.engine.entity.ids.RotatableFlavor.RotatableFlavor4
-import me.azimmuradov.svc.engine.entity.ids.RotatableFlavor.Rotations.Rotations2
-import me.azimmuradov.svc.engine.entity.ids.RotatableFlavor.Rotations.Rotations4
+import me.azimmuradov.svc.engine.entity.RectsProvider.rectOf
+import me.azimmuradov.svc.engine.entity.RotatableFlavor.RotatableFlavor2
+import me.azimmuradov.svc.engine.entity.RotatableFlavor.RotatableFlavor4
+import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations2
+import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations4
 import me.azimmuradov.svc.engine.rectmap.Rect
 
 
-sealed interface UniversalFurniture : EntityId<UniversalFurnitureType> {
+sealed interface UniversalFurniture : Entity<UniversalFurnitureType> {
 
     enum class SimpleUniversalFurniture(override val size: Rect) : UniversalFurniture {
 

@@ -21,7 +21,6 @@ import me.azimmuradov.svc.cartographer.palette.mutablePaletteOf
 import me.azimmuradov.svc.cartographer.toolkit.Toolkit
 import me.azimmuradov.svc.cartographer.toolkit.tools.*
 import me.azimmuradov.svc.engine.*
-import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.layout.Layout
 import me.azimmuradov.svc.engine.rectmap.PlacedRectObject
@@ -63,21 +62,21 @@ private class SvcImpl(override val layout: Layout) : Svc {
         ),
         pen = Pen(
             startBlock = { c ->
-                val entityId = palette.inUse
+                val entity = palette.inUse
 
-                if (entityId != null) {
+                if (entity != null) {
                     engine.put(PlacedRectObject(
-                        rectObj = Entity(obj = entityId, size = entityId.size),
+                        rectObj = entity,
                         place = c,
                     ))
                 }
             },
             keepBlock = { c ->
-                val entityId = palette.inUse
+                val entity = palette.inUse
 
-                if (entityId != null) {
+                if (entity != null) {
                     engine.put(PlacedRectObject(
-                        rectObj = Entity(obj = entityId, size = entityId.size),
+                        rectObj = entity,
                         place = c,
                     ))
                 }

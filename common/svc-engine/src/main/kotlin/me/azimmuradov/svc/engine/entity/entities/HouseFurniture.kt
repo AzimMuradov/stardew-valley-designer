@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.entity.ids
+package me.azimmuradov.svc.engine.entity
 
 import me.azimmuradov.svc.engine.entity.ObjectType.FurnitureType.HouseFurnitureType
-import me.azimmuradov.svc.engine.entity.ids.RectsProvider.rectOf
+import me.azimmuradov.svc.engine.entity.RectsProvider.rectOf
 import me.azimmuradov.svc.engine.rectmap.Rect
 
 
-enum class HouseFurniture(override val size: Rect) : EntityId<HouseFurnitureType> {
+enum class HouseFurniture(override val size: Rect) : Entity<HouseFurnitureType> {
 
     // Beds
 

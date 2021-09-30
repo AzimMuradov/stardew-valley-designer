@@ -90,7 +90,7 @@ fun EditorLayout(
                 val offset = e.place.toIntOffset() * stepSize
 
                 drawSpriteBy(
-                    id = e.rectObj.obj,
+                    entity = e.rectObj,
                     offset = offset.copy(x = offset.x + 2, y = offset.y + 2),
                     layoutSize = Size(width = cellSize.width - 4, height = cellSize.height - 4),
                 )
@@ -139,7 +139,7 @@ fun EditorLayout(
                 val offset = e.place.toIntOffset() * stepSize
 
                 drawSpriteBy(
-                    id = e.rectObj.obj,
+                    entity = e.rectObj,
                     offset = offset.copy(x = offset.x + 4, y = offset.y + 4),
                     layoutSize = Size(width = cellSize.width - 8, height = cellSize.height - 8),
                     alpha = 0.7f,

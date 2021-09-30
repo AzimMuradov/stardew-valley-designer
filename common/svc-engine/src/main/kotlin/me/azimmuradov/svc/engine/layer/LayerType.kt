@@ -17,7 +17,6 @@
 package me.azimmuradov.svc.engine.layer
 
 import me.azimmuradov.svc.engine.entity.*
-import me.azimmuradov.svc.engine.layer.LayerType.*
 
 
 sealed interface LayerType<out EType : EntityType> {
@@ -38,8 +37,8 @@ sealed interface LayerType<out EType : EntityType> {
 }
 
 fun EntityType.toLayerType() = when (this) {
-    FloorType -> Floor
-    FloorFurnitureType -> FloorFurniture
-    is ObjectType -> Object
-    is EntityWithoutFloorType -> EntityWithoutFloor
+    FloorType -> LayerType.Floor
+    FloorFurnitureType -> LayerType.FloorFurniture
+    is ObjectType -> LayerType.Object
+    is EntityWithoutFloorType -> LayerType.EntityWithoutFloor
 }

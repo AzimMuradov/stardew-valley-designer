@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.entity.ids
+package me.azimmuradov.svc.engine.entity
 
-import me.azimmuradov.svc.engine.entity.EntityType
 import me.azimmuradov.svc.engine.rectmap.Rect
+import me.azimmuradov.svc.engine.rectmap.rectOf as r
 
 
-sealed interface EntityId<out EType : EntityType> {
+internal object RectsProvider {
 
-    val type: EType
+    fun rectOf(w: Int, h: Int) = rects.getOrPut(w, ::mutableMapOf).getOrPut(h) { r(w, h) }
 
-    val size: Rect
+    fun Rect.rotated() = rectOf(w = h, h = w)
+
+    private val rects: MutableMap<Int, MutableMap<Int, Rect>> = mutableMapOf()
 }

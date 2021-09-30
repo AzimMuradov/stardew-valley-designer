@@ -19,20 +19,20 @@ package me.azimmuradov.svc.engine.rectmap
 import me.azimmuradov.svc.engine.contains
 
 
-fun <T> rectMapOf(size: Rect): RectMap<T> = RectMapImpl(MutableRectMapImpl(size))
+fun <RO : RectObject> rectMapOf(size: Rect): RectMap<RO> = RectMapImpl(MutableRectMapImpl(size))
 
-fun <T> mutableRectMapOf(size: Rect): MutableRectMap<T> = MutableRectMapImpl(size)
+fun <RO : RectObject> mutableRectMapOf(size: Rect): MutableRectMap<RO> = MutableRectMapImpl(size)
 
 
 // Actual private implementations
 
-private class RectMapImpl<out T>(rectMap: RectMap<T>) : RectMap<T> by rectMap
+private class RectMapImpl<out RO : RectObject>(rectMap: RectMap<RO>) : RectMap<RO> by rectMap
 
-private class MutableRectMapImpl<T>(
+private class MutableRectMapImpl<RO : RectObject>(
     override val size: Rect,
-) : MutableRectMap<T> {
+) : MutableRectMap<RO> {
 
-    private val map = mutableMapOf<Coordinate, PlacedRectObject<T>>()
+    private val map = mutableMapOf<Coordinate, PlacedRectObject<RO>>()
 
 
     // Query Operations
@@ -51,12 +51,12 @@ private class MutableRectMapImpl<T>(
 
     override val occupiedCoordinates: Set<Coordinate> get() = map.keys
 
-    override val objs: Collection<PlacedRectObject<T>> get() = map.values
+    override val objs: Collection<PlacedRectObject<RO>> get() = map.values
 
 
     // Modification Operations
 
-    override fun put(obj: PlacedRectObject<T>): List<PlacedRectObject<T>> {
+    override fun put(obj: PlacedRectObject<RO>): List<PlacedRectObject<RO>> {
         val (_, _, coordinates) = obj
         val (min, max) = obj.minMaxCorners()
 
@@ -73,7 +73,7 @@ private class MutableRectMapImpl<T>(
 
     // Bulk Modification Operations
 
-    override fun putAll(objs: Iterable<PlacedRectObject<T>>) = objs.flatMap(this::put).toList()
+    override fun putAll(objs: Iterable<PlacedRectObject<RO>>) = objs.flatMap(this::put).toList()
 
     override fun removeAll(cs: Iterable<Coordinate>) = cs.mapNotNull(this::remove)
 

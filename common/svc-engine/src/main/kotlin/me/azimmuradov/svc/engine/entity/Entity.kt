@@ -16,11 +16,13 @@
 
 package me.azimmuradov.svc.engine.entity
 
-import me.azimmuradov.svc.engine.entity.ids.EntityId
 import me.azimmuradov.svc.engine.rectmap.PlacedRectObject
 import me.azimmuradov.svc.engine.rectmap.RectObject
 
 
-typealias Entity<EType> = RectObject<EntityId<EType>>
+sealed interface Entity<out EType : EntityType> : RectObject {
 
-typealias PlacedEntity<EType> = PlacedRectObject<EntityId<EType>>
+    val type: EType
+}
+
+typealias PlacedEntity<EType> = PlacedRectObject<Entity<EType>>
