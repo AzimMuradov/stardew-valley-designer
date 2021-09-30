@@ -29,18 +29,16 @@ fun svcEngineOf(layout: Layout): SvcEngine = SvcEngineImpl(layout)
 
 // Actual private implementations
 
-private class SvcEngineImpl(
-    override val layout: Layout,
-) : SvcEngine {
+private class SvcEngineImpl(override val layout: Layout) : SvcEngine {
 
-    override fun layerOf(type: LayerType<*>) = layerByLayerType.getValue(type)
-
-    val layerByLayerType = mapOf(
+    override val layers = mapOf(
         LayerType.Floor to mutableLayerOf<FloorType>(layout),
         LayerType.FloorFurniture to mutableLayerOf<FloorFurnitureType>(layout),
         LayerType.Object to mutableLayerOf<ObjectType>(layout),
         LayerType.EntityWithoutFloor to mutableLayerOf<EntityWithoutFloorType>(layout),
     )
+
+    fun layerOf(type: LayerType<*>) = layers.getValue(type)
 
 
     // Operations
@@ -106,7 +104,8 @@ private class SvcEngineImpl(
 
     override fun getAll(type: LayerType<*>, cs: Iterable<Coordinate>) = layerOf(type).getAll(cs)
 
-    override fun putAll(objs: Iterable<PlacedEntity<*>>) = objs.map(this::put).reduce { acc, b -> acc.plus(b) }
+    override fun putAll(objs: Iterable<PlacedEntity<*>>) =
+        objs.map(this::put).fold(mapOf(), Map<LayerType<*>, List<PlacedEntity<*>>>::plus)
 
     override fun removeAll(type: LayerType<*>, cs: Iterable<Coordinate>) = layerOf(type).removeAll(cs)
 

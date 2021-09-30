@@ -20,7 +20,7 @@ package me.azimmuradov.svc.cartographer.history
 class RevertibleActBuilder internal constructor() {
 
     fun add(act: RevertibleAct?) {
-        if (act != null) add(act)
+        if (act != null) revertibleActs.add(act)
     }
 
     internal fun build(): RevertibleAct {

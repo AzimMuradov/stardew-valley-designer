@@ -31,6 +31,7 @@ fun DrawScope.drawSprite(
     sprite: Sprite,
     offset: IntOffset = IntOffset.Zero,
     layoutSize: Size,
+    alpha: Float = 1.0f,
 ) {
     val (spriteW, spriteH) = sprite.size
     val (layoutW, layoutH) = layoutSize
@@ -56,7 +57,7 @@ fun DrawScope.drawSprite(
         srcSize = sprite.size,
         dstOffset = dstOffset,
         dstSize = dstSize,
-        alpha = 1.0f,
+        alpha = alpha,
         style = Fill,
         colorFilter = null,
         blendMode = DefaultBlendMode,

@@ -17,6 +17,7 @@
 package me.azimmuradov.svc.screens.cartographer.sidemenus
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -49,4 +50,13 @@ class SideMenusBuilder internal constructor(columnScope: ColumnScope) : ColumnSc
     internal fun build(): List<@Composable () -> Unit> = menus
 
     private val menus: MutableList<@Composable () -> Unit> = mutableListOf()
+}
+
+@Composable
+private fun SideMenuCard(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        elevation = 4.dp,
+        content = content,
+    )
 }

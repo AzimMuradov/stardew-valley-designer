@@ -33,7 +33,7 @@ interface Tool {
 
     fun keepAct(c: Coordinate)
 
-    fun endAct(c: Coordinate)
+    fun endAct()
 }
 
 

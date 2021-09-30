@@ -27,7 +27,7 @@ interface SvcEngine {
 
     val layout: Layout
 
-    fun layerOf(type: LayerType<*>): Layer<*>
+    val layers: Map<LayerType<*>, Layer<*>>
 
 
     // Operations
@@ -49,9 +49,6 @@ interface SvcEngine {
 
     fun clear(type: LayerType<*>)
 }
-
-
-fun SvcEngine.layers() = LayerType.all.associateWith(this::layerOf)
 
 
 fun SvcEngine.get(c: Coordinate): Map<LayerType<*>, PlacedEntity<*>?> =

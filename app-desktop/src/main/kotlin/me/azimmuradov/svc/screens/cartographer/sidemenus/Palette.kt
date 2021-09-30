@@ -39,80 +39,77 @@ import me.azimmuradov.svc.utils.Sprite
 fun Palette(
     palette: MutablePalette,
     lang: Lang,
-    modifier: Modifier = Modifier,
 ) {
     val inUse = palette.inUse
     // TODO : hotbar feature (val hotbar = palette.hotbar)
     val wordList = Settings.wordList(lang)
 
-    Box(modifier) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Card(elevation = 0.dp) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
+    Column(
+        modifier = Modifier.padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Card(elevation = 0.dp) {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Button(
+                    onClick = { /* TODO : hotbar feature */ },
+                    modifier = Modifier
+                        .size(56.dp)
+                        .border(
+                            width = Dp.Hairline,
+                            color = MaterialTheme.colors.secondaryVariant,
+                            shape = CircleShape,
+                        ),
+                    elevation = ButtonDefaults.elevation(pressedElevation = 4.dp),
+                    shape = CircleShape,
+                    colors = ButtonDefaults.outlinedButtonColors(),
+                    contentPadding = PaddingValues(12.dp),
+                    enabled = false, /* TODO : hotbar feature (inUse != null) */
                 ) {
-                    Button(
-                        onClick = { /* TODO : hotbar feature */ },
-                        modifier = Modifier
-                            .size(56.dp)
-                            .border(
-                                width = Dp.Hairline,
-                                color = MaterialTheme.colors.secondaryVariant,
-                                shape = CircleShape,
-                            ),
-                        elevation = ButtonDefaults.elevation(pressedElevation = 4.dp),
-                        shape = CircleShape,
-                        colors = ButtonDefaults.outlinedButtonColors(),
-                        contentPadding = PaddingValues(12.dp),
-                        enabled = false, /* TODO : hotbar feature (inUse != null) */
-                    ) {
-                        if (inUse != null) {
-                            Sprite(id = inUse, modifier = Modifier.fillMaxSize())
-                        } else {
-                            Icon(
-                                imageVector = Icons.Default.Clear,
-                                contentDescription = null,
-                                modifier = Modifier.fillMaxSize().padding(4.dp),
-                            )
-                        }
-                    }
-
                     if (inUse != null) {
-                        Column {
-                            Text(
-                                text = wordList.entity(id = inUse),
-                                color = MaterialTheme.colors.secondaryVariant,
-                                fontWeight = FontWeight.Bold,
-                                style = MaterialTheme.typography.subtitle1,
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = inUse.size.toShortString(),
-                                style = MaterialTheme.typography.body2,
-                            )
-                        }
+                        Sprite(id = inUse, modifier = Modifier.fillMaxSize())
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.Clear,
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize().padding(4.dp),
+                        )
+                    }
+                }
+
+                if (inUse != null) {
+                    Column {
+                        Text(
+                            text = wordList.entity(id = inUse),
+                            color = MaterialTheme.colors.secondaryVariant,
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.subtitle1,
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = inUse.size.toShortString(),
+                            style = MaterialTheme.typography.body2,
+                        )
                     }
                 }
             }
-
-
-            // TODO : hotbar feature
-            //
-            // Spacer(modifier = Modifier.height(8.dp))
-            //
-            // ButtonsGroup(
-            //     buttonLabels = hotbar,
-            //     rowSize = 5u,
-            //     onButtonClick = { },
-            //     spaceContent = { Icon(Icons.Default.Clear, null, Modifier.fillMaxSize()) },
-            //     buttonContent = { entityId -> Sprite(id = entityId, modifier = Modifier.fillMaxSize()) },
-            // )
         }
+
+
+        // TODO : hotbar feature
+        //
+        // Spacer(modifier = Modifier.height(8.dp))
+        //
+        // ButtonsGroup(
+        //     buttonLabels = hotbar,
+        //     rowSize = 5u,
+        //     onButtonClick = { },
+        //     spaceContent = { Icon(Icons.Default.Clear, null, Modifier.fillMaxSize()) },
+        //     buttonContent = { entityId -> Sprite(id = entityId, modifier = Modifier.fillMaxSize()) },
+        // )
     }
 }
 

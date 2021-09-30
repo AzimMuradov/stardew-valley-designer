@@ -17,7 +17,7 @@
 package me.azimmuradov.svc.screens.cartographer.main
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -26,9 +26,11 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.input.pointer.pointerMoveFilter
+import androidx.compose.ui.input.pointer.*
 import me.azimmuradov.svc.cartographer.Svc
 import me.azimmuradov.svc.components.screens.cartographer.Options
+import me.azimmuradov.svc.engine.rectmap.Coordinate
+import me.azimmuradov.svc.engine.rectmap.xy
 import me.azimmuradov.svc.settings.Settings
 import me.azimmuradov.svc.utils.drawSpriteBy
 import me.azimmuradov.svc.utils.toIntOffset
@@ -44,50 +46,53 @@ fun EditorLayout(
 ) {
     val (w, h) = svc.layout.size
 
-    val undefined = -1 to -1
-
     var mutStepSize by remember { mutableStateOf(-1f) }
-    var mutHoveredId by remember { mutableStateOf(undefined) }
-    var mutClickedId by remember { mutableStateOf(undefined) }
+    var mutHoveredId by remember { mutableStateOf(UNDEFINED) }
 
 
     val hoveredColor = MaterialTheme.colors.secondary
-    val clickedColor = MaterialTheme.colors.secondaryVariant
+
+    fun Offset.toCoordinate() = xy(
+        floor(x / mutStepSize).toInt().coerceIn(0 until w),
+        floor(y / mutStepSize).toInt().coerceIn(0 until h),
+    )
 
     Canvas(
         modifier = modifier
             .pointerMoveFilter(
-                onMove = { (offsetX, offsetY) ->
-                    mutHoveredId = floor(offsetX / mutStepSize).toInt() to floor(offsetY / mutStepSize).toInt()
-                    false
-                },
-                onExit = {
-                    mutHoveredId = undefined
-                    false
-                },
                 onEnter = { false },
+                onMove = { offset -> mutHoveredId = offset.toCoordinate(); false },
+                onExit = { mutHoveredId = UNDEFINED; false },
             )
-            .clickable(
-                onClick = { mutClickedId = mutHoveredId }
-            )
+            .pointerInput(Unit) {
+                detectDragGesturesImmediately(
+                    onDragStart = { offset -> svc.toolkit.tool?.startAct(offset.toCoordinate()) },
+                    onDrag = { change, _ -> svc.toolkit.tool?.keepAct(change.position.toCoordinate()) },
+                    onDragEnd = { svc.toolkit.tool?.endAct() },
+                    onDragCancel = { svc.toolkit.tool?.endAct() },
+                )
+            }
     ) {
         mutStepSize = size.width / w
 
         val stepSize = mutStepSize
         val hoveredId = mutHoveredId
-        val clickedId = mutClickedId
 
         val cellSize = Size(stepSize, stepSize)
         val offsetsW = List(size = w + 1) { it * stepSize }
         val offsetsH = List(size = h + 1) { it * stepSize }
 
 
-        for ((_, layer) in svc.layers()) {
+        // Entities
+
+        for ((_, layer) in svc.layers) {
             for (e in layer.objs) {
+                val offset = e.place.toIntOffset() * stepSize
+
                 drawSpriteBy(
-                    e.rectObj.obj,
-                    offset = e.place.toIntOffset() * stepSize,
-                    layoutSize = cellSize,
+                    id = e.rectObj.obj,
+                    offset = offset.copy(x = offset.x + 2, y = offset.y + 2),
+                    layoutSize = Size(width = cellSize.width - 4, height = cellSize.height - 4),
                 )
             }
         }
@@ -99,7 +104,7 @@ fun EditorLayout(
             for (x in offsetsW) {
                 drawLine(
                     color = Color.LightGray,
-                    start = Offset(x, 0f),
+                    start = Offset(x, y = 0f),
                     end = Offset(x, size.height),
                     pathEffect = PathEffect.dashPathEffect(intervals = floatArrayOf(2f, 2f)),
                 )
@@ -107,7 +112,7 @@ fun EditorLayout(
             for (y in offsetsH) {
                 drawLine(
                     color = Color.LightGray,
-                    start = Offset(0f, y),
+                    start = Offset(x = 0f, y),
                     end = Offset(size.width, y),
                     pathEffect = PathEffect.dashPathEffect(intervals = floatArrayOf(2f, 2f)),
                 )
@@ -117,15 +122,29 @@ fun EditorLayout(
 
         // Hovered cell
 
-        if (hoveredId != undefined) {
+        if (hoveredId != UNDEFINED) {
             val (hoveredX, hoveredY) = hoveredId
 
             drawRect(
                 color = hoveredColor,
                 topLeft = Offset(offsetsW[hoveredX], offsetsH[hoveredY]),
                 size = cellSize,
-                alpha = 0.5f,
+                alpha = 0.3f,
             )
+
+
+            // Held entities
+
+            for (e in svc.heldEntities) {
+                val offset = e.place.toIntOffset() * stepSize
+
+                drawSpriteBy(
+                    id = e.rectObj.obj,
+                    offset = offset.copy(x = offset.x + 4, y = offset.y + 4),
+                    layoutSize = Size(width = cellSize.width - 8, height = cellSize.height - 8),
+                    alpha = 0.7f,
+                )
+            }
 
 
             // Axis
@@ -149,26 +168,37 @@ fun EditorLayout(
         }
 
 
-        // Clicked cell
-
-        // if (clickedId != undefined) {
-        //     val (clickedX, clickedY) = clickedId
-        //
-        //     drawRect(
-        //         color = clickedColor,
-        //         topLeft = Offset(offsetsW[clickedX], offsetsH[clickedY]),
-        //         size = cellSize,
-        //     )
-        // }
-
-
         // Borders
 
-        drawRect(
-            color = Color.Black,
-            topLeft = Offset(0f, 0f),
-            size = Size(width = offsetsW.last(), height = offsetsH.last()),
-            style = Stroke(),
-        )
+        drawRect(color = Color.Black, style = Stroke())
+    }
+}
+
+
+private val UNDEFINED: Coordinate = xy(-1, -1)
+
+private suspend fun PointerInputScope.detectDragGesturesImmediately(
+    onDragStart: (Offset) -> Unit = { },
+    onDragEnd: () -> Unit = { },
+    onDragCancel: () -> Unit = { },
+    onDrag: (change: PointerInputChange, dragAmount: Offset) -> Unit,
+) {
+    forEachGesture {
+        awaitPointerEventScope {
+            val drag = awaitFirstDown(requireUnconsumed = false)
+
+            onDragStart(drag.position)
+
+            if (
+                drag(drag.id) {
+                    onDrag(it, it.positionChange())
+                    it.consumePositionChange()
+                }
+            ) {
+                onDragEnd()
+            } else {
+                onDragCancel()
+            }
+        }
     }
 }

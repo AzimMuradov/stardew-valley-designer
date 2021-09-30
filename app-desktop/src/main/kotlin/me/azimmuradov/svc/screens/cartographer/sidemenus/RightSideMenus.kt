@@ -32,12 +32,7 @@ fun RightSideMenus(
     width: Dp,
 ) {
     SideMenus(Modifier.fillMaxHeight().width(width)) {
-        menu {
-            LayersVisibility(
-                layersVisibility = svc.layersVisibility,
-                lang = settings.lang
-            )
-        }
+        // TODO : menu { LayersVisibility(lang = settings.lang) }
         // TODO : menu(Modifier.weight(1f)) { Stub(text = "Flavors") }
     }
 }

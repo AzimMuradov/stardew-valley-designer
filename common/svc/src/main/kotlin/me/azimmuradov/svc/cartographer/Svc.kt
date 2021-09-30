@@ -16,8 +16,6 @@
 
 package me.azimmuradov.svc.cartographer
 
-import me.azimmuradov.svc.cartographer.history.ActsHistory
-import me.azimmuradov.svc.cartographer.layers.MutableLayersVisibility
 import me.azimmuradov.svc.cartographer.palette.MutablePalette
 import me.azimmuradov.svc.cartographer.toolkit.Toolkit
 import me.azimmuradov.svc.engine.entity.PlacedEntity
@@ -26,44 +24,37 @@ import me.azimmuradov.svc.engine.layer.LayerType
 import me.azimmuradov.svc.engine.layout.Layout
 
 
+// TODO : layers visibility
+// TODO : chosen entities
+// TODO : SVC behaviour
+// TODO : Acts history
+
+
+/**
+ * Stardew Valley Cartographer.
+ *
+ * Cartographer is defined by its [layout].
+ */
 interface Svc {
 
-    // TODO
-    // /**
-    //  * Behavior of the SVC.
-    //  */
-    // var behavior: SvcBehaviour
-
     /**
-     * Visible layers.
-     */
-    fun layers(): Map<LayerType<*>, Layer<*>>
-
-    /**
-     * TODO
-     */
-    fun ghostLayers(): List<PlacedEntity<*>>
-
-
-    /**
-     * Action history.
-     */
-    val history: ActsHistory
-
-    /**
-     * TODO
-     */
-    val chosenEntities: List<PlacedEntity<*>>
-
-    /**
-     * Current SVC layout.
+     * SVC layout.
      */
     val layout: Layout
 
+
+    // Views
+
     /**
-     * SVC toolkit, using it, you can choose tool or use the current tool.
+     * SVC layers.
      */
-    val toolkit: Toolkit
+    val layers: Map<LayerType<*>, Layer<*>>
+
+    /**
+     * Entities that are currently being held.
+     */
+    val heldEntities: List<PlacedEntity<*>>
+
 
     /**
      * SVC palette.
@@ -71,7 +62,7 @@ interface Svc {
     val palette: MutablePalette
 
     /**
-     * You can change visibility of the layers using it.
+     * SVC toolkit, using it, you can choose tool or use the current tool.
      */
-    val layersVisibility: MutableLayersVisibility
+    val toolkit: Toolkit
 }

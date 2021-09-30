@@ -48,13 +48,13 @@ abstract class ToolWithRevertibleAct(
         }
     }
 
-    final override fun endAct(c: Coordinate) {
+    final override fun endAct() {
         check(state == State.Acting)
+
+        rActBuilder.add(endActBody())
 
         state = State.Stale
         last = Coordinate.ZERO
-
-        rActBuilder.add(endActBody(c))
 
         actsRegisterer += rActBuilder.build()
     }
@@ -64,7 +64,7 @@ abstract class ToolWithRevertibleAct(
 
     protected abstract fun keepActBody(c: Coordinate): RevertibleAct?
 
-    protected abstract fun endActBody(c: Coordinate): RevertibleAct?
+    protected abstract fun endActBody(): RevertibleAct?
 
 
     // For efficiency

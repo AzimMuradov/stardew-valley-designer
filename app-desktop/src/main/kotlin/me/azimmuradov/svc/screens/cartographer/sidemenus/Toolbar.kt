@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import me.azimmuradov.svc.cartographer.toolkit.ToolType
 import me.azimmuradov.svc.cartographer.toolkit.Toolkit
 import me.azimmuradov.svc.components.screens.cartographer.res.MenuSpritesProvider.toolSpriteBy
 import me.azimmuradov.svc.settings.Lang
@@ -36,48 +37,45 @@ import me.azimmuradov.svc.utils.group.ToggleButtonsGroup
 fun Toolbar(
     toolkit: Toolkit,
     lang: Lang,
-    modifier: Modifier = Modifier,
 ) {
-    val labels = toolkit.availableToolTypes
+    val labels = ToolType.values().take(3)
     val wordList = Settings.wordList(lang)
 
-    Box(modifier) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+    Column(
+        modifier = Modifier.padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Divider(modifier = Modifier.weight(1f))
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = wordList.tool(toolkit.tool?.type))
-                Spacer(modifier = Modifier.width(8.dp))
-                Divider(modifier = Modifier.weight(1f))
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            ToggleButtonsGroup(
-                buttonLabels = labels,
-                rowSize = 5u,
-                chosenLabel = toolkit.tool?.type,
-                onButtonClick = { toolkit.chooseToolOf(type = it) },
-                spaceContent = {
-                    Icon(
-                        imageVector = Icons.Default.Clear,
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize().padding(8.dp),
-                    )
-                },
-                buttonContent = { toolType ->
-                    Sprite(
-                        sprite = toolSpriteBy(toolType),
-                        modifier = Modifier.fillMaxSize().padding(4.dp),
-                    )
-                }
-            )
+            Divider(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = wordList.tool(toolkit.tool?.type))
+            Spacer(modifier = Modifier.width(8.dp))
+            Divider(modifier = Modifier.weight(1f))
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        ToggleButtonsGroup(
+            buttonLabels = labels,
+            rowSize = 5u,
+            chosenLabel = toolkit.tool?.type,
+            onButtonClick = { toolkit.chooseToolOf(type = it) },
+            spaceContent = {
+                Icon(
+                    imageVector = Icons.Default.Clear,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize().padding(8.dp),
+                )
+            },
+            buttonContent = { toolType ->
+                Sprite(
+                    sprite = toolSpriteBy(toolType),
+                    modifier = Modifier.fillMaxSize().padding(4.dp),
+                )
+            }
+        )
     }
 }

@@ -14,48 +14,51 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.toolkit
+package me.azimmuradov.svc.cartographer.toolkit.tools
 
-import me.azimmuradov.svc.cartographer.history.ActsRegisterer
 import me.azimmuradov.svc.cartographer.history.RevertibleAct
+import me.azimmuradov.svc.cartographer.history.actsHistory
+import me.azimmuradov.svc.cartographer.toolkit.*
 import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.rectmap.Coordinate
 
 
 class Hand(
-    actsRegisterer: ActsRegisterer,
-    private val startBlock: (Coordinate) -> Pair<List<PlacedEntity<*>>, RevertibleAct>,
+    private val startBlock: (Coordinate) -> List<PlacedEntity<*>>,
     private val keepBlock: (List<PlacedEntity<*>>) -> Unit,
-    private val endBlock: (List<PlacedEntity<*>>) -> RevertibleAct,
+    private val endBlock: (List<PlacedEntity<*>>) -> Unit,
 ) : ToolWithRevertibleAct(
     type = ToolType.Hand,
-    actsRegisterer = actsRegisterer,
+    actsRegisterer = actsHistory(),
 ) {
 
     private var start: Coordinate = Coordinate.ZERO
+    private var last: Coordinate = Coordinate.ZERO
     private var esToMove: List<PlacedEntity<*>> = listOf()
 
     private fun reset() {
         start = Coordinate.ZERO
+        last = Coordinate.ZERO
         esToMove = listOf()
     }
 
 
-    override fun startActBody(c: Coordinate): RevertibleAct {
+    override fun startActBody(c: Coordinate): RevertibleAct? {
         start = c
-        val (es, act) = startBlock(c)
-        esToMove = es
-        return act
-    }
-
-    override fun keepActBody(c: Coordinate): RevertibleAct? {
-        keepBlock(esToMove.moveAll(vec = c - start))
+        last = c
+        esToMove = startBlock(c)
         return null
     }
 
-    override fun endActBody(c: Coordinate): RevertibleAct {
-        start = c
-        return endBlock(esToMove.moveAll(vec = c - start)).also { reset() }
+    override fun keepActBody(c: Coordinate): RevertibleAct? {
+        last = c
+        keepBlock(esToMove.moveAll(vec = last - start))
+        return null
+    }
+
+    override fun endActBody(): RevertibleAct? {
+        endBlock(esToMove.moveAll(vec = last - start)).also { reset() }
+        return null
     }
 
 

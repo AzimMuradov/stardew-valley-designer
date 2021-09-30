@@ -16,15 +16,15 @@
 
 package me.azimmuradov.svc.cartographer
 
-import me.azimmuradov.svc.cartographer.*
-import me.azimmuradov.svc.cartographer.history.*
-import me.azimmuradov.svc.cartographer.layers.layersVisibility
+import androidx.compose.runtime.*
 import me.azimmuradov.svc.cartographer.palette.mutablePaletteOf
-import me.azimmuradov.svc.cartographer.toolkit.Hand
 import me.azimmuradov.svc.cartographer.toolkit.Toolkit
+import me.azimmuradov.svc.cartographer.toolkit.tools.*
 import me.azimmuradov.svc.engine.*
+import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.layout.Layout
+import me.azimmuradov.svc.engine.rectmap.PlacedRectObject
 
 
 fun svcOf(layout: Layout): Svc = SvcImpl(layout)
@@ -32,59 +32,62 @@ fun svcOf(layout: Layout): Svc = SvcImpl(layout)
 
 private class SvcImpl(override val layout: Layout) : Svc {
 
+    // Backing svc engine
+
     val engine: SvcEngine = svcEngineOf(layout)
 
-    override fun layers() = engine.layers().filter { (lType) -> lType in layersVisibility.visible }
 
-    override fun ghostLayers() = ghostEntities
+    // Views
 
-    var ghostEntities: List<PlacedEntity<*>> = listOf()
-
-
-    override val history: ActsHistory = actsHistory()
+    override val layers = engine.layers
 
 
-    override var chosenEntities: List<PlacedEntity<*>> = listOf()
+    override var heldEntities by mutableStateOf(listOf<PlacedEntity<*>>())
+
+
+    override val palette = mutablePaletteOf(size = 10u)
 
 
     override val toolkit: Toolkit = Toolkit(
         hand = Hand(
-            actsRegisterer = history,
             startBlock = { c ->
-                val resetEH: Boolean
-                val es = if (c in chosenEntities.flatMapTo(mutableSetOf(), PlacedEntity<*>::coordinates)) {
-                    chosenEntities = listOf()
-                    resetEH = true
-                    engine.removeAll(chosenEntities.mapTo(mutableSetOf(), PlacedEntity<*>::place)).values.flatten()
-                } else {
-                    resetEH = false
-                    engine.remove(c).values.filterNotNull()
-                }
+                heldEntities = engine.remove(c).values.filterNotNull()
 
-                es.also { ghostEntities = it } to RevertibleAct(
-                    act = {
-                        engine.removeAll(es.mapTo(mutableSetOf(), PlacedEntity<*>::place))
-                        if (resetEH) chosenEntities = listOf()
-                    },
-                    revertedAct = {
-                        if (resetEH) chosenEntities = es
-                        engine.putAll(es)
-                    },
-                )
+                heldEntities
             },
-            keepBlock = { es -> ghostEntities = es },
+            keepBlock = { es -> heldEntities = es },
             endBlock = { es ->
-                ghostEntities = es
-
-                RevertibleAct(
-                    act = { engine.putAll(ghostEntities) },
-                    revertedAct = { engine.removeAll(ghostEntities.mapTo(mutableSetOf(), PlacedEntity<*>::place)) },
-                )
+                heldEntities = listOf()
+                engine.putAll(es)
             },
         ),
+        pen = Pen(
+            startBlock = { c ->
+                val entityId = palette.inUse
+
+                if (entityId != null) {
+                    engine.put(PlacedRectObject(
+                        rectObj = Entity(obj = entityId, size = entityId.size),
+                        place = c,
+                    ))
+                }
+            },
+            keepBlock = { c ->
+                val entityId = palette.inUse
+
+                if (entityId != null) {
+                    engine.put(PlacedRectObject(
+                        rectObj = Entity(obj = entityId, size = entityId.size),
+                        place = c,
+                    ))
+                }
+            },
+            endBlock = {},
+        ),
+        eraser = Eraser(
+            startBlock = { c -> engine.remove(c) },
+            keepBlock = { c -> engine.remove(c) },
+            endBlock = {},
+        ),
     )
-
-    override val palette = mutablePaletteOf(size = 10u)
-
-    override val layersVisibility = layersVisibility()
 }

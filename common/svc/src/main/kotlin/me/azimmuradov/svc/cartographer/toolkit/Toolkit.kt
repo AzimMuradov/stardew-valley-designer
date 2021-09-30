@@ -17,25 +17,24 @@
 package me.azimmuradov.svc.cartographer.toolkit
 
 import androidx.compose.runtime.*
+import me.azimmuradov.svc.cartographer.toolkit.tools.*
 
 
 class Toolkit(
     hand: Hand,
+    pen: Pen,
+    eraser: Eraser,
 ) {
 
     var tool: Tool? by mutableStateOf(null)
         private set
 
 
-    private val tools: List<Tool> = listOf(hand)
-
-    val availableToolTypes: List<ToolType> = tools.map(Tool::type)
+    private val tools: List<Tool> = listOf(hand, pen, eraser)
 
 
     fun chooseToolOf(type: ToolType) {
         check(tool?.state != State.Acting)
-
-        require(type in availableToolTypes) { "This tool type ($type) is unavailable" }
 
         tool = tools.first { it.type == type }
     }

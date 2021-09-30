@@ -27,10 +27,12 @@ fun DrawScope.drawSpriteBy(
     id: EntityId<*>,
     offset: IntOffset = IntOffset.Zero,
     layoutSize: Size,
+    alpha: Float = 1.0f,
 ) {
     drawSprite(
         sprite = EntitySpritesProvider.spriteBy(id),
         offset = offset,
         layoutSize = layoutSize,
+        alpha = alpha,
     )
 }
