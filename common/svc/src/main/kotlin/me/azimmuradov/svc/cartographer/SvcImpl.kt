@@ -17,11 +17,13 @@
 package me.azimmuradov.svc.cartographer
 
 import androidx.compose.runtime.*
+import me.azimmuradov.svc.cartographer.history.*
 import me.azimmuradov.svc.cartographer.palette.mutablePaletteOf
 import me.azimmuradov.svc.cartographer.toolkit.Toolkit
 import me.azimmuradov.svc.cartographer.toolkit.tools.*
 import me.azimmuradov.svc.engine.*
 import me.azimmuradov.svc.engine.entity.PlacedEntity
+import me.azimmuradov.svc.engine.layer.toLayerType
 import me.azimmuradov.svc.engine.layout.Layout
 import me.azimmuradov.svc.engine.rectmap.PlacedRectObject
 
@@ -40,8 +42,10 @@ private class SvcImpl(override val layout: Layout) : Svc {
 
     override val layers = engine.layers
 
-
     override var heldEntities by mutableStateOf(listOf<PlacedEntity<*>>())
+
+
+    override val history: ActionHistory = actionHistory()
 
 
     override val palette = mutablePaletteOf(size = 10u)
@@ -49,44 +53,71 @@ private class SvcImpl(override val layout: Layout) : Svc {
 
     override val toolkit: Toolkit = Toolkit(
         hand = Hand(
-            startBlock = { c ->
-                heldEntities = engine.remove(c).values.filterNotNull()
-
-                heldEntities
+            unitsRegisterer = history,
+            onGrab = { c ->
+                val esToMove = engine.remove(c).values.filterNotNull()
+                heldEntities = esToMove
+                heldEntities to HistoryUnit(
+                    act = { engine.removeAll(esToMove) },
+                    revert = { engine.putAll(esToMove) },
+                )
             },
-            keepBlock = { es -> heldEntities = es },
-            endBlock = { es ->
+            onMove = { movedEs -> heldEntities = movedEs },
+            onRelease = { movedEs ->
                 heldEntities = listOf()
-                engine.putAll(es)
+                val replacedEs = engine.putAll(movedEs)
+                HistoryUnit(
+                    act = { engine.putAll(movedEs) },
+                    revert = {
+                        engine.removeAll(movedEs)
+                        engine.putAll(replacedEs.values.flatten())
+                    },
+                )
             },
         ),
         pen = Pen(
-            startBlock = { c ->
-                val entity = palette.inUse
-
-                if (entity != null) {
-                    engine.put(PlacedRectObject(
-                        rectObj = entity,
-                        place = c,
-                    ))
+            unitsRegisterer = history,
+            onDrawStart = { c ->
+                val entityToPlace = palette.inUse?.let { entity -> PlacedRectObject(entity, place = c) }
+                val isStartSuccessful = entityToPlace != null
+                if (entityToPlace != null) {
+                    engine.put(entityToPlace)
+                }
+                isStartSuccessful to entityToPlace
+            },
+            onDraw = { c, placedEsCs ->
+                val entityToPlace = palette.inUse?.let { entity -> PlacedRectObject(entity, place = c) }
+                if (entityToPlace != null && entityToPlace.coordinates.none { it in placedEsCs }) {
+                    engine.put(entityToPlace)
+                    entityToPlace
+                } else {
+                    null
                 }
             },
-            keepBlock = { c ->
-                val entity = palette.inUse
-
-                if (entity != null) {
-                    engine.put(PlacedRectObject(
-                        rectObj = entity,
-                        place = c,
-                    ))
-                }
+            onDrawEnd = { placedEs ->
+                HistoryUnit(
+                    act = { engine.putAll(placedEs) },
+                    revert = { engine.removeAll(placedEs) },
+                )
             },
-            endBlock = {},
         ),
         eraser = Eraser(
-            startBlock = { c -> engine.remove(c) },
-            keepBlock = { c -> engine.remove(c) },
-            endBlock = {},
+            unitsRegisterer = history,
+            onEraseStart = { c -> engine.remove(c).entities() },
+            onErase = { c -> engine.remove(c).entities() },
+            onEraseEnd = { removedEs ->
+                HistoryUnit(
+                    act = { engine.removeAll(removedEs) },
+                    revert = { engine.putAll(removedEs) },
+                )
+            }
         ),
     )
+}
+
+
+private fun SvcEngine.removeAll(objs: Iterable<PlacedEntity<*>>) {
+    for ((entity, place) in objs) {
+        remove(entity.type.toLayerType(), place)
+    }
 }

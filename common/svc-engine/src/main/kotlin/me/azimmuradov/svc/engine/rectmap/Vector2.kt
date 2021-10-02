@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-@file:Suppress("NOTHING_TO_INLINE")
+package me.azimmuradov.svc.engine.rectmap
 
-package me.azimmuradov.svc.cartographer.toolkit
-
-import me.azimmuradov.svc.engine.rectmap.Coordinate
-import me.azimmuradov.svc.engine.rectmap.xy
+import me.azimmuradov.svc.engine.*
 
 
 /**
@@ -50,33 +47,22 @@ value class Vector2 internal constructor(@PublishedApi internal val packedValue:
     }
 }
 
+
+/**
+ * Creates a 2D vector.
+ */
 fun vec(x: Int, y: Int): Vector2 = Vector2(packInts(x, y))
 
+
 operator fun Coordinate.minus(other: Coordinate): Vector2 = vec(x = this.x - other.x, y = this.y - other.y)
-
-
-operator fun Vector2.unaryMinus(): Vector2 = vec(-x, -y)
-
 
 operator fun Coordinate.plus(other: Vector2): Coordinate = xy(x = this.x + other.x, y = this.y + other.y)
 
 operator fun Coordinate.minus(other: Vector2): Coordinate = xy(x = this.x - other.x, y = this.y - other.y)
 
 
+// Pair interop
+
 fun Vector2.toPair(): Pair<Int, Int> = x to y
 
 fun Pair<Int, Int>.toVector2(): Vector2 = vec(first, second)
-
-
-// For packing/unpacking
-
-@PublishedApi
-internal inline fun packInts(val1: Int, val2: Int): Long {
-    return (val1.toLong() shl 32) or (val2.toLong() and 0xFFFFFFFF)
-}
-
-@PublishedApi
-internal inline fun unpackInt1(value: Long) = (value shr 32).toInt()
-
-@PublishedApi
-internal inline fun unpackInt2(value: Long) = (value and 0xFFFFFFFF).toInt()

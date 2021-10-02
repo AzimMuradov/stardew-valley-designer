@@ -17,8 +17,7 @@
 package me.azimmuradov.svc.engine
 
 import me.azimmuradov.svc.engine.entity.PlacedEntity
-import me.azimmuradov.svc.engine.layer.Layer
-import me.azimmuradov.svc.engine.layer.LayerType
+import me.azimmuradov.svc.engine.layer.*
 import me.azimmuradov.svc.engine.layout.Layout
 import me.azimmuradov.svc.engine.rectmap.Coordinate
 
@@ -65,3 +64,11 @@ fun SvcEngine.removeAll(cs: Iterable<Coordinate>): Map<LayerType<*>, List<Placed
     LayerType.all.associateWith { removeAll(it, cs) }
 
 fun SvcEngine.clear() = LayerType.all.forEach(this::clear)
+
+
+fun Map<LayerType<*>, PlacedEntity<*>?>.entities(): List<PlacedEntity<*>> = mapNotNull { it.value }
+
+fun List<PlacedEntity<*>>.toMap(): Map<LayerType<*>, List<PlacedEntity<*>>> =
+    groupBy { (entity) -> entity.type.toLayerType() }
+
+fun List<PlacedEntity<*>>.coordinates(): Set<Coordinate> = flatMapTo(mutableSetOf()) { it.coordinates }

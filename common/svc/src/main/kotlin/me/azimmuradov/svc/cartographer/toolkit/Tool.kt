@@ -28,12 +28,17 @@ interface Tool {
 
     val state: State
 
+    /**
+     * Tool state.
+     */
+    enum class State { Stale, Acting }
 
-    fun startAct(c: Coordinate)
 
-    fun keepAct(c: Coordinate)
+    fun start(c: Coordinate)
 
-    fun endAct()
+    fun keep(c: Coordinate)
+
+    fun end()
 }
 
 
@@ -47,8 +52,3 @@ enum class ToolType {
     RectSelect,
     EllipseSelect,
 }
-
-/**
- * Tool state.
- */
-enum class State { Stale, Acting }

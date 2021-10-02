@@ -17,10 +17,14 @@
 package me.azimmuradov.svc.cartographer.history
 
 
-interface ActsRegisterer {
+interface ActionHistory : HistoryUnitsRegisterer {
 
-    fun register(act: RevertibleAct)
+    val canGoBack: Boolean
+
+    val canGoForward: Boolean
+
+
+    fun goBack()
+
+    fun goForward()
 }
-
-
-operator fun ActsRegisterer.plusAssign(act: RevertibleAct) = register(act)

@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.*
 import me.azimmuradov.svc.cartographer.Svc
+import me.azimmuradov.svc.cartographer.toolkit.Tool
 import me.azimmuradov.svc.components.screens.cartographer.Options
 import me.azimmuradov.svc.engine.rectmap.Coordinate
 import me.azimmuradov.svc.engine.rectmap.xy
@@ -66,10 +67,27 @@ fun EditorLayout(
             )
             .pointerInput(Unit) {
                 detectDragGesturesImmediately(
-                    onDragStart = { offset -> svc.toolkit.tool?.startAct(offset.toCoordinate()) },
-                    onDrag = { change, _ -> svc.toolkit.tool?.keepAct(change.position.toCoordinate()) },
-                    onDragEnd = { svc.toolkit.tool?.endAct() },
-                    onDragCancel = { svc.toolkit.tool?.endAct() },
+                    onDragStart = { offset ->
+                        svc.toolkit.tool?.start(offset.toCoordinate())
+                    },
+                    onDrag = { change, _ ->
+                        val tool = svc.toolkit.tool
+                        if (tool != null && tool.state == Tool.State.Acting) {
+                            tool.keep(change.position.toCoordinate())
+                        }
+                    },
+                    onDragEnd = {
+                        val tool = svc.toolkit.tool
+                        if (tool != null && tool.state == Tool.State.Acting) {
+                            tool.end()
+                        }
+                    },
+                    onDragCancel = {
+                        val tool = svc.toolkit.tool
+                        if (tool != null && tool.state == Tool.State.Acting) {
+                            tool.end()
+                        }
+                    },
                 )
             }
     ) {

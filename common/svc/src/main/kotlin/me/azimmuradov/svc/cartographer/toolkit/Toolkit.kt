@@ -34,7 +34,7 @@ class Toolkit(
 
 
     fun chooseToolOf(type: ToolType) {
-        check(tool?.state != State.Acting)
+        check(tool?.state != Tool.State.Acting)
 
         tool = tools.first { it.type == type }
     }

@@ -17,62 +17,65 @@
 package me.azimmuradov.svc.cartographer.toolkit
 
 import me.azimmuradov.svc.cartographer.history.*
+import me.azimmuradov.svc.cartographer.toolkit.Tool.State
 import me.azimmuradov.svc.engine.rectmap.Coordinate
 
 
-abstract class ToolWithRevertibleAct(
+abstract class RevertibleTool internal constructor(
     final override val type: ToolType,
-    private val actsRegisterer: ActsRegisterer,
+    private val unitsRegisterer: HistoryUnitsRegisterer,
 ) : Tool {
 
     final override var state: State = State.Stale
         private set
 
 
-    final override fun startAct(c: Coordinate) {
+    final override fun start(c: Coordinate) {
         check(state == State.Stale)
 
-        state = State.Acting
-        last = c
+        val (startIsSuccessful, historyUnit) = startBody(c)
 
-        rActBuilder.add(startActBody(c))
-    }
-
-    final override fun keepAct(c: Coordinate) {
-        check(state == State.Acting)
-
-        if (c != last) {
+        if (startIsSuccessful) {
+            state = State.Acting
             last = c
-
-            rActBuilder.add(keepActBody(c))
+            unitsBuilder += historyUnit
         }
     }
 
-    final override fun endAct() {
+    final override fun keep(c: Coordinate) {
         check(state == State.Acting)
 
-        rActBuilder.add(endActBody())
+        if (c != last) {
+            unitsBuilder += keepBody(c)
+            last = c
+        }
+    }
 
+    final override fun end() {
+        check(state == State.Acting)
+
+        unitsBuilder += endBody()
         state = State.Stale
-        last = Coordinate.ZERO
 
-        actsRegisterer += rActBuilder.build()
+        unitsBuilder.buildOrNull()?.let { historyUnit ->
+            unitsRegisterer += historyUnit
+        }
     }
 
 
-    protected abstract fun startActBody(c: Coordinate): RevertibleAct?
+    protected abstract fun startBody(c: Coordinate): Pair<Boolean, HistoryUnit?>
 
-    protected abstract fun keepActBody(c: Coordinate): RevertibleAct?
+    protected abstract fun keepBody(c: Coordinate): HistoryUnit?
 
-    protected abstract fun endActBody(): RevertibleAct?
+    protected abstract fun endBody(): HistoryUnit?
 
 
     // For efficiency
 
-    private var last: Coordinate = Coordinate.ZERO
+    private var last = Coordinate.ZERO
 
 
-    // For act registering
+    // For units registering
 
-    private val rActBuilder = RevertibleActBuilder()
+    private val unitsBuilder = HistoryUnitsBuilder()
 }

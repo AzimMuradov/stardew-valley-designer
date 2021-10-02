@@ -39,10 +39,22 @@ value class Rect internal constructor(@PublishedApi internal val packedValue: Lo
 
 
     override fun toString(): String = "(w = $w, h = $h)"
+
+
+    companion object {
+
+        val ZERO: Rect = rectOf(w = 0, h = 0)
+    }
 }
 
+
+/**
+ * Creates a rectangle.
+ */
 fun rectOf(w: Int, h: Int): Rect = Rect(packInts(w, h))
 
+
+// Pair interop
 
 fun Rect.toPair(): Pair<Int, Int> = w to h
 

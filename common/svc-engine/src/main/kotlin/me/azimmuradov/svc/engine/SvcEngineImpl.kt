@@ -55,45 +55,28 @@ private class SvcEngineImpl(override val layout: Layout) : SvcEngine {
         )
         val entityWithoutFloorGroup = listOf(LayerType.EntityWithoutFloor)
 
-        val eLayerType = entity.type.toLayerType()
-        val eLayer = layerOf(eLayerType)
+        val entityLayerType = entity.type.toLayerType()
+        val entityLayer = layerOf(entityLayerType)
 
+        val replaced = mutableListOf<PlacedEntity<*>>()
 
-        val replaced = LayerType.all.associateWith { mutableListOf<PlacedEntity<*>>() }
-
-        when (eLayerType) {
+        replaced += when (entityLayerType) {
             LayerType.Object, LayerType.Floor, LayerType.FloorFurniture -> {
-                if (coordinates.any(entityWithoutFloorGroup.map(::layerOf).map(Layer<*>::occupiedCoordinates)
-                        .flatten()::contains)
-                ) {
-                    replaced.getValue(LayerType.EntityWithoutFloor) +=
-                        layerOf(LayerType.EntityWithoutFloor).removeAll(coordinates)
-                }
+                entityWithoutFloorGroup.flatMap { layerOf(it).removeAll(coordinates) }
             }
             LayerType.EntityWithoutFloor -> {
-                if (coordinates.any(entityWithFloorGroup.map(::layerOf).map(Layer<*>::occupiedCoordinates)
-                        .flatten()::contains)
-                ) {
-                    replaced.getValue(LayerType.Floor) +=
-                        layerOf(LayerType.Floor).removeAll(coordinates)
-                    replaced.getValue(LayerType.FloorFurniture) +=
-                        layerOf(LayerType.FloorFurniture).removeAll(coordinates)
-                    replaced.getValue(LayerType.Object) +=
-                        layerOf(LayerType.Object).removeAll(coordinates)
-                }
+                entityWithFloorGroup.flatMap { layerOf(it).removeAll(coordinates) }
             }
         }
 
-        val replacedInELayer = try {
-            (eLayer as MutableLayer<in EntityType>).put(obj)
+        replaced += try {
+            (entityLayer as MutableLayer<in EntityType>).put(obj)
         } catch (e: IllegalArgumentException) {
-            putAll(replaced.values.flatten())
+            putAll(replaced)
             throw e
         }
 
-        replaced.getValue(eLayerType) += replacedInELayer
-
-        return replaced
+        return replaced.toMap()
     }
 
     override fun remove(type: LayerType<*>, c: Coordinate) = layerOf(type).remove(c)

@@ -18,7 +18,8 @@ package me.azimmuradov.svc.engine.layer
 
 import me.azimmuradov.svc.engine.entity.*
 import me.azimmuradov.svc.engine.layout.Layout
-import me.azimmuradov.svc.engine.rectmap.*
+import me.azimmuradov.svc.engine.rectmap.MutableRectMap
+import me.azimmuradov.svc.engine.rectmap.mutableRectMapOf
 
 
 fun <EType : EntityType> layerOf(layout: Layout): Layer<EType> = LayerImpl(MutableLayerImpl(layout))
@@ -42,12 +43,14 @@ private class MutableLayerImpl<EType : EntityType> private constructor(
     constructor(layout: Layout) : this(layout, mutableRectMapOf(layout.size))
 
 
-    override fun put(obj: PlacedEntity<EType>): List<PlacedRectObject<Entity<EType>>> {
+    override fun put(obj: PlacedEntity<EType>): List<PlacedEntity<EType>> {
         val (entity, _, coordinates) = obj
 
-        requireNotDisallowed(entity.type !in layoutRules.disallowedTypes)
-        requireNotDisallowed(coordinates.mapNotNull(layoutRules.disallowedTypesMap::get).none { entity.type in it })
-        requireNotDisallowed(coordinates.none(layoutRules.disallowedCoordinates::contains))
+        layoutRules.run {
+            requireNotDisallowed(entity.type !in disallowedTypes)
+            requireNotDisallowed(coordinates.mapNotNull(disallowedTypesMap::get).none { entity.type in it })
+            requireNotDisallowed(coordinates.none(disallowedCoordinates::contains))
+        }
 
         return rectMap.put(obj)
     }

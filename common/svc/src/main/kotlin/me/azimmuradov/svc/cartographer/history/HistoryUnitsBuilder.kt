@@ -17,14 +17,24 @@
 package me.azimmuradov.svc.cartographer.history
 
 
-typealias Act = () -> Unit
+internal class HistoryUnitsBuilder {
 
-data class RevertibleAct(
-    val act: Act,
-    val revertedAct: Act,
-)
+    operator fun plusAssign(unit: HistoryUnit?) {
+        if (unit != null) historyUnits += unit
+    }
+
+    fun buildOrNull(): HistoryUnit? {
+        if (historyUnits.isEmpty()) return null
+
+        val (actLambdas, revertLambdas) = historyUnits.map { (act, revert) -> act to revert }.unzip()
+        historyUnits.clear()
+
+        return HistoryUnit(
+            act = { for (act in actLambdas) act() },
+            revert = { for (revert in revertLambdas.asReversed()) revert() },
+        )
+    }
 
 
-fun RevertibleAct.toPair(): Pair<Act, Act> = act to revertedAct
-
-fun Pair<Act, Act>.toRevertibleAct(): RevertibleAct = RevertibleAct(first, second)
+    private val historyUnits = mutableListOf<HistoryUnit>()
+}

@@ -16,34 +16,44 @@
 
 package me.azimmuradov.svc.cartographer.toolkit.tools
 
-import me.azimmuradov.svc.cartographer.history.RevertibleAct
-import me.azimmuradov.svc.cartographer.history.actsHistory
+import me.azimmuradov.svc.cartographer.history.HistoryUnit
+import me.azimmuradov.svc.cartographer.history.HistoryUnitsRegisterer
+import me.azimmuradov.svc.cartographer.toolkit.RevertibleTool
 import me.azimmuradov.svc.cartographer.toolkit.ToolType
-import me.azimmuradov.svc.cartographer.toolkit.ToolWithRevertibleAct
+import me.azimmuradov.svc.engine.coordinates
+import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.rectmap.Coordinate
 
 
 class Pen(
-    private val startBlock: (Coordinate) -> Unit,
-    private val keepBlock: (Coordinate) -> Unit,
-    private val endBlock: () -> Unit,
-) : ToolWithRevertibleAct(
+    unitsRegisterer: HistoryUnitsRegisterer,
+    private val onDrawStart: (c: Coordinate) -> Pair<Boolean, PlacedEntity<*>?>,
+    private val onDraw: (c: Coordinate, placedEsCs: Set<Coordinate>) -> PlacedEntity<*>?,
+    private val onDrawEnd: (placedEs: List<PlacedEntity<*>>) -> HistoryUnit,
+) : RevertibleTool(
     type = ToolType.Pen,
-    actsRegisterer = actsHistory(),
+    unitsRegisterer = unitsRegisterer,
 ) {
 
-    override fun startActBody(c: Coordinate): RevertibleAct? {
-        startBlock(c)
+    override fun startBody(c: Coordinate): Pair<Boolean, HistoryUnit?> {
+        val (isStartSuccessful, placedEntity) = onDrawStart(c)
+        if (isStartSuccessful && placedEntity != null) {
+            placedEs += placedEntity
+        }
+        return isStartSuccessful to null
+    }
+
+    override fun keepBody(c: Coordinate): HistoryUnit? {
+        onDraw(c, placedEs.coordinates())?.let { placedEs += it }
         return null
     }
 
-    override fun keepActBody(c: Coordinate): RevertibleAct? {
-        keepBlock(c)
-        return null
+    override fun endBody(): HistoryUnit? {
+        val historyUnitOrNull = onDrawEnd(placedEs.toList()).takeIf { placedEs.isNotEmpty() }
+        placedEs.clear()
+        return historyUnitOrNull
     }
 
-    override fun endActBody(): RevertibleAct? {
-        endBlock()
-        return null
-    }
+
+    private val placedEs = mutableListOf<PlacedEntity<*>>()
 }

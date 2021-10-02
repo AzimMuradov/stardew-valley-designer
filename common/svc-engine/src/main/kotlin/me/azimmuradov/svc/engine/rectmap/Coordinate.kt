@@ -47,8 +47,14 @@ value class Coordinate internal constructor(@PublishedApi internal val packedVal
     }
 }
 
+
+/**
+ * Creates a 2D coordinate.
+ */
 fun xy(x: Int, y: Int): Coordinate = Coordinate(packInts(x, y))
 
+
+// Pair interop
 
 fun Coordinate.toPair(): Pair<Int, Int> = x to y
 

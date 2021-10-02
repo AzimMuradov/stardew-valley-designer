@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import me.azimmuradov.svc.cartographer.history.ActionHistory
 import me.azimmuradov.svc.components.screens.cartographer.Options
 import me.azimmuradov.svc.components.screens.cartographer.menus.MainOptionsMenu
 import me.azimmuradov.svc.components.screens.cartographer.menus.entityselection.*
@@ -30,6 +31,7 @@ import me.azimmuradov.svc.settings.Lang
 
 @Composable
 fun TopMenu(
+    history: ActionHistory,
     disallowedTypes: Set<EntityType>,
     onEntitySelection: (Entity<*>) -> Unit,
     options: Options,
@@ -41,6 +43,11 @@ fun TopMenu(
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         // TODO : File Menu
+
+        History(
+            history = history,
+            lang = lang,
+        )
 
         EntitySelectionMenu(
             menu = BuildingsMenu,

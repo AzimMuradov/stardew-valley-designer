@@ -17,14 +17,9 @@
 package me.azimmuradov.svc.cartographer.history
 
 
-interface ActsHistory : ActsRegisterer {
+data class HistoryUnit(
+    val act: Action,
+    val revert: Action,
+)
 
-    val canGoBack: Boolean
-
-    val canGoForward: Boolean
-
-
-    fun goBack()
-
-    fun goForward()
-}
+typealias Action = () -> Unit

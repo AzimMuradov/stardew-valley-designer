@@ -16,6 +16,7 @@
 
 package me.azimmuradov.svc.cartographer
 
+import me.azimmuradov.svc.cartographer.history.ActionHistory
 import me.azimmuradov.svc.cartographer.palette.MutablePalette
 import me.azimmuradov.svc.cartographer.toolkit.Toolkit
 import me.azimmuradov.svc.engine.entity.PlacedEntity
@@ -54,6 +55,9 @@ interface Svc {
      * Entities that are currently being held.
      */
     val heldEntities: List<PlacedEntity<*>>
+
+
+    val history: ActionHistory
 
 
     /**

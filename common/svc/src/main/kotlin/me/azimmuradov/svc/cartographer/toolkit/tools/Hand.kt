@@ -16,56 +16,64 @@
 
 package me.azimmuradov.svc.cartographer.toolkit.tools
 
-import me.azimmuradov.svc.cartographer.history.RevertibleAct
-import me.azimmuradov.svc.cartographer.history.actsHistory
-import me.azimmuradov.svc.cartographer.toolkit.*
+import me.azimmuradov.svc.cartographer.history.HistoryUnit
+import me.azimmuradov.svc.cartographer.history.HistoryUnitsRegisterer
+import me.azimmuradov.svc.cartographer.toolkit.RevertibleTool
+import me.azimmuradov.svc.cartographer.toolkit.ToolType
 import me.azimmuradov.svc.engine.entity.PlacedEntity
-import me.azimmuradov.svc.engine.rectmap.Coordinate
+import me.azimmuradov.svc.engine.rectmap.*
 
 
 class Hand(
-    private val startBlock: (Coordinate) -> List<PlacedEntity<*>>,
-    private val keepBlock: (List<PlacedEntity<*>>) -> Unit,
-    private val endBlock: (List<PlacedEntity<*>>) -> Unit,
-) : ToolWithRevertibleAct(
+    unitsRegisterer: HistoryUnitsRegisterer,
+    private val onGrab: (c: Coordinate) -> Pair<List<PlacedEntity<*>>, HistoryUnit>,
+    private val onMove: (movedEs: List<PlacedEntity<*>>) -> Unit,
+    private val onRelease: (movedEs: List<PlacedEntity<*>>) -> HistoryUnit,
+) : RevertibleTool(
     type = ToolType.Hand,
-    actsRegisterer = actsHistory(),
+    unitsRegisterer = unitsRegisterer,
 ) {
 
-    private var start: Coordinate = Coordinate.ZERO
-    private var last: Coordinate = Coordinate.ZERO
-    private var esToMove: List<PlacedEntity<*>> = listOf()
+    override fun startBody(c: Coordinate): Pair<Boolean, HistoryUnit?> {
+        val (esToMove, historyUnit) = onGrab(c)
 
-    private fun reset() {
-        start = Coordinate.ZERO
-        last = Coordinate.ZERO
-        esToMove = listOf()
+        val isStartSuccessful = esToMove.isNotEmpty()
+
+        return if (isStartSuccessful) {
+            handManager = HandManager(start = c, esToMove)
+            true to historyUnit
+        } else {
+            false to null
+        }
     }
 
-
-    override fun startActBody(c: Coordinate): RevertibleAct? {
-        start = c
-        last = c
-        esToMove = startBlock(c)
+    override fun keepBody(c: Coordinate): HistoryUnit? {
+        handManager.updateLast(c)
+        onMove(handManager.movedEs)
         return null
     }
 
-    override fun keepActBody(c: Coordinate): RevertibleAct? {
-        last = c
-        keepBlock(esToMove.moveAll(vec = last - start))
-        return null
-    }
-
-    override fun endActBody(): RevertibleAct? {
-        endBlock(esToMove.moveAll(vec = last - start)).also { reset() }
-        return null
+    override fun endBody(): HistoryUnit? {
+        val movedEs = handManager.movedEs
+        return onRelease(movedEs).takeIf { movedEs.isNotEmpty() }
     }
 
 
-    private companion object {
+    private lateinit var handManager: HandManager
 
-        fun List<PlacedEntity<*>>.moveAll(vec: Vector2) = map { it.move(vec) }
+    private class HandManager(
+        val start: Coordinate,
+        private val esToMove: List<PlacedEntity<*>>,
+    ) {
 
-        fun PlacedEntity<*>.move(vec: Vector2) = copy(place = place + vec)
+        fun updateLast(c: Coordinate) = run { last = c }
+
+        val movedEs
+            get() = esToMove.map { (entity, place) ->
+                PlacedEntity(entity, place = place + (last - start))
+            }
+
+
+        private var last: Coordinate = start
     }
 }

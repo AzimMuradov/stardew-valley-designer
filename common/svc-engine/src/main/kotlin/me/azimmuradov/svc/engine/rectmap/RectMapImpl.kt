@@ -73,7 +73,7 @@ private class MutableRectMapImpl<RO : RectObject>(
 
     // Bulk Modification Operations
 
-    override fun putAll(objs: Iterable<PlacedRectObject<RO>>) = objs.flatMap(this::put).toList()
+    override fun putAll(objs: Iterable<PlacedRectObject<RO>>) = objs.flatMap(this::put)
 
     override fun removeAll(cs: Iterable<Coordinate>) = cs.mapNotNull(this::remove)
 

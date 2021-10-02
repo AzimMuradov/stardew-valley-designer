@@ -16,34 +16,42 @@
 
 package me.azimmuradov.svc.cartographer.history
 
-
-fun actsHistory(): ActsHistory = ActsHistoryImpl()
-
-
-private class ActsHistoryImpl : ActsHistory {
-
-    val acts = mutableListOf<RevertibleAct>()
-
-    var current: Int = HISTORY_ROOT
+import androidx.compose.runtime.*
 
 
-    override val canGoBack: Boolean = current > -1
-
-    override val canGoForward: Boolean = current < acts.lastIndex
+fun actionHistory(): ActionHistory = ActionHistoryImpl()
 
 
-    override fun register(act: RevertibleAct) {
-        acts.dropLast(acts.lastIndex - current)
-        acts += act
-        ++current
+private class ActionHistoryImpl : ActionHistory {
+
+    val historyUnits = mutableListOf<HistoryUnit>()
+
+    var current: Int by mutableStateOf(HISTORY_ROOT)
+
+
+    override val canGoBack: Boolean get() = current > HISTORY_ROOT
+
+    override val canGoForward: Boolean get() = current < historyUnits.lastIndex
+
+
+    override fun register(unit: HistoryUnit) {
+        repeat(times = historyUnits.lastIndex - current) { historyUnits.removeLast() }
+        historyUnits += unit
+        current = historyUnits.lastIndex
     }
 
     override fun goBack() {
-        if (canGoBack) acts[current--].act()
+        if (canGoBack) {
+            historyUnits[current].revert()
+            current -= 1
+        }
     }
 
     override fun goForward() {
-        if (canGoForward) acts[++current].revertedAct()
+        if (canGoForward) {
+            historyUnits[current + 1].act()
+            current += 1
+        }
     }
 
 

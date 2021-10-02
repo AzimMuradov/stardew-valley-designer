@@ -17,22 +17,10 @@
 package me.azimmuradov.svc.cartographer.history
 
 
-class RevertibleActBuilder internal constructor() {
+interface HistoryUnitsRegisterer {
 
-    fun add(act: RevertibleAct?) {
-        if (act != null) revertibleActs.add(act)
-    }
-
-    internal fun build(): RevertibleAct {
-        val (acts, rActs) = revertibleActs.map(RevertibleAct::toPair).unzip()
-        revertibleActs = mutableListOf()
-
-        return RevertibleAct(
-            act = { for (act in acts) act() },
-            revertedAct = { for (rAct in rActs.asReversed()) rAct() },
-        )
-    }
-
-
-    private var revertibleActs: MutableList<RevertibleAct> = mutableListOf()
+    fun register(unit: HistoryUnit)
 }
+
+
+operator fun HistoryUnitsRegisterer.plusAssign(unit: HistoryUnit) = register(unit)

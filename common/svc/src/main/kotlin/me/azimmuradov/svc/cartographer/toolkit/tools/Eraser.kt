@@ -16,34 +16,40 @@
 
 package me.azimmuradov.svc.cartographer.toolkit.tools
 
-import me.azimmuradov.svc.cartographer.history.RevertibleAct
-import me.azimmuradov.svc.cartographer.history.actsHistory
+import me.azimmuradov.svc.cartographer.history.HistoryUnit
+import me.azimmuradov.svc.cartographer.history.HistoryUnitsRegisterer
+import me.azimmuradov.svc.cartographer.toolkit.RevertibleTool
 import me.azimmuradov.svc.cartographer.toolkit.ToolType
-import me.azimmuradov.svc.cartographer.toolkit.ToolWithRevertibleAct
+import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.rectmap.Coordinate
 
 
 class Eraser(
-    private val startBlock: (Coordinate) -> Unit,
-    private val keepBlock: (Coordinate) -> Unit,
-    private val endBlock: () -> Unit,
-) : ToolWithRevertibleAct(
+    unitsRegisterer: HistoryUnitsRegisterer,
+    private val onEraseStart: (c: Coordinate) -> List<PlacedEntity<*>>,
+    private val onErase: (c: Coordinate) -> List<PlacedEntity<*>>,
+    private val onEraseEnd: (removedEs: List<PlacedEntity<*>>) -> HistoryUnit,
+) : RevertibleTool(
     type = ToolType.Eraser,
-    actsRegisterer = actsHistory(),
+    unitsRegisterer = unitsRegisterer,
 ) {
 
-    override fun startActBody(c: Coordinate): RevertibleAct? {
-        startBlock(c)
+    override fun startBody(c: Coordinate): Pair<Boolean, HistoryUnit?> {
+        removedEs += onEraseStart(c)
+        return true to null
+    }
+
+    override fun keepBody(c: Coordinate): HistoryUnit? {
+        removedEs += onErase(c)
         return null
     }
 
-    override fun keepActBody(c: Coordinate): RevertibleAct? {
-        keepBlock(c)
-        return null
+    override fun endBody(): HistoryUnit? {
+        val historyUnitOrNull = onEraseEnd(removedEs.toList()).takeIf { removedEs.isNotEmpty() }
+        removedEs.clear()
+        return historyUnitOrNull
     }
 
-    override fun endActBody(): RevertibleAct? {
-        endBlock()
-        return null
-    }
+
+    private val removedEs = mutableListOf<PlacedEntity<*>>()
 }
