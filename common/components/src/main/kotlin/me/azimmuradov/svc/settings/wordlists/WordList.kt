@@ -51,7 +51,7 @@ sealed interface WordList {
     fun entity(e: Entity<*>): String
 
     /**
-     * Tool by its type.
+     * Get tool name by its type.
      */
     fun tool(type: ToolType?): String
 

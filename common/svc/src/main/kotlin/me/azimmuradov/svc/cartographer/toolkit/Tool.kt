@@ -49,6 +49,7 @@ enum class ToolType {
     Hand,
     Pen,
     Eraser,
+    EyeDropper,
     RectSelect,
     EllipseSelect,
 }

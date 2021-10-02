@@ -38,7 +38,7 @@ fun Toolbar(
     toolkit: Toolkit,
     lang: Lang,
 ) {
-    val labels = ToolType.values().take(3)
+    val labels = ToolType.values().take(4) + List(size = 2) { null }
     val wordList = Settings.wordList(lang)
 
     Column(

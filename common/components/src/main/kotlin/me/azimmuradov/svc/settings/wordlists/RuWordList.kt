@@ -320,6 +320,7 @@ object RuWordList : WordList {
         ToolType.Hand -> TODO()
         ToolType.Pen -> TODO()
         ToolType.Eraser -> TODO()
+        ToolType.EyeDropper -> TODO()
         ToolType.RectSelect -> TODO()
         ToolType.EllipseSelect -> TODO()
     }.also { tools[type] = it }

@@ -24,13 +24,14 @@ class Toolkit(
     hand: Hand,
     pen: Pen,
     eraser: Eraser,
+    eyeDrawer: EyeDrawer,
 ) {
 
     var tool: Tool? by mutableStateOf(null)
         private set
 
 
-    private val tools: List<Tool> = listOf(hand, pen, eraser)
+    private val tools: List<Tool> = listOf(hand, pen, eraser, eyeDrawer)
 
 
     fun chooseToolOf(type: ToolType) {

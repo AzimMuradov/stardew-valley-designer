@@ -112,6 +112,28 @@ private class SvcImpl(override val layout: Layout) : Svc {
                 )
             }
         ),
+        eyeDrawer = EyeDrawer(
+            unitsRegisterer = history,
+            onPickStart = { c ->
+                val inUse = palette.inUse
+                engine.get(c).entities().lastOrNull()?.rectObj?.also(palette::putInUse) to inUse
+            },
+            onPick = { c ->
+                engine.get(c).entities().lastOrNull()?.rectObj?.also(palette::putInUse)
+            },
+            onPickEnd = { pickedEntity, previouslyInUse ->
+                HistoryUnit(
+                    act = { palette.putInUse(pickedEntity) },
+                    revert = {
+                        if (previouslyInUse != null) {
+                            palette.putInUse(previouslyInUse)
+                        } else {
+                            palette.clearUsed()
+                        }
+                    },
+                )
+            }
+        ),
     )
 }
 

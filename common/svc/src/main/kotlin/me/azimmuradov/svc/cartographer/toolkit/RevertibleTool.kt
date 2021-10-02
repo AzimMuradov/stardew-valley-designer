@@ -16,6 +16,7 @@
 
 package me.azimmuradov.svc.cartographer.toolkit
 
+import androidx.compose.runtime.*
 import me.azimmuradov.svc.cartographer.history.*
 import me.azimmuradov.svc.cartographer.toolkit.Tool.State
 import me.azimmuradov.svc.engine.rectmap.Coordinate
@@ -26,7 +27,7 @@ abstract class RevertibleTool internal constructor(
     private val unitsRegisterer: HistoryUnitsRegisterer,
 ) : Tool {
 
-    final override var state: State = State.Stale
+    final override var state: State by mutableStateOf(State.Stale)
         private set
 
 
