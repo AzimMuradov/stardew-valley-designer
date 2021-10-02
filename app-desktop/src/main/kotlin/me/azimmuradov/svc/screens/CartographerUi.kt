@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import me.azimmuradov.svc.cartographer.history.HistoryUnit
 import me.azimmuradov.svc.components.screens.Cartographer
 import me.azimmuradov.svc.screens.cartographer.main.SvcLayout
 import me.azimmuradov.svc.screens.cartographer.sidemenus.LeftSideMenus
@@ -38,7 +39,20 @@ fun CartographerUi(component: Cartographer) {
         TopMenuBar(
             history = svc.history,
             disallowedTypes = svc.layout.disallowedTypes,
-            onEntitySelection = { entity -> svc.palette.putInUse(entity) },
+            onEntitySelection = { entity ->
+                val inUse = svc.palette.inUse
+                svc.palette.putInUse(entity)
+                svc.history.register(HistoryUnit(
+                    act = { svc.palette.putInUse(entity) },
+                    revert = {
+                        if (inUse != null) {
+                            svc.palette.putInUse(inUse)
+                        } else {
+                            svc.palette.clearUsed()
+                        }
+                    },
+                ))
+            },
             options = options,
             lang = settings.lang,
         )
