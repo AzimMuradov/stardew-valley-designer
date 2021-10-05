@@ -21,7 +21,7 @@ import me.azimmuradov.svc.engine.entity.ColoredFlavor.Colors.ChestColors
 import me.azimmuradov.svc.engine.entity.ColoredFlavor.Colors.ChestColors.Default
 import me.azimmuradov.svc.engine.entity.ObjectType.EquipmentType
 import me.azimmuradov.svc.engine.entity.RectsProvider.rectOf
-import me.azimmuradov.svc.engine.rectmap.Rect
+import me.azimmuradov.svc.engine.geometry.Rect
 
 
 sealed interface Equipment : Entity<EquipmentType> {

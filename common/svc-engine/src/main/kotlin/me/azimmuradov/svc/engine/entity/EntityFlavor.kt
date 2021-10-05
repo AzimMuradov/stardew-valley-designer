@@ -22,7 +22,7 @@ import me.azimmuradov.svc.engine.entity.EntityWithoutFloorType.BuildingType
 import me.azimmuradov.svc.engine.entity.ObjectType.EquipmentType
 import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations2
 import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations4
-import me.azimmuradov.svc.engine.rectmap.Rect
+import me.azimmuradov.svc.engine.geometry.Rect
 
 
 sealed interface EntityFlavor

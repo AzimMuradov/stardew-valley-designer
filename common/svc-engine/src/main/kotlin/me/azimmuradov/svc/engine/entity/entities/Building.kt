@@ -21,7 +21,7 @@ import me.azimmuradov.svc.engine.entity.ColoredFlavor.Colors.FishPondColors
 import me.azimmuradov.svc.engine.entity.ColoredFlavor.Colors.FishPondColors.Default
 import me.azimmuradov.svc.engine.entity.EntityWithoutFloorType.BuildingType
 import me.azimmuradov.svc.engine.entity.RectsProvider.rectOf
-import me.azimmuradov.svc.engine.rectmap.Rect
+import me.azimmuradov.svc.engine.geometry.Rect
 
 
 sealed interface Building : Entity<BuildingType> {

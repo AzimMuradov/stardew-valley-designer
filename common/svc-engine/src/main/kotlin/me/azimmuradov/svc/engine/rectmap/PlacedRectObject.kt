@@ -16,12 +16,22 @@
 
 package me.azimmuradov.svc.engine.rectmap
 
+import me.azimmuradov.svc.engine.contains
+import me.azimmuradov.svc.engine.geometry.*
+import me.azimmuradov.svc.engine.overlapsWith
 
-data class PlacedRectObject<out RO : RectObject>(val rectObj: RO, val place: Coordinate) {
+
+/**
+ * Placed rectangular object.
+ */
+data class PlacedRectObject<out RO : RectObject>(
+    val rectObject: RO,
+    val place: Coordinate,
+) {
 
     val coordinates: List<Coordinate> by lazy {
         val (x, y) = place
-        val (w, h) = rectObj.size
+        val (w, h) = rectObject.size
 
         val xs = x until x + w
         val ys = y until y + h
@@ -29,8 +39,10 @@ data class PlacedRectObject<out RO : RectObject>(val rectObj: RO, val place: Coo
         (xs * ys).map(Pair<Int, Int>::toCoordinate)
     }
 
-    operator fun component3() = coordinates
+    operator fun component3(): List<Coordinate> = coordinates
 
+
+    // `Any` overrides
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -38,21 +50,50 @@ data class PlacedRectObject<out RO : RectObject>(val rectObj: RO, val place: Coo
 
         other as PlacedRectObject<*>
 
-        // `rectObj` and `place` are swapped for efficiency
+        // `rectObject` and `place` are swapped for efficiency
 
         if (place != other.place) return false
-        if (rectObj != other.rectObj) return false
+        if (rectObject != other.rectObject) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = rectObj.hashCode()
+        var result = rectObject.hashCode()
         result = 31 * result + place.hashCode()
         return result
     }
 }
 
+
+/**
+ * Returns `true` if [this] overlaps with the [other] placed rectangular object.
+ */
+infix fun PlacedRectObject<*>.overlapsWith(other: PlacedRectObject<*>): Boolean =
+    this.coordinates overlapsWith other.coordinates
+
+/**
+ * Returns `true` if [obj] is contained in [this] rectangle.
+ */
+operator fun Rect.contains(obj: PlacedRectObject<*>): Boolean {
+    val (rectObject, place) = obj
+
+    val (x, y) = place
+    val (w, h) = rectObject.size
+
+    val (minCorner, maxCorner) = place to xy(x + w - 1, y + h - 1)
+
+    return minCorner in this && maxCorner in this
+}
+
+/**
+ * All coordinates of this list of objects.
+ */
+val Iterable<PlacedRectObject<*>>.coordinates: Set<Coordinate>
+    get() = flatMapTo(mutableSetOf()) { it.coordinates }
+
+
+// Private utils
 
 // Cartesian product
 

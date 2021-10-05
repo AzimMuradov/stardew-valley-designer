@@ -17,7 +17,7 @@
 package me.azimmuradov.svc.engine.entity
 
 import me.azimmuradov.svc.engine.entity.RectsProvider.rectOf
-import me.azimmuradov.svc.engine.rectmap.Rect
+import me.azimmuradov.svc.engine.geometry.Rect
 
 
 enum class Floor : Entity<FloorType> {

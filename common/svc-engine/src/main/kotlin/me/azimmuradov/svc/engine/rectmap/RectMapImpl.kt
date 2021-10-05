@@ -16,7 +16,8 @@
 
 package me.azimmuradov.svc.engine.rectmap
 
-import me.azimmuradov.svc.engine.contains
+import me.azimmuradov.svc.engine.geometry.Coordinate
+import me.azimmuradov.svc.engine.geometry.Rect
 
 
 fun <RO : RectObject> rectMapOf(size: Rect): RectMap<RO> = RectMapImpl(MutableRectMapImpl(size))
@@ -28,9 +29,7 @@ fun <RO : RectObject> mutableRectMapOf(size: Rect): MutableRectMap<RO> = Mutable
 
 private class RectMapImpl<out RO : RectObject>(rectMap: RectMap<RO>) : RectMap<RO> by rectMap
 
-private class MutableRectMapImpl<RO : RectObject>(
-    override val size: Rect,
-) : MutableRectMap<RO> {
+private class MutableRectMapImpl<RO : RectObject>(override val size: Rect) : MutableRectMap<RO> {
 
     private val map = mutableMapOf<Coordinate, PlacedRectObject<RO>>()
 
@@ -42,56 +41,38 @@ private class MutableRectMapImpl<RO : RectObject>(
 
     // Bulk Query Operations
 
-    override fun getAll(cs: Iterable<Coordinate>) = cs
-        .mapNotNullTo(mutableSetOf(), map::get)
-        .toList()
+    override fun getAll(cs: Iterable<Coordinate>) = cs.mapNotNull(map::get).asDisjoint()
 
 
     // Views
 
-    override val occupiedCoordinates: Set<Coordinate> get() = map.keys
-
-    override val objs: Collection<PlacedRectObject<RO>> get() = map.values
+    override val objects get() = map.values.distinct().asDisjoint()
 
 
     // Modification Operations
 
-    override fun put(obj: PlacedRectObject<RO>): List<PlacedRectObject<RO>> {
-        val (_, _, coordinates) = obj
-        val (min, max) = obj.minMaxCorners()
+    override fun put(obj: PlacedRectObject<RO>): DisjointRectObjects<RO> {
+        require(obj in size) { "Object coordinates are out of `RectMap` bounds." }
 
-        requireNotOutOfBounds(min in size && max in size)
-
-        val replaced = removeAll(coordinates)
-        map.putAll(coordinates.associateWith { obj })
+        val cs = obj.coordinates
+        val replaced = removeAll(cs)
+        map.putAll(cs.associateWith { obj })
 
         return replaced
     }
 
-    override fun remove(c: Coordinate) = map[c]?.also { map.removeAll(it.coordinates) }
+    override fun remove(c: Coordinate): PlacedRectObject<RO>? {
+        val removed = map[c]
+        removed?.coordinates?.forEach(map::remove)
+        return removed
+    }
 
 
     // Bulk Modification Operations
 
-    override fun putAll(objs: Iterable<PlacedRectObject<RO>>) = objs.flatMap(this::put)
+    override fun putAll(objs: DisjointRectObjects<RO>) = objs.flatMap(this::put).asDisjoint()
 
-    override fun removeAll(cs: Iterable<Coordinate>) = cs.mapNotNull(this::remove)
+    override fun removeAll(cs: Iterable<Coordinate>) = cs.mapNotNull(this::remove).asDisjoint()
 
     override fun clear() = map.clear()
-
-
-    companion object {
-
-        fun PlacedRectObject<*>.minMaxCorners(): Pair<Coordinate, Coordinate> {
-            val (x, y) = place
-            val (w, h) = rectObj.size
-
-            return place to xy(x + w - 1, y + h - 1)
-        }
-
-        fun requireNotOutOfBounds(value: Boolean) = require(value) { TODO() }
-    }
 }
-
-
-private fun <K> MutableMap<K, *>.removeAll(keys: Iterable<K>) = keys.forEach(this::remove)

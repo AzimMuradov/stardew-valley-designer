@@ -19,6 +19,7 @@ package me.azimmuradov.svc.engine.layer
 import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.EntityType
 import me.azimmuradov.svc.engine.layout.LayoutRules
+import me.azimmuradov.svc.engine.rectmap.MutableRectMap
 import me.azimmuradov.svc.engine.rectmap.RectMap
 
 
@@ -26,3 +27,6 @@ interface Layer<out EType : EntityType> : RectMap<Entity<EType>> {
 
     val layoutRules: LayoutRules
 }
+
+
+interface MutableLayer<EType : EntityType> : Layer<EType>, MutableRectMap<Entity<EType>>

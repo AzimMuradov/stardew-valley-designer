@@ -16,6 +16,9 @@
 
 package me.azimmuradov.svc.engine.rectmap
 
+import me.azimmuradov.svc.engine.geometry.Coordinate
+import me.azimmuradov.svc.engine.geometry.Rect
+
 
 /**
  * Rectangular map that contains rectangular objects.
@@ -32,12 +35,32 @@ interface RectMap<out RO : RectObject> {
 
     // Bulk Query Operations
 
-    fun getAll(cs: Iterable<Coordinate>): List<PlacedRectObject<RO>>
+    fun getAll(cs: Iterable<Coordinate>): DisjointRectObjects<RO>
 
 
     // Views
 
-    val occupiedCoordinates: Set<Coordinate>
+    val objects: DisjointRectObjects<RO>
+}
 
-    val objs: Collection<PlacedRectObject<RO>>
+
+/**
+ * Mutable rectangular map that contains rectangular objects.
+ */
+interface MutableRectMap<RO : RectObject> : RectMap<RO> {
+
+    // Modification Operations
+
+    fun put(obj: PlacedRectObject<RO>): DisjointRectObjects<RO>
+
+    fun remove(c: Coordinate): PlacedRectObject<RO>?
+
+
+    // Bulk Modification Operations
+
+    fun putAll(objs: DisjointRectObjects<RO>): DisjointRectObjects<RO>
+
+    fun removeAll(cs: Iterable<Coordinate>): DisjointRectObjects<RO>
+
+    fun clear()
 }

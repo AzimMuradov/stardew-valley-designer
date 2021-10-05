@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNCHECKED_CAST")
-
 package me.azimmuradov.svc.engine
 
 import me.azimmuradov.svc.engine.entity.*
-import me.azimmuradov.svc.engine.layer.*
+import me.azimmuradov.svc.engine.geometry.Coordinate
+import me.azimmuradov.svc.engine.layer.LayerType
+import me.azimmuradov.svc.engine.layer.layerType
+import me.azimmuradov.svc.engine.layers.*
 import me.azimmuradov.svc.engine.layout.Layout
-import me.azimmuradov.svc.engine.rectmap.Coordinate
 
 
 fun svcEngineOf(layout: Layout): SvcEngine = SvcEngineImpl(layout)
@@ -29,67 +29,53 @@ fun svcEngineOf(layout: Layout): SvcEngine = SvcEngineImpl(layout)
 
 // Actual private implementations
 
-private class SvcEngineImpl(override val layout: Layout) : SvcEngine {
+private class SvcEngineImpl(layout: Layout) : SvcEngine {
 
-    override val layers = mapOf(
-        LayerType.Floor to mutableLayerOf<FloorType>(layout),
-        LayerType.FloorFurniture to mutableLayerOf<FloorFurnitureType>(layout),
-        LayerType.Object to mutableLayerOf<ObjectType>(layout),
-        LayerType.EntityWithoutFloor to mutableLayerOf<EntityWithoutFloorType>(layout),
-    )
-
-    fun layerOf(type: LayerType<*>) = layers.getValue(type)
+    override val layers = mutableLayersOf(layout)
 
 
     // Operations
 
-    override fun get(type: LayerType<*>, c: Coordinate) = layerOf(type)[c]
+    override fun <EType : EntityType> get(type: LayerType<EType>, c: Coordinate) = layers.layerBy(type)[c]
 
-    override fun put(obj: PlacedEntity<*>): Map<LayerType<*>, List<PlacedEntity<*>>> {
-        val (entity, _, coordinates) = obj
+    override fun put(obj: PlacedEntity<*>): LayeredEntities {
+        val type = obj.layerType
 
-        val entityWithFloorGroup = listOf(
-            LayerType.Floor,
-            LayerType.FloorFurniture,
-            LayerType.Object,
-        )
-        val entityWithoutFloorGroup = listOf(LayerType.EntityWithoutFloor)
-
-        val entityLayerType = entity.type.toLayerType()
-        val entityLayer = layerOf(entityLayerType)
-
-        val replaced = mutableListOf<PlacedEntity<*>>()
-
-        replaced += when (entityLayerType) {
-            LayerType.Object, LayerType.Floor, LayerType.FloorFurniture -> {
-                entityWithoutFloorGroup.flatMap { layerOf(it).removeAll(coordinates) }
+        val replaced = mutableListOf<PlacedEntity<*>>().also { replacedListOfEs ->
+            replacedListOfEs += when (type) {
+                LayerType.Object, LayerType.Floor, LayerType.FloorFurniture -> {
+                    LayerType.withoutFloor.flatMap { layers.layerBy(it).removeAll(obj.coordinates) }
+                }
+                LayerType.EntityWithoutFloor -> {
+                    LayerType.withFloor.flatMap { layers.layerBy(it).removeAll(obj.coordinates) }
+                }
             }
-            LayerType.EntityWithoutFloor -> {
-                entityWithFloorGroup.flatMap { layerOf(it).removeAll(coordinates) }
+
+            replacedListOfEs += try {
+                layers.layerBy(type).put(obj)
+            } catch (e: IllegalArgumentException) {
+                putAll(replacedListOfEs.layered())
+                throw e
             }
-        }
+        }.layered()
 
-        replaced += try {
-            (entityLayer as MutableLayer<in EntityType>).put(obj)
-        } catch (e: IllegalArgumentException) {
-            putAll(replaced)
-            throw e
-        }
 
-        return replaced.toMap()
+        return replaced
     }
 
-    override fun remove(type: LayerType<*>, c: Coordinate) = layerOf(type).remove(c)
+    override fun <EType : EntityType> remove(type: LayerType<EType>, c: Coordinate) = layers.layerBy(type).remove(c)
 
 
     // Bulk Operations
 
-    override fun getAll(type: LayerType<*>, cs: Iterable<Coordinate>) = layerOf(type).getAll(cs)
+    override fun <EType : EntityType> getAll(type: LayerType<EType>, cs: Iterable<Coordinate>) =
+        layers.layerBy(type).getAll(cs)
 
-    override fun putAll(objs: Iterable<PlacedEntity<*>>) =
-        objs.map(this::put).fold(mapOf(), Map<LayerType<*>, List<PlacedEntity<*>>>::plus)
+    override fun <EType : EntityType> putAll(objs: DisjointEntities<EType>) =
+        objs.flatMap { put(it).flatten() }.layered()
 
-    override fun removeAll(type: LayerType<*>, cs: Iterable<Coordinate>) = layerOf(type).removeAll(cs)
+    override fun <EType : EntityType> removeAll(type: LayerType<EType>, cs: Iterable<Coordinate>) =
+        layers.layerBy(type).removeAll(cs)
 
-    override fun clear(type: LayerType<*>) = layerOf(type).clear()
+    override fun clear(type: LayerType<*>) = layers.layerBy(type).clear()
 }

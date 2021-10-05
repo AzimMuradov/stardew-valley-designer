@@ -18,6 +18,7 @@ package me.azimmuradov.svc.engine.layer
 
 import me.azimmuradov.svc.engine.entity.*
 import me.azimmuradov.svc.engine.layout.Layout
+import me.azimmuradov.svc.engine.layout.respects
 import me.azimmuradov.svc.engine.rectmap.MutableRectMap
 import me.azimmuradov.svc.engine.rectmap.mutableRectMapOf
 
@@ -31,33 +32,19 @@ fun <EType : EntityType> mutableLayerOf(layout: Layout): MutableLayer<EType> = M
 
 private class LayerImpl<EType : EntityType>(layer: Layer<EType>) : Layer<EType> by layer
 
-private class MutableLayerImpl<EType : EntityType> private constructor(
+private class MutableLayerImpl<EType : EntityType>(
     layout: Layout,
-    private val rectMap: MutableRectMap<Entity<EType>>,
+    private val rectMap: MutableRectMap<Entity<EType>> = mutableRectMapOf(layout.size),
 ) : MutableLayer<EType>, MutableRectMap<Entity<EType>> by rectMap {
 
     override val size = layout.size
 
     override val layoutRules = layout
 
-    constructor(layout: Layout) : this(layout, mutableRectMapOf(layout.size))
 
-
-    override fun put(obj: PlacedEntity<EType>): List<PlacedEntity<EType>> {
-        val (entity, _, coordinates) = obj
-
-        layoutRules.run {
-            requireNotDisallowed(entity.type !in disallowedTypes)
-            requireNotDisallowed(coordinates.mapNotNull(disallowedTypesMap::get).none { entity.type in it })
-            requireNotDisallowed(coordinates.none(disallowedCoordinates::contains))
-        }
+    override fun put(obj: PlacedEntity<EType>): DisjointEntities<EType> {
+        require(obj respects layoutRules) { "The object ($obj) failed to satisfy layout rules." }
 
         return rectMap.put(obj)
-    }
-
-
-    companion object {
-
-        fun requireNotDisallowed(value: Boolean) = require(value) { TODO() }
     }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.rectmap
+package me.azimmuradov.svc.engine.geometry
 
 import me.azimmuradov.svc.engine.*
 
@@ -23,7 +23,7 @@ import me.azimmuradov.svc.engine.*
  * 2D vector.
  */
 @JvmInline
-value class Vector2 internal constructor(@PublishedApi internal val packedValue: Long) {
+value class Vector internal constructor(@PublishedApi internal val packedValue: Long) {
 
     inline val x: Int get() = unpackInt1(packedValue)
 
@@ -35,7 +35,7 @@ value class Vector2 internal constructor(@PublishedApi internal val packedValue:
     operator fun component2(): Int = y
 
 
-    fun copy(x: Int = this.x, y: Int = this.y): Vector2 = vec(x, y)
+    fun copy(x: Int = this.x, y: Int = this.y): Vector = vec(x, y)
 
 
     override fun toString(): String = "(x = $x, y = $y)"
@@ -43,7 +43,7 @@ value class Vector2 internal constructor(@PublishedApi internal val packedValue:
 
     companion object {
 
-        val ZERO: Vector2 = vec(x = 0, y = 0)
+        val ZERO: Vector = vec(x = 0, y = 0)
     }
 }
 
@@ -51,18 +51,18 @@ value class Vector2 internal constructor(@PublishedApi internal val packedValue:
 /**
  * Creates a 2D vector.
  */
-fun vec(x: Int, y: Int): Vector2 = Vector2(packInts(x, y))
+fun vec(x: Int, y: Int): Vector = Vector(packInts(x, y))
 
 
-operator fun Coordinate.minus(other: Coordinate): Vector2 = vec(x = this.x - other.x, y = this.y - other.y)
+operator fun Coordinate.minus(other: Coordinate): Vector = vec(x = this.x - other.x, y = this.y - other.y)
 
-operator fun Coordinate.plus(other: Vector2): Coordinate = xy(x = this.x + other.x, y = this.y + other.y)
+operator fun Coordinate.plus(other: Vector): Coordinate = xy(x = this.x + other.x, y = this.y + other.y)
 
-operator fun Coordinate.minus(other: Vector2): Coordinate = xy(x = this.x - other.x, y = this.y - other.y)
+operator fun Coordinate.minus(other: Vector): Coordinate = xy(x = this.x - other.x, y = this.y - other.y)
 
 
 // Pair interop
 
-fun Vector2.toPair(): Pair<Int, Int> = x to y
+fun Vector.toPair(): Pair<Int, Int> = x to y
 
-fun Pair<Int, Int>.toVector2(): Vector2 = vec(first, second)
+fun Pair<Int, Int>.toVector2(): Vector = vec(first, second)

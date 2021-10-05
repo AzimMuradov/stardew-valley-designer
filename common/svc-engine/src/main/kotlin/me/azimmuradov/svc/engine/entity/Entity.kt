@@ -16,8 +16,7 @@
 
 package me.azimmuradov.svc.engine.entity
 
-import me.azimmuradov.svc.engine.rectmap.PlacedRectObject
-import me.azimmuradov.svc.engine.rectmap.RectObject
+import me.azimmuradov.svc.engine.rectmap.*
 
 
 sealed interface Entity<out EType : EntityType> : RectObject {
@@ -26,3 +25,8 @@ sealed interface Entity<out EType : EntityType> : RectObject {
 }
 
 typealias PlacedEntity<EType> = PlacedRectObject<Entity<EType>>
+
+typealias DisjointEntities<EType> = DisjointRectObjects<Entity<EType>>
+
+
+val <EType : EntityType> PlacedEntity<EType>.type get() = rectObject.type

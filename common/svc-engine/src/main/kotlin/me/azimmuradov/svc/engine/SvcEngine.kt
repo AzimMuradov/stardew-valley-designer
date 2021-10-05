@@ -16,61 +16,60 @@
 
 package me.azimmuradov.svc.engine
 
-import me.azimmuradov.svc.engine.entity.EntityType
-import me.azimmuradov.svc.engine.entity.PlacedEntity
-import me.azimmuradov.svc.engine.layer.*
-import me.azimmuradov.svc.engine.layout.Layout
-import me.azimmuradov.svc.engine.rectmap.Coordinate
+import me.azimmuradov.svc.engine.entity.*
+import me.azimmuradov.svc.engine.geometry.Coordinate
+import me.azimmuradov.svc.engine.layer.LayerType
+import me.azimmuradov.svc.engine.layer.layerType
+import me.azimmuradov.svc.engine.layers.*
 
 
+/**
+ * SVC engine. He is responsible for all low-level interactions with the editor map.
+ */
 interface SvcEngine {
 
-    val layout: Layout
-
-    val layers: Map<LayerType<*>, Layer<*>>
+    val layers: Layers
 
 
     // Operations
 
-    fun get(type: LayerType<*>, c: Coordinate): PlacedEntity<*>?
+    fun <EType : EntityType> get(type: LayerType<EType>, c: Coordinate): PlacedEntity<EType>?
 
-    fun put(obj: PlacedEntity<*>): Map<LayerType<*>, List<PlacedEntity<*>>>
+    fun put(obj: PlacedEntity<*>): LayeredEntities
 
-    fun remove(type: LayerType<*>, c: Coordinate): PlacedEntity<*>?
+    fun <EType : EntityType> remove(type: LayerType<EType>, c: Coordinate): PlacedEntity<EType>?
 
 
     // Bulk Operations
 
-    fun getAll(type: LayerType<*>, cs: Iterable<Coordinate>): List<PlacedEntity<*>>
+    fun <EType : EntityType> getAll(type: LayerType<EType>, cs: Iterable<Coordinate>): DisjointEntities<EType>
 
-    fun putAll(objs: Iterable<PlacedEntity<*>>): Map<LayerType<*>, List<PlacedEntity<*>>>
+    fun <EType : EntityType> putAll(objs: DisjointEntities<EType>): LayeredEntities
 
-    fun removeAll(type: LayerType<*>, cs: Iterable<Coordinate>): List<PlacedEntity<*>>
+    fun <EType : EntityType> removeAll(type: LayerType<EType>, cs: Iterable<Coordinate>): DisjointEntities<EType>
 
     fun clear(type: LayerType<*>)
 }
 
 
-fun SvcEngine.get(c: Coordinate): Map<LayerType<*>, PlacedEntity<*>?> =
-    LayerType.all.associateWith { get(it, c) }
+// Operations
 
-fun SvcEngine.remove(c: Coordinate): Map<LayerType<*>, PlacedEntity<*>?> =
-    LayerType.all.associateWith { remove(it, c) }
+fun SvcEngine.get(c: Coordinate): LayeredSingleEntities = layeredSingleEntities { get(it, c) }
+
+fun SvcEngine.remove(c: Coordinate): LayeredSingleEntities = layeredSingleEntities { remove(it, c) }
+
+fun <EType : EntityType> SvcEngine.remove(obj: PlacedEntity<EType>): PlacedEntity<EType>? =
+    remove(obj.layerType, obj.place)
 
 
-fun SvcEngine.getAll(cs: Iterable<Coordinate>): Map<LayerType<*>, List<PlacedEntity<*>>> =
-    LayerType.all.associateWith { getAll(it, cs) }
+// Bulk Operations
 
-fun SvcEngine.removeAll(cs: Iterable<Coordinate>): Map<LayerType<*>, List<PlacedEntity<*>>> =
-    LayerType.all.associateWith { removeAll(it, cs) }
+fun SvcEngine.getAll(cs: Iterable<Coordinate>): LayeredEntities = layeredEntities { getAll(it, cs) }
+
+fun SvcEngine.putAll(objs: LayeredEntities): LayeredEntities = objs.flatten().flatMap { put(it).flatten() }.layered()
+
+fun SvcEngine.removeAll(cs: Iterable<Coordinate>): LayeredEntities = layeredEntities { removeAll(it, cs) }
+
+fun SvcEngine.removeAll(objs: List<PlacedEntity<*>>): LayeredEntities = objs.mapNotNull(this::remove).layered()
 
 fun SvcEngine.clear() = LayerType.all.forEach(this::clear)
-
-
-fun Map<LayerType<*>, PlacedEntity<*>?>.entities(): List<PlacedEntity<*>> =
-    mapNotNull { it.value }.sortedBy { (entity) -> EntityType.all.indexOf(entity.type) }
-
-fun List<PlacedEntity<*>>.toMap(): Map<LayerType<*>, List<PlacedEntity<*>>> =
-    groupBy { (entity) -> entity.type.toLayerType() }
-
-fun List<PlacedEntity<*>>.coordinates(): Set<Coordinate> = flatMapTo(mutableSetOf()) { it.coordinates }

@@ -16,6 +16,8 @@
 
 package me.azimmuradov.svc.engine.rectmap
 
+import me.azimmuradov.svc.engine.geometry.Rect
+
 
 /**
  * Rectangular object.

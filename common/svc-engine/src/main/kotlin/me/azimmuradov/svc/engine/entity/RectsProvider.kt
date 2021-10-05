@@ -16,8 +16,8 @@
 
 package me.azimmuradov.svc.engine.entity
 
-import me.azimmuradov.svc.engine.rectmap.Rect
-import me.azimmuradov.svc.engine.rectmap.rectOf as r
+import me.azimmuradov.svc.engine.geometry.Rect
+import me.azimmuradov.svc.engine.geometry.rectOf as r
 
 
 internal object RectsProvider {

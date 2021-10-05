@@ -17,6 +17,7 @@
 package me.azimmuradov.svc.engine.layer
 
 import me.azimmuradov.svc.engine.entity.*
+import me.azimmuradov.svc.engine.impossible
 
 
 sealed interface LayerType<out EType : EntityType> {
@@ -32,13 +33,26 @@ sealed interface LayerType<out EType : EntityType> {
 
     companion object {
 
-        val all = listOf(Floor, FloorFurniture, Object, EntityWithoutFloor)
+        val withFloor = listOf(Floor, FloorFurniture, Object)
+
+        val withoutFloor = listOf(EntityWithoutFloor)
+
+
+        val all = withFloor + withoutFloor
     }
 }
 
-fun EntityType.toLayerType() = when (this) {
+
+// TODO : Report the issue
+
+@Suppress("UNCHECKED_CAST")
+fun <EType : EntityType> EType.toLayerType(): LayerType<EType> = when (this) {
     FloorType -> LayerType.Floor
     FloorFurnitureType -> LayerType.FloorFurniture
     is ObjectType -> LayerType.Object
     is EntityWithoutFloorType -> LayerType.EntityWithoutFloor
-}
+    else -> impossible()
+} as LayerType<EType>
+
+
+val <EType : EntityType> PlacedEntity<EType>.layerType get() = type.toLayerType()

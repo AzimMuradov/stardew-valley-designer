@@ -18,7 +18,8 @@
 
 package me.azimmuradov.svc.engine
 
-import me.azimmuradov.svc.engine.rectmap.*
+import me.azimmuradov.svc.engine.geometry.Coordinate
+import me.azimmuradov.svc.engine.geometry.Rect
 
 
 // Internal utils
@@ -35,27 +36,12 @@ internal inline fun unpackInt1(value: Long) = (value shr 32).toInt()
 internal inline fun unpackInt2(value: Long) = (value and 0xFFFFFFFF).toInt()
 
 
-internal operator fun Rect.contains(coordinate: Coordinate): Boolean = with(coordinate) {
+internal operator fun Rect.contains(coordinate: Coordinate) = with(coordinate) {
     x in 0 until w && y in 0 until h
 }
 
-internal operator fun Rect.contains(coordinates: Iterable<Coordinate>): Boolean {
-    // Check that iterable is not empty
-    val first = coordinates.firstOrNull() ?: return true
 
-    val (min, max) = run {
-        var (minX: Int, minY: Int) = first
-        var (maxX: Int, maxY: Int) = first
+internal infix fun Iterable<Coordinate>.overlapsWith(other: Iterable<Coordinate>) = any { it in other }
 
-        for ((x, y) in coordinates) {
-            minX = minOf(minX, x)
-            maxX = maxOf(maxX, x)
-            minY = minOf(minY, y)
-            maxY = maxOf(maxY, y)
-        }
 
-        xy(minX, minY) to xy(maxX, maxY)
-    }
-
-    return contains(min) && contains(max)
-}
+internal fun impossible(): Nothing = error("Impossible state.")

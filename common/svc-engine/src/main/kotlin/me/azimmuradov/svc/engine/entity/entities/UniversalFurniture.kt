@@ -22,7 +22,7 @@ import me.azimmuradov.svc.engine.entity.RotatableFlavor.RotatableFlavor2
 import me.azimmuradov.svc.engine.entity.RotatableFlavor.RotatableFlavor4
 import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations2
 import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations4
-import me.azimmuradov.svc.engine.rectmap.Rect
+import me.azimmuradov.svc.engine.geometry.Rect
 
 
 sealed interface UniversalFurniture : Entity<UniversalFurnitureType> {

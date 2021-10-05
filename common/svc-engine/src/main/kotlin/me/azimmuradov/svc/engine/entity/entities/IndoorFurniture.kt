@@ -21,7 +21,7 @@ import me.azimmuradov.svc.engine.entity.RectsProvider.rectOf
 import me.azimmuradov.svc.engine.entity.RotatableFlavor.RotatableFlavor4
 import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations4
 import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations4.R0
-import me.azimmuradov.svc.engine.rectmap.Rect
+import me.azimmuradov.svc.engine.geometry.Rect
 
 
 sealed interface IndoorFurniture : Entity<IndoorFurnitureType> {

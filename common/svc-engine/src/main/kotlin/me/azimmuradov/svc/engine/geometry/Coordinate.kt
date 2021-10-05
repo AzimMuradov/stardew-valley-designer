@@ -14,48 +14,48 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.rectmap
+package me.azimmuradov.svc.engine.geometry
 
 import me.azimmuradov.svc.engine.*
 
 
 /**
- * Rectangle with no coordinate to place.
+ * 2D coordinate.
  */
 @JvmInline
-value class Rect internal constructor(@PublishedApi internal val packedValue: Long) {
+value class Coordinate internal constructor(@PublishedApi internal val packedValue: Long) {
 
-    inline val w: Int get() = unpackInt1(packedValue)
+    inline val x: Int get() = unpackInt1(packedValue)
 
-    inline val h: Int get() = unpackInt2(packedValue)
-
-
-    operator fun component1(): Int = w
-
-    operator fun component2(): Int = h
+    inline val y: Int get() = unpackInt2(packedValue)
 
 
-    fun copy(w: Int = this.w, h: Int = this.h): Rect = rectOf(w, h)
+    operator fun component1(): Int = x
+
+    operator fun component2(): Int = y
 
 
-    override fun toString(): String = "(w = $w, h = $h)"
+    fun copy(x: Int = this.x, y: Int = this.y): Coordinate = xy(x, y)
+
+
+    override fun toString(): String = "(x = $x, y = $y)"
 
 
     companion object {
 
-        val ZERO: Rect = rectOf(w = 0, h = 0)
+        val ZERO: Coordinate = xy(x = 0, y = 0)
     }
 }
 
 
 /**
- * Creates a rectangle.
+ * Creates a 2D coordinate.
  */
-fun rectOf(w: Int, h: Int): Rect = Rect(packInts(w, h))
+fun xy(x: Int, y: Int): Coordinate = Coordinate(packInts(x, y))
 
 
 // Pair interop
 
-fun Rect.toPair(): Pair<Int, Int> = w to h
+fun Coordinate.toPair(): Pair<Int, Int> = x to y
 
-fun Pair<Int, Int>.toRect(): Rect = rectOf(first, second)
+fun Pair<Int, Int>.toCoordinate(): Coordinate = xy(first, second)

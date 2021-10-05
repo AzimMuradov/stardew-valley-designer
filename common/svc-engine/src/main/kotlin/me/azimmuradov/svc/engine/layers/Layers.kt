@@ -14,11 +14,29 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.layer
+package me.azimmuradov.svc.engine.layers
 
-import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.EntityType
-import me.azimmuradov.svc.engine.rectmap.MutableRectMap
+import me.azimmuradov.svc.engine.layer.*
+import me.azimmuradov.svc.engine.layout.Layout
 
 
-interface MutableLayer<EType : EntityType> : Layer<EType>, MutableRectMap<Entity<EType>>
+interface Layers {
+
+    val layout: Layout
+
+    val all: List<Pair<LayerType<*>, Layer<*>>>
+
+    fun <EType : EntityType> layerBy(type: LayerType<EType>): Layer<EType>
+}
+
+
+interface MutableLayers : Layers {
+
+    override val all: List<Pair<LayerType<*>, MutableLayer<*>>>
+
+    override fun <EType : EntityType> layerBy(type: LayerType<EType>): MutableLayer<EType>
+}
+
+
+val Layers.entities: LayeredEntities get() = layeredEntities { layerBy(it).objects }

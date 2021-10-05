@@ -20,7 +20,7 @@ import me.azimmuradov.svc.engine.entity.RectsProvider.rectOf
 import me.azimmuradov.svc.engine.entity.RectsProvider.rotated
 import me.azimmuradov.svc.engine.entity.RotatableFlavor.RotatableFlavor2
 import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations2
-import me.azimmuradov.svc.engine.rectmap.Rect
+import me.azimmuradov.svc.engine.geometry.Rect
 
 
 sealed interface FloorFurniture : Entity<FloorFurnitureType> {
