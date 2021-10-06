@@ -18,33 +18,32 @@ package me.azimmuradov.svc.cartographer.toolkit
 
 import androidx.compose.runtime.*
 import me.azimmuradov.svc.cartographer.history.*
-import me.azimmuradov.svc.cartographer.toolkit.Tool.State
-import me.azimmuradov.svc.engine.rectmap.Coordinate
+import me.azimmuradov.svc.engine.geometry.Coordinate
 
 
-abstract class RevertibleTool internal constructor(
+internal sealed class RevertibleTool(
     final override val type: ToolType,
     private val unitsRegisterer: HistoryUnitsRegisterer,
 ) : Tool {
 
-    final override var state: State by mutableStateOf(State.Stale)
+    final override var state: ToolState by mutableStateOf(ToolState.Stale)
         private set
 
 
     final override fun start(c: Coordinate) {
-        check(state == State.Stale)
+        check(state == ToolState.Stale)
 
         val (startIsSuccessful, historyUnit) = startBody(c)
 
         if (startIsSuccessful) {
-            state = State.Acting
+            state = ToolState.Acting
             last = c
             unitsBuilder += historyUnit
         }
     }
 
     final override fun keep(c: Coordinate) {
-        check(state == State.Acting)
+        check(state == ToolState.Acting)
 
         if (c != last) {
             unitsBuilder += keepBody(c)
@@ -53,10 +52,10 @@ abstract class RevertibleTool internal constructor(
     }
 
     final override fun end() {
-        check(state == State.Acting)
+        check(state == ToolState.Acting)
 
         unitsBuilder += endBody()
-        state = State.Stale
+        state = ToolState.Stale
 
         unitsBuilder.buildOrNull()?.let { historyUnit ->
             unitsRegisterer += historyUnit

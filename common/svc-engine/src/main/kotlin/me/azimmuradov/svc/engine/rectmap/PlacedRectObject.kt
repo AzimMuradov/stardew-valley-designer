@@ -67,6 +67,12 @@ data class PlacedRectObject<out RO : RectObject>(
 
 
 /**
+ * Static factory function for [PlacedRectObject] creation.
+ */
+fun <RO : RectObject> RO.placeIt(there: Coordinate): PlacedRectObject<RO> =
+    PlacedRectObject(rectObject = this, place = there)
+
+/**
  * Returns `true` if [this] overlaps with the [other] placed rectangular object.
  */
 infix fun PlacedRectObject<*>.overlapsWith(other: PlacedRectObject<*>): Boolean =

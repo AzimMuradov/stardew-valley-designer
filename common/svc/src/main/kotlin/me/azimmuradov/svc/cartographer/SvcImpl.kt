@@ -17,15 +17,20 @@
 package me.azimmuradov.svc.cartographer
 
 import androidx.compose.runtime.*
+import me.azimmuradov.svc.cartographer.engine.ObservableSvcEngine
 import me.azimmuradov.svc.cartographer.history.*
 import me.azimmuradov.svc.cartographer.palette.mutablePaletteOf
-import me.azimmuradov.svc.cartographer.toolkit.Toolkit
-import me.azimmuradov.svc.cartographer.toolkit.tools.*
+import me.azimmuradov.svc.cartographer.palette.putInUseOrClear
+import me.azimmuradov.svc.cartographer.toolkit.*
 import me.azimmuradov.svc.engine.*
+import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.PlacedEntity
-import me.azimmuradov.svc.engine.layer.toLayerType
+import me.azimmuradov.svc.engine.layer.LayerType
+import me.azimmuradov.svc.engine.layers.*
 import me.azimmuradov.svc.engine.layout.Layout
-import me.azimmuradov.svc.engine.rectmap.PlacedRectObject
+import me.azimmuradov.svc.engine.layout.respects
+import me.azimmuradov.svc.engine.rectmap.coordinates
+import me.azimmuradov.svc.engine.rectmap.placeIt
 
 
 fun svcOf(layout: Layout): Svc = SvcImpl(layout)
@@ -33,82 +38,100 @@ fun svcOf(layout: Layout): Svc = SvcImpl(layout)
 
 private class SvcImpl(override val layout: Layout) : Svc {
 
-    // Backing svc engine
-
-    val engine: SvcEngine = svcEngineOf(layout)
+    val engine = ObservableSvcEngine(
+        onLayersChanged = { layers -> entities = layers.entities },
+        engine = svcEngineOf(layout),
+    )
 
 
     // Views
 
-    override val layers = engine.layers
+    override var entities by mutableStateOf(LayeredEntities())
 
-    override var heldEntities by mutableStateOf(listOf<PlacedEntity<*>>())
-
-
-    override val history: ActionHistory = actionHistory()
-
+    override var heldEntities by mutableStateOf(LayeredEntities())
 
     override val palette = mutablePaletteOf(size = 10u)
 
+    override var visibleLayers by mutableStateOf(LayerType.all.toSet())
 
-    override val toolkit: Toolkit = Toolkit(
+
+    // Functions
+
+    // History
+
+    override val history = historyManager()
+
+    // Toolkit
+
+    val toolkit: Toolkit = Toolkit(
         hand = Hand(
             unitsRegisterer = history,
             onGrab = { c ->
-                val esToMove = engine.remove(c).values.filterNotNull()
+                val esToMove = engine.remove(c).toLayeredEntities()
                 heldEntities = esToMove
                 heldEntities to HistoryUnit(
-                    act = { engine.removeAll(esToMove) },
+                    act = { engine.removeAll(esToMove.flatten()) },
                     revert = { engine.putAll(esToMove) },
                 )
             },
             onMove = { movedEs -> heldEntities = movedEs },
             onRelease = { movedEs ->
-                heldEntities = listOf()
+                heldEntities = LayeredEntities()
                 val replacedEs = engine.putAll(movedEs)
                 HistoryUnit(
                     act = { engine.putAll(movedEs) },
                     revert = {
-                        engine.removeAll(movedEs)
-                        engine.putAll(replacedEs.values.flatten())
+                        engine.removeAll(movedEs.flatten())
+                        engine.putAll(replacedEs)
                     },
                 )
             },
         ),
         pen = Pen(
             unitsRegisterer = history,
-            onDrawStart = { c ->
-                val entityToPlace = palette.inUse?.let { entity -> PlacedRectObject(entity, place = c) }
-                val isStartSuccessful = entityToPlace != null
-                if (entityToPlace != null) {
-                    engine.put(entityToPlace)
-                }
-                isStartSuccessful to entityToPlace
-            },
-            onDraw = { c, placedEsCs ->
-                val entityToPlace = palette.inUse?.let { entity -> PlacedRectObject(entity, place = c) }
-                if (entityToPlace != null && entityToPlace.coordinates.none { it in placedEsCs }) {
-                    engine.put(entityToPlace)
-                    entityToPlace
-                } else {
-                    null
-                }
-            },
-            onDrawEnd = { placedEs ->
-                HistoryUnit(
-                    act = { engine.putAll(placedEs) },
-                    revert = { engine.removeAll(placedEs) },
-                )
-            },
-        ),
+        ) {
+            val placed = mutableListOf<PlacedEntity<*>>()
+            val replaced = mutableListOf<PlacedEntity<*>>()
+
+            Pen.Logic(
+                onDrawStart = { c ->
+                    val e = palette.inUse?.placeIt(there = c)
+                    if (e != null && e respects layout) {
+                        placed += e
+                        replaced += engine.put(e).flatten()
+                    }
+                    e != null
+                },
+                onDraw = { c ->
+                    val e = palette.inUse?.placeIt(there = c)
+                    if (e != null && e respects layout && e.coordinates.none { it in placed.coordinates }) {
+                        placed += e
+                        replaced += engine.put(e).flatten()
+                    }
+                },
+                onDrawEnd = {
+                    if (placed.isNotEmpty()) {
+                        HistoryUnit(
+                            act = { engine.putAll(placed.layered()) },
+                            revert = {
+                                engine.removeAll(placed)
+                                engine.putAll(replaced.layered())
+                            },
+                        )
+                    } else {
+                        null
+                    }
+                },
+            )
+        },
         eraser = Eraser(
             unitsRegisterer = history,
-            onEraseStart = { c -> engine.remove(c).entities() },
-            onErase = { c -> engine.remove(c).entities() },
-            onEraseEnd = { removedEs ->
+            onEraseStart = { c -> engine.remove(c) },
+            onErase = { c -> engine.remove(c) },
+            onEraseEnd = { removed ->
                 HistoryUnit(
-                    act = { engine.removeAll(removedEs) },
-                    revert = { engine.putAll(removedEs) },
+                    act = { engine.removeAll(removed.flatten()) },
+                    revert = { engine.putAll(removed) },
                 )
             }
         ),
@@ -116,10 +139,10 @@ private class SvcImpl(override val layout: Layout) : Svc {
             unitsRegisterer = history,
             onPickStart = { c ->
                 val inUse = palette.inUse
-                engine.get(c).entities().lastOrNull()?.rectObj?.also(palette::putInUse) to inUse
+                engine.get(c).flatten().lastOrNull()?.rectObject?.also(palette::putInUse) to inUse
             },
             onPick = { c ->
-                engine.get(c).entities().lastOrNull()?.rectObj?.also(palette::putInUse)
+                engine.get(c).flatten().lastOrNull()?.rectObject?.also(palette::putInUse)
             },
             onPickEnd = { pickedEntity, previouslyInUse ->
                 HistoryUnit(
@@ -135,11 +158,42 @@ private class SvcImpl(override val layout: Layout) : Svc {
             }
         ),
     )
-}
 
+    override val tool get() = toolkit.tool
 
-private fun SvcEngine.removeAll(objs: Iterable<PlacedEntity<*>>) {
-    for ((entity, place) in objs) {
-        remove(entity.type.toLayerType(), place)
+    override fun chooseToolOf(type: ToolType?) {
+        val inUse = toolkit.tool?.type
+        if (type != inUse) {
+            toolkit.chooseToolOf(type)
+            history += HistoryUnit(
+                act = { toolkit.chooseToolOf(type) },
+                revert = { toolkit.chooseToolOf(inUse) },
+            )
+        }
+    }
+
+    // Palette & Flavors
+
+    override fun useInPalette(entity: Entity<*>) = putInUseOrClear(entity)
+
+    override fun clearUsedInPalette() = putInUseOrClear(entity = null)
+
+    private fun putInUseOrClear(entity: Entity<*>?) {
+        val inUse = palette.inUse
+        if (entity != inUse) {
+            palette.putInUseOrClear(entity)
+            history += HistoryUnit(
+                act = { palette.putInUseOrClear(entity) },
+                revert = { palette.putInUseOrClear(inUse) },
+            )
+        }
+    }
+
+    override fun changeVisibilityBy(layerType: LayerType<*>, value: Boolean) {
+        visibleLayers = if (value) {
+            visibleLayers + layerType
+        } else {
+            visibleLayers - layerType
+        }
     }
 }

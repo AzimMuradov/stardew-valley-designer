@@ -19,10 +19,10 @@ package me.azimmuradov.svc.cartographer.history
 import androidx.compose.runtime.*
 
 
-fun actionHistory(): ActionHistory = ActionHistoryImpl()
+fun historyManager(): HistoryManager = HistoryManagerImpl()
 
 
-private class ActionHistoryImpl : ActionHistory {
+private class HistoryManagerImpl : HistoryManager {
 
     val historyUnits = mutableListOf<HistoryUnit>()
 
@@ -56,6 +56,7 @@ private class ActionHistoryImpl : ActionHistory {
 
 
     companion object {
+
         const val HISTORY_ROOT: Int = -1
     }
 }

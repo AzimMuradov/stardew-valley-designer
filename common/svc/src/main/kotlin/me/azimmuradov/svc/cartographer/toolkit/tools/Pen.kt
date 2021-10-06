@@ -14,46 +14,42 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.toolkit.tools
+package me.azimmuradov.svc.cartographer.toolkit
 
 import me.azimmuradov.svc.cartographer.history.HistoryUnit
 import me.azimmuradov.svc.cartographer.history.HistoryUnitsRegisterer
-import me.azimmuradov.svc.cartographer.toolkit.RevertibleTool
-import me.azimmuradov.svc.cartographer.toolkit.ToolType
-import me.azimmuradov.svc.engine.coordinates
-import me.azimmuradov.svc.engine.entity.PlacedEntity
-import me.azimmuradov.svc.engine.rectmap.Coordinate
+import me.azimmuradov.svc.engine.geometry.Coordinate
 
 
-class Pen(
+internal class Pen(
     unitsRegisterer: HistoryUnitsRegisterer,
-    private val onDrawStart: (c: Coordinate) -> Pair<Boolean, PlacedEntity<*>?>,
-    private val onDraw: (c: Coordinate, placedEsCs: Set<Coordinate>) -> PlacedEntity<*>?,
-    private val onDrawEnd: (placedEs: List<PlacedEntity<*>>) -> HistoryUnit,
+    private val logicBuilder: () -> Logic,
 ) : RevertibleTool(
     type = ToolType.Pen,
     unitsRegisterer = unitsRegisterer,
 ) {
 
+    private lateinit var logic: Logic
+
+
     override fun startBody(c: Coordinate): Pair<Boolean, HistoryUnit?> {
-        val (isStartSuccessful, placedEntity) = onDrawStart(c)
-        if (isStartSuccessful && placedEntity != null) {
-            placedEs += placedEntity
-        }
-        return isStartSuccessful to null
+        logic = logicBuilder()
+        return logic.onDrawStart(c) to null
     }
 
     override fun keepBody(c: Coordinate): HistoryUnit? {
-        onDraw(c, placedEs.coordinates())?.let { placedEs += it }
+        logic.onDraw(c)
         return null
     }
 
     override fun endBody(): HistoryUnit? {
-        val historyUnitOrNull = onDrawEnd(placedEs.toList()).takeIf { placedEs.isNotEmpty() }
-        placedEs.clear()
-        return historyUnitOrNull
+        return logic.onDrawEnd()
     }
 
 
-    private val placedEs = mutableListOf<PlacedEntity<*>>()
+    data class Logic(
+        val onDrawStart: (c: Coordinate) -> Boolean,
+        val onDraw: (c: Coordinate) -> Unit,
+        val onDrawEnd: () -> HistoryUnit?,
+    )
 }

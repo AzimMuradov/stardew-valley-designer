@@ -17,10 +17,9 @@
 package me.azimmuradov.svc.cartographer.toolkit
 
 import androidx.compose.runtime.*
-import me.azimmuradov.svc.cartographer.toolkit.tools.*
 
 
-class Toolkit(
+internal class Toolkit(
     hand: Hand,
     pen: Pen,
     eraser: Eraser,
@@ -30,13 +29,12 @@ class Toolkit(
     var tool: Tool? by mutableStateOf(null)
         private set
 
+    fun chooseToolOf(type: ToolType?) {
+        check(tool?.state != ToolState.Acting)
+
+        tool = if (type != null) tools.first { it.type == type } else type
+    }
+
 
     private val tools: List<Tool> = listOf(hand, pen, eraser, eyeDrawer)
-
-
-    fun chooseToolOf(type: ToolType) {
-        check(tool?.state != Tool.State.Acting)
-
-        tool = tools.first { it.type == type }
-    }
 }

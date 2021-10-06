@@ -21,8 +21,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.azimmuradov.svc.cartographer.history.HistoryUnit
 import me.azimmuradov.svc.components.screens.Cartographer
+import me.azimmuradov.svc.engine.layers.layeredEntities
 import me.azimmuradov.svc.screens.cartographer.main.SvcLayout
 import me.azimmuradov.svc.screens.cartographer.sidemenus.LeftSideMenus
 import me.azimmuradov.svc.screens.cartographer.sidemenus.RightSideMenus
@@ -39,38 +39,35 @@ fun CartographerUi(component: Cartographer) {
         TopMenuBar(
             history = svc.history,
             disallowedTypes = svc.layout.disallowedTypes,
-            onEntitySelection = { entity ->
-                val inUse = svc.palette.inUse
-                svc.palette.putInUse(entity)
-                svc.history.register(HistoryUnit(
-                    act = { svc.palette.putInUse(entity) },
-                    revert = {
-                        if (inUse != null) {
-                            svc.palette.putInUse(inUse)
-                        } else {
-                            svc.palette.clearUsed()
-                        }
-                    },
-                ))
-            },
+            onEntitySelection = svc::useInPalette,
             options = options,
             lang = settings.lang,
         )
 
         Row(Modifier.fillMaxWidth().weight(1f)) {
             LeftSideMenus(
-                svc = svc,
-                settings = settings,
+                toolInfo = svc.tool,
+                onToolSelection = svc::chooseToolOf,
+                palette = svc.palette,
+                lang = settings.lang,
                 width = SIDE_MENUS_WIDTH,
             )
             SvcLayout(
-                svc = svc,
+                layoutSize = svc.layout.size,
+                visibleEntities = layeredEntities {
+                    if (it in svc.visibleLayers) svc.entities.entitiesBy(it) else listOf()
+                },
+                heldEntities = svc.heldEntities,
+                tool = svc.tool,
                 options = options,
-                settings = settings,
+                lang = settings.lang,
             )
             RightSideMenus(
-                svc = svc,
-                settings = settings,
+                visibleLayers = svc.visibleLayers,
+                onVisibilityChange = svc::changeVisibilityBy,
+                layoutSize = svc.layout.size,
+                entities = svc.entities,
+                lang = settings.lang,
                 width = SIDE_MENUS_WIDTH,
             )
         }
@@ -78,4 +75,4 @@ fun CartographerUi(component: Cartographer) {
 }
 
 
-private val SIDE_MENUS_WIDTH: Dp = 300.dp
+private val SIDE_MENUS_WIDTH: Dp = 350.dp

@@ -17,10 +17,25 @@
 package me.azimmuradov.svc.cartographer.history
 
 
+interface HistoryManager : HistoryUnitsRegisterer, HistoryTraveler
+
+
 interface HistoryUnitsRegisterer {
 
     fun register(unit: HistoryUnit)
 }
 
-
 operator fun HistoryUnitsRegisterer.plusAssign(unit: HistoryUnit) = register(unit)
+
+
+interface HistoryTraveler {
+
+    val canGoBack: Boolean
+
+    val canGoForward: Boolean
+
+
+    fun goBack()
+
+    fun goForward()
+}

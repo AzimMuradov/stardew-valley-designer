@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.toolkit.tools
+package me.azimmuradov.svc.cartographer.toolkit
 
 import me.azimmuradov.svc.cartographer.history.HistoryUnit
 import me.azimmuradov.svc.cartographer.history.HistoryUnitsRegisterer
-import me.azimmuradov.svc.cartographer.toolkit.RevertibleTool
-import me.azimmuradov.svc.cartographer.toolkit.ToolType
 import me.azimmuradov.svc.engine.entity.Entity
-import me.azimmuradov.svc.engine.rectmap.Coordinate
+import me.azimmuradov.svc.engine.geometry.Coordinate
 
 
-class EyeDrawer(
+internal class EyeDrawer(
     unitsRegisterer: HistoryUnitsRegisterer,
     private val onPickStart: (c: Coordinate) -> Pair<Entity<*>?, Entity<*>?>,
     private val onPick: (c: Coordinate) -> Entity<*>?,

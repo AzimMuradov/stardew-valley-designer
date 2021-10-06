@@ -16,19 +16,18 @@
 
 package me.azimmuradov.svc.cartographer
 
-import me.azimmuradov.svc.cartographer.history.ActionHistory
-import me.azimmuradov.svc.cartographer.palette.MutablePalette
-import me.azimmuradov.svc.cartographer.toolkit.Toolkit
-import me.azimmuradov.svc.engine.entity.PlacedEntity
-import me.azimmuradov.svc.engine.layer.Layer
+import me.azimmuradov.svc.cartographer.history.HistoryTraveler
+import me.azimmuradov.svc.cartographer.palette.Palette
+import me.azimmuradov.svc.cartographer.toolkit.Tool
+import me.azimmuradov.svc.cartographer.toolkit.ToolType
+import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.layer.LayerType
+import me.azimmuradov.svc.engine.layers.LayeredEntities
 import me.azimmuradov.svc.engine.layout.Layout
 
 
-// TODO : layers visibility
 // TODO : chosen entities
 // TODO : SVC behaviour
-// TODO : Acts history
 
 
 /**
@@ -38,35 +37,50 @@ import me.azimmuradov.svc.engine.layout.Layout
  */
 interface Svc {
 
+    // Views
+
     /**
      * SVC layout.
      */
     val layout: Layout
 
-
-    // Views
-
     /**
-     * SVC layers.
+     * SVC entities.
      */
-    val layers: Map<LayerType<*>, Layer<*>>
+    val entities: LayeredEntities
 
     /**
      * Entities that are currently being held.
      */
-    val heldEntities: List<PlacedEntity<*>>
-
-
-    val history: ActionHistory
-
+    val heldEntities: LayeredEntities
 
     /**
      * SVC palette.
      */
-    val palette: MutablePalette
+    val palette: Palette
 
-    /**
-     * SVC toolkit, using it, you can choose tool or use the current tool.
-     */
-    val toolkit: Toolkit
+    val visibleLayers: Set<LayerType<*>>
+
+
+    // Functions
+
+    // History
+
+    val history: HistoryTraveler
+
+    // Toolkit
+
+    fun chooseToolOf(type: ToolType?)
+
+    val tool: Tool?
+
+    // Palette & Flavors
+
+    fun useInPalette(entity: Entity<*>)
+
+    fun clearUsedInPalette()
+
+    // Visibility
+
+    fun changeVisibilityBy(layerType: LayerType<*>, value: Boolean)
 }

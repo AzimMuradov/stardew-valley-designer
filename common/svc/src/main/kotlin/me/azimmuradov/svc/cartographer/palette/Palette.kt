@@ -25,3 +25,21 @@ interface Palette {
 
     val hotbar: List<Entity<*>?>
 }
+
+
+interface MutablePalette : Palette {
+
+    fun putInUse(entity: Entity<*>): Entity<*>?
+
+    fun clearUsed(): Entity<*>?
+
+    fun clearHotbar(): List<Entity<*>?>
+
+
+    fun putOnHotbar(index: Int, entity: Entity<*>): Entity<*>?
+
+    fun removeFromHotbar(index: Int): Entity<*>?
+}
+
+fun MutablePalette.putInUseOrClear(entity: Entity<*>?): Entity<*>? =
+    if (entity != null) putInUse(entity) else clearUsed()

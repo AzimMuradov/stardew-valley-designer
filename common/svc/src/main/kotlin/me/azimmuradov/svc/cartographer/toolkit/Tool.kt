@@ -16,29 +16,24 @@
 
 package me.azimmuradov.svc.cartographer.toolkit
 
-import me.azimmuradov.svc.engine.rectmap.Coordinate
+import me.azimmuradov.svc.engine.geometry.Coordinate
 
 
-/**
- * Tool acts.
- */
-interface Tool {
-
-    val type: ToolType
-
-    val state: State
-
-    /**
-     * Tool state.
-     */
-    enum class State { Stale, Acting }
-
+interface Tool : ToolInfo {
 
     fun start(c: Coordinate)
 
     fun keep(c: Coordinate)
 
     fun end()
+}
+
+
+interface ToolInfo {
+
+    val type: ToolType
+
+    val state: ToolState
 }
 
 
@@ -53,3 +48,8 @@ enum class ToolType {
     RectSelect,
     EllipseSelect,
 }
+
+/**
+ * Tool state.
+ */
+enum class ToolState { Stale, Acting }

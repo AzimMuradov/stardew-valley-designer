@@ -14,38 +14,37 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.toolkit.tools
+package me.azimmuradov.svc.cartographer.toolkit
 
 import me.azimmuradov.svc.cartographer.history.HistoryUnit
 import me.azimmuradov.svc.cartographer.history.HistoryUnitsRegisterer
-import me.azimmuradov.svc.cartographer.toolkit.RevertibleTool
-import me.azimmuradov.svc.cartographer.toolkit.ToolType
 import me.azimmuradov.svc.engine.entity.PlacedEntity
-import me.azimmuradov.svc.engine.rectmap.Coordinate
+import me.azimmuradov.svc.engine.geometry.Coordinate
+import me.azimmuradov.svc.engine.layers.*
 
 
-class Eraser(
+internal class Eraser(
     unitsRegisterer: HistoryUnitsRegisterer,
-    private val onEraseStart: (c: Coordinate) -> List<PlacedEntity<*>>,
-    private val onErase: (c: Coordinate) -> List<PlacedEntity<*>>,
-    private val onEraseEnd: (removedEs: List<PlacedEntity<*>>) -> HistoryUnit,
+    private val onEraseStart: (c: Coordinate) -> LayeredSingleEntities,
+    private val onErase: (c: Coordinate) -> LayeredSingleEntities,
+    private val onEraseEnd: (removed: LayeredEntities) -> HistoryUnit,
 ) : RevertibleTool(
     type = ToolType.Eraser,
     unitsRegisterer = unitsRegisterer,
 ) {
 
     override fun startBody(c: Coordinate): Pair<Boolean, HistoryUnit?> {
-        removedEs += onEraseStart(c)
+        removedEs += onEraseStart(c).flatten()
         return true to null
     }
 
     override fun keepBody(c: Coordinate): HistoryUnit? {
-        removedEs += onErase(c)
+        removedEs += onErase(c).flatten()
         return null
     }
 
     override fun endBody(): HistoryUnit? {
-        val historyUnitOrNull = onEraseEnd(removedEs.toList()).takeIf { removedEs.isNotEmpty() }
+        val historyUnitOrNull = onEraseEnd(removedEs.layered()).takeIf { removedEs.isNotEmpty() }
         removedEs.clear()
         return historyUnitOrNull
     }

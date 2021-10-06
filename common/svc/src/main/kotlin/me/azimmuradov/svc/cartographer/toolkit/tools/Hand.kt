@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.toolkit.tools
+package me.azimmuradov.svc.cartographer.toolkit
 
 import me.azimmuradov.svc.cartographer.history.HistoryUnit
 import me.azimmuradov.svc.cartographer.history.HistoryUnitsRegisterer
-import me.azimmuradov.svc.cartographer.toolkit.RevertibleTool
-import me.azimmuradov.svc.cartographer.toolkit.ToolType
 import me.azimmuradov.svc.engine.entity.PlacedEntity
-import me.azimmuradov.svc.engine.rectmap.*
+import me.azimmuradov.svc.engine.geometry.*
+import me.azimmuradov.svc.engine.layers.*
 
 
-class Hand(
+internal class Hand(
     unitsRegisterer: HistoryUnitsRegisterer,
-    private val onGrab: (c: Coordinate) -> Pair<List<PlacedEntity<*>>, HistoryUnit>,
-    private val onMove: (movedEs: List<PlacedEntity<*>>) -> Unit,
-    private val onRelease: (movedEs: List<PlacedEntity<*>>) -> HistoryUnit,
+    private val onGrab: (c: Coordinate) -> Pair<LayeredEntities, HistoryUnit>,
+    private val onMove: (movedEs: LayeredEntities) -> Unit,
+    private val onRelease: (movedEs: LayeredEntities) -> HistoryUnit,
 ) : RevertibleTool(
     type = ToolType.Hand,
     unitsRegisterer = unitsRegisterer,
@@ -37,7 +36,7 @@ class Hand(
     override fun startBody(c: Coordinate): Pair<Boolean, HistoryUnit?> {
         val (esToMove, historyUnit) = onGrab(c)
 
-        val isStartSuccessful = esToMove.isNotEmpty()
+        val isStartSuccessful = esToMove.flatten().isNotEmpty()
 
         return if (isStartSuccessful) {
             handManager = HandManager(start = c, esToMove)
@@ -55,7 +54,7 @@ class Hand(
 
     override fun endBody(): HistoryUnit? {
         val movedEs = handManager.movedEs
-        return onRelease(movedEs).takeIf { movedEs.isNotEmpty() }
+        return onRelease(movedEs).takeIf { movedEs.flatten().isNotEmpty() }
     }
 
 
@@ -63,15 +62,15 @@ class Hand(
 
     private class HandManager(
         val start: Coordinate,
-        private val esToMove: List<PlacedEntity<*>>,
+        private val esToMove: LayeredEntities,
     ) {
 
         fun updateLast(c: Coordinate) = run { last = c }
 
         val movedEs
-            get() = esToMove.map { (entity, place) ->
+            get() = esToMove.flatten().map { (entity, place) ->
                 PlacedEntity(entity, place = place + (last - start))
-            }
+            }.layered()
 
 
         private var last: Coordinate = start
