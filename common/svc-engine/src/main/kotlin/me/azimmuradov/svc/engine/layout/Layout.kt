@@ -65,7 +65,7 @@ infix fun <EType : EntityType> PlacedEntity<EType>.respects(layoutRules: LayoutR
         }
     }
 
-    return requirements.all { true }
+    return requirements.all { it }
 }
 
 
