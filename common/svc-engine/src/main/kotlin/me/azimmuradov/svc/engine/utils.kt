@@ -22,6 +22,13 @@ import me.azimmuradov.svc.engine.geometry.Coordinate
 import me.azimmuradov.svc.engine.geometry.Rect
 
 
+// Public utils
+
+infix fun Iterable<Coordinate>.overlapsWith(other: Iterable<Coordinate>) = any { it in other }
+
+infix fun Iterable<Coordinate>.notOverlapsWith(other: Iterable<Coordinate>) = none { it in other }
+
+
 // Internal utils
 
 @PublishedApi
@@ -39,9 +46,6 @@ internal inline fun unpackInt2(value: Long) = (value and 0xFFFFFFFF).toInt()
 internal operator fun Rect.contains(coordinate: Coordinate) = with(coordinate) {
     x in 0 until w && y in 0 until h
 }
-
-
-internal infix fun Iterable<Coordinate>.overlapsWith(other: Iterable<Coordinate>) = any { it in other }
 
 
 internal fun impossible(): Nothing = error("Impossible state.")

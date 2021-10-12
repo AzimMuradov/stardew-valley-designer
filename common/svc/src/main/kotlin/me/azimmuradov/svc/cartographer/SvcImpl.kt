@@ -104,7 +104,7 @@ private class SvcImpl(override val layout: Layout) : Svc {
                 },
                 onDraw = { c ->
                     val e = palette.inUse?.placeIt(there = c)
-                    if (e != null && e respects layout && e.coordinates.none { it in placed.coordinates }) {
+                    if (e != null && e respects layout && e.coordinates notOverlapsWith placed.coordinates) {
                         placed += e
                         replaced += engine.put(e).flatten()
                     }

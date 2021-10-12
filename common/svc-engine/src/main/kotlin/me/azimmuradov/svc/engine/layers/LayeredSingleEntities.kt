@@ -20,7 +20,7 @@ package me.azimmuradov.svc.engine.layers
 
 import me.azimmuradov.svc.engine.entity.*
 import me.azimmuradov.svc.engine.layer.LayerType
-import me.azimmuradov.svc.engine.overlapsWith
+import me.azimmuradov.svc.engine.notOverlapsWith
 import me.azimmuradov.svc.engine.rectmap.coordinates
 
 
@@ -49,7 +49,7 @@ class LayeredSingleEntities(
             .values.filterNotNull()
             .coordinates
 
-        require(!(withoutFloorCs overlapsWith withFloorCs)) {
+        require(withoutFloorCs notOverlapsWith withFloorCs) {
             "Wrong `LayeredSingleEntities` definition."
         }
     }

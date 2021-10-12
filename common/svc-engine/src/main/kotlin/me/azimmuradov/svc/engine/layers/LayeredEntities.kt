@@ -20,7 +20,7 @@ package me.azimmuradov.svc.engine.layers
 
 import me.azimmuradov.svc.engine.entity.*
 import me.azimmuradov.svc.engine.layer.*
-import me.azimmuradov.svc.engine.overlapsWith
+import me.azimmuradov.svc.engine.notOverlapsWith
 import me.azimmuradov.svc.engine.rectmap.*
 
 
@@ -47,7 +47,7 @@ class LayeredEntities(
             .filter { (layerType) -> layerType in LayerType.withoutFloor }
             .flatMapTo(mutableSetOf()) { (_, es) -> es.coordinates }
 
-        require(!(withoutFloorCs overlapsWith withFloorCs)) {
+        require(withoutFloorCs notOverlapsWith withFloorCs) {
             "Wrong `LayeredEntities` definition."
         }
     }
