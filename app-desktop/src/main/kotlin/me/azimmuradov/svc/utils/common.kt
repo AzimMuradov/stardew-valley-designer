@@ -19,7 +19,7 @@ package me.azimmuradov.svc.utils
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
-import me.azimmuradov.svc.engine.rectmap.*
+import me.azimmuradov.svc.engine.geometry.*
 
 
 val Size.ratio: Float get() = width / height

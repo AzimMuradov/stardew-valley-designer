@@ -31,13 +31,13 @@ dependencies {
 
     implementation(projects.common.svcEngine)
     implementation(projects.common.svc)
-    implementation(projects.common.uiUtils)
+    implementation(projects.common.uiUtils.buttonsGroup)
+    implementation(projects.common.uiUtils.dropdownMenu)
 }
 
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        languageVersion = "1.6"
         freeCompilerArgs += listOf("-Xopt-in=kotlin.RequiresOptIn")
         jvmTarget = V.JVM
     }

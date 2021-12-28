@@ -16,7 +16,6 @@
 
 package me.azimmuradov.svc
 
-import androidx.compose.desktop.DesktopMaterialTheme
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -42,7 +41,7 @@ enum class ThemeVariant {
 
 @Composable
 private fun AppLightTheme(content: @Composable () -> Unit) {
-    DesktopMaterialTheme(
+    MaterialTheme(
         colors = lightColors(
             primary = Color(0xFF33691e),
             primaryVariant = Color(0xFF003d00),
@@ -89,7 +88,7 @@ private fun AppLightTheme(content: @Composable () -> Unit) {
 
 @Composable
 private fun AppDarkTheme(content: @Composable () -> Unit) {
-    DesktopMaterialTheme(
+    MaterialTheme(
         colors = darkColors(
             // primary = Color(0xFF),
             // primaryVariant = Color(0xFF),

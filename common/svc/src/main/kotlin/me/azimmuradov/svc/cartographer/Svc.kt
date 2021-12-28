@@ -16,71 +16,22 @@
 
 package me.azimmuradov.svc.cartographer
 
-import me.azimmuradov.svc.cartographer.history.HistoryTraveler
-import me.azimmuradov.svc.cartographer.palette.Palette
-import me.azimmuradov.svc.cartographer.toolkit.Tool
-import me.azimmuradov.svc.cartographer.toolkit.ToolType
-import me.azimmuradov.svc.engine.entity.Entity
-import me.azimmuradov.svc.engine.layer.LayerType
-import me.azimmuradov.svc.engine.layers.LayeredEntities
-import me.azimmuradov.svc.engine.layout.Layout
-
-
-// TODO : chosen entities
-// TODO : SVC behaviour
+import kotlinx.coroutines.flow.StateFlow
+import me.azimmuradov.svc.cartographer.state.SvcState
+import me.azimmuradov.svc.cartographer.wishes.SvcWish
 
 
 /**
  * Stardew Valley Cartographer.
- *
- * Cartographer is defined by its [layout].
  */
 interface Svc {
 
-    // Views
+    // State Flow
 
-    /**
-     * SVC layout.
-     */
-    val layout: Layout
-
-    /**
-     * SVC entities.
-     */
-    val entities: LayeredEntities
-
-    /**
-     * Entities that are currently being held.
-     */
-    val heldEntities: LayeredEntities
-
-    /**
-     * SVC palette.
-     */
-    val palette: Palette
-
-    val visibleLayers: Set<LayerType<*>>
+    val state: StateFlow<SvcState>
 
 
-    // Functions
+    // Consume Wishes
 
-    // History
-
-    val history: HistoryTraveler
-
-    // Toolkit
-
-    fun chooseToolOf(type: ToolType?)
-
-    val tool: Tool?
-
-    // Palette & Flavors
-
-    fun useInPalette(entity: Entity<*>)
-
-    fun clearUsedInPalette()
-
-    // Visibility
-
-    fun changeVisibilityBy(layerType: LayerType<*>, value: Boolean)
+    fun consume(wish: SvcWish)
 }

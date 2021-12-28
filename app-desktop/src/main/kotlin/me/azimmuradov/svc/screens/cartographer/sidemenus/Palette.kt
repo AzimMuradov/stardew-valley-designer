@@ -28,19 +28,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.azimmuradov.svc.cartographer.palette.MutablePalette
-import me.azimmuradov.svc.engine.rectmap.Rect
+import me.azimmuradov.svc.cartographer.state.PaletteState
+import me.azimmuradov.svc.cartographer.wishes.SvcWish
+import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.settings.Lang
 import me.azimmuradov.svc.settings.Settings
+import me.azimmuradov.svc.settings.wordlists.WordList
 import me.azimmuradov.svc.utils.Sprite
 
 
 @Composable
 fun Palette(
-    palette: MutablePalette,
+    palette: PaletteState,
     lang: Lang,
+    wishConsumer: (SvcWish.Palette) -> Unit,
 ) {
-    val inUse = palette.inUse
     // TODO : hotbar feature (val hotbar = palette.hotbar)
     val wordList = Settings.wordList(lang)
 
@@ -48,56 +50,7 @@ fun Palette(
         modifier = Modifier.padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Card(elevation = 0.dp) {
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Button(
-                    onClick = { /* TODO : hotbar feature */ },
-                    modifier = Modifier
-                        .size(56.dp)
-                        .border(
-                            width = Dp.Hairline,
-                            color = MaterialTheme.colors.secondaryVariant,
-                            shape = CircleShape,
-                        ),
-                    elevation = ButtonDefaults.elevation(pressedElevation = 4.dp),
-                    shape = CircleShape,
-                    colors = ButtonDefaults.outlinedButtonColors(),
-                    contentPadding = PaddingValues(12.dp),
-                    enabled = false, /* TODO : hotbar feature (inUse != null) */
-                ) {
-                    if (inUse != null) {
-                        Sprite(entity = inUse, modifier = Modifier.fillMaxSize())
-                    } else {
-                        Icon(
-                            imageVector = Icons.Default.Clear,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize().padding(4.dp),
-                        )
-                    }
-                }
-
-                if (inUse != null) {
-                    Column {
-                        Text(
-                            text = wordList.entity(e = inUse),
-                            color = MaterialTheme.colors.secondaryVariant,
-                            fontWeight = FontWeight.Bold,
-                            style = MaterialTheme.typography.subtitle1,
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = inUse.size.toShortString(),
-                            style = MaterialTheme.typography.body2,
-                        )
-                    }
-                }
-            }
-        }
-
+        InUseCard(palette.inUse, wordList)
 
         // TODO : hotbar feature
         //
@@ -110,8 +63,73 @@ fun Palette(
         //     spaceContent = { Icon(Icons.Default.Clear, null, Modifier.fillMaxSize()) },
         //     buttonContent = { entity -> Sprite(entity = entity, modifier = Modifier.fillMaxSize()) },
         // )
+
+        // Flavors
+        // if (inUse is EntityFlavor) {
+        //     val a = when (inUse) {
+        //         is RotatableFlavor.RotatableFlavor2 -> TODO()
+        //         is RotatableFlavor.RotatableFlavor4 -> TODO()
+        //         is ColoredFlavor.ColoredFishPondFlavor -> TODO()
+        //         is ColoredFlavor.ColoredChestFlavor -> TODO()
+        //         is ColoredFarmBuildingFlavor -> TODO()
+        //     }
+        // }
     }
 }
 
 
-private fun Rect.toShortString(): String = "$w x $h"
+@Composable
+private fun InUseCard(
+    inUse: Entity<*>?,
+    wordList: WordList,
+) {
+    Card(elevation = 0.dp) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Button(
+                onClick = { /* TODO : hotbar feature */ },
+                modifier = Modifier
+                    .size(56.dp)
+                    .border(
+                        width = Dp.Hairline,
+                        color = MaterialTheme.colors.secondaryVariant,
+                        shape = CircleShape,
+                    ),
+                elevation = ButtonDefaults.elevation(pressedElevation = 4.dp),
+                shape = CircleShape,
+                colors = ButtonDefaults.outlinedButtonColors(),
+                contentPadding = PaddingValues(12.dp),
+                enabled = false, /* TODO : hotbar feature (inUse != null) */
+            ) {
+                if (inUse != null) {
+                    Sprite(entity = inUse, modifier = Modifier.fillMaxSize())
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize().padding(4.dp),
+                    )
+                }
+            }
+
+            if (inUse != null) {
+                Column {
+                    Text(
+                        text = wordList.entity(e = inUse),
+                        color = MaterialTheme.colors.secondaryVariant,
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.subtitle1,
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = with(inUse.size) { "$w x $h" },
+                        style = MaterialTheme.typography.body2,
+                    )
+                }
+            }
+        }
+    }
+}

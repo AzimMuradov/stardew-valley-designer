@@ -16,7 +16,7 @@
 
 package me.azimmuradov.svc.components.screens.cartographer.res
 
-import me.azimmuradov.svc.cartographer.toolkit.ToolType
+import me.azimmuradov.svc.cartographer.modules.toolkit.ToolType
 
 
 object MenuSpritesProvider {

@@ -16,7 +16,9 @@
 
 package me.azimmuradov.svc.components
 
-import com.arkivanov.decompose.*
+import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.DefaultComponentContext
+import com.arkivanov.decompose.router.*
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry

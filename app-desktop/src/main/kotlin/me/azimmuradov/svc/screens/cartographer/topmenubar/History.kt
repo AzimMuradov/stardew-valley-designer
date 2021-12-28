@@ -16,56 +16,58 @@
 
 package me.azimmuradov.svc.screens.cartographer.topmenubar
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ArrowForward
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import me.azimmuradov.svc.cartographer.history.ActionHistory
+import me.azimmuradov.svc.cartographer.state.HistoryState
+import me.azimmuradov.svc.cartographer.wishes.SvcWish
 import me.azimmuradov.svc.settings.Lang
 
 
 @Composable
 fun History(
-    history: ActionHistory,
+    history: HistoryState,
+    wishConsumer: (SvcWish.History) -> Unit,
     lang: Lang,
 ) {
     Row(modifier = Modifier.wrapContentWidth().fillMaxHeight()) {
         IconButton(
-            onClick = { history.goBack() },
+            onClick = { wishConsumer(SvcWish.History.GoBack) },
             enabled = history.canGoBack,
             modifier = Modifier.fillMaxHeight(),
         ) {
             val contentAlpha = if (history.canGoBack) ContentAlpha.high else ContentAlpha.disabled
-            CompositionLocalProvider(LocalContentAlpha provides contentAlpha) {
-                Icon(
-                    Icons.Rounded.ArrowBack,
-                    contentDescription = null,
-                    modifier = Modifier.padding(8.dp).align(Alignment.CenterVertically),
-                    tint = Color.White.copy(alpha = contentAlpha),
-                )
-            }
+            Icon(
+                imageVector = Icons.Rounded.ArrowBack,
+                contentDescription = null,
+                modifier = Modifier.padding(8.dp).align(Alignment.CenterVertically),
+                tint = Color.White.copy(alpha = contentAlpha),
+            )
         }
         IconButton(
-            onClick = { history.goForward() },
+            onClick = { wishConsumer(SvcWish.History.GoForward) },
             enabled = history.canGoForward,
             modifier = Modifier.fillMaxHeight(),
         ) {
             val contentAlpha = if (history.canGoForward) ContentAlpha.high else ContentAlpha.disabled
-            CompositionLocalProvider(LocalContentAlpha provides contentAlpha) {
-                Icon(
-                    Icons.Rounded.ArrowForward,
-                    contentDescription = null,
-                    modifier = Modifier.padding(8.dp).align(Alignment.CenterVertically),
-                    tint = Color.White.copy(alpha = contentAlpha),
-                )
-            }
+            Icon(
+                imageVector = Icons.Rounded.ArrowForward,
+                contentDescription = null,
+                modifier = Modifier.padding(8.dp).align(Alignment.CenterVertically),
+                tint = Color.White.copy(alpha = contentAlpha),
+            )
         }
     }
 }

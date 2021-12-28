@@ -26,10 +26,12 @@ import me.azimmuradov.svc.settings.Settings
 
 internal class CartographerComponent(
     override val onCartographerScreenReturn: () -> Unit,
-    override val settings: Settings,
+    settings: Settings,
 ) : Cartographer {
 
     override var svc by mutableStateOf(svcOf(layoutOf(type = Shed)))
 
-    override val options = Options.DEFAULT
+    override var options by mutableStateOf(Options.DEFAULT)
+
+    override var settings by mutableStateOf(settings)
 }

@@ -16,7 +16,7 @@
 
 package me.azimmuradov.svc.components
 
-import com.arkivanov.decompose.RouterState
+import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.value.Value
 import me.azimmuradov.svc.components.screens.*
 import me.azimmuradov.svc.settings.Settings

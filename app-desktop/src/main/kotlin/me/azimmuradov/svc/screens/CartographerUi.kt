@@ -17,12 +17,12 @@
 package me.azimmuradov.svc.screens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import me.azimmuradov.svc.cartographer.wishes.SvcWish
 import me.azimmuradov.svc.components.screens.Cartographer
-import me.azimmuradov.svc.engine.layers.layeredEntities
 import me.azimmuradov.svc.screens.cartographer.main.SvcLayout
 import me.azimmuradov.svc.screens.cartographer.sidemenus.LeftSideMenus
 import me.azimmuradov.svc.screens.cartographer.sidemenus.RightSideMenus
@@ -35,40 +35,46 @@ fun CartographerUi(component: Cartographer) {
     val options = component.options
     val settings = component.settings
 
+    val state by svc.state.collectAsState()
+
     Column(modifier = Modifier.fillMaxSize()) {
         TopMenuBar(
-            history = svc.history,
-            disallowedTypes = svc.layout.disallowedTypes,
-            onEntitySelection = svc::useInPalette,
+            history = state.history,
+            disallowedTypes = state.editor.layout.disallowedTypes,
+            onEntitySelection = { svc.consume(SvcWish.Palette.AddToInUse(it)) },
             options = options,
             lang = settings.lang,
+            wishConsumer = svc::consume
         )
 
         Row(Modifier.fillMaxWidth().weight(1f)) {
             LeftSideMenus(
-                toolInfo = svc.tool,
-                onToolSelection = svc::chooseToolOf,
-                palette = svc.palette,
+                toolkit = state.toolkit,
+                palette = state.palette,
                 lang = settings.lang,
                 width = SIDE_MENUS_WIDTH,
+                wishConsumer = svc::consume
             )
             SvcLayout(
-                layoutSize = svc.layout.size,
-                visibleEntities = layeredEntities {
-                    if (it in svc.visibleLayers) svc.entities.entitiesBy(it) else listOf()
+                layoutSize = state.editor.layout.size,
+                visibleEntities = state.editor.entities.filter { (layerType) ->
+                    layerType != state.editor.visibleLayers
                 },
-                heldEntities = svc.heldEntities,
-                tool = svc.tool,
+                heldEntities = state.editor.heldEntities,
+                toolkit = state.toolkit,
                 options = options,
                 lang = settings.lang,
+                wishConsumer = svc::consume
             )
             RightSideMenus(
-                visibleLayers = svc.visibleLayers,
-                onVisibilityChange = svc::changeVisibilityBy,
-                layoutSize = svc.layout.size,
-                entities = svc.entities,
+                visibleLayers = state.editor.visibleLayers,
+                onVisibilityChange = { layerType, visible ->
+                    svc.consume(SvcWish.VisibilityLayers.ChangeVisibility(layerType, visible))
+                },
+                layoutSize = state.editor.layout.size,
+                entities = state.editor.entities,
                 lang = settings.lang,
-                width = SIDE_MENUS_WIDTH,
+                width = SIDE_MENUS_WIDTH
             )
         }
     }

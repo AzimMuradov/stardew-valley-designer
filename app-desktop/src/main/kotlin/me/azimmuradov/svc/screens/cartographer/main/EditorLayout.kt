@@ -17,35 +17,42 @@
 package me.azimmuradov.svc.screens.cartographer.main
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.*
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.*
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.*
-import me.azimmuradov.svc.cartographer.Svc
-import me.azimmuradov.svc.cartographer.toolkit.Tool
+import me.azimmuradov.svc.cartographer.state.ToolkitState
+import me.azimmuradov.svc.cartographer.wishes.SvcWish
 import me.azimmuradov.svc.components.screens.cartographer.Options
-import me.azimmuradov.svc.engine.rectmap.Coordinate
-import me.azimmuradov.svc.engine.rectmap.xy
-import me.azimmuradov.svc.settings.Settings
+import me.azimmuradov.svc.engine.entity.PlacedEntity
+import me.azimmuradov.svc.engine.geometry.*
+import me.azimmuradov.svc.engine.layer.LayerType
+import me.azimmuradov.svc.settings.Lang
 import me.azimmuradov.svc.utils.drawSpriteBy
 import me.azimmuradov.svc.utils.toIntOffset
 import kotlin.math.floor
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun EditorLayout(
-    svc: Svc,
+fun BoxScope.EditorLayout(
+    layoutSize: Rect,
+    visibleEntities: List<Pair<LayerType<*>, List<PlacedEntity<*>>>>,
+    heldEntities: List<Pair<LayerType<*>, List<PlacedEntity<*>>>>,
+    toolkit: ToolkitState,
     options: Options,
-    settings: Settings,
-    modifier: Modifier = Modifier,
+    lang: Lang,
+    wishConsumer: (SvcWish) -> Unit,
 ) {
-    val (w, h) = svc.layout.size
+    val (w, h) = layoutSize
 
     var mutStepSize by remember { mutableStateOf(-1f) }
     var mutHoveredId by remember { mutableStateOf(UNDEFINED) }
@@ -54,40 +61,32 @@ fun EditorLayout(
     val hoveredColor = MaterialTheme.colors.secondary
 
     fun Offset.toCoordinate() = xy(
-        floor(x / mutStepSize).toInt().coerceIn(0 until w),
-        floor(y / mutStepSize).toInt().coerceIn(0 until h),
+        x = floor(x / mutStepSize).toInt().coerceIn(0 until w),
+        y = floor(y / mutStepSize).toInt().coerceIn(0 until h),
     )
 
     Canvas(
-        modifier = modifier
+        modifier = Modifier
+            .aspectRatio(layoutSize.aspectRatio)
+            .fillMaxSize()
+            .align(Alignment.Center)
+            // .clipToBounds()
+            .background(color = Color.White)
             .pointerMoveFilter(
                 onEnter = { false },
                 onMove = { offset -> mutHoveredId = offset.toCoordinate(); false },
                 onExit = { mutHoveredId = UNDEFINED; false },
             )
-            .pointerInput(Unit) {
+            .pointerInput(toolkit.currentToolType) {
                 detectDragGesturesImmediately(
                     onDragStart = { offset ->
-                        svc.toolkit.tool?.start(offset.toCoordinate())
+                        wishConsumer(SvcWish.Act.Start(offset.toCoordinate()))
                     },
                     onDrag = { change, _ ->
-                        val tool = svc.toolkit.tool
-                        if (tool != null && tool.state == Tool.State.Acting) {
-                            tool.keep(change.position.toCoordinate())
-                        }
+                        wishConsumer(SvcWish.Act.Continue(change.position.toCoordinate()))
                     },
-                    onDragEnd = {
-                        val tool = svc.toolkit.tool
-                        if (tool != null && tool.state == Tool.State.Acting) {
-                            tool.end()
-                        }
-                    },
-                    onDragCancel = {
-                        val tool = svc.toolkit.tool
-                        if (tool != null && tool.state == Tool.State.Acting) {
-                            tool.end()
-                        }
-                    },
+                    onDragEnd = { wishConsumer(SvcWish.Act.End) },
+                    onDragCancel = { wishConsumer(SvcWish.Act.End) },
                 )
             }
     ) {
@@ -103,12 +102,12 @@ fun EditorLayout(
 
         // Entities
 
-        for ((_, layer) in svc.layers) {
-            for (e in layer.objs) {
+        for ((_, objs) in visibleEntities) {
+            for (e in objs) {
                 val offset = e.place.toIntOffset() * stepSize
 
                 drawSpriteBy(
-                    entity = e.rectObj,
+                    entity = e.rectObject,
                     offset = offset.copy(x = offset.x + 2, y = offset.y + 2),
                     layoutSize = Size(width = cellSize.width - 4, height = cellSize.height - 4),
                 )
@@ -153,11 +152,11 @@ fun EditorLayout(
 
             // Held entities
 
-            for (e in svc.heldEntities) {
+            for (e in heldEntities.flatMap { it.second }) {
                 val offset = e.place.toIntOffset() * stepSize
 
                 drawSpriteBy(
-                    entity = e.rectObj,
+                    entity = e.rectObject,
                     offset = offset.copy(x = offset.x + 4, y = offset.y + 4),
                     layoutSize = Size(width = cellSize.width - 8, height = cellSize.height - 8),
                     alpha = 0.7f,
@@ -220,3 +219,6 @@ private suspend fun PointerInputScope.detectDragGesturesImmediately(
         }
     }
 }
+
+
+private val Rect.aspectRatio get() = w.toFloat() / h.toFloat()

@@ -31,7 +31,8 @@ dependencies {
     implementation(projects.common.svcEngine)
     implementation(projects.common.svc)
     implementation(projects.common.components)
-    implementation(projects.common.uiUtils)
+    implementation(projects.common.uiUtils.buttonsGroup)
+    implementation(projects.common.uiUtils.dropdownMenu)
 }
 
 

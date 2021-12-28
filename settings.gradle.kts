@@ -11,6 +11,8 @@ include(":app-desktop")
 include(":common:svc-engine")
 include(":common:svc")
 include(":common:components")
-include(":common:ui-utils")
+
+include(":common:ui-utils:buttons-group")
+include(":common:ui-utils:dropdown-menu")
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

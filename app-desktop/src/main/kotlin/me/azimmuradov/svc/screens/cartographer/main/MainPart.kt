@@ -16,41 +16,42 @@
 
 package me.azimmuradov.svc.screens.cartographer.main
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import me.azimmuradov.svc.cartographer.Svc
+import me.azimmuradov.svc.cartographer.state.ToolkitState
+import me.azimmuradov.svc.cartographer.wishes.SvcWish
 import me.azimmuradov.svc.components.screens.cartographer.Options
-import me.azimmuradov.svc.engine.rectmap.Rect
-import me.azimmuradov.svc.settings.Settings
+import me.azimmuradov.svc.engine.entity.PlacedEntity
+import me.azimmuradov.svc.engine.geometry.Rect
+import me.azimmuradov.svc.engine.layer.LayerType
+import me.azimmuradov.svc.engine.layers.LayeredEntities
+import me.azimmuradov.svc.settings.Lang
 
 
 @Composable
 fun RowScope.SvcLayout(
-    svc: Svc,
+    layoutSize: Rect,
+    visibleEntities: List<Pair<LayerType<*>, List<PlacedEntity<*>>>>,
+    heldEntities: List<Pair<LayerType<*>, List<PlacedEntity<*>>>>,
+    toolkit: ToolkitState,
     options: Options,
-    settings: Settings,
+    lang: Lang,
+    wishConsumer: (SvcWish) -> Unit,
 ) {
-    val ratio = svc.layout.size.aspectRatio
-
     Box(modifier = Modifier.fillMaxHeight().weight(1f).padding(30.dp)) {
         EditorLayout(
-            svc = svc,
+            layoutSize = layoutSize,
+            visibleEntities = visibleEntities,
+            heldEntities = heldEntities,
+            toolkit = toolkit,
             options = options,
-            settings = settings,
-            modifier = Modifier
-                .aspectRatio(ratio)
-                .fillMaxSize()
-                .align(Alignment.Center)
-                // .clipToBounds()
-                .background(color = Color.White),
+            lang = lang,
+            wishConsumer = wishConsumer
         )
     }
 }
-
-
-private val Rect.aspectRatio get() = w.toFloat() / h.toFloat()

@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
@@ -40,11 +41,11 @@ fun main() {
             onCloseRequest = ::exitApplication,
             state = rememberWindowState(
                 position = WindowPosition(alignment = Alignment.Center),
-                size = WindowSize(width = 1280.dp, height = 720.dp),
+                size = DpSize(width = 1366.dp, height = 768.dp),
             ),
             title = "",
             icon = painterResource(ICON_RES_PATH),
-            resizable = true,
+            resizable = false,
         ) {
             AppTheme(themeVariant = ThemeVariant.LIGHT) { RootUi(root) }
         }

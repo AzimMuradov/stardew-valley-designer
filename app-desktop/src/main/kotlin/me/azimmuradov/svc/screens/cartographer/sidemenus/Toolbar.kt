@@ -17,15 +17,18 @@
 package me.azimmuradov.svc.screens.cartographer.sidemenus
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import me.azimmuradov.svc.cartographer.toolkit.ToolType
-import me.azimmuradov.svc.cartographer.toolkit.Toolkit
+import me.azimmuradov.svc.cartographer.modules.toolkit.ToolType
+import me.azimmuradov.svc.cartographer.state.ToolkitState
+import me.azimmuradov.svc.cartographer.wishes.SvcWish
 import me.azimmuradov.svc.components.screens.cartographer.res.MenuSpritesProvider.toolSpriteBy
 import me.azimmuradov.svc.settings.Lang
 import me.azimmuradov.svc.settings.Settings
@@ -35,8 +38,9 @@ import me.azimmuradov.svc.utils.group.ToggleButtonsGroup
 
 @Composable
 fun Toolbar(
-    toolkit: Toolkit,
+    toolkit: ToolkitState,
     lang: Lang,
+    wishConsumer: (SvcWish.Tools) -> Unit,
 ) {
     val labels = ToolType.values().take(4) + List(size = 2) { null }
     val wordList = Settings.wordList(lang)
@@ -51,7 +55,7 @@ fun Toolbar(
         ) {
             Divider(modifier = Modifier.weight(1f))
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = wordList.tool(toolkit.tool?.type))
+            Text(text = wordList.tool(toolkit.currentToolType))
             Spacer(modifier = Modifier.width(8.dp))
             Divider(modifier = Modifier.weight(1f))
         }
@@ -61,8 +65,8 @@ fun Toolbar(
         ToggleButtonsGroup(
             buttonLabels = labels,
             rowSize = 5u,
-            chosenLabel = toolkit.tool?.type,
-            onButtonClick = { toolkit.chooseToolOf(type = it) },
+            chosenLabel = toolkit.currentToolType,
+            onButtonClick = { wishConsumer(SvcWish.Tools.ChooseTool(it)) },
             spaceContent = {
                 Icon(
                     imageVector = Icons.Default.Clear,
@@ -71,10 +75,29 @@ fun Toolbar(
                 )
             },
             buttonContent = { toolType ->
+                // TooltipArea(
+                //     tooltip = {
+                //         Surface(
+                //             modifier = Modifier.height(24.dp),
+                //             color = Color.DarkGray,
+                //             contentColor = Color.White,
+                //             shape = MaterialTheme.shapes.medium,
+                //         ) {
+                //             Row(
+                //                 modifier = Modifier.fillMaxHeight().padding(horizontal = 8.dp),
+                //                 verticalAlignment = Alignment.CenterVertically,
+                //             ) {
+                //                 Text(wordList.tool(toolType), fontSize = 12.sp)
+                //             }
+                //         }
+                //     },
+                //     tooltipPlacement = TooltipPlacement.ComponentRect(),
+                // ) {
                 Sprite(
                     sprite = toolSpriteBy(toolType),
                     modifier = Modifier.fillMaxSize().padding(4.dp),
                 )
+                // }
             }
         )
     }

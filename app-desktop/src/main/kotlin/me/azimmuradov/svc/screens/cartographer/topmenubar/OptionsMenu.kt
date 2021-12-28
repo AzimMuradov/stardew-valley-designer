@@ -36,7 +36,7 @@ import me.azimmuradov.svc.components.screens.cartographer.Options
 import me.azimmuradov.svc.components.screens.cartographer.menus.OptionsItemValue
 import me.azimmuradov.svc.components.screens.cartographer.menus.OptionsMenu
 import me.azimmuradov.svc.settings.Lang
-import me.azimmuradov.svc.utils.menu.HoverableCascadingDropdownMenu
+import me.azimmuradov.svc.utils.menu.ClickableCascadingDropdownMenu
 
 
 // TODO
@@ -49,7 +49,7 @@ fun RowScope.OptionsMenu(
     menu: OptionsMenu,
 ) {
     Box(modifier = Modifier.aspectRatio(1f).fillMaxHeight()) {
-        HoverableCascadingDropdownMenu(
+        ClickableCascadingDropdownMenu(
             menu = menu,
 
             shape = RectangleShape,

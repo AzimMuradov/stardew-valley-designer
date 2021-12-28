@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
 plugins {
-    kotlin("jvm")
+    kotlin(module = "jvm")
 
     `java-library`
 }
@@ -20,7 +20,6 @@ dependencies {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        languageVersion = "1.6"
         freeCompilerArgs += listOf("-Xopt-in=kotlin.RequiresOptIn")
         jvmTarget = V.JVM
     }

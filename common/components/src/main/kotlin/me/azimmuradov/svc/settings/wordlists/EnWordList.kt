@@ -16,7 +16,7 @@
 
 package me.azimmuradov.svc.settings.wordlists
 
-import me.azimmuradov.svc.cartographer.toolkit.ToolType
+import me.azimmuradov.svc.cartographer.modules.toolkit.ToolType
 import me.azimmuradov.svc.components.screens.cartographer.menus.EntitySelectionRoot
 import me.azimmuradov.svc.engine.entity.*
 import me.azimmuradov.svc.engine.layer.LayerType

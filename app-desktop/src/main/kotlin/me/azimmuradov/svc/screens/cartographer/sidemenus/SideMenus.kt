@@ -47,6 +47,10 @@ class SideMenusBuilder internal constructor(columnScope: ColumnScope) : ColumnSc
         menus += { SideMenuCard(modifier, content) }
     }
 
+    fun spacer(modifier: Modifier = Modifier) {
+        menus += { Spacer(modifier) }
+    }
+
     internal fun build(): List<@Composable () -> Unit> = menus
 
     private val menus: MutableList<@Composable () -> Unit> = mutableListOf()
