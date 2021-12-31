@@ -24,6 +24,8 @@ interface Palette {
     val inUse: Entity<*>?
 
     val hotbar: List<Entity<*>?>
+
+    val size: UInt
 }
 
 

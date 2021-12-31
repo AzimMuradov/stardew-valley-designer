@@ -23,7 +23,7 @@ import me.azimmuradov.svc.cartographer.state.editor.LayoutState
 data class HistorySnapshot(
     val toolkit: ToolkitState,
     val palette: PaletteState,
-    val editor: EditorState
+    val editor: EditorState,
 ) {
 
     companion object {

@@ -20,7 +20,8 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import me.azimmuradov.svc.cartographer.modules.engine.*
 import me.azimmuradov.svc.cartographer.modules.history.*
-import me.azimmuradov.svc.cartographer.modules.palette.ObservablePalette
+import me.azimmuradov.svc.cartographer.modules.palette.MutablePalette
+import me.azimmuradov.svc.cartographer.modules.palette.putInUseOrClear
 import me.azimmuradov.svc.cartographer.modules.toolkit.*
 import me.azimmuradov.svc.cartographer.state.*
 import me.azimmuradov.svc.cartographer.wishes.SvcWish
@@ -75,12 +76,9 @@ private class SvcImpl(layout: Layout) : Svc {
             // Left-Side Menu
             is SvcWish.Tools.ChooseTool -> toolkit.chooseToolOf(wish.type)
             is SvcWish.Palette.AddToInUse -> {
-                if (state.value.palette != PaletteState(wish.entity)) {
-                    history += state.value.toHistorySnapshot().copy(
-                        palette = PaletteState(wish.entity)
-                    )
+                if (palette.putInUse(wish.entity) != wish.entity) {
+                    history += state.value.toHistorySnapshot()
                 }
-                palette.putInUse(wish.entity)
             }
 
             // Right-Side Menu
@@ -139,16 +137,65 @@ private class SvcImpl(layout: Layout) : Svc {
         }
     )
 
-    private val palette = ObservablePalette(
-        size = 10u,
-        onPaletteChanged = { palette ->
+    private val palette = object : MutablePalette {
+
+        override val inUse: Entity<*>? get() = state.value.palette.inUse
+
+        override val hotbar: List<Entity<*>?> get() = state.value.palette.hotbar
+
+        override val size: UInt = hotbar.size.toUInt()
+
+
+        override fun putInUse(entity: Entity<*>): Entity<*>? = putInUseOrClear(entity)
+
+        override fun clearUsed(): Entity<*>? = putInUseOrClear(entity = null)
+
+
+        override fun putOnHotbar(index: Int, entity: Entity<*>): Entity<*>? =
+            putOnHotbarOrClear(index, entity)
+
+        override fun removeFromHotbar(index: Int): Entity<*>? =
+            putOnHotbarOrClear(index, entity = null)
+
+        override fun clearHotbar(): List<Entity<*>?> {
+            val prev = state.value.palette.hotbar
             _state.update { state ->
                 state.copy(
-                    palette = palette
+                    palette = state.palette.copy(
+                        hotbar = state.palette.hotbar.map { null }
+                    )
                 )
             }
+            return prev
         }
-    )
+
+
+        private fun putInUseOrClear(entity: Entity<*>?): Entity<*>? {
+            val prev = state.value.palette.inUse
+            _state.update { state ->
+                state.copy(
+                    palette = state.palette.copy(
+                        inUse = entity
+                    )
+                )
+            }
+            return prev
+        }
+
+        private fun putOnHotbarOrClear(index: Int, entity: Entity<*>?): Entity<*>? {
+            if (index !in 0 until size.toInt()) return null
+
+            val prev = state.value.palette.hotbar.getOrNull(index)
+            _state.update { state ->
+                state.copy(
+                    palette = state.palette.copy(
+                        hotbar = state.palette.hotbar.toMutableList().apply { set(index, entity) }
+                    )
+                )
+            }
+            return prev
+        }
+    }
 
     private fun changeVisibilityBy(layerType: LayerType<*>, value: Boolean) {
         _state.update { state ->
@@ -255,30 +302,17 @@ private class SvcImpl(layout: Layout) : Svc {
             )
         },
         eyeDropper = {
-            var inUse: Entity<*>? = null
+            var prevInUse: Entity<*>? = null
 
             EyeDropper.Logic(
                 onDropperStart = { c ->
-                    inUse = state.value.palette.inUse
-                    _state.update { state ->
-                        state.copy(
-                            palette = state.palette.copy(
-                                inUse = engine.get(c).flatten().lastOrNull()?.rectObject
-                            )
-                        )
-                    }
+                    prevInUse = palette.putInUseOrClear(entity = engine.get(c).topmost()?.rectObject)
                 },
                 onDropperKeep = { c ->
-                    _state.update { state ->
-                        state.copy(
-                            palette = state.palette.copy(
-                                inUse = engine.get(c).flatten().lastOrNull()?.rectObject
-                            )
-                        )
-                    }
+                    palette.putInUseOrClear(entity = engine.get(c).topmost()?.rectObject)
                 },
                 onDropperEnd = {
-                    if (inUse != state.value.palette.inUse) {
+                    if (state.value.palette.inUse != prevInUse) {
                         history.register(snapshot = state.value.toHistorySnapshot())
                     }
                 },
@@ -310,6 +344,5 @@ private class SvcImpl(layout: Layout) : Svc {
     private fun updateFromHistorySnapshot(snapshot: HistorySnapshot) {
         engine.update(snapshot.editor.entities)
         toolkit.update(snapshot.toolkit.currentToolType)
-        palette.update(snapshot.palette)
     }
 }

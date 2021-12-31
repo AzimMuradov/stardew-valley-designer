@@ -4,12 +4,14 @@ import me.azimmuradov.svc.engine.entity.Entity
 
 data class PaletteState(
     val inUse: Entity<*>?,
+    val hotbar: List<Entity<*>?>,
 ) {
 
     companion object {
 
-        fun default() = PaletteState(
-            inUse = null
+        fun default(size: Int) = PaletteState(
+            inUse = null,
+            hotbar = List(size) { null },
         )
     }
 }

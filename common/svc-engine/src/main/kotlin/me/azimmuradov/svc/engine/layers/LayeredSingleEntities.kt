@@ -74,6 +74,11 @@ fun LayeredSingleEntities.toLayeredEntities(): LayeredEntities = layeredEntities
 }
 
 
+// Utils
+
+fun LayeredSingleEntities.topmost(): PlacedEntity<*>? = flatten().lastOrNull()
+
+
 // Private utils
 
 private fun Map<LayerType<*>, PlacedEntity<*>?>.asLayeredSingleEntities() = LayeredSingleEntities(

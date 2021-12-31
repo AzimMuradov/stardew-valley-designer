@@ -22,7 +22,7 @@ data class SvcState(
         fun default(layout: LayoutState) = SvcState(
             history = HistoryState.default(),
             toolkit = ToolkitState.default(),
-            palette = PaletteState.default(),
+            palette = PaletteState.default(size = 10),
             editor = EditorState.default(layout),
         )
     }
