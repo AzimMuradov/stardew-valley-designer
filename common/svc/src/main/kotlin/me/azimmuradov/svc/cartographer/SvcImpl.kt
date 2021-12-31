@@ -84,7 +84,14 @@ private class SvcImpl(layout: Layout) : Svc {
             }
 
             // Right-Side Menu
-            is SvcWish.VisibilityLayers.ChangeVisibility -> changeVisibilityBy(wish.layerType, wish.visible)
+            is SvcWish.VisibilityLayers.ChangeVisibility -> {
+                val prev = state.value.editor.visibleLayers
+                changeVisibilityBy(wish.layerType, wish.visible)
+                val curr = state.value.editor.visibleLayers
+                if (prev != curr) {
+                    history += state.value.toHistorySnapshot()
+                }
+            }
 
             // EditorState
             is SvcWish.Act.Start -> toolkit.tool?.start(wish.coordinate)

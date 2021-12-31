@@ -58,7 +58,7 @@ fun CartographerUi(component: Cartographer) {
             SvcLayout(
                 layoutSize = state.editor.layout.size,
                 visibleEntities = state.editor.entities.filter { (layerType) ->
-                    layerType != state.editor.visibleLayers
+                    layerType in state.editor.visibleLayers
                 },
                 heldEntities = state.editor.heldEntities,
                 toolkit = state.toolkit,
