@@ -71,7 +71,7 @@ fun CartographerUi(component: Cartographer) {
                 onVisibilityChange = { layerType, visible ->
                     svc.consume(SvcWish.VisibilityLayers.ChangeVisibility(layerType, visible))
                 },
-                layoutSize = state.editor.layout.size,
+                layout = state.editor.layout,
                 entities = state.editor.entities,
                 lang = settings.lang,
                 width = SIDE_MENUS_WIDTH

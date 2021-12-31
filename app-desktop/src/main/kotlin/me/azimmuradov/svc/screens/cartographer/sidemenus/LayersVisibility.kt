@@ -33,12 +33,13 @@ import me.azimmuradov.svc.settings.Settings
 
 @Composable
 fun LayersVisibility(
+    allowedLayers: Set<LayerType<*>>,
     visibleLayers: Set<LayerType<*>>,
     onVisibilityChange: (LayerType<*>, Boolean) -> Unit,
     lang: Lang,
 ) {
     Column(modifier = Modifier.padding(vertical = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        for (lType in LayerType.all) {
+        for (lType in allowedLayers) {
             LayerVisibility(
                 layerType = lType,
                 visible = lType in visibleLayers,

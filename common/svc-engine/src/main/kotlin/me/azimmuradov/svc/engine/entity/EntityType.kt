@@ -21,7 +21,7 @@ sealed interface EntityType {
 
     companion object {
 
-        val all = listOf(FloorType) + listOf(FloorFurnitureType) + ObjectType.all + EntityWithoutFloorType.all
+        val all = setOf(FloorType) + setOf(FloorFurnitureType) + ObjectType.all + EntityWithoutFloorType.all
     }
 }
 
@@ -45,14 +45,14 @@ sealed interface ObjectType : EntityType {
 
         companion object {
 
-            val all = listOf(HouseFurnitureType, IndoorFurnitureType, UniversalFurnitureType)
+            val all = setOf(HouseFurnitureType, IndoorFurnitureType, UniversalFurnitureType)
         }
     }
 
 
     companion object {
 
-        val all = listOf(EquipmentType) + FurnitureType.all
+        val all = setOf(EquipmentType) + FurnitureType.all
     }
 }
 
@@ -74,7 +74,7 @@ sealed interface EntityWithoutFloorType : EntityType {
 
     companion object {
 
-        val all = listOf(BuildingType)
+        val all = setOf(BuildingType)
     }
 }
 

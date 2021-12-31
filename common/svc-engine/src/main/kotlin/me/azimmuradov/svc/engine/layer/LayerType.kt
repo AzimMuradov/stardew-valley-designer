@@ -54,5 +54,12 @@ fun <EType : EntityType> EType.toLayerType(): LayerType<EType> = when (this) {
     else -> impossible()
 } as LayerType<EType>
 
+@Suppress("UNCHECKED_CAST")
+fun <EType : EntityType> LayerType<EType>.allEntityTypes(): Set<EType> = when (this) {
+    LayerType.Floor -> setOf(FloorType)
+    LayerType.FloorFurniture -> setOf(FloorFurnitureType)
+    LayerType.Object -> ObjectType.all
+    LayerType.EntityWithoutFloor -> EntityWithoutFloorType.all
+} as Set<EType>
 
 val <EType : EntityType> PlacedEntity<EType>.layerType get() = type.toLayerType()

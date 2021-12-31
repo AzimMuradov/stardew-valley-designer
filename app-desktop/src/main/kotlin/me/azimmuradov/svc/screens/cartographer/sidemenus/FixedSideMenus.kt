@@ -23,11 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import me.azimmuradov.svc.cartographer.state.PaletteState
 import me.azimmuradov.svc.cartographer.state.ToolkitState
+import me.azimmuradov.svc.cartographer.state.editor.LayoutState
 import me.azimmuradov.svc.cartographer.wishes.SvcWish
 import me.azimmuradov.svc.engine.entity.PlacedEntity
-import me.azimmuradov.svc.engine.geometry.Rect
 import me.azimmuradov.svc.engine.layer.LayerType
-import me.azimmuradov.svc.engine.layers.LayeredEntities
+import me.azimmuradov.svc.engine.layer.allEntityTypes
 import me.azimmuradov.svc.settings.Lang
 
 
@@ -49,15 +49,24 @@ fun LeftSideMenus(
 fun RightSideMenus(
     visibleLayers: Set<LayerType<*>>,
     onVisibilityChange: (LayerType<*>, Boolean) -> Unit,
-    layoutSize: Rect,
+    layout: LayoutState,
     entities: List<Pair<LayerType<*>, List<PlacedEntity<*>>>>,
     lang: Lang,
     width: Dp,
 ) {
     FixedSideMenus(width) {
-        menu { LayersVisibility(visibleLayers, onVisibilityChange, lang) }
+        menu {
+            LayersVisibility(
+                allowedLayers = LayerType.all.filterTo(mutableSetOf()) { lType ->
+                    lType.allEntityTypes().any { eType -> eType !in layout.disallowedTypes }
+                },
+                visibleLayers = visibleLayers,
+                onVisibilityChange = onVisibilityChange,
+                lang = lang
+            )
+        }
         spacer(Modifier.weight(1f))
-        menu { MapPreview(layoutSize, entities, lang) }
+        menu { MapPreview(layout.size, entities, lang) }
     }
 }
 
