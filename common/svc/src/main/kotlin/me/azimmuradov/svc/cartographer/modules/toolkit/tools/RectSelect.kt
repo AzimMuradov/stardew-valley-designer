@@ -18,21 +18,31 @@ package me.azimmuradov.svc.cartographer.modules.toolkit
 
 import me.azimmuradov.svc.engine.geometry.Coordinate
 
+internal class RectSelect(
+    private val logicBuilder: () -> Logic,
+) : HistoricalTool() {
 
-interface Tool {
-
-    val state: ToolState
+    private lateinit var logic: Logic
 
 
-    fun start(c: Coordinate)
+    override fun startBody(c: Coordinate): Boolean {
+        logic = logicBuilder()
+        logic.onSelectStart(c)
+        return true
+    }
 
-    fun keep(c: Coordinate)
+    override fun keepBody(c: Coordinate) {
+        logic.onSelect(c)
+    }
 
-    fun end()
+    override fun endBody() {
+        logic.onSelectEnd()
+    }
+
+
+    data class Logic(
+        val onSelectStart: (c: Coordinate) -> Unit,
+        val onSelect: (c: Coordinate) -> Unit,
+        val onSelectEnd: () -> Unit,
+    )
 }
-
-
-/**
- * Tool state.
- */
-enum class ToolState { Stale, Acting }

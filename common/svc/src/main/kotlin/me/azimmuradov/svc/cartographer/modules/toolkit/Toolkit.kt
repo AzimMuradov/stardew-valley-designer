@@ -21,6 +21,7 @@ internal class Toolkit(
     pen: () -> Pen.Logic,
     eraser: () -> Eraser.Logic,
     eyeDropper: () -> EyeDropper.Logic,
+    rectSelect: () -> RectSelect.Logic,
     private val onToolChosen: (ToolType?) -> Unit,
 ) {
 
@@ -40,6 +41,7 @@ internal class Toolkit(
         ToolType.Pen to Pen(logicBuilder = pen),
         ToolType.Eraser to Eraser(logicBuilder = eraser),
         ToolType.EyeDropper to EyeDropper(logicBuilder = eyeDropper),
+        ToolType.RectSelect to RectSelect(logicBuilder = rectSelect),
     )
 
 

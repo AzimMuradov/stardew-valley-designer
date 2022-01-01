@@ -42,7 +42,7 @@ fun Toolbar(
     lang: Lang,
     wishConsumer: (SvcWish.Tools) -> Unit,
 ) {
-    val labels = ToolType.values().take(4) + List(size = 2) { null }
+    val labels = ToolType.values().take(5)
     val wordList = Settings.wordList(lang)
 
     Column(

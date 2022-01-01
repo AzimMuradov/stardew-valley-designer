@@ -29,15 +29,7 @@ data class PlacedRectObject<out RO : RectObject>(
     val place: Coordinate,
 ) {
 
-    val coordinates: List<Coordinate> by lazy {
-        val (x, y) = place
-        val (w, h) = rectObject.size
-
-        val xs = x until x + w
-        val ys = y until y + h
-
-        (xs * ys).map(Pair<Int, Int>::toCoordinate)
-    }
+    val coordinates: List<Coordinate> by lazy(toPlacedRect()::coordinates)
 
     operator fun component3(): List<Coordinate> = coordinates
 
@@ -87,7 +79,7 @@ operator fun Rect.contains(obj: PlacedRectObject<*>): Boolean {
     val (x, y) = place
     val (w, h) = rectObject.size
 
-    val (minCorner, maxCorner) = place to xy(x + w - 1, y + h - 1)
+    val (minCorner, maxCorner) = place to xy(x = x + w - 1, y = y + h - 1)
 
     return minCorner in this && maxCorner in this
 }
@@ -99,9 +91,6 @@ val Iterable<PlacedRectObject<*>>.coordinates: Set<Coordinate>
     get() = flatMapTo(mutableSetOf()) { it.coordinates }
 
 
-// Private utils
+// `PlacedRect` interop
 
-// Cartesian product
-
-private operator fun <A, B> Iterable<A>.times(other: Iterable<B>): List<Pair<A, B>> =
-    flatMap { a -> other.map { b -> a to b } }
+fun PlacedRectObject<*>.toPlacedRect(): PlacedRect = PlacedRect(place, rect = rectObject.size)

@@ -18,7 +18,6 @@ package me.azimmuradov.svc.engine.geometry
 
 import me.azimmuradov.svc.engine.*
 
-
 /**
  * Rectangle with no coordinate to place.
  */
@@ -38,7 +37,7 @@ value class Rect internal constructor(@PublishedApi internal val packedValue: Lo
     fun copy(w: Int = this.w, h: Int = this.h): Rect = rectOf(w, h)
 
 
-    override fun toString(): String = "(w = $w, h = $h)"
+    override fun toString(): String = "(w=$w, h=$h)"
 
 
     companion object {

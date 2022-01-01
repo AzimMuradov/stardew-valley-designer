@@ -18,7 +18,6 @@ package me.azimmuradov.svc.engine.geometry
 
 import me.azimmuradov.svc.engine.*
 
-
 /**
  * 2D coordinate.
  */
@@ -38,7 +37,7 @@ value class Coordinate internal constructor(@PublishedApi internal val packedVal
     fun copy(x: Int = this.x, y: Int = this.y): Coordinate = xy(x, y)
 
 
-    override fun toString(): String = "(x = $x, y = $y)"
+    override fun toString(): String = "(x=$x, y=$y)"
 
 
     companion object {

@@ -61,6 +61,7 @@ fun CartographerUi(component: Cartographer) {
                     layerType in state.editor.visibleLayers
                 },
                 heldEntities = state.editor.heldEntities,
+                chosenEntities = state.editor.chosenEntities,
                 toolkit = state.toolkit,
                 options = options,
                 lang = settings.lang,

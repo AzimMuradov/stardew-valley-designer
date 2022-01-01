@@ -28,6 +28,7 @@ import me.azimmuradov.svc.cartographer.wishes.SvcWish
 import me.azimmuradov.svc.engine.*
 import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.PlacedEntity
+import me.azimmuradov.svc.engine.geometry.*
 import me.azimmuradov.svc.engine.layer.LayerType
 import me.azimmuradov.svc.engine.layers.*
 import me.azimmuradov.svc.engine.layout.Layout
@@ -313,6 +314,42 @@ private class SvcImpl(layout: Layout) : Svc {
                 },
                 onDropperEnd = {
                     if (state.value.palette.inUse != prevInUse) {
+                        history.register(snapshot = state.value.toHistorySnapshot())
+                    }
+                },
+            )
+        },
+        rectSelect = {
+            var start: Coordinate = Coordinate.ZERO
+            var end: Coordinate = Coordinate.ZERO
+
+            RectSelect.Logic(
+                onSelectStart = { c ->
+                    start = c
+                    end = c
+                    _state.update { state ->
+                        val cs = PlacedRect.fromTwoCoordinates(start, end).coordinates
+                        state.copy(
+                            editor = state.editor.copy(
+                                chosenEntities = engine.getAll(cs).all
+                            )
+                        )
+                    }
+                },
+                onSelect = { c ->
+                    end = c
+                    _state.update { state ->
+                        val cs = PlacedRect.fromTwoCoordinates(start, end).coordinates
+                        state.copy(
+                            editor = state.editor.copy(
+                                chosenEntities = engine.getAll(cs).all
+                            )
+                        )
+                    }
+                },
+                onSelectEnd = {
+                    val cs = PlacedRect.fromTwoCoordinates(start, end).coordinates
+                    if (engine.getAll(cs).flatten().isNotEmpty()) {
                         history.register(snapshot = state.value.toHistorySnapshot())
                     }
                 },

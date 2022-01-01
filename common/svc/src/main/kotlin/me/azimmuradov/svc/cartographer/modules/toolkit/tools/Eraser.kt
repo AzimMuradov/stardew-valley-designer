@@ -18,7 +18,6 @@ package me.azimmuradov.svc.cartographer.modules.toolkit
 
 import me.azimmuradov.svc.engine.geometry.Coordinate
 
-
 internal class Eraser(
     private val logicBuilder: () -> Logic,
 ) : HistoricalTool() {

@@ -18,7 +18,6 @@ package me.azimmuradov.svc.engine.geometry
 
 import me.azimmuradov.svc.engine.*
 
-
 /**
  * 2D vector.
  */
@@ -38,7 +37,7 @@ value class Vector internal constructor(@PublishedApi internal val packedValue: 
     fun copy(x: Int = this.x, y: Int = this.y): Vector = vec(x, y)
 
 
-    override fun toString(): String = "(x = $x, y = $y)"
+    override fun toString(): String = "(x=$x, y=$y)"
 
 
     companion object {
@@ -52,13 +51,6 @@ value class Vector internal constructor(@PublishedApi internal val packedValue: 
  * Creates a 2D vector.
  */
 fun vec(x: Int, y: Int): Vector = Vector(packInts(x, y))
-
-
-operator fun Coordinate.minus(other: Coordinate): Vector = vec(x = this.x - other.x, y = this.y - other.y)
-
-operator fun Coordinate.plus(other: Vector): Coordinate = xy(x = this.x + other.x, y = this.y + other.y)
-
-operator fun Coordinate.minus(other: Vector): Coordinate = xy(x = this.x - other.x, y = this.y - other.y)
 
 
 // Pair interop

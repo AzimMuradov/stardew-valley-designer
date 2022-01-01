@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.*
+import androidx.compose.ui.unit.toOffset
 import me.azimmuradov.svc.cartographer.state.ToolkitState
 import me.azimmuradov.svc.cartographer.wishes.SvcWish
 import me.azimmuradov.svc.components.screens.cartographer.Options
@@ -47,6 +48,7 @@ fun BoxScope.EditorLayout(
     layoutSize: Rect,
     visibleEntities: List<Pair<LayerType<*>, List<PlacedEntity<*>>>>,
     heldEntities: List<Pair<LayerType<*>, List<PlacedEntity<*>>>>,
+    chosenEntities: List<Pair<LayerType<*>, List<PlacedEntity<*>>>>,
     toolkit: ToolkitState,
     options: Options,
     lang: Lang,
@@ -54,16 +56,18 @@ fun BoxScope.EditorLayout(
 ) {
     val (w, h) = layoutSize
 
-    var mutStepSize by remember { mutableStateOf(-1f) }
-    var mutHoveredId by remember { mutableStateOf(UNDEFINED) }
+    var stepSize by remember { mutableStateOf(-1f) }
+    var hoveredCoordinate by remember { mutableStateOf(UNDEFINED) }
+    var prevDragCoordinate by remember { mutableStateOf(UNDEFINED) }
 
 
     val hoveredColor = MaterialTheme.colors.secondary
 
     fun Offset.toCoordinate() = xy(
-        x = floor(x / mutStepSize).toInt().coerceIn(0 until w),
-        y = floor(y / mutStepSize).toInt().coerceIn(0 until h),
+        x = floor(x / stepSize).toInt().coerceIn(0 until w),
+        y = floor(y / stepSize).toInt().coerceIn(0 until h),
     )
+
 
     Canvas(
         modifier = Modifier
@@ -74,26 +78,37 @@ fun BoxScope.EditorLayout(
             .background(color = Color.White)
             .pointerMoveFilter(
                 onEnter = { false },
-                onMove = { offset -> mutHoveredId = offset.toCoordinate(); false },
-                onExit = { mutHoveredId = UNDEFINED; false },
+                onMove = { offset -> hoveredCoordinate = offset.toCoordinate(); false },
+                onExit = { hoveredCoordinate = UNDEFINED; false },
             )
             .pointerInput(toolkit.currentToolType) {
                 detectDragGesturesImmediately(
                     onDragStart = { offset ->
-                        wishConsumer(SvcWish.Act.Start(offset.toCoordinate()))
+                        val current = offset.toCoordinate()
+                        prevDragCoordinate = current
+                        wishConsumer(SvcWish.Act.Start(current))
                     },
                     onDrag = { change, _ ->
-                        wishConsumer(SvcWish.Act.Continue(change.position.toCoordinate()))
+                        val current = change.position.toCoordinate()
+                        if (current != prevDragCoordinate) {
+                            prevDragCoordinate = current
+                            wishConsumer(SvcWish.Act.Continue(current))
+                        }
                     },
-                    onDragEnd = { wishConsumer(SvcWish.Act.End) },
-                    onDragCancel = { wishConsumer(SvcWish.Act.End) },
+                    onDragEnd = {
+                        prevDragCoordinate = UNDEFINED
+                        wishConsumer(SvcWish.Act.End)
+                    },
+                    onDragCancel = {
+                        prevDragCoordinate = UNDEFINED
+                        wishConsumer(SvcWish.Act.End)
+                    },
                 )
             }
     ) {
-        mutStepSize = size.width / w
+        stepSize = size.width / w
 
-        val stepSize = mutStepSize
-        val hoveredId = mutHoveredId
+        val hoveredId = hoveredCoordinate
 
         val cellSize = Size(stepSize, stepSize)
         val offsetsW = List(size = w + 1) { it * stepSize }
@@ -110,6 +125,22 @@ fun BoxScope.EditorLayout(
                     entity = e.rectObject,
                     offset = offset.copy(x = offset.x + 2, y = offset.y + 2),
                     layoutSize = Size(width = cellSize.width - 4, height = cellSize.height - 4),
+                )
+            }
+        }
+
+
+        // Chosen Entities
+
+        for ((_, objs) in chosenEntities) {
+            for (e in objs) {
+                val offset = e.place.toIntOffset() * stepSize
+
+                drawRect(
+                    color = Color.Green,
+                    topLeft = offset.toOffset(),
+                    size = cellSize,
+                    alpha = 0.3f,
                 )
             }
         }

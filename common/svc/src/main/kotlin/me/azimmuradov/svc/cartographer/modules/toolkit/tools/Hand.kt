@@ -20,7 +20,6 @@ import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.geometry.*
 import me.azimmuradov.svc.engine.layers.*
 
-
 internal class Hand(
     private val logicBuilder: () -> Logic,
 ) : HistoricalTool() {
@@ -60,7 +59,9 @@ internal class Hand(
         private val esToMove: LayeredEntities,
     ) {
 
-        fun updateLast(c: Coordinate) = run { last = c }
+        fun updateLast(c: Coordinate) {
+            last = c
+        }
 
         val movedEs
             get() = esToMove.flatten().map { (entity, place) ->
