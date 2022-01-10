@@ -18,11 +18,13 @@ package me.azimmuradov.svc.cartographer
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import me.azimmuradov.svc.cartographer.modules.engine.*
+import me.azimmuradov.svc.cartographer.modules.engine.ObservableSvcEngine
+import me.azimmuradov.svc.cartographer.modules.engine.toState
 import me.azimmuradov.svc.cartographer.modules.history.*
 import me.azimmuradov.svc.cartographer.modules.palette.MutablePalette
 import me.azimmuradov.svc.cartographer.modules.palette.putInUseOrClear
-import me.azimmuradov.svc.cartographer.modules.toolkit.*
+import me.azimmuradov.svc.cartographer.modules.toolkit.ShapeType
+import me.azimmuradov.svc.cartographer.modules.toolkit.ToolType
 import me.azimmuradov.svc.cartographer.state.*
 import me.azimmuradov.svc.cartographer.wishes.SvcWish
 import me.azimmuradov.svc.engine.*
@@ -31,10 +33,8 @@ import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.geometry.*
 import me.azimmuradov.svc.engine.layer.LayerType
 import me.azimmuradov.svc.engine.layers.*
-import me.azimmuradov.svc.engine.layout.Layout
-import me.azimmuradov.svc.engine.layout.respects
-import me.azimmuradov.svc.engine.rectmap.coordinates
-import me.azimmuradov.svc.engine.rectmap.placeIt
+import me.azimmuradov.svc.engine.layout.*
+import me.azimmuradov.svc.engine.rectmap.*
 import mu.KotlinLogging
 
 
@@ -43,10 +43,9 @@ fun svcOf(layout: Layout): Svc = SvcImpl(layout)
 val logger = KotlinLogging.logger(name = "SVC-LOGGER")
 
 
-// TODO : chosen entities
 // TODO : SVC behaviour
 
-private class SvcImpl(layout: Layout) : Svc {
+private class SvcImpl(private val layout: Layout) : Svc {
 
     // State Flow
 
@@ -75,27 +74,31 @@ private class SvcImpl(layout: Layout) : Svc {
             SvcWish.History.GoForward -> history.goForwardIfCan()
 
             // Left-Side Menu
-            is SvcWish.Tools.ChooseTool -> toolkit.chooseToolOf(wish.type)
+            is SvcWish.Tools.ChooseTool -> {
+                chooseTool(state.value.toolkit, wish.type)
+                history += state.value.toHistorySnapshot()
+            }
+            is SvcWish.Tools.ChooseShape -> {
+                chooseShape(state.value.toolkit, wish.type)
+                history += state.value.toHistorySnapshot()
+            }
             is SvcWish.Palette.AddToInUse -> {
                 if (palette.putInUse(wish.entity) != wish.entity) {
+                    // TODO : toolkit.chooseToolOf(ToolType.Pen)
                     history += state.value.toHistorySnapshot()
                 }
             }
 
             // Right-Side Menu
             is SvcWish.VisibilityLayers.ChangeVisibility -> {
-                val prev = state.value.editor.visibleLayers
                 changeVisibilityBy(wish.layerType, wish.visible)
-                val curr = state.value.editor.visibleLayers
-                if (prev != curr) {
-                    history += state.value.toHistorySnapshot()
-                }
+                history += state.value.toHistorySnapshot()
             }
 
             // EditorState
-            is SvcWish.Act.Start -> toolkit.tool?.start(wish.coordinate)
-            is SvcWish.Act.Continue -> toolkit.tool?.keep(wish.coordinate)
-            SvcWish.Act.End -> toolkit.tool?.end()
+            is SvcWish.Act.Start -> toolStart(state.value.toolkit, wish.coordinate)
+            is SvcWish.Act.Continue -> toolKeep(state.value.toolkit, wish.coordinate)
+            SvcWish.Act.End -> toolEnd(state.value.toolkit)
         }
     }
 
@@ -108,7 +111,7 @@ private class SvcImpl(layout: Layout) : Svc {
             _state.update { state ->
                 state.copy(
                     editor = state.editor.copy(
-                        entities = layers.toEntitiesState()
+                        entities = layers.entities
                     )
                 )
             }
@@ -212,174 +215,359 @@ private class SvcImpl(layout: Layout) : Svc {
         }
     }
 
-    private val toolkit: Toolkit = Toolkit(
-        hand = {
-            var esToMoveCopy: LayeredEntities? = null
 
-            Hand.Logic(
-                onGrab = { c ->
-                    val esToMove = engine.remove(c).toLayeredEntities()
+    // Toolkit
+
+    private fun chooseTool(toolkit: ToolkitState, tool: ToolType?) {
+        fun idle(
+            shape: ShapeType? = null,
+            selectedEntities: LayeredEntitiesData = LayeredEntitiesData(),
+        ): ToolkitState = ToolkitState.idle(tool, shape, selectedEntities)
+
+        if (toolkit.isIdle) {
+            _state.update { state ->
+                when (toolkit) {
+                    ToolkitState.None, is ToolkitState.Pen, is ToolkitState.Eraser, is ToolkitState.EyeDropper -> {
+                        state.copy(toolkit = idle(toolkit.shape))
+                    }
+                    is ToolkitState.Hand -> {
+                        state.copy(toolkit = idle(toolkit.shape, toolkit.selectedEntities))
+                    }
+                    is ToolkitState.Select -> {
+                        state.copy(toolkit = idle(toolkit.shape, toolkit.selectedEntities))
+                    }
+                }
+            }
+        }
+    }
+
+    private fun chooseShape(toolkit: ToolkitState, shape: ShapeType?) {
+        fun idle(
+            tool: ToolType? = null,
+            selectedEntities: LayeredEntitiesData = LayeredEntitiesData(),
+        ): ToolkitState = ToolkitState.idle(tool, shape, selectedEntities)
+
+        if (toolkit.isIdle) {
+            _state.update { state ->
+                when (toolkit) {
+                    ToolkitState.None, is ToolkitState.Pen, is ToolkitState.Eraser, is ToolkitState.EyeDropper -> {
+                        state.copy(toolkit = idle(toolkit.tool))
+                    }
+                    is ToolkitState.Hand -> {
+                        state.copy(toolkit = idle(toolkit.tool, toolkit.selectedEntities))
+                    }
+                    is ToolkitState.Select -> {
+                        state.copy(toolkit = idle(toolkit.tool, toolkit.selectedEntities))
+                    }
+                }
+            }
+        }
+    }
+
+
+    // TODO : Move to state
+    private val placedCoordinates = mutableSetOf<Coordinate>()
+
+    // TODO : Change(initMovedEs, start, isSelected)
+    private var handData = Triple(LayeredEntitiesData(), Coordinate.ZERO, false)
+
+    private fun toolStart(toolkit: ToolkitState, c: Coordinate) {
+        if (toolkit.isIdle && toolkit != ToolkitState.None) {
+            when (toolkit) {
+                is ToolkitState.Hand.Point.Idle -> {
+                    handData = Triple(LayeredEntitiesData(), Coordinate.ZERO, false)
+
+                    val flattenSelectedEntities = toolkit.selectedEntities.flatten()
+                    val esToMove = if (c in flattenSelectedEntities.coordinates) {
+                        engine.removeAll(flattenSelectedEntities).also {
+                            handData = Triple(it, c, true)
+                        }
+                    } else {
+                        engine.remove(c).run {
+                            layeredEntitiesData { type ->
+                                setOfNotNull(entityOrNullBy(type))
+                            }
+                        }.also {
+                            handData = Triple(it, c, false)
+                        }
+                    }
+
                     if (esToMove.flatten().isNotEmpty()) {
-                        esToMoveCopy = esToMove
                         _state.update { state ->
                             state.copy(
-                                editor = state.editor.copy(
-                                    heldEntities = esToMove.all
+                                toolkit = ToolkitState.Hand.Point.Acting(
+                                    selectedEntities = toolkit.selectedEntities,
+                                    heldEntities = esToMove
                                 )
                             )
                         }
                     }
-                    esToMove
-                },
-                onMove = { movingEs ->
-                    _state.update { state ->
-                        state.copy(
-                            editor = state.editor.copy(
-                                heldEntities = movingEs.all
-                            )
-                        )
-                    }
-                },
-                onRelease = { movedEs ->
-                    _state.update { state ->
-                        state.copy(
-                            editor = state.editor.copy(
-                                heldEntities = emptyList()
-                            )
-                        )
-                    }
-                    if (movedEs.flatten().all { it respects layout }) {
-                        if (movedEs.flatten().isNotEmpty()) {
-                            engine.putAll(movedEs)
-                            history.register(snapshot = state.value.toHistorySnapshot())
-                        }
-                    } else {
-                        esToMoveCopy?.let { engine.putAll(it) }
-                    }
                 }
-            )
-        },
-        pen = {
-            val placed = mutableListOf<PlacedEntity<*>>()
 
-            Pen.Logic(
-                onDrawStart = { c ->
+                ToolkitState.Pen.Point.Idle -> {
+                    placedCoordinates.clear()
+
                     val e = palette.inUse?.placeIt(there = c)
                     if (e != null && e respects layout) {
-                        placed += e
                         engine.put(e)
+                        placedCoordinates += e.coordinates
                     }
-                    e != null
-                },
-                onDraw = { c ->
-                    val e = palette.inUse?.placeIt(there = c)
-                    if (e != null && e respects layout && e.coordinates notOverlapsWith placed.coordinates) {
-                        placed += e
-                        engine.put(e)
-                    }
-                },
-                onDrawEnd = {
-                    if (placed.isNotEmpty()) {
-                        history.register(snapshot = state.value.toHistorySnapshot())
-                    }
-                },
-            )
-        },
-        eraser = {
-            val removed = mutableListOf<PlacedEntity<*>>()
 
-            Eraser.Logic(
-                onEraseStart = { c ->
-                    removed += engine.remove(c).flatten()
-                },
-                onErase = { c ->
-                    removed += engine.remove(c).flatten()
-                },
-                onEraseEnd = {
-                    if (removed.isNotEmpty()) {
-                        history.register(snapshot = state.value.toHistorySnapshot())
-                    }
-                },
-            )
-        },
-        eyeDropper = {
-            var prevInUse: Entity<*>? = null
-
-            EyeDropper.Logic(
-                onDropperStart = { c ->
-                    prevInUse = palette.putInUseOrClear(entity = engine.get(c).topmost()?.rectObject)
-                },
-                onDropperKeep = { c ->
-                    palette.putInUseOrClear(entity = engine.get(c).topmost()?.rectObject)
-                },
-                onDropperEnd = {
-                    if (state.value.palette.inUse != prevInUse) {
-                        history.register(snapshot = state.value.toHistorySnapshot())
-                    }
-                },
-            )
-        },
-        rectSelect = {
-            var start: Coordinate = Coordinate.ZERO
-            var end: Coordinate = Coordinate.ZERO
-
-            RectSelect.Logic(
-                onSelectStart = { c ->
-                    start = c
-                    end = c
-                    _state.update { state ->
-                        val cs = PlacedRect.fromTwoCoordinates(start, end).coordinates
-                        state.copy(
-                            editor = state.editor.copy(
-                                chosenEntities = engine.getAll(cs).all
-                            )
-                        )
-                    }
-                },
-                onSelect = { c ->
-                    end = c
-                    _state.update { state ->
-                        val cs = PlacedRect.fromTwoCoordinates(start, end).coordinates
-                        state.copy(
-                            editor = state.editor.copy(
-                                chosenEntities = engine.getAll(cs).all
-                            )
-                        )
-                    }
-                },
-                onSelectEnd = {
-                    val cs = PlacedRect.fromTwoCoordinates(start, end).coordinates
-                    if (engine.getAll(cs).flatten().isNotEmpty()) {
-                        history.register(snapshot = state.value.toHistorySnapshot())
-                    }
-                },
-            )
-        },
-        onToolChosen = { toolType ->
-            _state.update { state ->
-                if (state.toolkit.currentToolType != toolType) {
-                    history.register(
-                        history.currentSnapshotOrDefault(layout.toState()).copy(
-                            toolkit = ToolkitState(
-                                currentToolType = toolType
-                            )
-                        )
-                    )
-                    state.copy(
-                        toolkit = ToolkitState(
-                            currentToolType = toolType
-                        )
-                    )
-                } else {
-                    state
+                    _state.update { it.copy(toolkit = ToolkitState.Pen.Point.Acting) }
                 }
+                is ToolkitState.Pen.Shape.Idle -> {
+                    placedCoordinates.clear()
+
+                    val inUse = palette.inUse
+                    if (inUse != null) {
+                        val placedShape = toolkit.shape.projectTo(CanonicalCorners(c, c))
+                        val disallowedCoordinates = layout.disallowedTypesMap
+                            .mapNotNullTo(mutableSetOf()) { (c, types) ->
+                                c.takeIf { inUse.type in types }
+                            } + layout.disallowedCoordinates
+                        val entitiesToDraw = placedShape.coordinates.filter {
+                            it !in disallowedCoordinates
+                        }.mapTo(mutableSetOf(), inUse::placeIt)
+                        _state.update { state ->
+                            state.copy(
+                                toolkit = ToolkitState.Pen.Shape.Acting(
+                                    start = c,
+                                    placedShape = placedShape,
+                                    entitiesToDraw = entitiesToDraw,
+                                    entitiesToDelete = engine
+                                        .getReplacedBy(entitiesToDraw.toList().asDisjoint())
+                                        .flatten()
+                                        .coordinates
+                                )
+                            )
+                        }
+                    }
+                }
+
+                ToolkitState.Eraser.Point.Idle -> {
+                    engine.remove(c)
+
+                    _state.update { it.copy(toolkit = ToolkitState.Eraser.Point.Acting) }
+                }
+                is ToolkitState.Eraser.Shape.Idle -> {
+                    val placedShape = toolkit.shape.projectTo(CanonicalCorners(c, c))
+
+                    _state.update {
+                        it.copy(
+                            toolkit = ToolkitState.Eraser.Shape.Acting(
+                                start = c,
+                                placedShape = placedShape,
+                                entitiesToDelete = engine
+                                    .getAll(placedShape.coordinates)
+                                    .flatten()
+                                    .coordinates
+                            )
+                        )
+                    }
+                }
+
+                ToolkitState.EyeDropper.Point.Idle -> {
+                    palette.putInUseOrClear(entity = engine.get(c).topmost()?.rectObject)
+
+                    _state.update { it.copy(toolkit = ToolkitState.EyeDropper.Point.Acting) }
+                }
+
+                is ToolkitState.Select.Shape.Idle -> {
+                    val placedShape = toolkit.shape.projectTo(CanonicalCorners(c, c))
+
+                    _state.update {
+                        it.copy(
+                            toolkit = ToolkitState.Select.Shape.Acting(
+                                start = c,
+                                placedShape = placedShape,
+                                selectedEntities = engine.getAll(placedShape.coordinates)
+                            )
+                        )
+                    }
+                }
+
+                else -> Unit
             }
         }
-    )
+    }
+
+    private fun toolKeep(toolkit: ToolkitState, c: Coordinate) {
+        if (toolkit.isActing && toolkit != ToolkitState.None) {
+            when (toolkit) {
+                is ToolkitState.Hand.Point.Acting -> {
+                    val (esToMove, start) = handData
+                    val flattenMovedEntities = esToMove.flatten().map { (entity, place) ->
+                        PlacedEntity(entity, place = place + (c - start))
+                    }
+                    val moved = flattenMovedEntities.layeredData()
+
+                    _state.update { state ->
+                        state.copy(
+                            toolkit = ToolkitState.Hand.Point.Acting(
+                                selectedEntities = toolkit.selectedEntities,
+                                heldEntities = moved
+                            )
+                        )
+                    }
+                }
+
+                ToolkitState.Pen.Point.Acting -> {
+                    val e = palette.inUse?.placeIt(there = c)
+                    if (
+                        e != null &&
+                        e respects layout &&
+                        e.coordinates notOverlapsWith placedCoordinates
+                    ) {
+                        engine.put(e)
+                        placedCoordinates += e.coordinates
+                    }
+                }
+                is ToolkitState.Pen.Shape.Acting -> {
+                    val inUse = palette.inUse
+                    if (inUse != null) {
+                        val placedShape = toolkit.shape!!.projectTo(
+                            CanonicalCorners.fromTwoCoordinates(toolkit.start, c)
+                        )
+                        val disallowedCoordinates = layout.disallowedTypesMap
+                            .mapNotNullTo(mutableSetOf()) { (c, types) ->
+                                c.takeIf { inUse.type in types }
+                            } + layout.disallowedCoordinates
+                        val entitiesToDraw = placedShape.coordinates.filter {
+                            it !in disallowedCoordinates
+                        }.mapTo(mutableSetOf(), inUse::placeIt)
+                        _state.update { state ->
+                            state.copy(
+                                toolkit = toolkit.copy(
+                                    placedShape = placedShape,
+                                    entitiesToDraw = entitiesToDraw,
+                                    entitiesToDelete = engine
+                                        .getReplacedBy(entitiesToDraw.toList().asDisjoint())
+                                        .flatten()
+                                        .coordinates
+                                )
+                            )
+                        }
+                    }
+                }
+
+                ToolkitState.Eraser.Point.Acting -> {
+                    engine.remove(c)
+                }
+                is ToolkitState.Eraser.Shape.Acting -> {
+                    val placedShape = toolkit.shape!!.projectTo(
+                        CanonicalCorners.fromTwoCoordinates(toolkit.start, c)
+                    )
+                    _state.update { state ->
+                        state.copy(
+                            toolkit = toolkit.copy(
+                                placedShape = placedShape,
+                                entitiesToDelete = engine
+                                    .getAll(placedShape.coordinates)
+                                    .flatten()
+                                    .coordinates
+                            )
+                        )
+                    }
+                }
+
+                ToolkitState.EyeDropper.Point.Acting -> {
+                    palette.putInUseOrClear(entity = engine.get(c).topmost()?.rectObject)
+                }
+
+                is ToolkitState.Select.Shape.Acting -> {
+                    val placedShape = toolkit.shape!!.projectTo(
+                        CanonicalCorners.fromTwoCoordinates(toolkit.start, c)
+                    )
+                    _state.update { state ->
+                        state.copy(
+                            toolkit = toolkit.copy(
+                                placedShape = placedShape,
+                                selectedEntities = engine.getAll(placedShape.coordinates)
+                            )
+                        )
+                    }
+                }
+
+                else -> Unit
+            }
+        }
+    }
+
+    private fun toolEnd(toolkit: ToolkitState) {
+        if (toolkit.isActing && toolkit != ToolkitState.None) {
+            when (toolkit) {
+                is ToolkitState.Hand.Point.Acting -> {
+                    val (esToMove, _, isSelected) = handData
+                    val flattenMovedEntities = toolkit.heldEntities.flatten()
+                    val moved = toolkit.heldEntities
+
+                    if (flattenMovedEntities.all { it respectsLayout layout }) {
+                        engine.putAll(moved.toLayeredEntities())
+                        _state.update { state ->
+                            state.copy(
+                                toolkit = ToolkitState.Hand.Point.Idle(
+                                    selectedEntities = if (isSelected) moved else toolkit.selectedEntities,
+                                )
+                            )
+                        }
+                    } else {
+                        engine.putAll(esToMove.toLayeredEntities())
+                        _state.update { state ->
+                            state.copy(
+                                toolkit = ToolkitState.Hand.Point.Idle(
+                                    selectedEntities = toolkit.selectedEntities,
+                                )
+                            )
+                        }
+                    }
+
+                    history += state.value.toHistorySnapshot()
+                }
+
+                ToolkitState.Pen.Point.Acting -> {
+                    _state.update { it.copy(toolkit = ToolkitState.Pen.Point.Idle) }
+                    history += state.value.toHistorySnapshot()
+                }
+                is ToolkitState.Pen.Shape.Acting -> {
+                    engine.putAll(toolkit.entitiesToDraw.toList().asDisjoint())
+                    _state.update { it.copy(toolkit = ToolkitState.Pen.Shape.Idle(toolkit.shape!!)) }
+                    history += state.value.toHistorySnapshot()
+                }
+
+                ToolkitState.Eraser.Point.Acting -> {
+                    _state.update { it.copy(toolkit = ToolkitState.Eraser.Point.Idle) }
+                    history += state.value.toHistorySnapshot()
+                }
+                is ToolkitState.Eraser.Shape.Acting -> {
+                    engine.removeAll(toolkit.entitiesToDelete)
+                    _state.update { it.copy(toolkit = ToolkitState.Eraser.Shape.Idle(toolkit.shape!!)) }
+                    history += state.value.toHistorySnapshot()
+                }
+
+                ToolkitState.EyeDropper.Point.Acting -> {
+                    _state.update { it.copy(toolkit = ToolkitState.EyeDropper.Point.Idle) }
+                    history += state.value.toHistorySnapshot()
+                }
+
+                is ToolkitState.Select.Shape.Acting -> {
+                    _state.update {
+                        it.copy(
+                            toolkit = ToolkitState.Select.Shape.Idle(
+                                shape = toolkit.shape!!,
+                                selectedEntities = toolkit.selectedEntities
+                            )
+                        )
+                    }
+                    history += state.value.toHistorySnapshot()
+                }
+
+                else -> Unit
+            }
+        }
+    }
 
 
     private fun updateFromHistorySnapshot(snapshot: HistorySnapshot) {
-        engine.update(snapshot.editor.entities)
-        toolkit.update(snapshot.toolkit.currentToolType)
+        engine.update(snapshot.editor.entities.toLayeredEntities())
     }
 }

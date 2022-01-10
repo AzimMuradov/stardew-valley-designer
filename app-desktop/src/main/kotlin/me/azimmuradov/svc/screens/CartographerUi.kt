@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.cartographer.wishes.SvcWish
 import me.azimmuradov.svc.components.screens.Cartographer
+import me.azimmuradov.svc.engine.layers.layeredEntitiesData
 import me.azimmuradov.svc.screens.cartographer.main.SvcLayout
 import me.azimmuradov.svc.screens.cartographer.sidemenus.LeftSideMenus
 import me.azimmuradov.svc.screens.cartographer.sidemenus.RightSideMenus
@@ -57,14 +58,14 @@ fun CartographerUi(component: Cartographer) {
             )
             SvcLayout(
                 layoutSize = state.editor.layout.size,
-                visibleEntities = state.editor.entities.filter { (layerType) ->
-                    layerType in state.editor.visibleLayers
+                visibleEntities = run {
+                    val all = state.editor.entities.all.filter { (layerType) ->
+                        layerType in state.editor.visibleLayers
+                    }.toMap()
+                    layeredEntitiesData { all.getOrDefault(key = it, defaultValue = setOf()) }
                 },
-                heldEntities = state.editor.heldEntities,
-                chosenEntities = state.editor.chosenEntities,
                 toolkit = state.toolkit,
                 options = options,
-                lang = settings.lang,
                 wishConsumer = svc::consume
             )
             RightSideMenus(

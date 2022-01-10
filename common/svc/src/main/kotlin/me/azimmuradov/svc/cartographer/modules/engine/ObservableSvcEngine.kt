@@ -20,8 +20,8 @@ import me.azimmuradov.svc.engine.*
 import me.azimmuradov.svc.engine.entity.*
 import me.azimmuradov.svc.engine.geometry.Coordinate
 import me.azimmuradov.svc.engine.layer.LayerType
+import me.azimmuradov.svc.engine.layers.LayeredEntities
 import me.azimmuradov.svc.engine.layers.Layers
-import me.azimmuradov.svc.engine.layers.layered
 
 internal class ObservableSvcEngine(
     private val engine: SvcEngine,
@@ -32,24 +32,48 @@ internal class ObservableSvcEngine(
         engine.put(obj).alsoObserve()
 
     override fun <EType : EntityType> remove(type: LayerType<EType>, c: Coordinate) =
-        engine.remove(type, c).alsoObserve()
+        engine.remove(type, c).alsoObserveIf { it != null }
 
     override fun <EType : EntityType> putAll(objs: DisjointEntities<EType>) =
         engine.putAll(objs).alsoObserve()
 
     override fun <EType : EntityType> removeAll(type: LayerType<EType>, cs: Iterable<Coordinate>) =
-        engine.removeAll(type, cs).alsoObserve()
+        engine.removeAll(type, cs).alsoObserveIf { it.isNotEmpty() }
 
     override fun clear(type: LayerType<*>) =
         engine.clear(type).alsoObserve()
+
+
+    // For optimization (to layers be observed only once)
+
+    fun remove(c: Coordinate) =
+        engine.remove(c).alsoObserveIf { it.all.isNotEmpty() }
+
+    fun <EType : EntityType> remove(obj: PlacedEntity<EType>) =
+        engine.remove(obj).alsoObserveIf { it != null }
+
+    fun putAll(objs: LayeredEntities) =
+        engine.putAll(objs).alsoObserve()
+
+    fun removeAll(cs: Iterable<Coordinate>) =
+        engine.removeAll(cs).alsoObserveIf { it.all.isNotEmpty() }
+
+    fun removeAllEntities(objs: List<PlacedEntity<*>>) =
+        engine.removeAll(objs).alsoObserveIf { it.all.isNotEmpty() }
+
+    fun clear() = engine.clear().alsoObserve()
 
 
     // Observers & Updaters
 
     private fun <T> T.alsoObserve(): T = also { onLayersChanged(layers) }
 
-    fun update(entities: List<Pair<LayerType<*>, List<PlacedEntity<*>>>>) {
+    private inline fun <T> T.alsoObserveIf(condition: (T) -> Boolean): T = also {
+        if (condition(it)) onLayersChanged(layers)
+    }
+
+    fun update(entities: LayeredEntities) {
         engine.clear()
-        engine.putAll(entities.flatMap { it.second }.layered())
+        engine.putAll(entities)
     }
 }

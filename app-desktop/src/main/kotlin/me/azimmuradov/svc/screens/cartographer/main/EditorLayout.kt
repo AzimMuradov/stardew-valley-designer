@@ -33,10 +33,9 @@ import androidx.compose.ui.unit.toOffset
 import me.azimmuradov.svc.cartographer.state.ToolkitState
 import me.azimmuradov.svc.cartographer.wishes.SvcWish
 import me.azimmuradov.svc.components.screens.cartographer.Options
-import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.geometry.*
-import me.azimmuradov.svc.engine.layer.LayerType
-import me.azimmuradov.svc.settings.Lang
+import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
+import me.azimmuradov.svc.engine.layers.flatten
 import me.azimmuradov.svc.utils.drawSpriteBy
 import me.azimmuradov.svc.utils.toIntOffset
 import kotlin.math.floor
@@ -46,12 +45,9 @@ import kotlin.math.floor
 @Composable
 fun BoxScope.EditorLayout(
     layoutSize: Rect,
-    visibleEntities: List<Pair<LayerType<*>, List<PlacedEntity<*>>>>,
-    heldEntities: List<Pair<LayerType<*>, List<PlacedEntity<*>>>>,
-    chosenEntities: List<Pair<LayerType<*>, List<PlacedEntity<*>>>>,
+    visibleEntities: LayeredEntitiesData,
     toolkit: ToolkitState,
     options: Options,
-    lang: Lang,
     wishConsumer: (SvcWish) -> Unit,
 ) {
     val (w, h) = layoutSize
@@ -81,7 +77,7 @@ fun BoxScope.EditorLayout(
                 onMove = { offset -> hoveredCoordinate = offset.toCoordinate(); false },
                 onExit = { hoveredCoordinate = UNDEFINED; false },
             )
-            .pointerInput(toolkit.currentToolType) {
+            .pointerInput(toolkit.tool) {
                 detectDragGesturesImmediately(
                     onDragStart = { offset ->
                         val current = offset.toCoordinate()
@@ -117,32 +113,127 @@ fun BoxScope.EditorLayout(
 
         // Entities
 
-        for ((_, objs) in visibleEntities) {
+        for ((_, objs) in visibleEntities.all) {
             for (e in objs) {
                 val offset = e.place.toIntOffset() * stepSize
 
                 drawSpriteBy(
                     entity = e.rectObject,
-                    offset = offset.copy(x = offset.x + 2, y = offset.y + 2),
-                    layoutSize = Size(width = cellSize.width - 4, height = cellSize.height - 4),
+                    offset = offset.copy(x = offset.x + 1, y = offset.y + 1),
+                    layoutSize = Size(
+                        width = (cellSize.width - 2).coerceAtLeast(1f),
+                        height = (cellSize.height - 2).coerceAtLeast(1f)
+                    ),
                 )
             }
         }
 
 
-        // Chosen Entities
+        // Beeps and Bops
 
-        for ((_, objs) in chosenEntities) {
-            for (e in objs) {
-                val offset = e.place.toIntOffset() * stepSize
+        when (toolkit) {
+            is ToolkitState.Hand.Point.Idle -> {
+                for (e in toolkit.selectedEntities.flatten()) {
+                    val offset = e.place.toIntOffset() * stepSize
 
-                drawRect(
-                    color = Color.Green,
-                    topLeft = offset.toOffset(),
-                    size = cellSize,
-                    alpha = 0.3f,
-                )
+                    drawRect(
+                        color = Color.Blue,
+                        topLeft = offset.toOffset(),
+                        size = cellSize,
+                        alpha = 0.5f
+                    )
+                }
             }
+            is ToolkitState.Hand.Point.Acting -> {
+                val es = toolkit.heldEntities.flatten()
+                for (e in es) {
+                    val offset = e.place.toIntOffset() * stepSize
+                    drawSpriteBy(
+                        entity = e.rectObject,
+                        offset = offset.copy(x = offset.x + 2, y = offset.y + 2),
+                        layoutSize = Size(
+                            width = (cellSize.width - 4).coerceAtLeast(1f),
+                            height = (cellSize.height - 4).coerceAtLeast(1f)
+                        ),
+                        alpha = 0.7f,
+                    )
+                }
+            }
+            is ToolkitState.Pen.Shape.Acting -> {
+                val coordinates = toolkit.placedShape.coordinates
+                for (c in coordinates) {
+                    drawRect(
+                        color = Color.Black,
+                        topLeft = Offset(offsetsW[c.x], offsetsH[c.y]),
+                        size = cellSize,
+                        alpha = 0.1f,
+                    )
+                }
+                for (c in toolkit.entitiesToDelete) {
+                    drawRect(
+                        color = Color.Red,
+                        topLeft = Offset(offsetsW[c.x], offsetsH[c.y]),
+                        size = cellSize,
+                        alpha = 0.5f,
+                    )
+                }
+                for (e in toolkit.entitiesToDraw) {
+                    val offset = e.place.toIntOffset() * stepSize
+
+                    drawSpriteBy(
+                        entity = e.rectObject,
+                        offset = offset.copy(x = offset.x + 1, y = offset.y + 1),
+                        layoutSize = Size(
+                            width = (cellSize.width - 2).coerceAtLeast(1f),
+                            height = (cellSize.height - 2).coerceAtLeast(1f)
+                        ),
+                        alpha = 0.7f
+                    )
+                }
+            }
+            is ToolkitState.Eraser.Shape.Acting -> {
+                val coordinates = toolkit.placedShape.coordinates
+                for (c in coordinates) {
+                    drawRect(
+                        color = Color.Black,
+                        topLeft = Offset(offsetsW[c.x], offsetsH[c.y]),
+                        size = cellSize,
+                        alpha = 0.1f,
+                    )
+                }
+                for (c in toolkit.entitiesToDelete) {
+                    drawRect(
+                        color = Color.Red,
+                        topLeft = Offset(offsetsW[c.x], offsetsH[c.y]),
+                        size = cellSize,
+                        alpha = 0.5f,
+                    )
+                }
+            }
+            is ToolkitState.Select.Shape -> {
+                if (toolkit is ToolkitState.Select.Shape.Acting) {
+                    val coordinates = toolkit.placedShape.coordinates
+                    for (c in coordinates) {
+                        drawRect(
+                            color = Color.Black,
+                            topLeft = Offset(offsetsW[c.x], offsetsH[c.y]),
+                            size = cellSize,
+                            alpha = 0.1f,
+                        )
+                    }
+                }
+                for (e in toolkit.selectedEntities.flatten()) {
+                    val offset = e.place.toIntOffset() * stepSize
+
+                    drawRect(
+                        color = Color.Blue,
+                        topLeft = offset.toOffset(),
+                        size = cellSize,
+                        alpha = 0.5f
+                    )
+                }
+            }
+            else -> Unit
         }
 
 
@@ -179,20 +270,6 @@ fun BoxScope.EditorLayout(
                 size = cellSize,
                 alpha = 0.3f,
             )
-
-
-            // Held entities
-
-            for (e in heldEntities.flatMap { it.second }) {
-                val offset = e.place.toIntOffset() * stepSize
-
-                drawSpriteBy(
-                    entity = e.rectObject,
-                    offset = offset.copy(x = offset.x + 4, y = offset.y + 4),
-                    layoutSize = Size(width = cellSize.width - 8, height = cellSize.height - 8),
-                    alpha = 0.7f,
-                )
-            }
 
 
             // Axis

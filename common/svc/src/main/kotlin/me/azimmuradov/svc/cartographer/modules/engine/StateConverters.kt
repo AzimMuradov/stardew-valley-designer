@@ -16,16 +16,8 @@
 
 package me.azimmuradov.svc.cartographer.modules.engine
 
-import me.azimmuradov.svc.cartographer.state.editor.LayoutState
-import me.azimmuradov.svc.engine.entity.PlacedEntity
-import me.azimmuradov.svc.engine.layer.LayerType
-import me.azimmuradov.svc.engine.layers.Layers
+import me.azimmuradov.svc.cartographer.state.LayoutState
 import me.azimmuradov.svc.engine.layout.Layout
-
-internal fun Layers.toEntitiesState(): List<Pair<LayerType<*>, List<PlacedEntity<*>>>> =
-    all.map { (layerType, layer) ->
-        layerType to layer.objects.toList()
-    }
 
 internal fun Layout.toState(): LayoutState = LayoutState(
     size = size,

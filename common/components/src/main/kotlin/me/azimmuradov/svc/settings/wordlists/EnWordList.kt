@@ -321,8 +321,7 @@ object EnWordList : WordList {
         ToolType.Pen -> "Pen"
         ToolType.Eraser -> "Eraser"
         ToolType.EyeDropper -> "Eye Dropper"
-        ToolType.RectSelect -> "Rectangle Selection"
-        ToolType.EllipseSelect -> "Ellipse Selection"
+        ToolType.Select -> "Select"
     }.also { tools[type] = it }
 
     override fun layer(type: LayerType<*>): String = layers[type] ?: when (type) {

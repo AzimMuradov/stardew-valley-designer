@@ -16,43 +16,31 @@
 
 package me.azimmuradov.svc.screens.cartographer.main
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.cartographer.state.ToolkitState
 import me.azimmuradov.svc.cartographer.wishes.SvcWish
 import me.azimmuradov.svc.components.screens.cartographer.Options
-import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.geometry.Rect
-import me.azimmuradov.svc.engine.layer.LayerType
-import me.azimmuradov.svc.engine.layers.LayeredEntities
-import me.azimmuradov.svc.settings.Lang
+import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 
 
 @Composable
 fun RowScope.SvcLayout(
     layoutSize: Rect,
-    visibleEntities: List<Pair<LayerType<*>, List<PlacedEntity<*>>>>,
-    heldEntities: List<Pair<LayerType<*>, List<PlacedEntity<*>>>>,
-    chosenEntities: List<Pair<LayerType<*>, List<PlacedEntity<*>>>>,
+    visibleEntities: LayeredEntitiesData,
     toolkit: ToolkitState,
     options: Options,
-    lang: Lang,
     wishConsumer: (SvcWish) -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxHeight().weight(1f).padding(30.dp)) {
         EditorLayout(
             layoutSize = layoutSize,
             visibleEntities = visibleEntities,
-            heldEntities = heldEntities,
-            chosenEntities = chosenEntities,
             toolkit = toolkit,
             options = options,
-            lang = lang,
             wishConsumer = wishConsumer
         )
     }

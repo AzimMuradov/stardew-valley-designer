@@ -28,9 +28,8 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.geometry.Rect
-import me.azimmuradov.svc.engine.layer.LayerType
+import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 import me.azimmuradov.svc.settings.Lang
 import me.azimmuradov.svc.settings.Settings
 import me.azimmuradov.svc.utils.drawSpriteBy
@@ -40,7 +39,7 @@ import me.azimmuradov.svc.utils.toIntOffset
 @Composable
 fun MapPreview(
     layoutSize: Rect,
-    entities: List<Pair<LayerType<*>, List<PlacedEntity<*>>>>,
+    entities: LayeredEntitiesData,
     lang: Lang,
 ) {
     val wordList = Settings.wordList(lang)
@@ -80,7 +79,7 @@ fun MapPreview(
 
             // Entities
 
-            for ((_, objs) in entities) {
+            for ((_, objs) in entities.all) {
                 for (e in objs) {
                     val offset = e.place.toIntOffset() * stepSize
 

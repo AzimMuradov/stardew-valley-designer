@@ -16,21 +16,27 @@
 
 package me.azimmuradov.svc.cartographer.modules.toolkit
 
-import me.azimmuradov.svc.cartographer.modules.history.HistorySnapshot
+import me.azimmuradov.svc.engine.geometry.CanonicalCorners
+import me.azimmuradov.svc.engine.geometry.shapes.*
 
-internal class HistorySnapshotBuilder(private val initialSnapshot: HistorySnapshot) {
+enum class ShapeType {
+    Rect,
+    RectOutline;
 
-    operator fun plusAssign(act: HistoricalAct?) {
-        if (act != null) historicalActs += act
+    fun projectTo(corners: CanonicalCorners): PlacedShape = when (this) {
+        Rect -> PlacedShape(
+            corners = corners,
+            strategy = PlacedRectStrategy
+        )
+        RectOutline -> PlacedShape(
+            corners = corners,
+            strategy = PlacedRectOutlineStrategy
+        )
     }
+}
 
-    fun buildOrNull(): HistorySnapshot? =
-        if (historicalActs.isNotEmpty()) {
-            historicalActs.fold(initialSnapshot) { snapshot, act -> act(snapshot) }
-        } else {
-            null
-        }
-
-
-    private val historicalActs = mutableListOf<HistoricalAct>()
+fun PlacedShape.type(): ShapeType? = when (strategy) {
+    PlacedRectStrategy -> ShapeType.Rect
+    PlacedRectOutlineStrategy -> ShapeType.RectOutline
+    else -> null
 }

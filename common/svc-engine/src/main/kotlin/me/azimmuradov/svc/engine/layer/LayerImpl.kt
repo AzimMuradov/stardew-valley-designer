@@ -42,7 +42,7 @@ private class MutableLayerImpl<EType : EntityType>(
     override val layoutRules = layout
 
 
-    override fun put(obj: PlacedEntity<EType>): DisjointEntities<EType> {
+    override fun put(obj: PlacedEntity<EType>): Set<PlacedEntity<EType>> {
         require(obj respects layoutRules) { "The object ($obj) failed to satisfy layout rules." }
 
         return rectMap.put(obj)

@@ -16,8 +16,6 @@
 
 package me.azimmuradov.svc.cartographer.modules.history
 
-import me.azimmuradov.svc.cartographer.logger
-
 internal class ObservableHistoryManager(
     private val onHistoryChanged: (HistoryChange) -> Unit,
 ) : HistoryManager {
@@ -39,9 +37,6 @@ internal class ObservableHistoryManager(
             repeat(times = snapshots.lastIndex - current) { snapshots.removeLast() }
             snapshots += snapshot
             current = snapshots.lastIndex
-
-            logger.debug("History Manager Snapshots = $snapshots")
-            logger.debug("History Manager Current Snapshot = $currentSnapshot")
 
             onHistoryChanged(HistoryChange.AfterRegistering(canGoBack, canGoForward))
         }
@@ -66,24 +61,4 @@ internal class ObservableHistoryManager(
 
         private const val HISTORY_ROOT: Int = -1
     }
-}
-
-
-sealed interface HistoryChange {
-
-    val canGoBack: Boolean
-
-    val canGoForward: Boolean
-
-
-    data class AfterRegistering(
-        override val canGoBack: Boolean,
-        override val canGoForward: Boolean,
-    ) : HistoryChange
-
-    data class AfterTraveling(
-        override val canGoBack: Boolean,
-        override val canGoForward: Boolean,
-        val currentSnapshot: HistorySnapshot?,
-    ) : HistoryChange
 }

@@ -38,26 +38,32 @@ private class SvcEngineImpl(layout: Layout) : SvcEngine {
 
     override fun <EType : EntityType> get(type: LayerType<EType>, c: Coordinate) = layers.layerBy(type)[c]
 
-    override fun put(obj: PlacedEntity<*>): LayeredEntities {
+    override fun put(obj: PlacedEntity<*>): LayeredEntitiesData {
         val type = obj.layerType
 
-        val replaced = mutableListOf<PlacedEntity<*>>().also { replacedListOfEs ->
-            replacedListOfEs += when (type) {
-                LayerType.Object, LayerType.Floor, LayerType.FloorFurniture -> {
-                    LayerType.withoutFloor.flatMap { layers.layerBy(it).removeAll(obj.coordinates) }
+        val replaced = buildList<PlacedEntity<*>> {
+            addAll(
+                when (type) {
+                    LayerType.Object, LayerType.Floor, LayerType.FloorFurniture -> {
+                        LayerType.withoutFloor.flatMapTo(mutableSetOf()) {
+                            layers.layerBy(it).removeAll(obj.coordinates)
+                        }
+                    }
+                    LayerType.EntityWithoutFloor -> {
+                        LayerType.withFloor.flatMapTo(mutableSetOf()) { layers.layerBy(it).removeAll(obj.coordinates) }
+                    }
                 }
-                LayerType.EntityWithoutFloor -> {
-                    LayerType.withFloor.flatMap { layers.layerBy(it).removeAll(obj.coordinates) }
-                }
-            }
+            )
 
-            replacedListOfEs += try {
-                layers.layerBy(type).put(obj)
-            } catch (e: IllegalArgumentException) {
-                putAll(replacedListOfEs.layered())
-                throw e
-            }
-        }.layered()
+            addAll(
+                try {
+                    layers.layerBy(type).put(obj)
+                } catch (e: IllegalArgumentException) {
+                    putAll(layered())
+                    throw e
+                }
+            )
+        }.layeredData()
 
 
         return replaced
@@ -72,7 +78,7 @@ private class SvcEngineImpl(layout: Layout) : SvcEngine {
         layers.layerBy(type).getAll(cs)
 
     override fun <EType : EntityType> putAll(objs: DisjointEntities<EType>) =
-        objs.flatMap { put(it).flatten() }.layered()
+        objs.flatMap { put(it).flatten() }.layeredData()
 
     override fun <EType : EntityType> removeAll(type: LayerType<EType>, cs: Iterable<Coordinate>) =
         layers.layerBy(type).removeAll(cs)

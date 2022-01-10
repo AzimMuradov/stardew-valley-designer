@@ -1,8 +1,5 @@
 package me.azimmuradov.svc.cartographer.state
 
-import me.azimmuradov.svc.cartographer.state.editor.EditorState
-import me.azimmuradov.svc.cartographer.state.editor.LayoutState
-
 data class SvcState(
     // Top Menu
     val history: HistoryState,
@@ -21,7 +18,7 @@ data class SvcState(
 
         fun default(layout: LayoutState) = SvcState(
             history = HistoryState.default(),
-            toolkit = ToolkitState.default(),
+            toolkit = ToolkitState.None,
             palette = PaletteState.default(size = 10),
             editor = EditorState.default(layout),
         )

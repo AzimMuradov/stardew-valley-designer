@@ -39,4 +39,4 @@ interface MutableLayers : Layers {
 }
 
 
-val Layers.entities: LayeredEntities get() = layeredEntities { layerBy(it).objects }
+val Layers.entities: LayeredEntitiesData get() = layeredEntitiesData { layerBy(it).objects }

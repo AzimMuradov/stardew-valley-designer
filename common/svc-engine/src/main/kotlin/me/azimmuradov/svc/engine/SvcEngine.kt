@@ -35,18 +35,18 @@ interface SvcEngine {
 
     fun <EType : EntityType> get(type: LayerType<EType>, c: Coordinate): PlacedEntity<EType>?
 
-    fun put(obj: PlacedEntity<*>): LayeredEntities
+    fun put(obj: PlacedEntity<*>): LayeredEntitiesData
 
     fun <EType : EntityType> remove(type: LayerType<EType>, c: Coordinate): PlacedEntity<EType>?
 
 
     // Bulk Operations
 
-    fun <EType : EntityType> getAll(type: LayerType<EType>, cs: Iterable<Coordinate>): DisjointEntities<EType>
+    fun <EType : EntityType> getAll(type: LayerType<EType>, cs: Iterable<Coordinate>): Set<PlacedEntity<EType>>
 
-    fun <EType : EntityType> putAll(objs: DisjointEntities<EType>): LayeredEntities
+    fun <EType : EntityType> putAll(objs: DisjointEntities<EType>): LayeredEntitiesData
 
-    fun <EType : EntityType> removeAll(type: LayerType<EType>, cs: Iterable<Coordinate>): DisjointEntities<EType>
+    fun <EType : EntityType> removeAll(type: LayerType<EType>, cs: Iterable<Coordinate>): Set<PlacedEntity<EType>>
 
     fun clear(type: LayerType<*>)
 }
@@ -54,9 +54,9 @@ interface SvcEngine {
 
 // Operations
 
-fun SvcEngine.get(c: Coordinate): LayeredSingleEntities = layeredSingleEntities { get(it, c) }
+fun SvcEngine.get(c: Coordinate): LayeredSingleEntitiesData = layeredSingleEntitiesData { get(it, c) }
 
-fun SvcEngine.remove(c: Coordinate): LayeredSingleEntities = layeredSingleEntities { remove(it, c) }
+fun SvcEngine.remove(c: Coordinate): LayeredSingleEntitiesData = layeredSingleEntitiesData { remove(it, c) }
 
 fun <EType : EntityType> SvcEngine.remove(obj: PlacedEntity<EType>): PlacedEntity<EType>? =
     remove(obj.layerType, obj.place)
@@ -64,12 +64,43 @@ fun <EType : EntityType> SvcEngine.remove(obj: PlacedEntity<EType>): PlacedEntit
 
 // Bulk Operations
 
-fun SvcEngine.getAll(cs: Iterable<Coordinate>): LayeredEntities = layeredEntities { getAll(it, cs) }
+fun SvcEngine.getAll(cs: Iterable<Coordinate>): LayeredEntitiesData = layeredEntitiesData { getAll(it, cs) }
 
-fun SvcEngine.putAll(objs: LayeredEntities): LayeredEntities = objs.flatten().flatMap { put(it).flatten() }.layered()
+fun SvcEngine.putAll(objs: LayeredEntities): LayeredEntitiesData =
+    objs.flatten().flatMap { put(it).flatten() }.layeredData()
 
-fun SvcEngine.removeAll(cs: Iterable<Coordinate>): LayeredEntities = layeredEntities { removeAll(it, cs) }
+fun SvcEngine.removeAll(cs: Iterable<Coordinate>): LayeredEntitiesData = layeredEntitiesData { removeAll(it, cs) }
 
-fun SvcEngine.removeAll(objs: List<PlacedEntity<*>>): LayeredEntities = objs.mapNotNull(this::remove).layered()
+fun SvcEngine.removeAll(objs: List<PlacedEntity<*>>): LayeredEntitiesData =
+    objs.mapNotNull(this::remove).layeredData()
 
 fun SvcEngine.clear() = LayerType.all.forEach(this::clear)
+
+
+// Utils
+
+// TODO : Move
+fun SvcEngine.getReplacedBy(obj: PlacedEntity<*>): LayeredEntitiesData {
+    val type = obj.layerType
+
+    val replaced = buildList<PlacedEntity<*>> {
+        addAll(
+            when (type) {
+                LayerType.Object, LayerType.Floor, LayerType.FloorFurniture -> {
+                    LayerType.withoutFloor.flatMap { layers.layerBy(it).getAll(obj.coordinates) }
+                }
+                LayerType.EntityWithoutFloor -> {
+                    LayerType.withFloor.flatMap { layers.layerBy(it).getAll(obj.coordinates) }
+                }
+            }
+        )
+
+        addAll(layers.layerBy(type).getAll(obj.coordinates))
+    }.layeredData()
+
+    return replaced
+}
+
+// TODO : Move
+fun <EType : EntityType> SvcEngine.getReplacedBy(objs: DisjointEntities<EType>): LayeredEntitiesData =
+    objs.flatMapTo(mutableSetOf()) { getReplacedBy(it).flatten() }.layeredData()

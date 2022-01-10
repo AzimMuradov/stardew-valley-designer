@@ -65,9 +65,12 @@ fun layeredEntities(entitiesSelector: (LayerType<*>) -> List<PlacedEntity<*>>): 
 
 // Conversions
 
-fun LayeredEntities.flatten(): List<PlacedEntity<*>> = all.flatMap { (_, entities) -> entities }
+fun LayeredEntities.flatten(): List<PlacedEntity<*>> = all.flatMap { (_, es) -> es }
 
-fun List<PlacedEntity<*>>.layered(): LayeredEntities =
+fun <C : MutableCollection<in PlacedEntity<*>>> LayeredEntities.flattenTo(destination: C): C =
+    all.flatMapTo(destination) { (_, es) -> es }
+
+fun Iterable<PlacedEntity<*>>.layered(): LayeredEntities =
     groupBy(PlacedEntity<*>::layerType).mapValues { (_, es) -> es.asDisjoint() }.asLayeredEntities()
 
 

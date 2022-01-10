@@ -20,15 +20,12 @@ package me.azimmuradov.svc.engine.layers
 
 import me.azimmuradov.svc.engine.entity.*
 import me.azimmuradov.svc.engine.layer.LayerType
-import me.azimmuradov.svc.engine.notOverlapsWith
-import me.azimmuradov.svc.engine.rectmap.coordinates
 
-
-class LayeredSingleEntities(
-    floorEntity: PlacedEntity<FloorType>? = null,
-    floorFurnitureEntity: PlacedEntity<FloorFurnitureType>? = null,
-    objectEntity: PlacedEntity<ObjectType>? = null,
-    entityWithoutFloorEntity: PlacedEntity<EntityWithoutFloorType>? = null,
+data class LayeredSingleEntitiesData(
+    val floorEntity: PlacedEntity<FloorType>? = null,
+    val floorFurnitureEntity: PlacedEntity<FloorFurnitureType>? = null,
+    val objectEntity: PlacedEntity<ObjectType>? = null,
+    val entityWithoutFloorEntity: PlacedEntity<EntityWithoutFloorType>? = null,
 ) {
 
     private val entitiesMap = mapOf(
@@ -38,22 +35,6 @@ class LayeredSingleEntities(
         LayerType.EntityWithoutFloor to entityWithoutFloorEntity,
     )
 
-    init {
-        val withFloorCs = entitiesMap
-            .filter { (layerType) -> layerType in LayerType.withFloor }
-            .values.filterNotNull()
-            .coordinates
-
-        val withoutFloorCs = entitiesMap
-            .filter { (layerType) -> layerType in LayerType.withoutFloor }
-            .values.filterNotNull()
-            .coordinates
-
-        require(withoutFloorCs notOverlapsWith withFloorCs) {
-            "Wrong `LayeredSingleEntities` definition."
-        }
-    }
-
 
     val all: List<Pair<LayerType<*>, PlacedEntity<*>?>> = entitiesMap.toList()
 
@@ -61,27 +42,23 @@ class LayeredSingleEntities(
         entitiesMap.getValue(layerType) as PlacedEntity<EType>?
 }
 
-fun layeredSingleEntities(entitiesSelector: (LayerType<*>) -> PlacedEntity<*>?): LayeredSingleEntities =
-    LayerType.all.associateWith { entitiesSelector(it) }.asLayeredSingleEntities()
+fun layeredSingleEntitiesData(entitiesSelector: (LayerType<*>) -> PlacedEntity<*>?): LayeredSingleEntitiesData =
+    LayerType.all.associateWith { entitiesSelector(it) }.asLayeredSingleEntitiesData()
 
 
 // Conversions
 
-fun LayeredSingleEntities.flatten(): List<PlacedEntity<*>> = all.mapNotNull { (_, entity) -> entity }
-
-fun LayeredSingleEntities.toLayeredEntities(): LayeredEntities = layeredEntities { type ->
-    listOfNotNull(entityOrNullBy(type))
-}
+fun LayeredSingleEntitiesData.flatten(): List<PlacedEntity<*>> = all.mapNotNull { (_, entity) -> entity }
 
 
 // Utils
 
-fun LayeredSingleEntities.topmost(): PlacedEntity<*>? = flatten().lastOrNull()
+fun LayeredSingleEntitiesData.topmost(): PlacedEntity<*>? = flatten().lastOrNull()
 
 
 // Private utils
 
-private fun Map<LayerType<*>, PlacedEntity<*>?>.asLayeredSingleEntities() = LayeredSingleEntities(
+private fun Map<LayerType<*>, PlacedEntity<*>?>.asLayeredSingleEntitiesData() = LayeredSingleEntitiesData(
     floorEntity = get(LayerType.Floor) as PlacedEntity<FloorType>?,
     floorFurnitureEntity = get(LayerType.FloorFurniture) as PlacedEntity<FloorFurnitureType>?,
     objectEntity = get(LayerType.Object) as PlacedEntity<ObjectType>?,

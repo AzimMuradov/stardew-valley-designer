@@ -1,5 +1,6 @@
 package me.azimmuradov.svc.cartographer.wishes
 
+import me.azimmuradov.svc.cartographer.modules.toolkit.ShapeType
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolType
 import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.geometry.Coordinate
@@ -22,6 +23,8 @@ sealed interface SvcWish {
     sealed interface Tools : SvcWish {
 
         data class ChooseTool(val type: ToolType) : Tools
+
+        data class ChooseShape(val type: ShapeType?) : Tools
     }
 
     sealed interface Palette : SvcWish {

@@ -17,8 +17,6 @@
 package me.azimmuradov.svc.cartographer.modules.history
 
 import me.azimmuradov.svc.cartographer.state.*
-import me.azimmuradov.svc.cartographer.state.editor.EditorState
-import me.azimmuradov.svc.cartographer.state.editor.LayoutState
 
 data class HistorySnapshot(
     val toolkit: ToolkitState,

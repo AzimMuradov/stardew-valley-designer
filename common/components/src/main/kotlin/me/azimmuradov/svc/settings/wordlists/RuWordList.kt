@@ -321,8 +321,7 @@ object RuWordList : WordList {
         ToolType.Pen -> TODO()
         ToolType.Eraser -> TODO()
         ToolType.EyeDropper -> TODO()
-        ToolType.RectSelect -> TODO()
-        ToolType.EllipseSelect -> TODO()
+        ToolType.Select -> TODO()
     }.also { tools[type] = it }
 
     override fun layer(type: LayerType<*>): String = layers[type] ?: when (type) {

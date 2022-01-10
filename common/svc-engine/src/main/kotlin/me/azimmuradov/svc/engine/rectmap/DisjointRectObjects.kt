@@ -16,6 +16,7 @@
 
 package me.azimmuradov.svc.engine.rectmap
 
+import me.azimmuradov.svc.engine.geometry.Coordinate
 
 /**
  * List of disjoint placed rectangular objects.
@@ -25,12 +26,16 @@ class DisjointRectObjects<out RO : RectObject> internal constructor(
 ) : List<PlacedRectObject<RO>> by objects {
 
     init {
-        val objectsSeq = objects.asSequence()
-        val requirements = (objectsSeq * objectsSeq).exactly(times = objects.size) { (a, b) ->
-            a overlapsWith b
-        }
+        val cs = mutableSetOf<Coordinate>()
 
-        require(requirements) { "Wrong `DisjointRectObjects` definition." }
+        objects
+            .asSequence()
+            .flatMap(PlacedRectObject<RO>::coordinates)
+            .forEach {
+                if (!cs.add(it)) {
+                    throw IllegalArgumentException("Wrong `DisjointRectObjects` definition.")
+                }
+            }
     }
 }
 
@@ -39,21 +44,3 @@ fun <RO : RectObject> emptyDisjointRectObjects(): DisjointRectObjects<RO> =
 
 fun <RO : RectObject> List<PlacedRectObject<RO>>.asDisjoint(): DisjointRectObjects<RO> =
     if (this is DisjointRectObjects<RO>) this else DisjointRectObjects(objects = this)
-
-
-// Private utils
-
-private inline fun <T> Sequence<T>.exactly(times: Int, predicate: (T) -> Boolean): Boolean {
-    var counter = 0
-    if (counter > times) return false
-    for (element in this) {
-        if (predicate(element)) counter++
-        if (counter > times) return false
-    }
-    return counter == times
-}
-
-// Cartesian product
-
-private operator fun <A, B> Sequence<A>.times(other: Sequence<B>): Sequence<Pair<A, B>> =
-    flatMap { a -> other.map { b -> a to b } }

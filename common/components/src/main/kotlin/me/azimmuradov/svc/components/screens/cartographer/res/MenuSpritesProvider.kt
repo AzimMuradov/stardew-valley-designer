@@ -26,8 +26,7 @@ object MenuSpritesProvider {
         ToolType.Pen -> common(101)
         ToolType.Eraser -> common(102)
         ToolType.EyeDropper -> common(103)
-        ToolType.RectSelect -> common(104)
-        ToolType.EllipseSelect -> common(105)
+        ToolType.Select -> common(104)
     }.also { sprites[type] = it }
 
 

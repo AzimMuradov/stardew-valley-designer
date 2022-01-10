@@ -21,13 +21,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
-import me.azimmuradov.svc.cartographer.state.PaletteState
-import me.azimmuradov.svc.cartographer.state.ToolkitState
-import me.azimmuradov.svc.cartographer.state.editor.LayoutState
+import me.azimmuradov.svc.cartographer.state.*
 import me.azimmuradov.svc.cartographer.wishes.SvcWish
-import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.layer.LayerType
 import me.azimmuradov.svc.engine.layer.allEntityTypes
+import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 import me.azimmuradov.svc.settings.Lang
 
 
@@ -50,7 +48,7 @@ fun RightSideMenus(
     visibleLayers: Set<LayerType<*>>,
     onVisibilityChange: (LayerType<*>, Boolean) -> Unit,
     layout: LayoutState,
-    entities: List<Pair<LayerType<*>, List<PlacedEntity<*>>>>,
+    entities: LayeredEntitiesData,
     lang: Lang,
     width: Dp,
 ) {

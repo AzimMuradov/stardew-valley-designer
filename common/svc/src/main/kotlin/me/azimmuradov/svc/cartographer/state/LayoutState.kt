@@ -14,25 +14,15 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.modules.toolkit
+package me.azimmuradov.svc.cartographer.state
 
+import me.azimmuradov.svc.engine.entity.EntityType
 import me.azimmuradov.svc.engine.geometry.Coordinate
+import me.azimmuradov.svc.engine.geometry.Rect
 
-
-interface Tool {
-
-    val state: ToolState
-
-
-    fun start(c: Coordinate)
-
-    fun keep(c: Coordinate)
-
-    fun end()
-}
-
-
-/**
- * Tool state.
- */
-enum class ToolState { Stale, Acting }
+data class LayoutState(
+    val size: Rect,
+    val disallowedTypes: Set<EntityType>,
+    val disallowedTypesMap: Map<Coordinate, Set<EntityType>>,
+    val disallowedCoordinates: Set<Coordinate>,
+)

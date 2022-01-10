@@ -18,7 +18,6 @@ package me.azimmuradov.svc.engine.rectmap
 
 import me.azimmuradov.svc.engine.contains
 import me.azimmuradov.svc.engine.geometry.*
-import me.azimmuradov.svc.engine.overlapsWith
 
 
 /**
@@ -29,7 +28,15 @@ data class PlacedRectObject<out RO : RectObject>(
     val place: Coordinate,
 ) {
 
-    val coordinates: List<Coordinate> by lazy(toPlacedRect()::coordinates)
+    val coordinates: List<Coordinate> by lazy {
+        val (x, y) = place
+        val (w, h) = rectObject.size
+
+        val xs = x until x + w
+        val ys = y until y + h
+
+        (xs * ys).map(Pair<Int, Int>::toCoordinate)
+    }
 
     operator fun component3(): List<Coordinate> = coordinates
 
@@ -58,30 +65,58 @@ data class PlacedRectObject<out RO : RectObject>(
 }
 
 
+// Static factories
+
 /**
  * Static factory function for [PlacedRectObject] creation.
  */
 fun <RO : RectObject> RO.placeIt(there: Coordinate): PlacedRectObject<RO> =
     PlacedRectObject(rectObject = this, place = there)
 
+
+// Operators
+
+
+val PlacedRectObject<*>.corners: CanonicalCorners
+    get() = CanonicalCorners(
+        bottomLeft = place,
+        topRight = xy(
+            x = place.x + rectObject.size.w - 1,
+            y = place.y + rectObject.size.h - 1
+        )
+    )
+
+val PlacedRectObject<*>.coordinateRanges: Pair<IntRange, IntRange>
+    get() {
+        val (bl, tr) = corners
+        return bl.x..tr.x to bl.y..tr.y
+    }
+
+operator fun PlacedRectObject<*>.contains(c: Coordinate): Boolean {
+    val (xs, ys) = coordinateRanges
+    return c.x in xs && c.y in ys
+}
+
+operator fun PlacedRectObject<*>.contains(other: PlacedRectObject<*>): Boolean {
+    val (bl, tr) = other.corners
+    return bl in this && tr in this
+}
+
+// TODO : FIX BUGS
 /**
  * Returns `true` if [this] overlaps with the [other] placed rectangular object.
  */
-infix fun PlacedRectObject<*>.overlapsWith(other: PlacedRectObject<*>): Boolean =
-    this.coordinates overlapsWith other.coordinates
+infix fun PlacedRectObject<*>.overlapsWith(other: PlacedRectObject<*>): Boolean {
+    val (bl, tr) = other.corners
+    return bl in this || tr in this
+}
 
 /**
  * Returns `true` if [obj] is contained in [this] rectangle.
  */
 operator fun Rect.contains(obj: PlacedRectObject<*>): Boolean {
-    val (rectObject, place) = obj
-
-    val (x, y) = place
-    val (w, h) = rectObject.size
-
-    val (minCorner, maxCorner) = place to xy(x = x + w - 1, y = y + h - 1)
-
-    return minCorner in this && maxCorner in this
+    val (bl, tr) = obj.corners
+    return bl in this && tr in this
 }
 
 /**
@@ -91,6 +126,9 @@ val Iterable<PlacedRectObject<*>>.coordinates: Set<Coordinate>
     get() = flatMapTo(mutableSetOf()) { it.coordinates }
 
 
-// `PlacedRect` interop
+// Private utils
 
-fun PlacedRectObject<*>.toPlacedRect(): PlacedRect = PlacedRect(place, rect = rectObject.size)
+// Cartesian product
+
+private operator fun <A, B> Iterable<A>.times(other: Iterable<B>): List<Pair<A, B>> =
+    flatMap { a -> other.map { b -> a to b } }

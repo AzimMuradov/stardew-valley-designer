@@ -41,17 +41,17 @@ private class MutableRectMapImpl<RO : RectObject>(override val size: Rect) : Mut
 
     // Bulk Query Operations
 
-    override fun getAll(cs: Iterable<Coordinate>) = cs.mapNotNull(map::get).asDisjoint()
+    override fun getAll(cs: Iterable<Coordinate>) = cs.mapNotNullTo(mutableSetOf(), map::get)
 
 
     // Views
 
-    override val objects get() = map.values.distinct().asDisjoint()
+    override val objects get() = map.values.toSet()
 
 
     // Modification Operations
 
-    override fun put(obj: PlacedRectObject<RO>): DisjointRectObjects<RO> {
+    override fun put(obj: PlacedRectObject<RO>): Set<PlacedRectObject<RO>> {
         require(obj in size) { "Object coordinates are out of `RectMap` bounds." }
 
         val cs = obj.coordinates
@@ -70,9 +70,9 @@ private class MutableRectMapImpl<RO : RectObject>(override val size: Rect) : Mut
 
     // Bulk Modification Operations
 
-    override fun putAll(objs: DisjointRectObjects<RO>) = objs.flatMap(this::put).asDisjoint()
+    override fun putAll(objs: DisjointRectObjects<RO>) = objs.flatMapTo(mutableSetOf(), this::put)
 
-    override fun removeAll(cs: Iterable<Coordinate>) = cs.mapNotNull(this::remove).asDisjoint()
+    override fun removeAll(cs: Iterable<Coordinate>) = cs.mapNotNullTo(mutableSetOf(), this::remove)
 
     override fun clear() = map.clear()
 }

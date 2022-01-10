@@ -68,6 +68,12 @@ infix fun <EType : EntityType> PlacedEntity<EType>.respects(layoutRules: LayoutR
     return requirements.all { it }
 }
 
+/**
+ * Returns `true` if [this] placed entity respects the given [layoutRules].
+ */
+infix fun <EType : EntityType> PlacedEntity<EType>.respectsLayout(layout: Layout): Boolean =
+    coordinates in layout.size && respects(layoutRules = layout)
+
 
 // Private utils
 

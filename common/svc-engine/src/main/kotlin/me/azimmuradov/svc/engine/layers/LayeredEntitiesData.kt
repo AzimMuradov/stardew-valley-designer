@@ -1,0 +1,62 @@
+@file:Suppress("UNCHECKED_CAST")
+
+package me.azimmuradov.svc.engine.layers
+
+import me.azimmuradov.svc.engine.entity.*
+import me.azimmuradov.svc.engine.layer.LayerType
+import me.azimmuradov.svc.engine.layer.layerType
+import me.azimmuradov.svc.engine.rectmap.asDisjoint
+
+data class LayeredEntitiesData(
+    val floorEntities: Set<PlacedEntity<FloorType>> = emptySet(),
+    val floorFurnitureEntities: Set<PlacedEntity<FloorFurnitureType>> = emptySet(),
+    val objectEntities: Set<PlacedEntity<ObjectType>> = emptySet(),
+    val entityWithoutFloorEntities: Set<PlacedEntity<EntityWithoutFloorType>> = emptySet(),
+) {
+
+    private val entitiesMap = mapOf(
+        LayerType.Floor to floorEntities,
+        LayerType.FloorFurniture to floorFurnitureEntities,
+        LayerType.Object to objectEntities,
+        LayerType.EntityWithoutFloor to entityWithoutFloorEntities,
+    )
+
+
+    val all: List<Pair<LayerType<*>, Set<PlacedEntity<*>>>> = entitiesMap.toList()
+
+    fun <EType : EntityType> entitiesBy(layerType: LayerType<EType>): Set<PlacedEntity<EType>> =
+        entitiesMap.getValue(layerType) as Set<PlacedEntity<EType>>
+}
+
+fun layeredEntitiesData(entitiesSelector: (LayerType<*>) -> Set<PlacedEntity<*>>): LayeredEntitiesData =
+    LayerType.all.associateWith { entitiesSelector(it) }.asLayeredEntitiesData()
+
+
+// Conversions
+
+fun LayeredEntitiesData.flatten(): List<PlacedEntity<*>> =
+    all.flatMap { (_, es) -> es }
+
+fun <C : MutableCollection<in PlacedEntity<*>>> LayeredEntitiesData.flattenTo(destination: C): C =
+    all.flatMapTo(destination) { (_, es) -> es }
+
+fun Iterable<PlacedEntity<*>>.layeredData(): LayeredEntitiesData =
+    groupBy(PlacedEntity<*>::layerType).mapValues { (_, es) -> es.toSet() }.asLayeredEntitiesData()
+
+fun LayeredEntitiesData.toLayeredEntities(): LayeredEntities = LayeredEntities(
+    floorEntities.toList().asDisjoint(),
+    floorFurnitureEntities.toList().asDisjoint(),
+    objectEntities.toList().asDisjoint(),
+    entityWithoutFloorEntities.toList().asDisjoint(),
+)
+
+
+// Private utils
+
+private fun Map<LayerType<*>, Set<PlacedEntity<*>>>.asLayeredEntitiesData() = LayeredEntitiesData(
+    floorEntities = get(LayerType.Floor) as Set<PlacedEntity<FloorType>>? ?: emptySet(),
+    floorFurnitureEntities = get(LayerType.FloorFurniture) as Set<PlacedEntity<FloorFurnitureType>>? ?: emptySet(),
+    objectEntities = get(LayerType.Object) as Set<PlacedEntity<ObjectType>>? ?: emptySet(),
+    entityWithoutFloorEntities = get(LayerType.EntityWithoutFloor) as Set<PlacedEntity<EntityWithoutFloorType>>?
+        ?: emptySet(),
+)

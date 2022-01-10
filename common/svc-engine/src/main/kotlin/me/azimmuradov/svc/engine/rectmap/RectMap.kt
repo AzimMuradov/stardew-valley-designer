@@ -35,12 +35,12 @@ interface RectMap<out RO : RectObject> {
 
     // Bulk Query Operations
 
-    fun getAll(cs: Iterable<Coordinate>): DisjointRectObjects<RO>
+    fun getAll(cs: Iterable<Coordinate>): Set<PlacedRectObject<RO>>
 
 
     // Views
 
-    val objects: DisjointRectObjects<RO>
+    val objects: Set<PlacedRectObject<RO>>
 }
 
 
@@ -51,16 +51,23 @@ interface MutableRectMap<RO : RectObject> : RectMap<RO> {
 
     // Modification Operations
 
-    fun put(obj: PlacedRectObject<RO>): DisjointRectObjects<RO>
+    fun put(obj: PlacedRectObject<RO>): Set<PlacedRectObject<RO>>
 
     fun remove(c: Coordinate): PlacedRectObject<RO>?
 
 
     // Bulk Modification Operations
 
-    fun putAll(objs: DisjointRectObjects<RO>): DisjointRectObjects<RO>
+    fun putAll(objs: DisjointRectObjects<RO>): Set<PlacedRectObject<RO>>
 
-    fun removeAll(cs: Iterable<Coordinate>): DisjointRectObjects<RO>
+    fun removeAll(cs: Iterable<Coordinate>): Set<PlacedRectObject<RO>>
 
     fun clear()
 }
+
+
+// Extensions
+
+fun RectMap<*>.isEmpty(): Boolean = objects.isEmpty()
+
+fun RectMap<*>.isNotEmpty(): Boolean = objects.isNotEmpty()

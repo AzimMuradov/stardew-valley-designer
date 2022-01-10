@@ -25,19 +25,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 
-
 @Composable
-fun <L : Any> ToggleButtonsGroup(
-    buttonLabels: List<L?>,
+fun <L> ToggleButtonsGroup(
+    buttonLabels: List<GroupOption<L>>,
     rowSize: UInt,
     modifier: Modifier = Modifier,
-    chosenLabel: L?,
+    chosenLabel: GroupOption<L>,
     onButtonClick: (L) -> Unit,
     spaceContent: @Composable RowScope.() -> Unit = {},
     buttonContent: @Composable RowScope.(label: L) -> Unit,
 ) {
     val items = buttonLabels
-        .chunked(size = rowSize.toInt()) { it.resizedTo(size = rowSize.toInt()) }
+        .chunked(size = rowSize.toInt()) { it.resizedTo(size = rowSize.toInt(), spacer = GroupOption.None) }
         .flatten()
 
     Surface(
@@ -50,13 +49,19 @@ fun <L : Any> ToggleButtonsGroup(
             modifier = Modifier.clip(MaterialTheme.shapes.medium),
         ) {
             for (item in items) {
-                if (item != null) {
-                    ToggleButtonsGroupItem(
-                        onClick = { onButtonClick(item) },
+                when (item) {
+                    is GroupOption.Some -> ToggleButtonsGroupItem(
+                        onClick = { onButtonClick(item.value) },
                         background = if (item == chosenLabel) Color.LightGray else MaterialTheme.colors.surface,
-                    ) { buttonContent(item) }
-                } else {
-                    ToggleButtonsGroupItem(
+                        content = { buttonContent(item.value) },
+                    )
+                    is GroupOption.Disabled -> ToggleButtonsGroupItem(
+                        onClick = { onButtonClick(item.value) },
+                        enabled = false,
+                        background = if (item == chosenLabel) Color.LightGray else MaterialTheme.colors.surface,
+                        content = { buttonContent(item.value) },
+                    )
+                    GroupOption.None -> ToggleButtonsGroupItem(
                         onClick = {},
                         enabled = false,
                         content = spaceContent,

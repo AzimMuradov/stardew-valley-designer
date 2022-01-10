@@ -17,15 +17,15 @@
 package me.azimmuradov.svc.screens.cartographer.sidemenus
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import me.azimmuradov.svc.cartographer.modules.toolkit.ShapeType
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolType
 import me.azimmuradov.svc.cartographer.state.ToolkitState
 import me.azimmuradov.svc.cartographer.wishes.SvcWish
@@ -33,6 +33,7 @@ import me.azimmuradov.svc.components.screens.cartographer.res.MenuSpritesProvide
 import me.azimmuradov.svc.settings.Lang
 import me.azimmuradov.svc.settings.Settings
 import me.azimmuradov.svc.utils.Sprite
+import me.azimmuradov.svc.utils.group.GroupOption
 import me.azimmuradov.svc.utils.group.ToggleButtonsGroup
 
 
@@ -42,7 +43,17 @@ fun Toolbar(
     lang: Lang,
     wishConsumer: (SvcWish.Tools) -> Unit,
 ) {
-    val labels = ToolType.values().take(5)
+    val tools = ToolType.values().map { GroupOption.Some(it) }
+    val shapes = (listOf(null) + ShapeType.values()).map {
+        if (it in toolkit.allowedShapes) {
+            GroupOption.Some(it)
+        } else {
+            GroupOption.Disabled(it)
+        }
+    }
+
+    val size = maxOf(tools.size, shapes.size).toUInt()
+
     val wordList = Settings.wordList(lang)
 
     Column(
@@ -55,7 +66,10 @@ fun Toolbar(
         ) {
             Divider(modifier = Modifier.weight(1f))
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = wordList.tool(toolkit.currentToolType))
+            Text(
+                text = wordList.tool(toolkit.tool),
+                fontSize = 14.sp
+            )
             Spacer(modifier = Modifier.width(8.dp))
             Divider(modifier = Modifier.weight(1f))
         }
@@ -63,9 +77,9 @@ fun Toolbar(
         Spacer(modifier = Modifier.height(16.dp))
 
         ToggleButtonsGroup(
-            buttonLabels = labels,
-            rowSize = 5u,
-            chosenLabel = toolkit.currentToolType,
+            buttonLabels = tools,
+            rowSize = size,
+            chosenLabel = toolkit.tool?.let { GroupOption.Some(it) } ?: GroupOption.None,
             onButtonClick = { wishConsumer(SvcWish.Tools.ChooseTool(it)) },
             spaceContent = {
                 Icon(
@@ -98,6 +112,33 @@ fun Toolbar(
                     modifier = Modifier.fillMaxSize().padding(4.dp),
                 )
                 // }
+            }
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        ToggleButtonsGroup(
+            buttonLabels = shapes,
+            rowSize = size,
+            chosenLabel = GroupOption.Some(toolkit.shape),
+            onButtonClick = { wishConsumer(SvcWish.Tools.ChooseShape(it)) },
+            spaceContent = {
+                Icon(
+                    imageVector = Icons.Default.Clear,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize().padding(8.dp),
+                )
+            },
+            buttonContent = { selectionType ->
+                // Sprite(
+                //     sprite = toolSpriteBy(ToolType.Hand),
+                //     modifier = Modifier.fillMaxSize().padding(4.dp),
+                // )
+                Text(
+                    text = selectionType?.name.toString(),
+                    fontSize = 10.sp,
+                    modifier = Modifier.fillMaxSize().padding(4.dp),
+                )
             }
         )
     }

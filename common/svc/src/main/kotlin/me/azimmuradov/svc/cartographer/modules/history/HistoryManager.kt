@@ -16,8 +16,6 @@
 
 package me.azimmuradov.svc.cartographer.modules.history
 
-import me.azimmuradov.svc.cartographer.state.editor.LayoutState
-
 interface HistoryManager {
 
     val currentSnapshot: HistorySnapshot?
@@ -33,9 +31,5 @@ interface HistoryManager {
 
     fun goForwardIfCan()
 }
-
-
-fun HistoryManager.currentSnapshotOrDefault(layout: LayoutState): HistorySnapshot =
-    currentSnapshot ?: HistorySnapshot.default(layout)
 
 operator fun HistoryManager.plusAssign(snapshot: HistorySnapshot) = register(snapshot)
