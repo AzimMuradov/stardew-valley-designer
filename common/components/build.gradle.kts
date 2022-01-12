@@ -1,7 +1,5 @@
 @file:Suppress("SuspiciousCollectionReassignment")
 
-import org.jetbrains.compose.compose
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
@@ -26,12 +24,10 @@ dependencies {
     implementation(compose.runtime)
 
     implementation("com.arkivanov.decompose:decompose:${V.DECOMPOSE}")
-    implementation("com.arkivanov.decompose:extensions-compose-jetbrains:${V.DECOMPOSE}")
 
 
     implementation(projects.common.svcEngine)
     implementation(projects.common.svc)
-    implementation(projects.common.uiUtils.buttonsGroup)
     implementation(projects.common.uiUtils.dropdownMenu)
 }
 
@@ -40,27 +36,5 @@ tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs += listOf("-Xopt-in=kotlin.RequiresOptIn")
         jvmTarget = V.JVM
-    }
-}
-
-compose.desktop {
-    application {
-        mainClass = "me.azimmuradov.svc.MainKt"
-        // jvmArgs += listOf("-Xmx2G")
-        // args += listOf("-customArgument")
-
-        nativeDistributions {
-            packageName = SVC.NAME
-            packageVersion = SVC.VERSION
-            description = SVC.DESCRIPTION
-            copyright = SVC.COPYRIGHT
-            // vendor = ""
-
-            targetFormats(
-                TargetFormat.Deb, TargetFormat.Rpm,
-                TargetFormat.Exe, TargetFormat.Msi,
-                /*TargetFormat.Dmg, TargetFormat.Pkg,*/
-            )
-        }
     }
 }

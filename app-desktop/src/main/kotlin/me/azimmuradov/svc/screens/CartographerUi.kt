@@ -21,20 +21,21 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import me.azimmuradov.svc.cartographer.wishes.SvcWish
-import me.azimmuradov.svc.components.screens.Cartographer
+import me.azimmuradov.svc.components.screens.CartographerComponent
 import me.azimmuradov.svc.engine.layers.layeredEntitiesData
 import me.azimmuradov.svc.screens.cartographer.main.SvcLayout
 import me.azimmuradov.svc.screens.cartographer.sidemenus.LeftSideMenus
 import me.azimmuradov.svc.screens.cartographer.sidemenus.RightSideMenus
 import me.azimmuradov.svc.screens.cartographer.topmenubar.TopMenuBar
 
-
 @Composable
-fun CartographerUi(component: Cartographer) {
-    val svc = component.svc
-    val options = component.options
-    val settings = component.settings
+fun CartographerUi(component: CartographerComponent) {
+    val model by component.model.subscribeAsState()
+
+    val svc = model.svc
+    val options = model.options
 
     val state by svc.state.collectAsState()
 
@@ -44,7 +45,6 @@ fun CartographerUi(component: Cartographer) {
             disallowedTypes = state.editor.layout.disallowedTypes,
             onEntitySelection = { svc.consume(SvcWish.Palette.AddToInUse(it)) },
             options = options,
-            lang = settings.lang,
             wishConsumer = svc::consume
         )
 
@@ -52,7 +52,6 @@ fun CartographerUi(component: Cartographer) {
             LeftSideMenus(
                 toolkit = state.toolkit,
                 palette = state.palette,
-                lang = settings.lang,
                 width = SIDE_MENUS_WIDTH,
                 wishConsumer = svc::consume
             )
@@ -75,7 +74,6 @@ fun CartographerUi(component: Cartographer) {
                 },
                 layout = state.editor.layout,
                 entities = state.editor.entities,
-                lang = settings.lang,
                 width = SIDE_MENUS_WIDTH
             )
         }

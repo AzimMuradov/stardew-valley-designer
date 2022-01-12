@@ -14,35 +14,21 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.settings
+package me.azimmuradov.svc.components.screens
 
-import androidx.compose.runtime.*
-import me.azimmuradov.svc.settings.wordlists.*
+import com.arkivanov.decompose.value.Value
+import me.azimmuradov.svc.cartographer.Svc
+import me.azimmuradov.svc.components.screens.cartographer.Options
 
+interface CartographerComponent {
 
-/**
- * Application settings.
- */
-class Settings private constructor(
-    lang: Lang,
-) {
+    val model: Value<Model>
 
-    /**
-     * Application language.
-     */
-    var lang: Lang by mutableStateOf(lang)
+    data class Model(
+        val svc: Svc,
+        val options: Options,
+    )
 
 
-    companion object {
-
-        val DEFAULT: Settings = Settings(
-            lang = Lang.EN,
-        )
-
-
-        fun wordList(lang: Lang): WordList = when (lang) {
-            Lang.EN -> EnWordList
-            Lang.RU -> RuWordList
-        }
-    }
+    val onCartographerScreenReturn: () -> Unit
 }

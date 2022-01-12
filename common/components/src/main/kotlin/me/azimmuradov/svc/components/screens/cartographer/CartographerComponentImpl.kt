@@ -16,22 +16,24 @@
 
 package me.azimmuradov.svc.components.screens.cartographer
 
-import androidx.compose.runtime.*
+import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.value.Value
 import me.azimmuradov.svc.cartographer.svcOf
-import me.azimmuradov.svc.components.screens.Cartographer
+import me.azimmuradov.svc.components.screens.CartographerComponent
+import me.azimmuradov.svc.components.screens.CartographerComponent.Model
 import me.azimmuradov.svc.engine.layout.LayoutsProvider.LayoutType.Shed
 import me.azimmuradov.svc.engine.layout.LayoutsProvider.layoutOf
-import me.azimmuradov.svc.settings.Settings
 
-
-internal class CartographerComponent(
+internal class CartographerComponentImpl(
     override val onCartographerScreenReturn: () -> Unit,
-    settings: Settings,
-) : Cartographer {
+) : CartographerComponent {
 
-    override var svc by mutableStateOf(svcOf(layoutOf(type = Shed)))
+    private val _model = MutableValue(
+        Model(
+            svc = svcOf(layoutOf(type = Shed)),
+            options = Options.DEFAULT
+        )
+    )
 
-    override var options by mutableStateOf(Options.DEFAULT)
-
-    override var settings by mutableStateOf(settings)
+    override val model: Value<Model> get() = _model
 }

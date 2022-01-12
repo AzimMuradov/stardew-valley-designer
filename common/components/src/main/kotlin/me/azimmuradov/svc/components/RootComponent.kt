@@ -16,80 +16,24 @@
 
 package me.azimmuradov.svc.components
 
-import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.DefaultComponentContext
-import com.arkivanov.decompose.router.*
-import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.value.Value
-import com.arkivanov.essenty.lifecycle.LifecycleRegistry
-import com.arkivanov.essenty.parcelable.Parcelable
-import me.azimmuradov.svc.components.Root.Child
-import me.azimmuradov.svc.components.Root.Child.*
-import me.azimmuradov.svc.components.Root.Model
-import me.azimmuradov.svc.components.RootComponent.Config.*
-import me.azimmuradov.svc.components.screens.cartographer.CartographerComponent
-import me.azimmuradov.svc.components.screens.menu.MainMenuComponent
-import me.azimmuradov.svc.components.screens.welcome.WelcomeComponent
-import me.azimmuradov.svc.settings.Settings
+import me.azimmuradov.svc.components.screens.*
 
+interface RootComponent {
 
-fun rootComponent(): Root = RootComponent(
-    componentContext = DefaultComponentContext(
-        lifecycle = LifecycleRegistry(),
-    ),
-)
+    val routerState: Value<RouterState<*, Child>>
 
-
-private class RootComponent(componentContext: ComponentContext) : Root, ComponentContext by componentContext {
-
-    private val _model = MutableValue(Model(
-        settings = Settings.DEFAULT,
-    ))
-
-    override val model: Value<Model> = _model
-
-
-    private val router = router<Config, Child>(
-        initialConfiguration = CartographerConfig,
-        // initialConfiguration = WelcomeConfig,
-        childFactory = ::screenByScreenConfig,
-    )
-
-    override val routerState: Value<RouterState<*, Child>> = router.state
-
-
-    override fun onWelcomeScreenEnd() {
-        router.replaceCurrent(configuration = MainMenuConfig)
-    }
-
-    override fun onCartographerScreenCall() {
-        router.push(configuration = CartographerConfig)
-    }
-
-    override fun onCartographerScreenReturn() {
-        router.pop()
+    sealed class Child {
+        class WelcomeChild(val component: WelcomeComponent) : Child()
+        class MainMenuChild(val component: MainMenuComponent) : Child()
+        class CartographerChild(val component: CartographerComponent) : Child()
     }
 
 
-    private fun screenByScreenConfig(config: Config, componentContext: ComponentContext): Child =
-        when (config) {
-            WelcomeConfig -> WelcomeChild(WelcomeComponent(
-                this::onWelcomeScreenEnd,
-                model.value.settings,
-            ))
-            MainMenuConfig -> MainMenuChild(MainMenuComponent(
-                this::onCartographerScreenCall,
-                model.value.settings,
-            ))
-            CartographerConfig -> CartographerChild(CartographerComponent(
-                this::onCartographerScreenReturn,
-                model.value.settings,
-            ))
-        }
+    fun onWelcomeScreenEnd()
 
-    private sealed class Config : Parcelable {
-        object WelcomeConfig : Config()
-        object MainMenuConfig : Config()
-        object CartographerConfig : Config()
-    }
+    fun onCartographerScreenCall()
+
+    fun onCartographerScreenReturn()
 }

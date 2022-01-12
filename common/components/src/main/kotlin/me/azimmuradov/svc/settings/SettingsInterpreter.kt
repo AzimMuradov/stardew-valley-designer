@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.components.screens
+package me.azimmuradov.svc.settings
 
-import me.azimmuradov.svc.cartographer.Svc
-import me.azimmuradov.svc.components.screens.cartographer.Options
-import me.azimmuradov.svc.settings.Settings
+import me.azimmuradov.svc.settings.wordlists.*
 
+object SettingsInterpreter {
 
-interface Cartographer {
-
-    val svc: Svc
-
-    val options: Options
-
-    val settings: Settings
-
-
-    val onCartographerScreenReturn: () -> Unit
+    fun wordList(lang: Lang): WordList = when (lang) {
+        Lang.EN -> EnWordList
+        Lang.RU -> RuWordList
+    }
 }

@@ -16,13 +16,8 @@
 
 package me.azimmuradov.svc.screens.cartographer.topmenubar
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ArrowForward
@@ -33,14 +28,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.cartographer.state.HistoryState
 import me.azimmuradov.svc.cartographer.wishes.SvcWish
-import me.azimmuradov.svc.settings.Lang
 
 
 @Composable
 fun History(
     history: HistoryState,
     wishConsumer: (SvcWish.History) -> Unit,
-    lang: Lang,
 ) {
     Row(modifier = Modifier.wrapContentWidth().fillMaxHeight()) {
         IconButton(

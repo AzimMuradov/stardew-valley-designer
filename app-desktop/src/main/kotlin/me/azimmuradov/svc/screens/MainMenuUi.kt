@@ -17,10 +17,10 @@
 package me.azimmuradov.svc.screens
 
 import androidx.compose.runtime.Composable
-import me.azimmuradov.svc.components.screens.MainMenu
+import me.azimmuradov.svc.components.screens.MainMenuComponent
 
 
 @Composable
-fun MainMenuUi(component: MainMenu) {
+fun MainMenuUi(component: MainMenuComponent) {
     // TODO
 }

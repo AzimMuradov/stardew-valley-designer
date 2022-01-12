@@ -26,20 +26,18 @@ import me.azimmuradov.svc.cartographer.wishes.SvcWish
 import me.azimmuradov.svc.engine.layer.LayerType
 import me.azimmuradov.svc.engine.layer.allEntityTypes
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
-import me.azimmuradov.svc.settings.Lang
 
 
 @Composable
 fun LeftSideMenus(
     toolkit: ToolkitState,
     palette: PaletteState,
-    lang: Lang,
     width: Dp,
     wishConsumer: (SvcWish) -> Unit,
 ) {
     FixedSideMenus(width) {
-        menu { Toolbar(toolkit, lang, wishConsumer) }
-        menu { Palette(palette, lang, wishConsumer) }
+        menu { Toolbar(toolkit, wishConsumer) }
+        menu { Palette(palette, wishConsumer) }
     }
 }
 
@@ -49,7 +47,6 @@ fun RightSideMenus(
     onVisibilityChange: (LayerType<*>, Boolean) -> Unit,
     layout: LayoutState,
     entities: LayeredEntitiesData,
-    lang: Lang,
     width: Dp,
 ) {
     FixedSideMenus(width) {
@@ -59,12 +56,11 @@ fun RightSideMenus(
                     lType.allEntityTypes().any { eType -> eType !in layout.disallowedTypes }
                 },
                 visibleLayers = visibleLayers,
-                onVisibilityChange = onVisibilityChange,
-                lang = lang
+                onVisibilityChange = onVisibilityChange
             )
         }
         spacer(Modifier.weight(1f))
-        menu { MapPreview(layout.size, entities, lang) }
+        menu { MapPreview(layout.size, entities) }
     }
 }
 

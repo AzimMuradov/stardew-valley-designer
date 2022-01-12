@@ -30,8 +30,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.engine.geometry.Rect
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
-import me.azimmuradov.svc.settings.Lang
-import me.azimmuradov.svc.settings.Settings
 import me.azimmuradov.svc.utils.drawSpriteBy
 import me.azimmuradov.svc.utils.toIntOffset
 
@@ -40,10 +38,7 @@ import me.azimmuradov.svc.utils.toIntOffset
 fun MapPreview(
     layoutSize: Rect,
     entities: LayeredEntitiesData,
-    lang: Lang,
 ) {
-    val wordList = Settings.wordList(lang)
-
     Column {
         Row(
             modifier = Modifier.fillMaxWidth().padding(

@@ -26,13 +26,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import me.azimmuradov.svc.components.screens.Welcome
+import me.azimmuradov.svc.components.screens.WelcomeComponent
 import me.azimmuradov.svc.screens.IconAnimationState.APPEARING
 import me.azimmuradov.svc.screens.IconAnimationState.DISAPPEARING
 
 
 @Composable
-fun WelcomeUi(component: Welcome) {
+fun WelcomeUi(component: WelcomeComponent) {
     var iconAnimationState by remember { mutableStateOf(APPEARING) }
     val alpha = remember { Animatable(ICON_MIN_TRANSPARENCY) }
 

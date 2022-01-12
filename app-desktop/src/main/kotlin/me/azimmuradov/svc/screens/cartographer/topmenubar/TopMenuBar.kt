@@ -28,7 +28,6 @@ import me.azimmuradov.svc.cartographer.wishes.SvcWish
 import me.azimmuradov.svc.components.screens.cartographer.Options
 import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.EntityType
-import me.azimmuradov.svc.settings.Lang
 
 
 @Composable
@@ -37,7 +36,6 @@ fun TopMenuBar(
     disallowedTypes: Set<EntityType>,
     onEntitySelection: (Entity<*>) -> Unit,
     options: Options,
-    lang: Lang,
     wishConsumer: (SvcWish) -> Unit,
 ) {
     Surface(elevation = 4.dp) {
@@ -52,7 +50,6 @@ fun TopMenuBar(
                 disallowedTypes = disallowedTypes,
                 onEntitySelection = onEntitySelection,
                 options = options,
-                lang = lang,
                 modifier = Modifier
                     .fillMaxWidth().height(56.dp)
                     .background(color = MaterialTheme.colors.primary)

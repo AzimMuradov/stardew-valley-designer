@@ -16,21 +16,8 @@
 
 package me.azimmuradov.svc.components.screens.welcome
 
-import com.arkivanov.decompose.value.MutableValue
-import com.arkivanov.decompose.value.Value
-import me.azimmuradov.svc.components.screens.Welcome
-import me.azimmuradov.svc.components.screens.Welcome.Model
-import me.azimmuradov.svc.settings.Settings
+import me.azimmuradov.svc.components.screens.WelcomeComponent
 
-
-internal class WelcomeComponent(
+internal class WelcomeComponentImpl(
     override val onWelcomeScreenEnd: () -> Unit,
-    settings: Settings,
-) : Welcome {
-
-    private val _model = MutableValue(Model(
-        settings = settings,
-    ))
-
-    override val model: Value<Model> = _model
-}
+) : WelcomeComponent

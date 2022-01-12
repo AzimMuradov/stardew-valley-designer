@@ -27,8 +27,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.azimmuradov.svc.engine.layer.LayerType
-import me.azimmuradov.svc.settings.Lang
-import me.azimmuradov.svc.settings.Settings
+import me.azimmuradov.svc.utils.GlobalSettings
 
 
 @Composable
@@ -36,7 +35,6 @@ fun LayersVisibility(
     allowedLayers: Set<LayerType<*>>,
     visibleLayers: Set<LayerType<*>>,
     onVisibilityChange: (LayerType<*>, Boolean) -> Unit,
-    lang: Lang,
 ) {
     Column(modifier = Modifier.padding(vertical = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         for (lType in allowedLayers) {
@@ -44,7 +42,6 @@ fun LayersVisibility(
                 layerType = lType,
                 visible = lType in visibleLayers,
                 onVisibleChange = { vis -> onVisibilityChange(lType, vis) },
-                lang = lang,
             )
         }
     }
@@ -56,9 +53,8 @@ private fun LayerVisibility(
     layerType: LayerType<*>,
     visible: Boolean,
     onVisibleChange: (Boolean) -> Unit,
-    lang: Lang,
 ) {
-    val wordList = Settings.wordList(lang)
+    val wordList = GlobalSettings.strings
 
     Row(
         modifier = Modifier.fillMaxWidth().height(48.dp).padding(horizontal = 16.dp),

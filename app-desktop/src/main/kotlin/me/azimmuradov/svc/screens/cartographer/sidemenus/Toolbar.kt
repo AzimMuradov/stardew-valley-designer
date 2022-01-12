@@ -30,8 +30,7 @@ import me.azimmuradov.svc.cartographer.modules.toolkit.ToolType
 import me.azimmuradov.svc.cartographer.state.ToolkitState
 import me.azimmuradov.svc.cartographer.wishes.SvcWish
 import me.azimmuradov.svc.components.screens.cartographer.res.MenuSpritesProvider.toolSpriteBy
-import me.azimmuradov.svc.settings.Lang
-import me.azimmuradov.svc.settings.Settings
+import me.azimmuradov.svc.utils.GlobalSettings
 import me.azimmuradov.svc.utils.Sprite
 import me.azimmuradov.svc.utils.group.GroupOption
 import me.azimmuradov.svc.utils.group.ToggleButtonsGroup
@@ -40,7 +39,6 @@ import me.azimmuradov.svc.utils.group.ToggleButtonsGroup
 @Composable
 fun Toolbar(
     toolkit: ToolkitState,
-    lang: Lang,
     wishConsumer: (SvcWish.Tools) -> Unit,
 ) {
     val tools = ToolType.values().map { GroupOption.Some(it) }
@@ -54,7 +52,7 @@ fun Toolbar(
 
     val size = maxOf(tools.size, shapes.size).toUInt()
 
-    val wordList = Settings.wordList(lang)
+    val wordList = GlobalSettings.strings
 
     Column(
         modifier = Modifier.padding(16.dp),

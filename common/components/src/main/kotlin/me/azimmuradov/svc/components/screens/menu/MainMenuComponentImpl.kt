@@ -14,20 +14,10 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.components.screens
+package me.azimmuradov.svc.components.screens.menu
 
-import com.arkivanov.decompose.value.Value
-import me.azimmuradov.svc.settings.Settings
+import me.azimmuradov.svc.components.screens.MainMenuComponent
 
-
-interface MainMenu {
-
-    val model: Value<Model>
-
-    data class Model(
-        val settings: Settings,
-    )
-
-
-    val onCartographerScreenCall: () -> Unit
-}
+internal class MainMenuComponentImpl(
+    override val onCartographerScreenCall: () -> Unit,
+) : MainMenuComponent

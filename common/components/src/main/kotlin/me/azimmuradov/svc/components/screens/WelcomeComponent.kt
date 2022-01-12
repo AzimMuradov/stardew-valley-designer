@@ -16,18 +16,7 @@
 
 package me.azimmuradov.svc.components.screens
 
-import com.arkivanov.decompose.value.Value
-import me.azimmuradov.svc.settings.Settings
-
-
-interface Welcome {
-
-    val model: Value<Model>
-
-    data class Model(
-        val settings: Settings,
-    )
-
+interface WelcomeComponent {
 
     val onWelcomeScreenEnd: () -> Unit
 }

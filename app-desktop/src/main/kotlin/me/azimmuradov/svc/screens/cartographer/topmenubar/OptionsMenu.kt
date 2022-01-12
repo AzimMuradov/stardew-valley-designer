@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.sp
 import me.azimmuradov.svc.components.screens.cartographer.Options
 import me.azimmuradov.svc.components.screens.cartographer.menus.OptionsItemValue
 import me.azimmuradov.svc.components.screens.cartographer.menus.OptionsMenu
-import me.azimmuradov.svc.settings.Lang
 import me.azimmuradov.svc.utils.menu.ClickableCascadingDropdownMenu
 
 
@@ -45,7 +44,6 @@ import me.azimmuradov.svc.utils.menu.ClickableCascadingDropdownMenu
 @Composable
 fun RowScope.OptionsMenu(
     options: Options,
-    lang: Lang,
     menu: OptionsMenu,
 ) {
     Box(modifier = Modifier.aspectRatio(1f).fillMaxHeight()) {

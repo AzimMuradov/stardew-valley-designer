@@ -14,23 +14,9 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.components.screens.menu
+package me.azimmuradov.svc.components.screens
 
-import com.arkivanov.decompose.value.MutableValue
-import com.arkivanov.decompose.value.Value
-import me.azimmuradov.svc.components.screens.MainMenu
-import me.azimmuradov.svc.components.screens.MainMenu.Model
-import me.azimmuradov.svc.settings.Settings
+interface MainMenuComponent {
 
-
-internal class MainMenuComponent(
-    override val onCartographerScreenCall: () -> Unit,
-    settings: Settings,
-) : MainMenu {
-
-    private val _model = MutableValue(Model(
-        settings = settings,
-    ))
-
-    override val model: Value<Model> = _model
+    val onCartographerScreenCall: () -> Unit
 }

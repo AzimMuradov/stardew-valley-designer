@@ -27,7 +27,6 @@ import me.azimmuradov.svc.components.screens.cartographer.menus.MainOptionsMenu
 import me.azimmuradov.svc.components.screens.cartographer.menus.entityselection.*
 import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.EntityType
-import me.azimmuradov.svc.settings.Lang
 
 
 @Composable
@@ -36,7 +35,6 @@ fun TopMenu(
     disallowedTypes: Set<EntityType>,
     onEntitySelection: (Entity<*>) -> Unit,
     options: Options,
-    lang: Lang,
     modifier: Modifier = Modifier,
     wishConsumer: (SvcWish) -> Unit,
 ) {
@@ -49,42 +47,36 @@ fun TopMenu(
         History(
             history = history,
             wishConsumer = wishConsumer,
-            lang = lang,
         )
 
         EntitySelectionMenu(
             menu = BuildingsMenu,
             disallowedTypes = disallowedTypes,
             onEntitySelection = onEntitySelection,
-            lang = lang,
         )
 
         EntitySelectionMenu(
             menu = CommonEquipmentMenu,
             disallowedTypes = disallowedTypes,
             onEntitySelection = onEntitySelection,
-            lang = lang,
         )
 
         EntitySelectionMenu(
             menu = FurnitureMenu,
             disallowedTypes = disallowedTypes,
             onEntitySelection = onEntitySelection,
-            lang = lang,
         )
 
         EntitySelectionMenu(
             menu = FarmElementsMenu,
             disallowedTypes = disallowedTypes,
             onEntitySelection = onEntitySelection,
-            lang = lang,
         )
 
         EntitySelectionMenu(
             menu = TerrainElementsMenu,
             disallowedTypes = disallowedTypes,
             onEntitySelection = onEntitySelection,
-            lang = lang,
         )
 
         // TODO : Entity Search
@@ -93,7 +85,6 @@ fun TopMenu(
 
         OptionsMenu(
             options = options,
-            lang = lang,
             menu = MainOptionsMenu,
         )
     }

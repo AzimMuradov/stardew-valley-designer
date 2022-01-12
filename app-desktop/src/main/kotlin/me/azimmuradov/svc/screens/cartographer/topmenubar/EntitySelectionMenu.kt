@@ -35,10 +35,9 @@ import me.azimmuradov.svc.components.screens.cartographer.menus.EntitySelectionM
 import me.azimmuradov.svc.components.screens.cartographer.menus.filterElements
 import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.EntityType
-import me.azimmuradov.svc.settings.Lang
-import me.azimmuradov.svc.settings.Settings
+import me.azimmuradov.svc.utils.GlobalSettings
 import me.azimmuradov.svc.utils.Sprite
-import me.azimmuradov.svc.utils.menu.*
+import me.azimmuradov.svc.utils.menu.ClickableCascadingDropdownMenu
 
 
 @Composable
@@ -46,10 +45,9 @@ fun EntitySelectionMenu(
     menu: EntitySelectionMenu,
     disallowedTypes: Set<EntityType>,
     onEntitySelection: (Entity<*>) -> Unit,
-    lang: Lang,
 ) {
     val filteredMenu = menu.filterElements(disallowedTypes)
-    val wordList = Settings.wordList(lang)
+    val wordList = GlobalSettings.strings
 
     Box(modifier = Modifier.fillMaxHeight().width(REQUIRED_DROPDOWN_MENU_WIDTH)) {
         ClickableCascadingDropdownMenu(

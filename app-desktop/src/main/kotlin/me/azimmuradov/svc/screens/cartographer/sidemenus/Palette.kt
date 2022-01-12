@@ -31,20 +31,18 @@ import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.cartographer.state.PaletteState
 import me.azimmuradov.svc.cartographer.wishes.SvcWish
 import me.azimmuradov.svc.engine.entity.Entity
-import me.azimmuradov.svc.settings.Lang
-import me.azimmuradov.svc.settings.Settings
 import me.azimmuradov.svc.settings.wordlists.WordList
+import me.azimmuradov.svc.utils.GlobalSettings
 import me.azimmuradov.svc.utils.Sprite
 
 
 @Composable
 fun Palette(
     palette: PaletteState,
-    lang: Lang,
     wishConsumer: (SvcWish.Palette) -> Unit,
 ) {
     // TODO : hotbar feature (val hotbar = palette.hotbar)
-    val wordList = Settings.wordList(lang)
+    val wordList = GlobalSettings.strings
 
     Column(
         modifier = Modifier.padding(16.dp),

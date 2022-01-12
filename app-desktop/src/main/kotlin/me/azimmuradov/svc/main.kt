@@ -26,9 +26,11 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
-import me.azimmuradov.svc.components.Root
+import me.azimmuradov.svc.components.RootComponent
 import me.azimmuradov.svc.components.rootComponent
 import me.azimmuradov.svc.screens.*
+import me.azimmuradov.svc.settings.Lang
+import me.azimmuradov.svc.utils.WithSettings
 
 
 fun main() {
@@ -47,20 +49,24 @@ fun main() {
             icon = painterResource(ICON_RES_PATH),
             resizable = false,
         ) {
-            AppTheme(themeVariant = ThemeVariant.LIGHT) { RootUi(root) }
+            AppTheme(themeVariant = ThemeVariant.LIGHT) {
+                WithSettings(lang = Lang.EN) {
+                    RootUi(root)
+                }
+            }
         }
     }
 }
 
 
 @Composable
-fun RootUi(component: Root) {
+fun RootUi(component: RootComponent) {
     Box(modifier = Modifier.fillMaxSize()) {
         Children(routerState = component.routerState) { (_, child) ->
             when (child) {
-                is Root.Child.WelcomeChild -> WelcomeUi(child.component)
-                is Root.Child.MainMenuChild -> MainMenuUi(child.component)
-                is Root.Child.CartographerChild -> CartographerUi(child.component)
+                is RootComponent.Child.WelcomeChild -> WelcomeUi(child.component)
+                is RootComponent.Child.MainMenuChild -> MainMenuUi(child.component)
+                is RootComponent.Child.CartographerChild -> CartographerUi(child.component)
             }
         }
     }
