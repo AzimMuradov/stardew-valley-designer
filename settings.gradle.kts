@@ -5,14 +5,28 @@ pluginManagement {
     }
 }
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+
+// Applications
+
 include(":app-desktop")
 // TODO : include(":app-web")
 
+
+// SVC Engine
+
 include(":common:svc-engine")
+
+
+// Components
+
+include(":common:components:root")
+
 include(":common:svc")
-include(":common:components")
+
+
+// Compose UI Utils
 
 include(":common:ui-utils:buttons-group")
 include(":common:ui-utils:dropdown-menu")
-
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
