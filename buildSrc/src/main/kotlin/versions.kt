@@ -2,8 +2,8 @@ object V {
 
     // Plugins
 
-    const val P_KOTLIN: String = "1.6.10"
-    const val P_COMPOSE: String = "1.0.1"
+    const val P_KOTLIN: String = "1.7.0"
+    const val P_COMPOSE: String = "1.2.0-alpha01-dev753"
 
 
     // Kotlin Compile
@@ -13,7 +13,7 @@ object V {
 
     // Dependencies
 
-    const val DECOMPOSE: String = "0.4.0"
+    const val DECOMPOSE: String = "0.8.0"
 
     const val JACKSON: String = "2.13.+"
 }
