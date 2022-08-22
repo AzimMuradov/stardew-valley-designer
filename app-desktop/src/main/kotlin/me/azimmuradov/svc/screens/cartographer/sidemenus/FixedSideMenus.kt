@@ -21,8 +21,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
-import me.azimmuradov.svc.cartographer.state.*
-import me.azimmuradov.svc.cartographer.wishes.SvcWish
+import me.azimmuradov.svc.cartographer.CartographerIntent
+import me.azimmuradov.svc.cartographer.modules.map.LayoutState
+import me.azimmuradov.svc.cartographer.modules.palette.PaletteState
+import me.azimmuradov.svc.cartographer.modules.toolkit.ToolkitState
 import me.azimmuradov.svc.engine.layer.LayerType
 import me.azimmuradov.svc.engine.layer.allEntityTypes
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
@@ -33,11 +35,11 @@ fun LeftSideMenus(
     toolkit: ToolkitState,
     palette: PaletteState,
     width: Dp,
-    wishConsumer: (SvcWish) -> Unit,
+    intentConsumer: (CartographerIntent) -> Unit,
 ) {
     FixedSideMenus(width) {
-        menu { Toolbar(toolkit, wishConsumer) }
-        menu { Palette(palette, wishConsumer) }
+        menu { Toolbar(toolkit, intentConsumer) }
+        menu { Palette(palette, intentConsumer) }
     }
 }
 

@@ -30,9 +30,9 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.unit.toOffset
-import me.azimmuradov.svc.cartographer.state.ToolkitState
-import me.azimmuradov.svc.cartographer.wishes.SvcWish
-import me.azimmuradov.svc.components.screens.cartographer.Options
+import me.azimmuradov.svc.cartographer.CartographerIntent
+import me.azimmuradov.svc.cartographer.modules.options.OptionsState
+import me.azimmuradov.svc.cartographer.modules.toolkit.ToolkitState
 import me.azimmuradov.svc.engine.geometry.*
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 import me.azimmuradov.svc.engine.layers.flatten
@@ -46,9 +46,10 @@ import kotlin.math.floor
 fun BoxScope.EditorLayout(
     layoutSize: Rect,
     visibleEntities: LayeredEntitiesData,
+    selectedEntities: LayeredEntitiesData,
     toolkit: ToolkitState,
-    options: Options,
-    wishConsumer: (SvcWish) -> Unit,
+    options: OptionsState,
+    intentConsumer: (CartographerIntent) -> Unit,
 ) {
     val (w, h) = layoutSize
 
@@ -72,32 +73,29 @@ fun BoxScope.EditorLayout(
             .align(Alignment.Center)
             // .clipToBounds()
             .background(color = Color.White)
-            .pointerMoveFilter(
-                onEnter = { false },
-                onMove = { offset -> hoveredCoordinate = offset.toCoordinate(); false },
-                onExit = { hoveredCoordinate = UNDEFINED; false },
-            )
+            .onPointerEvent(PointerEventType.Move) { hoveredCoordinate = it.changes.first().position.toCoordinate() }
+            .onPointerEvent(PointerEventType.Exit) { hoveredCoordinate = UNDEFINED }
             .pointerInput(toolkit.tool) {
                 detectDragGesturesImmediately(
                     onDragStart = { offset ->
                         val current = offset.toCoordinate()
                         prevDragCoordinate = current
-                        wishConsumer(SvcWish.Act.Start(current))
+                        intentConsumer(CartographerIntent.Engine.Start(current))
                     },
                     onDrag = { change, _ ->
                         val current = change.position.toCoordinate()
                         if (current != prevDragCoordinate) {
                             prevDragCoordinate = current
-                            wishConsumer(SvcWish.Act.Continue(current))
+                            intentConsumer(CartographerIntent.Engine.Continue(current))
                         }
                     },
                     onDragEnd = {
                         prevDragCoordinate = UNDEFINED
-                        wishConsumer(SvcWish.Act.End)
+                        intentConsumer(CartographerIntent.Engine.End)
                     },
                     onDragCancel = {
                         prevDragCoordinate = UNDEFINED
-                        wishConsumer(SvcWish.Act.End)
+                        intentConsumer(CartographerIntent.Engine.End)
                     },
                 )
             }
@@ -131,19 +129,18 @@ fun BoxScope.EditorLayout(
 
         // Beeps and Bops
 
-        when (toolkit) {
-            is ToolkitState.Hand.Point.Idle -> {
-                for (e in toolkit.selectedEntities.flatten()) {
-                    val offset = e.place.toIntOffset() * stepSize
+        for (e in selectedEntities.flatten()) {
+            val offset = e.place.toIntOffset() * stepSize
 
-                    drawRect(
-                        color = Color.Blue,
-                        topLeft = offset.toOffset(),
-                        size = cellSize,
-                        alpha = 0.5f
-                    )
-                }
-            }
+            drawRect(
+                color = Color.Blue,
+                topLeft = offset.toOffset(),
+                size = cellSize,
+                alpha = 0.3f
+            )
+        }
+
+        when (toolkit) {
             is ToolkitState.Hand.Point.Acting -> {
                 val es = toolkit.heldEntities.flatten()
                 for (e in es) {
@@ -159,6 +156,7 @@ fun BoxScope.EditorLayout(
                     )
                 }
             }
+
             is ToolkitState.Pen.Shape.Acting -> {
                 val coordinates = toolkit.placedShape.coordinates
                 for (c in coordinates) {
@@ -191,6 +189,7 @@ fun BoxScope.EditorLayout(
                     )
                 }
             }
+
             is ToolkitState.Eraser.Shape.Acting -> {
                 val coordinates = toolkit.placedShape.coordinates
                 for (c in coordinates) {
@@ -210,6 +209,7 @@ fun BoxScope.EditorLayout(
                     )
                 }
             }
+
             is ToolkitState.Select.Shape -> {
                 if (toolkit is ToolkitState.Select.Shape.Acting) {
                     val coordinates = toolkit.placedShape.coordinates
@@ -222,17 +222,8 @@ fun BoxScope.EditorLayout(
                         )
                     }
                 }
-                for (e in toolkit.selectedEntities.flatten()) {
-                    val offset = e.place.toIntOffset() * stepSize
-
-                    drawRect(
-                        color = Color.Blue,
-                        topLeft = offset.toOffset(),
-                        size = cellSize,
-                        alpha = 0.5f
-                    )
-                }
             }
+
             else -> Unit
         }
 
@@ -317,7 +308,7 @@ private suspend fun PointerInputScope.detectDragGesturesImmediately(
             if (
                 drag(drag.id) {
                     onDrag(it, it.positionChange())
-                    it.consumePositionChange()
+                    if (it.positionChange() != Offset.Zero) it.consume()
                 }
             ) {
                 onDragEnd()

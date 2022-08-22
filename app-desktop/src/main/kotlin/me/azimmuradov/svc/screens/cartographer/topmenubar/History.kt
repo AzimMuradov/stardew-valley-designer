@@ -26,18 +26,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import me.azimmuradov.svc.cartographer.state.HistoryState
-import me.azimmuradov.svc.cartographer.wishes.SvcWish
+import me.azimmuradov.svc.cartographer.CartographerIntent
+import me.azimmuradov.svc.cartographer.modules.history.HistoryState
 
 
 @Composable
 fun History(
     history: HistoryState,
-    wishConsumer: (SvcWish.History) -> Unit,
+    intentConsumer: (CartographerIntent) -> Unit,
 ) {
     Row(modifier = Modifier.wrapContentWidth().fillMaxHeight()) {
         IconButton(
-            onClick = { wishConsumer(SvcWish.History.GoBack) },
+            onClick = { intentConsumer(CartographerIntent.History.GoBack) },
             enabled = history.canGoBack,
             modifier = Modifier.fillMaxHeight(),
         ) {
@@ -50,7 +50,7 @@ fun History(
             )
         }
         IconButton(
-            onClick = { wishConsumer(SvcWish.History.GoForward) },
+            onClick = { intentConsumer(CartographerIntent.History.GoForward) },
             enabled = history.canGoForward,
             modifier = Modifier.fillMaxHeight(),
         ) {

@@ -16,24 +16,23 @@
 
 package me.azimmuradov.svc.components.screens.cartographer
 
-import com.arkivanov.decompose.value.MutableValue
-import com.arkivanov.decompose.value.Value
-import me.azimmuradov.svc.cartographer.svcOf
-import me.azimmuradov.svc.components.screens.CartographerComponent
-import me.azimmuradov.svc.components.screens.CartographerComponent.Model
-import me.azimmuradov.svc.engine.layout.LayoutsProvider.LayoutType.Shed
-import me.azimmuradov.svc.engine.layout.LayoutsProvider.layoutOf
+import com.arkivanov.mvikotlin.logging.logger.DefaultLogFormatter
+import com.arkivanov.mvikotlin.logging.store.LoggingStoreFactory
+import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
+import me.azimmuradov.svc.cartographer.CartographerComponent
+import me.azimmuradov.svc.cartographer.CartographerStoreFactory
+import me.azimmuradov.svc.engine.layout.Layout
+
 
 internal class CartographerComponentImpl(
+    layout: Layout,
     override val onCartographerScreenReturn: () -> Unit,
 ) : CartographerComponent {
 
-    private val _model = MutableValue(
-        Model(
-            svc = svcOf(layoutOf(type = Shed)),
-            options = Options.DEFAULT
+    override val store = CartographerStoreFactory(
+        storeFactory = LoggingStoreFactory(
+            delegate = DefaultStoreFactory(),
+            logFormatter = DefaultLogFormatter(valueLengthLimit = Int.MAX_VALUE)
         )
-    )
-
-    override val model: Value<Model> get() = _model
+    ).create(layout)
 }

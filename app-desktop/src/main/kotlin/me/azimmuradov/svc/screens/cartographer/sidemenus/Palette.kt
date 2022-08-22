@@ -28,8 +28,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.azimmuradov.svc.cartographer.state.PaletteState
-import me.azimmuradov.svc.cartographer.wishes.SvcWish
+import me.azimmuradov.svc.cartographer.CartographerIntent
+import me.azimmuradov.svc.cartographer.modules.palette.PaletteState
 import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.settings.wordlists.WordList
 import me.azimmuradov.svc.utils.GlobalSettings
@@ -39,7 +39,7 @@ import me.azimmuradov.svc.utils.Sprite
 @Composable
 fun Palette(
     palette: PaletteState,
-    wishConsumer: (SvcWish.Palette) -> Unit,
+    intentConsumer: (CartographerIntent.Palette) -> Unit,
 ) {
     // TODO : hotbar feature (val hotbar = palette.hotbar)
     val wordList = GlobalSettings.strings

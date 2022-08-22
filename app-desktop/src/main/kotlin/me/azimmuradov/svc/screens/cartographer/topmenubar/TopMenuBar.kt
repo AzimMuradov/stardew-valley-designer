@@ -23,9 +23,9 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import me.azimmuradov.svc.cartographer.state.HistoryState
-import me.azimmuradov.svc.cartographer.wishes.SvcWish
-import me.azimmuradov.svc.components.screens.cartographer.Options
+import me.azimmuradov.svc.cartographer.CartographerIntent
+import me.azimmuradov.svc.cartographer.modules.history.HistoryState
+import me.azimmuradov.svc.cartographer.modules.options.OptionsState
 import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.EntityType
 
@@ -35,8 +35,8 @@ fun TopMenuBar(
     history: HistoryState,
     disallowedTypes: Set<EntityType>,
     onEntitySelection: (Entity<*>) -> Unit,
-    options: Options,
-    wishConsumer: (SvcWish) -> Unit,
+    options: OptionsState,
+    intentConsumer: (CartographerIntent) -> Unit,
 ) {
     Surface(elevation = 4.dp) {
         Column(modifier = Modifier.fillMaxWidth().wrapContentHeight()) {
@@ -54,7 +54,7 @@ fun TopMenuBar(
                     .fillMaxWidth().height(56.dp)
                     .background(color = MaterialTheme.colors.primary)
                     .padding(horizontal = 16.dp),
-                wishConsumer = wishConsumer
+                intentConsumer = intentConsumer
             )
         }
     }

@@ -10,17 +10,28 @@ include(":app-desktop")
 
 include(":common:svc-engine")
 
+// Save data parser
+
+include(":common:sv-save")
 
 // Components
 
 include(":common:components:root")
 
-include(":common:svc")
+include(
+    ":common:components:screen-welcome",
+    ":common:components:screen-main-menu",
+    ":common:components:screen-cartographer",
+    ":common:components:screen-settings",
+)
 
 // Compose UI Utils
 
-include(":common:ui-utils:buttons-group")
-include(":common:ui-utils:dropdown-menu")
+include(":common:ui-utils:buttons-group-ui")
+include(
+    ":common:ui-utils:dropdown-menu",
+    ":common:ui-utils:dropdown-menu-ui",
+)
 
 
 // Plugin Management

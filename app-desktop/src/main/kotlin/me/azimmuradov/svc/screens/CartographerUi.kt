@@ -21,9 +21,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import me.azimmuradov.svc.cartographer.wishes.SvcWish
-import me.azimmuradov.svc.components.screens.CartographerComponent
+import com.arkivanov.mvikotlin.extensions.coroutines.states
+import me.azimmuradov.svc.cartographer.CartographerComponent
+import me.azimmuradov.svc.cartographer.CartographerIntent
 import me.azimmuradov.svc.engine.layers.layeredEntitiesData
 import me.azimmuradov.svc.screens.cartographer.main.SvcLayout
 import me.azimmuradov.svc.screens.cartographer.sidemenus.LeftSideMenus
@@ -32,48 +32,46 @@ import me.azimmuradov.svc.screens.cartographer.topmenubar.TopMenuBar
 
 @Composable
 fun CartographerUi(component: CartographerComponent) {
-    val model by component.model.subscribeAsState()
-
-    val svc = model.svc
-    val options = model.options
-
-    val state by svc.state.collectAsState()
+    val store = component.store
+    val state by store.states.collectAsState(component.store.state)
+    val (history, map, toolkit, palette, /* flavors, */ visLayers, /* clipboard, */ options) = state
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopMenuBar(
-            history = state.history,
-            disallowedTypes = state.editor.layout.disallowedTypes,
-            onEntitySelection = { svc.consume(SvcWish.Palette.AddToInUse(it)) },
+            history = history,
+            disallowedTypes = map.layout.disallowedTypes,
+            onEntitySelection = { component.store.accept(CartographerIntent.Palette.AddToInUse(it)) },
             options = options,
-            wishConsumer = svc::consume
+            intentConsumer = store::accept
         )
 
         Row(Modifier.fillMaxWidth().weight(1f)) {
             LeftSideMenus(
-                toolkit = state.toolkit,
-                palette = state.palette,
+                toolkit = toolkit,
+                palette = palette,
                 width = SIDE_MENUS_WIDTH,
-                wishConsumer = svc::consume
+                intentConsumer = store::accept
             )
             SvcLayout(
-                layoutSize = state.editor.layout.size,
+                layoutSize = map.layout.size,
                 visibleEntities = run {
-                    val all = state.editor.entities.all.filter { (layerType) ->
-                        layerType in state.editor.visibleLayers
+                    val all = map.entities.all.filter { (layerType) ->
+                        layerType in visLayers.visibleLayers
                     }.toMap()
                     layeredEntitiesData { all.getOrDefault(key = it, defaultValue = setOf()) }
                 },
-                toolkit = state.toolkit,
+                selectedEntities = map.selectedEntities,
+                toolkit = toolkit,
                 options = options,
-                wishConsumer = svc::consume
+                intentConsumer = store::accept
             )
             RightSideMenus(
-                visibleLayers = state.editor.visibleLayers,
+                visibleLayers = visLayers.visibleLayers,
                 onVisibilityChange = { layerType, visible ->
-                    svc.consume(SvcWish.VisibilityLayers.ChangeVisibility(layerType, visible))
+                    store.accept(CartographerIntent.VisLayers.ChangeVisibility(layerType, visible))
                 },
-                layout = state.editor.layout,
-                entities = state.editor.entities,
+                layout = map.layout,
+                entities = map.entities,
                 width = SIDE_MENUS_WIDTH
             )
         }

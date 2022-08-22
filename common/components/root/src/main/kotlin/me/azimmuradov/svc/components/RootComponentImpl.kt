@@ -18,7 +18,7 @@ package me.azimmuradov.svc.components
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.DefaultComponentContext
-import com.arkivanov.decompose.router.*
+import com.arkivanov.decompose.router.stack.*
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.essenty.parcelable.Parcelable
@@ -28,6 +28,8 @@ import me.azimmuradov.svc.components.RootComponentImpl.Config.*
 import me.azimmuradov.svc.components.screens.cartographer.CartographerComponentImpl
 import me.azimmuradov.svc.components.screens.menu.MainMenuComponentImpl
 import me.azimmuradov.svc.components.screens.welcome.WelcomeComponentImpl
+import me.azimmuradov.svc.engine.layout.LayoutsProvider.LayoutType.Shed
+import me.azimmuradov.svc.engine.layout.LayoutsProvider.layoutOf
 
 fun rootComponent(): RootComponent = RootComponentImpl(
     componentContext = DefaultComponentContext(
@@ -40,39 +42,51 @@ private class RootComponentImpl(
     componentContext: ComponentContext,
 ) : RootComponent, ComponentContext by componentContext {
 
-    private val router = router<Config, Child>(
+    private val navigation = StackNavigation<Config>()
+
+    private val stack = childStack(
+        source = navigation,
         initialConfiguration = CartographerConfig,
         // initialConfiguration = WelcomeConfig,
-        childFactory = ::screenByScreenConfig,
+        childFactory = ::child,
     )
 
-    override val routerState: Value<RouterState<*, Child>> = router.state
+    override val childStack: Value<ChildStack<*, Child>> = stack
 
 
     override fun onWelcomeScreenEnd() {
-        router.replaceCurrent(configuration = MainMenuConfig)
+        navigation.replaceCurrent(configuration = MainMenuConfig)
     }
 
     override fun onCartographerScreenCall() {
-        router.push(configuration = CartographerConfig)
+        navigation.push(configuration = CartographerConfig)
     }
 
     override fun onCartographerScreenReturn() {
-        router.pop()
+        navigation.pop()
     }
 
 
-    private fun screenByScreenConfig(config: Config, componentContext: ComponentContext): Child =
+    private fun child(config: Config, componentContext: ComponentContext): Child =
         when (config) {
-            WelcomeConfig -> WelcomeChild(WelcomeComponentImpl(
-                this::onWelcomeScreenEnd,
-            ))
-            MainMenuConfig -> MainMenuChild(MainMenuComponentImpl(
-                this::onCartographerScreenCall,
-            ))
-            CartographerConfig -> CartographerChild(CartographerComponentImpl(
-                this::onCartographerScreenReturn,
-            ))
+            WelcomeConfig -> WelcomeChild(
+                WelcomeComponentImpl(
+                    this::onWelcomeScreenEnd,
+                )
+            )
+
+            MainMenuConfig -> MainMenuChild(
+                MainMenuComponentImpl(
+                    this::onCartographerScreenCall,
+                )
+            )
+
+            CartographerConfig -> CartographerChild(
+                CartographerComponentImpl(
+                    layout = layoutOf(type = Shed),
+                    onCartographerScreenReturn = this::onCartographerScreenReturn,
+                )
+            )
         }
 
     private sealed class Config : Parcelable {

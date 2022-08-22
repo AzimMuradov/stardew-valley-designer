@@ -20,9 +20,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import me.azimmuradov.svc.cartographer.state.HistoryState
-import me.azimmuradov.svc.cartographer.wishes.SvcWish
-import me.azimmuradov.svc.components.screens.cartographer.Options
+import me.azimmuradov.svc.cartographer.CartographerIntent
+import me.azimmuradov.svc.cartographer.modules.history.HistoryState
+import me.azimmuradov.svc.cartographer.modules.options.OptionsState
 import me.azimmuradov.svc.components.screens.cartographer.menus.MainOptionsMenu
 import me.azimmuradov.svc.components.screens.cartographer.menus.entityselection.*
 import me.azimmuradov.svc.engine.entity.Entity
@@ -34,9 +34,9 @@ fun TopMenu(
     history: HistoryState,
     disallowedTypes: Set<EntityType>,
     onEntitySelection: (Entity<*>) -> Unit,
-    options: Options,
+    options: OptionsState,
     modifier: Modifier = Modifier,
-    wishConsumer: (SvcWish) -> Unit,
+    intentConsumer: (CartographerIntent) -> Unit,
 ) {
     Row(
         modifier = modifier,
@@ -46,7 +46,7 @@ fun TopMenu(
 
         History(
             history = history,
-            wishConsumer = wishConsumer,
+            intentConsumer = intentConsumer
         )
 
         EntitySelectionMenu(
@@ -86,6 +86,7 @@ fun TopMenu(
         OptionsMenu(
             options = options,
             menu = MainOptionsMenu,
+            intentConsumer = intentConsumer
         )
     }
 }

@@ -32,7 +32,8 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.azimmuradov.svc.components.screens.cartographer.Options
+import me.azimmuradov.svc.cartographer.CartographerIntent
+import me.azimmuradov.svc.cartographer.modules.options.OptionsState
 import me.azimmuradov.svc.components.screens.cartographer.menus.OptionsItemValue
 import me.azimmuradov.svc.components.screens.cartographer.menus.OptionsMenu
 import me.azimmuradov.svc.utils.menu.ClickableCascadingDropdownMenu
@@ -43,8 +44,9 @@ import me.azimmuradov.svc.utils.menu.ClickableCascadingDropdownMenu
 
 @Composable
 fun RowScope.OptionsMenu(
-    options: Options,
+    options: OptionsState,
     menu: OptionsMenu,
+    intentConsumer: (CartographerIntent.Options) -> Unit,
 ) {
     Box(modifier = Modifier.aspectRatio(1f).fillMaxHeight()) {
         ClickableCascadingDropdownMenu(
@@ -91,7 +93,7 @@ fun RowScope.OptionsMenu(
                         Spacer(modifier = Modifier.width(8.dp))
                         Checkbox(
                             checked = options.showAxis,
-                            onCheckedChange = { options.showAxis = it }
+                            onCheckedChange = { intentConsumer(CartographerIntent.Options.ChangeAxisVisibility(it)) }
                         )
                         Spacer(modifier = Modifier.width(20.dp))
                         Text(
@@ -100,11 +102,12 @@ fun RowScope.OptionsMenu(
                             fontSize = 13.sp,
                         )
                     }
+
                     OptionsItemValue.ShowGrid -> {
                         Spacer(modifier = Modifier.width(8.dp))
                         Checkbox(
                             checked = options.showGrid,
-                            onCheckedChange = { options.showGrid = it }
+                            onCheckedChange = { intentConsumer(CartographerIntent.Options.ChangeGridVisibility(it)) }
                         )
                         Spacer(modifier = Modifier.width(20.dp))
                         Text(

@@ -25,7 +25,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
-import com.arkivanov.decompose.extensions.compose.jetbrains.Children
+import com.arkivanov.decompose.ExperimentalDecomposeApi
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import me.azimmuradov.svc.components.RootComponent
 import me.azimmuradov.svc.components.rootComponent
 import me.azimmuradov.svc.screens.*
@@ -47,7 +48,7 @@ fun main() {
             ),
             title = "",
             icon = painterResource(ICON_RES_PATH),
-            resizable = false,
+            resizable = true,
         ) {
             AppTheme(themeVariant = ThemeVariant.LIGHT) {
                 WithSettings(lang = Lang.EN) {
@@ -59,10 +60,11 @@ fun main() {
 }
 
 
+@OptIn(ExperimentalDecomposeApi::class)
 @Composable
 fun RootUi(component: RootComponent) {
     Box(modifier = Modifier.fillMaxSize()) {
-        Children(routerState = component.routerState) { (_, child) ->
+        Children(stack = component.childStack) { (_, child) ->
             when (child) {
                 is RootComponent.Child.WelcomeChild -> WelcomeUi(child.component)
                 is RootComponent.Child.MainMenuChild -> MainMenuUi(child.component)

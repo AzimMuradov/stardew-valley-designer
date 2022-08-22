@@ -13,7 +13,9 @@ object V {
 
     // Dependencies
 
-    const val DECOMPOSE: String = "0.8.0"
+    const val DECOMPOSE: String = "1.0.0-alpha-02"
 
-    const val JACKSON: String = "2.13.+"
+    const val MVI_KOTLIN: String = "3.0.1"
+
+    const val JACKSON: String = "2.13.3"
 }

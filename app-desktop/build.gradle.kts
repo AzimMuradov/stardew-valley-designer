@@ -1,8 +1,5 @@
-@file:Suppress("SuspiciousCollectionReassignment")
-
 import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
 plugins {
@@ -20,29 +17,30 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin(module = "stdlib-jdk8", version = V.P_KOTLIN))
+    implementation(projects.common.svcEngine)
+
+    implementation(projects.common.components.root)
+    implementation(projects.common.components.screenWelcome)
+    implementation(projects.common.components.screenMainMenu)
+    implementation(projects.common.components.screenCartographer)
+    implementation(projects.common.components.screenSettings)
+
+    implementation(projects.common.uiUtils.buttonsGroupUi)
+    implementation(projects.common.uiUtils.dropdownMenu)
+    implementation(projects.common.uiUtils.dropdownMenuUi)
+
+
+    implementation(kotlin("stdlib-jdk8"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
     implementation(compose.desktop.currentOs)
 
     implementation("com.arkivanov.decompose:decompose:${V.DECOMPOSE}")
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains:${V.DECOMPOSE}")
-
-
-    implementation(projects.common.svcEngine)
-    implementation(projects.common.svc)
-    implementation(projects.common.components.root)
-    implementation(projects.common.uiUtils.buttonsGroup)
-    implementation(projects.common.uiUtils.dropdownMenu)
+    implementation("com.arkivanov.mvikotlin:mvikotlin:${V.MVI_KOTLIN}")
+    implementation("com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines:${V.MVI_KOTLIN}")
 }
 
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        languageVersion = "1.6"
-        freeCompilerArgs += listOf("-Xopt-in=kotlin.RequiresOptIn")
-        jvmTarget = V.JVM
-    }
-}
 
 compose.desktop {
     application {
@@ -60,7 +58,7 @@ compose.desktop {
             targetFormats(
                 TargetFormat.Deb, TargetFormat.Rpm,
                 TargetFormat.Exe, TargetFormat.Msi,
-                /*TargetFormat.Dmg, TargetFormat.Pkg,*/
+                /* TargetFormat.Dmg, TargetFormat.Pkg, */
             )
         }
     }

@@ -48,6 +48,7 @@ fun WelcomeUi(component: WelcomeComponent) {
                 APPEARING -> if (alpha.value == ICON_MAX_TRANSPARENCY) {
                     iconAnimationState = DISAPPEARING
                 }
+
                 DISAPPEARING -> if (alpha.value == ICON_MIN_TRANSPARENCY) {
                     component.onWelcomeScreenEnd()
                 }

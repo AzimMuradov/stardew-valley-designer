@@ -18,6 +18,7 @@ package me.azimmuradov.svc.components.screens.welcome
 
 import me.azimmuradov.svc.components.screens.WelcomeComponent
 
+
 internal class WelcomeComponentImpl(
     override val onWelcomeScreenEnd: () -> Unit,
 ) : WelcomeComponent

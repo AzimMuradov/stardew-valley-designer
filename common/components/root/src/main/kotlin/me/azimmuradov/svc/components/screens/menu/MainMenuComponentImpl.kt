@@ -18,6 +18,7 @@ package me.azimmuradov.svc.components.screens.menu
 
 import me.azimmuradov.svc.components.screens.MainMenuComponent
 
+
 internal class MainMenuComponentImpl(
     override val onCartographerScreenCall: () -> Unit,
 ) : MainMenuComponent

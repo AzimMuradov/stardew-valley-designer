@@ -23,60 +23,59 @@ import me.azimmuradov.svc.utils.menu.menu
 import me.azimmuradov.svc.components.screens.cartographer.menus.EntitySelectionRoot as Root
 
 
-val TerrainElementsMenu: EntitySelectionMenu =
-    menu(root = Root.TerrainElements) {
-        submenu(root = Root.TerrainElementsFloors) {
-            items(
-                Floor.WoodFloor,
-                Floor.RusticPlankFloor,
-                Floor.StrawFloor,
-                Floor.WeatheredFloor,
-                Floor.CrystalFloor,
-                Floor.StoneFloor,
-                Floor.StoneWalkwayFloor,
-                Floor.BrickFloor,
-                Floor.WoodPath,
-                Floor.GravelPath,
-                Floor.CobblestonePath,
-                Floor.SteppingStonePath,
-                Floor.CrystalPath,
-                Floor.Grass,
-            )
-        }
-
-        submenu(root = Root.TerrainElementsFences) {
-            items(
-                Equipment.SimpleEquipment.Gate,
-                Equipment.SimpleEquipment.WoodFence,
-                Equipment.SimpleEquipment.StoneFence,
-                Equipment.SimpleEquipment.IronFence,
-                Equipment.SimpleEquipment.HardwoodFence,
-            )
-        }
-
-        submenu(root = Root.TerrainElementsSigns) {
-            items(
-                Equipment.SimpleEquipment.WoodSign,
-                Equipment.SimpleEquipment.StoneSign,
-                Equipment.SimpleEquipment.DarkSign,
-            )
-        }
-
-        submenu(root = Root.TerrainElementsLighting) {
-            items(
-                Equipment.SimpleEquipment.Torch,
-                Equipment.SimpleEquipment.Campfire,
-                Equipment.SimpleEquipment.WoodenBrazier,
-                Equipment.SimpleEquipment.StoneBrazier,
-                Equipment.SimpleEquipment.GoldBrazier,
-                Equipment.SimpleEquipment.CarvedBrazier,
-                Equipment.SimpleEquipment.StumpBrazier,
-                Equipment.SimpleEquipment.BarrelBrazier,
-                Equipment.SimpleEquipment.SkullBrazier,
-                Equipment.SimpleEquipment.MarbleBrazier,
-                Equipment.SimpleEquipment.WoodLampPost,
-                Equipment.SimpleEquipment.IronLampPost,
-                Equipment.SimpleEquipment.JackOLantern,
-            )
-        }
+val TerrainElementsMenu: EntitySelectionMenu = menu(root = Root.TerrainElements) {
+    submenu(root = Root.TerrainElementsFloors) {
+        items(
+            Floor.WoodFloor,
+            Floor.RusticPlankFloor,
+            Floor.StrawFloor,
+            Floor.WeatheredFloor,
+            Floor.CrystalFloor,
+            Floor.StoneFloor,
+            Floor.StoneWalkwayFloor,
+            Floor.BrickFloor,
+            Floor.WoodPath,
+            Floor.GravelPath,
+            Floor.CobblestonePath,
+            Floor.SteppingStonePath,
+            Floor.CrystalPath,
+            Floor.Grass,
+        )
     }
+
+    submenu(root = Root.TerrainElementsFences) {
+        items(
+            Equipment.SimpleEquipment.Gate,
+            Equipment.SimpleEquipment.WoodFence,
+            Equipment.SimpleEquipment.StoneFence,
+            Equipment.SimpleEquipment.IronFence,
+            Equipment.SimpleEquipment.HardwoodFence,
+        )
+    }
+
+    submenu(root = Root.TerrainElementsSigns) {
+        items(
+            Equipment.SimpleEquipment.WoodSign,
+            Equipment.SimpleEquipment.StoneSign,
+            Equipment.SimpleEquipment.DarkSign,
+        )
+    }
+
+    submenu(root = Root.TerrainElementsLighting) {
+        items(
+            Equipment.SimpleEquipment.Torch,
+            Equipment.SimpleEquipment.Campfire,
+            Equipment.SimpleEquipment.WoodenBrazier,
+            Equipment.SimpleEquipment.StoneBrazier,
+            Equipment.SimpleEquipment.GoldBrazier,
+            Equipment.SimpleEquipment.CarvedBrazier,
+            Equipment.SimpleEquipment.StumpBrazier,
+            Equipment.SimpleEquipment.BarrelBrazier,
+            Equipment.SimpleEquipment.SkullBrazier,
+            Equipment.SimpleEquipment.MarbleBrazier,
+            Equipment.SimpleEquipment.WoodLampPost,
+            Equipment.SimpleEquipment.IronLampPost,
+            Equipment.SimpleEquipment.JackOLantern,
+        )
+    }
+}

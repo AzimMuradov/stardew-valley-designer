@@ -25,13 +25,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.azimmuradov.svc.cartographer.modules.toolkit.ShapeType
-import me.azimmuradov.svc.cartographer.modules.toolkit.ToolType
-import me.azimmuradov.svc.cartographer.state.ToolkitState
-import me.azimmuradov.svc.cartographer.wishes.SvcWish
-import me.azimmuradov.svc.components.screens.cartographer.res.MenuSpritesProvider.toolSpriteBy
+import me.azimmuradov.svc.cartographer.CartographerIntent
+import me.azimmuradov.svc.cartographer.modules.toolkit.*
 import me.azimmuradov.svc.utils.GlobalSettings
-import me.azimmuradov.svc.utils.Sprite
 import me.azimmuradov.svc.utils.group.GroupOption
 import me.azimmuradov.svc.utils.group.ToggleButtonsGroup
 
@@ -39,7 +35,7 @@ import me.azimmuradov.svc.utils.group.ToggleButtonsGroup
 @Composable
 fun Toolbar(
     toolkit: ToolkitState,
-    wishConsumer: (SvcWish.Tools) -> Unit,
+    intentConsumer: (CartographerIntent.Toolkit) -> Unit,
 ) {
     val tools = ToolType.values().map { GroupOption.Some(it) }
     val shapes = (listOf(null) + ShapeType.values()).map {
@@ -77,8 +73,8 @@ fun Toolbar(
         ToggleButtonsGroup(
             buttonLabels = tools,
             rowSize = size,
-            chosenLabel = toolkit.tool?.let { GroupOption.Some(it) } ?: GroupOption.None,
-            onButtonClick = { wishConsumer(SvcWish.Tools.ChooseTool(it)) },
+            chosenLabel = GroupOption.Some(toolkit.tool),
+            onButtonClick = { intentConsumer(CartographerIntent.Toolkit.ChooseTool(it)) },
             spaceContent = {
                 Icon(
                     imageVector = Icons.Default.Clear,
@@ -105,11 +101,16 @@ fun Toolbar(
                 //     },
                 //     tooltipPlacement = TooltipPlacement.ComponentRect(),
                 // ) {
-                Sprite(
-                    sprite = toolSpriteBy(toolType),
+                // Sprite(
+                //     sprite = toolSpriteBy(toolType),
+                //     modifier = Modifier.fillMaxSize().padding(4.dp),
+                // )
+                // }
+                Text(
+                    text = toolType.name,
+                    fontSize = 10.sp,
                     modifier = Modifier.fillMaxSize().padding(4.dp),
                 )
-                // }
             }
         )
 
@@ -119,7 +120,7 @@ fun Toolbar(
             buttonLabels = shapes,
             rowSize = size,
             chosenLabel = GroupOption.Some(toolkit.shape),
-            onButtonClick = { wishConsumer(SvcWish.Tools.ChooseShape(it)) },
+            onButtonClick = { intentConsumer(CartographerIntent.Toolkit.ChooseShape(it)) },
             spaceContent = {
                 Icon(
                     imageVector = Icons.Default.Clear,

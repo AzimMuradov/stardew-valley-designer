@@ -16,13 +16,14 @@
 
 package me.azimmuradov.svc.components
 
-import com.arkivanov.decompose.router.RouterState
+import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
+import me.azimmuradov.svc.cartographer.CartographerComponent
 import me.azimmuradov.svc.components.screens.*
 
 interface RootComponent {
 
-    val routerState: Value<RouterState<*, Child>>
+    val childStack: Value<ChildStack<*, Child>>
 
     sealed class Child {
         class WelcomeChild(val component: WelcomeComponent) : Child()

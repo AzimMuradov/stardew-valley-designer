@@ -1,10 +1,5 @@
-@file:Suppress("SuspiciousCollectionReassignment")
-
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
-
 plugins {
-    kotlin(module = "jvm")
+    kotlin("jvm")
 
     `java-library`
 }
@@ -14,13 +9,5 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin(module = "stdlib-jdk8", version = V.P_KOTLIN))
-}
-
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs += listOf("-Xopt-in=kotlin.RequiresOptIn")
-        jvmTarget = V.JVM
-    }
+    implementation(kotlin("stdlib-jdk8"))
 }

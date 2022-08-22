@@ -20,9 +20,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import me.azimmuradov.svc.cartographer.state.ToolkitState
-import me.azimmuradov.svc.cartographer.wishes.SvcWish
-import me.azimmuradov.svc.components.screens.cartographer.Options
+import me.azimmuradov.svc.cartographer.CartographerIntent
+import me.azimmuradov.svc.cartographer.modules.options.OptionsState
+import me.azimmuradov.svc.cartographer.modules.toolkit.ToolkitState
 import me.azimmuradov.svc.engine.geometry.Rect
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 
@@ -31,17 +31,19 @@ import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 fun RowScope.SvcLayout(
     layoutSize: Rect,
     visibleEntities: LayeredEntitiesData,
+    selectedEntities: LayeredEntitiesData,
     toolkit: ToolkitState,
-    options: Options,
-    wishConsumer: (SvcWish) -> Unit,
+    options: OptionsState,
+    intentConsumer: (CartographerIntent) -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxHeight().weight(1f).padding(30.dp)) {
         EditorLayout(
             layoutSize = layoutSize,
             visibleEntities = visibleEntities,
+            selectedEntities = selectedEntities,
             toolkit = toolkit,
             options = options,
-            wishConsumer = wishConsumer
+            intentConsumer = intentConsumer
         )
     }
 }

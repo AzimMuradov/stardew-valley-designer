@@ -21,7 +21,6 @@ import me.azimmuradov.svc.utils.menu.menu
 import me.azimmuradov.svc.components.screens.cartographer.menus.EntitySelectionRoot as Root
 
 
-val FurnitureMenu: EntitySelectionMenu =
-    menu(root = Root.Furniture) {
-        // TODO
-    }
+val FurnitureMenu: EntitySelectionMenu = menu(root = Root.Furniture) {
+    // TODO
+}
