@@ -1,9 +1,11 @@
-import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 
 plugins {
     kotlin("jvm")
+
+    id("io.gitlab.arturbosch.detekt")
+
     id("org.jetbrains.compose") version V.P_COMPOSE
 }
 
@@ -32,6 +34,8 @@ dependencies {
 
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${V.DETEKT}")
 
     implementation(compose.desktop.currentOs)
 
@@ -62,4 +66,10 @@ compose.desktop {
             )
         }
     }
+}
+
+detekt {
+    toolVersion = V.DETEKT
+    config = files("../config/detekt/detekt.yml")
+    buildUponDefaultConfig = true
 }

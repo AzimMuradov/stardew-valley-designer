@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Azim Muradov
+ * Copyright 2021-2023 Azim Muradov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package me.azimmuradov.svc.cartographer
 
-import me.azimmuradov.svc.cartographer.modules.map.MapState
 import me.azimmuradov.svc.cartographer.modules.history.HistoryState
+import me.azimmuradov.svc.cartographer.modules.map.MapState
 import me.azimmuradov.svc.cartographer.modules.options.OptionsState
 import me.azimmuradov.svc.cartographer.modules.palette.PaletteState
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolkitState

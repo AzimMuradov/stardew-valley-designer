@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Azim Muradov
+ * Copyright 2021-2023 Azim Muradov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ class CartographerStoreFactory(private val storeFactory: StoreFactory) {
     }
 
     private class BootstrapperImpl : CoroutineBootstrapper<Action>() {
-        override fun invoke() {}
+        override fun invoke() = Unit
     }
 
     private class ExecutorImpl(layout: Layout) : CoroutineExecutor<Intent, Action, State, Msg, Label>() {
@@ -150,7 +150,7 @@ class CartographerStoreFactory(private val storeFactory: StoreFactory) {
             }
         }
 
-        override fun executeAction(action: Action, getState: () -> State) {}
+        override fun executeAction(action: Action, getState: () -> State) = Unit
     }
 
     private val reducer = Reducer<State, Msg> { msg ->

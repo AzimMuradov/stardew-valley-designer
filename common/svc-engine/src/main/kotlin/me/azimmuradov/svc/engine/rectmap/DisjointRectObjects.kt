@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Azim Muradov
+ * Copyright 2021-2023 Azim Muradov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package me.azimmuradov.svc.engine.rectmap
 
 import me.azimmuradov.svc.engine.geometry.Coordinate
 
+
 /**
  * List of disjoint placed rectangular objects.
  */
@@ -32,9 +33,7 @@ class DisjointRectObjects<out RO : RectObject> internal constructor(
             .asSequence()
             .flatMap(PlacedRectObject<RO>::coordinates)
             .forEach {
-                if (!cs.add(it)) {
-                    throw IllegalArgumentException("Wrong `DisjointRectObjects` definition.")
-                }
+                require(cs.add(it)) { "Wrong `DisjointRectObjects` definition." }
             }
     }
 }

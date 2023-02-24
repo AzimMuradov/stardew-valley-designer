@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Azim Muradov
+ * Copyright 2021-2023 Azim Muradov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,5 +87,6 @@ private fun EntitySelectionMenuElement.filter(
         .mapNotNull { it.filter(disallowedTypes) }
         .takeIf(List<EntitySelectionMenuElement>::isNotEmpty)
         ?.let { Submenu(root, it) }
+
     is Item -> takeIf { it.value.type !in disallowedTypes }
 }

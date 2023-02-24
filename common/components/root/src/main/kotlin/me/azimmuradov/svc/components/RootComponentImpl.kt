@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Azim Muradov
+ * Copyright 2021-2023 Azim Muradov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import me.azimmuradov.svc.components.screens.menu.MainMenuComponentImpl
 import me.azimmuradov.svc.components.screens.welcome.WelcomeComponentImpl
 import me.azimmuradov.svc.engine.layout.LayoutsProvider.LayoutType.Shed
 import me.azimmuradov.svc.engine.layout.LayoutsProvider.layoutOf
+
 
 fun rootComponent(): RootComponent = RootComponentImpl(
     componentContext = DefaultComponentContext(
