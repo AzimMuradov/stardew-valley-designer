@@ -20,14 +20,16 @@ import me.azimmuradov.svc.engine.entity.EntityWithoutFloorType
 import me.azimmuradov.svc.engine.entity.ObjectType.FurnitureType.HouseFurnitureType
 import me.azimmuradov.svc.engine.geometry.*
 import me.azimmuradov.svc.engine.layout.Layout
+import me.azimmuradov.svc.engine.layout.LayoutType
 
 
-internal val ShedLayout: Layout = shedLayoutOf(size = rectOf(w = 11, h = 10))
+internal val ShedLayout: Layout = shedLayoutOf(type = LayoutType.Shed, size = rectOf(w = 11, h = 10))
 
-internal val BigShedLayout: Layout = shedLayoutOf(size = rectOf(w = 17, h = 13))
+internal val BigShedLayout: Layout = shedLayoutOf(type = LayoutType.BigShed, size = rectOf(w = 17, h = 13))
 
 
-private fun shedLayoutOf(size: Rect) = Layout(
+private fun shedLayoutOf(type: LayoutType, size: Rect) = Layout(
+    type,
     size,
     disallowedTypes = setOf(HouseFurnitureType) + EntityWithoutFloorType.all,
     disallowedTypesMap = mapOf(),

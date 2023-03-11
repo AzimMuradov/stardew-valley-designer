@@ -23,12 +23,14 @@ import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.cartographer.CartographerIntent
 import me.azimmuradov.svc.cartographer.modules.options.OptionsState
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolkitState
+import me.azimmuradov.svc.cartographer.res.Sprite
 import me.azimmuradov.svc.engine.geometry.Rect
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 
 
 @Composable
 fun RowScope.SvcLayout(
+    layoutSprite: Sprite,
     layoutSize: Rect,
     visibleEntities: LayeredEntitiesData,
     selectedEntities: LayeredEntitiesData,
@@ -38,6 +40,7 @@ fun RowScope.SvcLayout(
 ) {
     Box(modifier = Modifier.fillMaxHeight().weight(1f).padding(30.dp)) {
         EditorLayout(
+            layoutSprite = layoutSprite,
             layoutSize = layoutSize,
             visibleEntities = visibleEntities,
             selectedEntities = selectedEntities,

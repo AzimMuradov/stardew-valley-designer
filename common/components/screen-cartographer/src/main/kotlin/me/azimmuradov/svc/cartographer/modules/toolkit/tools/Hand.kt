@@ -77,7 +77,7 @@ class Hand(private val engine: SvcEngine) : Tool {
     ): ActionReturn {
         val flattenMovedEntities = initMovedEntities.flatten().map { (entity, place) ->
             PlacedEntity(entity, place = place + (coordinate - start))
-        }
+        }.filter { it respectsLayout layout }
         heldEntities = flattenMovedEntities.layeredData()
 
         return ActionReturn(
@@ -91,7 +91,7 @@ class Hand(private val engine: SvcEngine) : Tool {
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
-    ): ActionReturn? {
+    ): ActionReturn {
         val flattenMovedEntities = heldEntities.flatten()
 
         return if (flattenMovedEntities.all { it respectsLayout layout }) {

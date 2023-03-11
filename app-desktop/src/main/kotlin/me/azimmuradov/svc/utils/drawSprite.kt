@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope.Companion.DefaultBlendMo
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
-import me.azimmuradov.svc.components.screens.cartographer.res.Sprite
+import me.azimmuradov.svc.cartographer.res.Sprite
 import kotlin.math.roundToInt
 
 

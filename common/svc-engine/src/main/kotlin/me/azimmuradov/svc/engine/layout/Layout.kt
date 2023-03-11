@@ -26,6 +26,7 @@ import me.azimmuradov.svc.engine.geometry.*
  * SVC layout.
  */
 class Layout(
+    val type: LayoutType,
     val size: Rect,
     disallowedTypes: Set<EntityType> = setOf(),
     disallowedTypesMap: Map<Coordinate, Set<EntityType>> = mapOf(),

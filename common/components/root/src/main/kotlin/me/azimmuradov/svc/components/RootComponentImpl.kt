@@ -28,7 +28,7 @@ import me.azimmuradov.svc.components.RootComponentImpl.Config.*
 import me.azimmuradov.svc.components.screens.cartographer.CartographerComponentImpl
 import me.azimmuradov.svc.components.screens.menu.MainMenuComponentImpl
 import me.azimmuradov.svc.components.screens.welcome.WelcomeComponentImpl
-import me.azimmuradov.svc.engine.layout.LayoutsProvider.LayoutType.Shed
+import me.azimmuradov.svc.engine.layout.LayoutType
 import me.azimmuradov.svc.engine.layout.LayoutsProvider.layoutOf
 
 
@@ -84,7 +84,7 @@ private class RootComponentImpl(
 
             CartographerConfig -> CartographerChild(
                 CartographerComponentImpl(
-                    layout = layoutOf(type = Shed),
+                    layout = layoutOf(type = LayoutType.BigShed),
                     onCartographerScreenReturn = this::onCartographerScreenReturn,
                 )
             )

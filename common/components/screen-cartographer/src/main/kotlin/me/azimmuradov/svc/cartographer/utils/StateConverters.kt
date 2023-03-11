@@ -21,6 +21,7 @@ import me.azimmuradov.svc.engine.layout.Layout
 
 
 internal fun Layout.toState(): LayoutState = LayoutState(
+    type = type,
     size = size,
     disallowedTypes = disallowedTypes.toSet(),
     disallowedTypesMap = disallowedTypesMap.toMap(),

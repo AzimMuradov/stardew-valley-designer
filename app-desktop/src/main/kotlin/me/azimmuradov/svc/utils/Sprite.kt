@@ -19,7 +19,7 @@ package me.azimmuradov.svc.utils
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import me.azimmuradov.svc.components.screens.cartographer.res.Sprite
+import me.azimmuradov.svc.cartographer.res.Sprite
 import me.azimmuradov.svc.engine.entity.Entity
 
 

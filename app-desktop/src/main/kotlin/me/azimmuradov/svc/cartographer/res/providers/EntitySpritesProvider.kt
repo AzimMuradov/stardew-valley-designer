@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.components.screens.cartographer.res
+package me.azimmuradov.svc.cartographer.res.providers
 
+import me.azimmuradov.svc.cartographer.res.Sprite
+import me.azimmuradov.svc.cartographer.res.providers.CommonProvider.common
+import me.azimmuradov.svc.cartographer.res.providers.CraftableProvider.craftable
 import me.azimmuradov.svc.engine.entity.*
 
 

@@ -16,16 +16,8 @@
 
 package me.azimmuradov.svc.engine.layout
 
-import me.azimmuradov.svc.engine.layout.LayoutType.BigShed
-import me.azimmuradov.svc.engine.layout.LayoutType.Shed
-import me.azimmuradov.svc.engine.layout.layouts.BigShedLayout
-import me.azimmuradov.svc.engine.layout.layouts.ShedLayout
 
-
-object LayoutsProvider {
-
-    fun layoutOf(type: LayoutType): Layout = when (type) {
-        Shed -> ShedLayout
-        BigShed -> BigShedLayout
-    }
+enum class LayoutType {
+    Shed,
+    BigShed,
 }

@@ -14,18 +14,25 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.layout
+package me.azimmuradov.svc.cartographer.res.providers
 
-import me.azimmuradov.svc.engine.layout.LayoutType.BigShed
-import me.azimmuradov.svc.engine.layout.LayoutType.Shed
-import me.azimmuradov.svc.engine.layout.layouts.BigShedLayout
-import me.azimmuradov.svc.engine.layout.layouts.ShedLayout
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
+import me.azimmuradov.svc.cartographer.res.*
 
 
-object LayoutsProvider {
+object CraftableProvider {
 
-    fun layoutOf(type: LayoutType): Layout = when (type) {
-        Shed -> ShedLayout
-        BigShed -> BigShedLayout
+    private val craftableSpriteSize: IntSize = IntSize(width = 16, height = 32)
+
+    fun craftable(index: Int): Sprite {
+        val (i, j) = (index % 8) to (index / 8)
+        val (w, h) = craftableSpriteSize
+
+        return Sprite(
+            image = ImageProvider.imageOf(ImageFile.Craftables),
+            offset = IntOffset(x = i * w, y = j * h),
+            size = craftableSpriteSize,
+        )
     }
 }

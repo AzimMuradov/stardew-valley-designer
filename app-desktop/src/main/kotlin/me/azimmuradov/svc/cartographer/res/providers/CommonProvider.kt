@@ -14,15 +14,25 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.res
+package me.azimmuradov.svc.cartographer.res.providers
 
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
+import me.azimmuradov.svc.cartographer.res.*
 
 
-data class Sprite(
-    val image: ImageBitmap,
-    val offset: IntOffset,
-    val size: IntSize,
-)
+object CommonProvider {
+
+    private val commonObjectSpriteSize: IntSize = IntSize(width = 16, height = 16)
+
+    internal fun common(index: Int): Sprite {
+        val (i, j) = (index % 24) to (index / 24)
+        val (w, h) = commonObjectSpriteSize
+
+        return Sprite(
+            image = ImageProvider.imageOf(ImageFile.CommonObjects),
+            offset = IntOffset(x = i * w, y = j * h),
+            size = commonObjectSpriteSize,
+        )
+    }
+}

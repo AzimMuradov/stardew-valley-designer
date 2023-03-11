@@ -27,6 +27,7 @@ import me.azimmuradov.svc.engine.layer.LayerType
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 import me.azimmuradov.svc.engine.layers.flatten
 import me.azimmuradov.svc.engine.layout.Layout
+import me.azimmuradov.svc.engine.layout.respectsLayout
 import me.azimmuradov.svc.engine.rectmap.*
 import kotlin.properties.Delegates
 
@@ -48,14 +49,15 @@ class PenShape(private val engine: SvcEngine, private val shape: ShapeType) : To
         start = coordinate
 
         if (currentEntity != null) {
-            val placedShape = shape.projectTo(CanonicalCorners(coordinate, coordinate))
-            val disallowedCoordinates = layout.disallowedTypesMap
-                .mapNotNullTo(mutableSetOf()) { (c, types) ->
-                    c.takeIf { currentEntity.type in types }
-                } + layout.disallowedCoordinates
-            entitiesToDraw = placedShape.coordinates.filter {
-                it !in disallowedCoordinates
-            }.mapTo(mutableSetOf(), currentEntity::placeIt)
+            val placedShape = shape
+                .projectTo(CanonicalCorners(start, coordinate))
+
+            entitiesToDraw = placedShape
+                .coordinates
+                .asSequence()
+                .map(currentEntity::placeIt)
+                .filter { it respectsLayout layout }
+                .toMutableSet()
 
             return ActionReturn(
                 toolkit = ToolkitState.Pen.Shape.Acting(
@@ -80,16 +82,16 @@ class PenShape(private val engine: SvcEngine, private val shape: ShapeType) : To
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
-        val placedShape = shape.projectTo(
-            CanonicalCorners.fromTwoCoordinates(start, coordinate)
-        )
-        val disallowedCoordinates = layout.disallowedTypesMap
-            .mapNotNullTo(mutableSetOf()) { (c, types) ->
-                c.takeIf { currentEntity!!.type in types }
-            } + layout.disallowedCoordinates
-        entitiesToDraw = placedShape.coordinates.filter {
-            it !in disallowedCoordinates
-        }.mapTo(mutableSetOf(), currentEntity!!::placeIt)
+        val placedShape = shape
+            .projectTo(CanonicalCorners.fromTwoCoordinates(start, coordinate))
+
+        entitiesToDraw = placedShape
+            .coordinates
+            .asSequence()
+            .map(currentEntity!!::placeIt)
+            .filter { it respectsLayout layout }
+            .toMutableSet()
+
         return ActionReturn(
             toolkit = ToolkitState.Pen.Shape.Acting(
                 placedShape = placedShape,

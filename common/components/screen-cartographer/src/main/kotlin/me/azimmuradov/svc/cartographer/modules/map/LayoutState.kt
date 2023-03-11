@@ -19,9 +19,11 @@ package me.azimmuradov.svc.cartographer.modules.map
 import me.azimmuradov.svc.engine.entity.EntityType
 import me.azimmuradov.svc.engine.geometry.Coordinate
 import me.azimmuradov.svc.engine.geometry.Rect
+import me.azimmuradov.svc.engine.layout.LayoutType
 
 
 data class LayoutState(
+    val type: LayoutType,
     val size: Rect,
     val disallowedTypes: Set<EntityType>,
     val disallowedTypesMap: Map<Coordinate, Set<EntityType>>,

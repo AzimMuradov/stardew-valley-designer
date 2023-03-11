@@ -23,7 +23,7 @@ import me.azimmuradov.svc.engine.geometry.Coordinate
 import me.azimmuradov.svc.engine.layer.LayerType
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 import me.azimmuradov.svc.engine.layout.Layout
-import me.azimmuradov.svc.engine.layout.respects
+import me.azimmuradov.svc.engine.layout.respectsLayout
 import me.azimmuradov.svc.engine.notOverlapsWith
 import me.azimmuradov.svc.engine.rectmap.placeIt
 
@@ -41,7 +41,7 @@ class PenPoint(private val engine: SvcEngine) : Tool {
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
         val entity = currentEntity?.placeIt(there = coordinate)
-        if (entity != null && entity respects layout) {
+        if (entity != null && entity respectsLayout layout) {
             engine.put(entity)
             placedCoordinates += entity.coordinates
         }
@@ -61,7 +61,7 @@ class PenPoint(private val engine: SvcEngine) : Tool {
         val entity = currentEntity?.placeIt(there = coordinate)
         if (
             entity != null &&
-            entity respects layout &&
+            entity respectsLayout layout &&
             entity.coordinates notOverlapsWith placedCoordinates
         ) {
             engine.put(entity)
