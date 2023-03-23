@@ -40,6 +40,7 @@ fun LeftSideMenus(
     FixedSideMenus(width) {
         menu { Toolbar(toolkit, intentConsumer) }
         menu { Palette(palette, intentConsumer) }
+        menu { FlooringSelection() }
     }
 }
 
@@ -61,8 +62,8 @@ fun RightSideMenus(
                 onVisibilityChange = onVisibilityChange
             )
         }
-        spacer(Modifier.weight(1f))
-        menu { MapPreview(layout.size, entities) }
+        menu { WallpaperSelection() }
+        // menu { MapPreview(layout.size, entities) }
     }
 }
 

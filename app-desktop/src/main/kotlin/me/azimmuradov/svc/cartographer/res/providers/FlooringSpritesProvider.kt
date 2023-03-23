@@ -22,18 +22,18 @@ import me.azimmuradov.svc.cartographer.res.*
 import me.azimmuradov.svc.engine.layout.LayoutType
 
 
-object FloorSpritesProvider {
+object FlooringSpritesProvider {
 
-    private val floorObjectSpriteSize: IntSize = IntSize(width = 32, height = 32)
+    private val flooringObjectSpriteSize: IntSize = IntSize(width = 32, height = 32)
 
-    internal fun floor(index: Int): Sprite {
+    internal fun flooring(index: Int): Sprite {
         val (i, j) = (index % 8) to (index / 8)
-        val (w, h) = floorObjectSpriteSize
+        val (w, h) = flooringObjectSpriteSize
 
         return Sprite(
             image = ImageProvider.imageOf(ImageFile.WallsAndFloors),
             offset = IntOffset(x = i * w, y = 336 + j * h),
-            size = floorObjectSpriteSize,
+            size = flooringObjectSpriteSize,
         )
     }
 

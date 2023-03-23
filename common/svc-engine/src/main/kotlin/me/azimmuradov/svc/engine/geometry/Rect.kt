@@ -18,6 +18,7 @@ package me.azimmuradov.svc.engine.geometry
 
 import me.azimmuradov.svc.engine.*
 
+
 /**
  * Rectangle with no coordinate to place.
  */
@@ -51,6 +52,12 @@ value class Rect internal constructor(@PublishedApi internal val packedValue: Lo
  * Creates a rectangle.
  */
 fun rectOf(w: Int, h: Int): Rect = Rect(packInts(w, h))
+
+
+/**
+ * Aspect ratio of the rectangle.
+ */
+val Rect.aspectRatio get() = w.toFloat() / h.toFloat()
 
 
 // Pair interop

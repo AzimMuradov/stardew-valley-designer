@@ -2,11 +2,11 @@ object V {
 
     // Plugins
 
-    const val P_KOTLIN: String = "1.8.0"
+    const val P_KOTLIN: String = "1.8.10"
 
     const val P_DETEKT: String = "1.22.0"
 
-    const val P_COMPOSE: String = "1.3.0"
+    const val P_COMPOSE: String = "1.4.0-alpha01-dev980"
 
 
     // Kotlin Compile
