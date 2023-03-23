@@ -26,11 +26,10 @@ import androidx.compose.ui.*
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.*
-import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.*
 import me.azimmuradov.svc.cartographer.CartographerIntent
 import me.azimmuradov.svc.cartographer.modules.options.OptionsState
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolkitState
@@ -42,6 +41,7 @@ import me.azimmuradov.svc.engine.layers.flatten
 import me.azimmuradov.svc.engine.layout.LayoutType
 import me.azimmuradov.svc.utils.*
 import kotlin.math.floor
+import kotlin.math.roundToInt
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -88,6 +88,7 @@ fun BoxScope.EditorLayout(
     Canvas(
         modifier = Modifier
             .aspectRatio(layoutSprite.size.toRect().aspectRatio)
+            // .size(layoutSprite.size.width.dp * 2, layoutSprite.size.height.dp * 2)
             .fillMaxSize()
             .align(Alignment.Center)
             .clipToBounds()
@@ -96,11 +97,12 @@ fun BoxScope.EditorLayout(
                 hoveredCoordinate = it.changes.first().position.toCoordinateStrict()
             }
             .onPointerEvent(PointerEventType.Exit) { hoveredCoordinate = UNDEFINED }
+            // .pointerHoverIcon(PointerIcon(Cursor(Cursor.MOVE_CURSOR)))
             .pointerInput(toolkit.tool) {
-                detectDragGesturesImmediately(
+                detectDragGestures(
                     onDragStart = { offset ->
                         val current = offset.toCoordinateStrict()
-                            .takeUnless { it == UNDEFINED } ?: return@detectDragGesturesImmediately
+                            .takeUnless { it == UNDEFINED } ?: return@detectDragGestures
                         prevDragCoordinate = current
                         intentConsumer(CartographerIntent.Engine.Start(current))
                     },
@@ -118,7 +120,7 @@ fun BoxScope.EditorLayout(
                     onDragCancel = {
                         prevDragCoordinate = UNDEFINED
                         intentConsumer(CartographerIntent.Engine.End)
-                    },
+                    }
                 )
             }
     ) {
@@ -133,27 +135,47 @@ fun BoxScope.EditorLayout(
         val offsetsH = List(size = nH + 1) { workingOffset.y + it * stepSize }
 
 
-        (1..10).scan(workingOffset.y.toInt() - stepSize.toInt() * 2) { acc, _ -> acc + stepSize.toInt() * 2 }.forEach { yy ->
-            (1..10).scan(workingOffset.x.toInt()) { acc, _ -> acc + stepSize.toInt() * 2 }.forEach { xx ->
-                drawSprite(
-                    sprite = FloorSpritesProvider.floor(2),
-                    offset = IntOffset(x = xx, y = yy),
-                    layoutSize = Size(
-                        width = (cellSize.width * 2).coerceAtLeast(1f),
-                        height = (cellSize.height * 2).coerceAtLeast(1f)
-                    ),
+        // Bottom layer
+
+        // Flooring
+
+        val off1 = (List(nW) { workingOffset.x + stepSize * 2 * it })
+            .map { it.roundToInt() }
+
+        val off2 = (List(nH) { workingOffset.y + stepSize * 2 * (it - 1) })
+            .map { it.roundToInt() }
+
+        off1.zipWithNext().forEach { (st1, en1) ->
+            off2.zipWithNext().forEach { (st2, en2) ->
+                val sprite = FlooringSpritesProvider.flooring(2)
+
+                drawImage(
+                    image = sprite.image,
+                    srcOffset = sprite.offset,
+                    srcSize = sprite.size,
+                    dstOffset = IntOffset(x = st1, y = st2),
+                    dstSize = IntSize(width = (en1 - st1), height = (en2 - st2)),
+                    filterQuality = FilterQuality.None,
                 )
             }
         }
 
-        (1..nW + 1).scan(workingOffset.x.toInt()) { acc, _ -> acc + stepSize.toInt() }.forEach {
-            drawSprite(
-                sprite = WallpaperSpritesProvider.wallpaper(1),
-                offset = IntOffset(x = it, y = a.y.toInt()),
-                layoutSize = Size(
-                    width = (cellSize.width).coerceAtLeast(1f),
-                    height = (cellSize.height * 3).coerceAtLeast(1f)
-                ),
+
+        // Wallpaper
+
+        val off = (List(nW) { workingOffset.x + stepSize * it } + (size.width * (imgW - 9) / imgW))
+            .map { it.roundToInt() }
+
+        off.zipWithNext().forEach { (st, en) ->
+            val sprite = WallpaperSpritesProvider.wallpaper(24)
+
+            drawImage(
+                image = sprite.image,
+                srcOffset = sprite.offset,
+                srcSize = sprite.size,
+                dstOffset = IntOffset(x = st, y = a.y.roundToInt()),
+                dstSize = IntSize(width = (en - st), height = (stepSize * 3).roundToInt()),
+                filterQuality = FilterQuality.None,
             )
         }
 
@@ -171,7 +193,7 @@ fun BoxScope.EditorLayout(
                     layoutSize = Size(
                         width = (cellSize.width - 2).coerceAtLeast(1f),
                         height = (cellSize.height - 2).coerceAtLeast(1f)
-                    ),
+                    )
                 )
             }
         }
@@ -301,7 +323,7 @@ fun BoxScope.EditorLayout(
         }
 
 
-        // Hovered cell
+        // Hovered cell & Axis
 
         if (hoveredId != UNDEFINED) {
             val (hoveredX, hoveredY) = hoveredId
@@ -318,20 +340,22 @@ fun BoxScope.EditorLayout(
 
             if (options.showAxis) {
                 drawRect(
-                    topLeft = Offset(offsetsW[hoveredX] - 1, workingOffset.y - 1),
+                    topLeft = Offset(offsetsW[hoveredX], workingOffset.y),
                     size = Size(cellSize.width, size.height - workingOffset.y),
                     color = Color.DarkGray,
-                    style = Stroke(width = 4f)
+                    style = Stroke(width = 2f)
                 )
                 drawRect(
-                    topLeft = Offset(workingOffset.x - 1, offsetsH[hoveredY] - 1),
+                    topLeft = Offset(workingOffset.x, offsetsH[hoveredY]),
                     size = Size(size.width - workingOffset.x * 2, cellSize.height),
                     color = Color.DarkGray,
-                    style = Stroke(width = 4f)
+                    style = Stroke(width = 2f)
                 )
             }
         }
 
+
+        // Top layer
 
         drawSprite(
             sprite = LayoutSpritesProvider.layoutSpriteBy(LayoutType.BigShed),
@@ -342,32 +366,3 @@ fun BoxScope.EditorLayout(
 
 
 private val UNDEFINED: Coordinate = xy(-1, -1)
-
-private suspend fun PointerInputScope.detectDragGesturesImmediately(
-    onDragStart: (Offset) -> Unit = { },
-    onDragEnd: () -> Unit = { },
-    onDragCancel: () -> Unit = { },
-    onDrag: (change: PointerInputChange, dragAmount: Offset) -> Unit,
-) {
-    forEachGesture {
-        awaitPointerEventScope {
-            val drag = awaitFirstDown(requireUnconsumed = false)
-
-            onDragStart(drag.position)
-
-            if (
-                drag(drag.id) {
-                    onDrag(it, it.positionChange())
-                    if (it.positionChange() != Offset.Zero) it.consume()
-                }
-            ) {
-                onDragEnd()
-            } else {
-                onDragCancel()
-            }
-        }
-    }
-}
-
-
-private val Rect.aspectRatio get() = w.toFloat() / h.toFloat()
