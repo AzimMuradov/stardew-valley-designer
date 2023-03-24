@@ -75,7 +75,7 @@ internal fun customDropdownMenuPositionProvider(
 
             val pos = positions.firstOrNull { (x, y) ->
                 x >= 0 && x + popupContentSize.width <= windowSize.width &&
-                    y >= 0 + verticalMargin && y + popupContentSize.height <= windowSize.height - verticalMargin
+                        y >= 0 + verticalMargin && y + popupContentSize.height <= windowSize.height - verticalMargin
             } ?: positions.last()
 
 

@@ -37,7 +37,7 @@ import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.EntityType
 import me.azimmuradov.svc.utils.GlobalSettings
 import me.azimmuradov.svc.utils.Sprite
-import me.azimmuradov.svc.utils.menu.ClickableCascadingDropdownMenu
+import me.azimmuradov.svc.utils.menu.HoverableCascadingDropdownMenu
 
 
 @Composable
@@ -50,7 +50,7 @@ fun EntitySelectionMenu(
     val wordList = GlobalSettings.strings
 
     Box(modifier = Modifier.fillMaxHeight().width(REQUIRED_DROPDOWN_MENU_WIDTH)) {
-        ClickableCascadingDropdownMenu(
+        HoverableCascadingDropdownMenu(
             menu = filteredMenu,
 
             shape = RectangleShape,

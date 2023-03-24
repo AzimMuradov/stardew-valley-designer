@@ -100,19 +100,22 @@ fun CustomDropdownMenu(
                 Box {
                     val state = rememberLazyListState()
 
-                    LazyColumn(
-                        modifier = modifier,
-                        state = state,
-                        verticalArrangement = verticalArrangement,
-                        horizontalAlignment = horizontalAlignment,
-                        content = content,
-                    )
-
-                    Box(Modifier.matchParentSize().padding(all = 5.dp)) {
-                        VerticalScrollbar(
-                            modifier = Modifier.requiredWidth(8.dp).align(Alignment.CenterEnd),
-                            adapter = rememberScrollbarAdapter(state),
+                    BoxWithConstraints(modifier) {
+                        LazyColumn(
+                            state = state,
+                            verticalArrangement = verticalArrangement,
+                            horizontalAlignment = horizontalAlignment,
+                            content = content,
                         )
+
+                        if (state.layoutInfo.viewportSize.height.toFloat() == this.maxHeight.value) {
+                            Box(Modifier.matchParentSize().padding(all = 5.dp)) {
+                                VerticalScrollbar(
+                                    modifier = Modifier.requiredWidth(8.dp).align(Alignment.CenterEnd),
+                                    adapter = rememberScrollbarAdapter(state),
+                                )
+                            }
+                        }
                     }
                 }
             }
