@@ -320,7 +320,6 @@ object EnWordList : WordList {
         ToolType.Hand -> "Hand"
         ToolType.Pen -> "Pen"
         ToolType.Eraser -> "Eraser"
-        ToolType.EyeDropper -> "Eye Dropper"
         ToolType.Select -> "Select"
     }.also { tools[type] = it }
 

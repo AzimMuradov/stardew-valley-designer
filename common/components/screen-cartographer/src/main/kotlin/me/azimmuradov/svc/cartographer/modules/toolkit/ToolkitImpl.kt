@@ -54,7 +54,6 @@ class ToolkitImpl(
             ToolType.Hand -> if (shapeType == null) Hand(engine) else undefinedTool()
             ToolType.Pen -> if (shapeType == null) PenPoint(engine) else PenShape(engine, shapeType)
             ToolType.Eraser -> if (shapeType == null) EraserPoint(engine) else EraserShape(engine, shapeType)
-            ToolType.EyeDropper -> if (shapeType == null) EyeDropper(engine) else undefinedTool()
             ToolType.Select -> if (shapeType == null) undefinedTool() else Select(engine, shapeType)
         }
         val result = tool.start(coordinate, layout, currentEntity, selectedEntities, visLayers)

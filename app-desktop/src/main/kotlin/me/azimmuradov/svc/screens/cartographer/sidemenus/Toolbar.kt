@@ -46,7 +46,7 @@ fun Toolbar(
         }
     }
 
-    val size = maxOf(tools.size, shapes.size).toUInt()
+    val size = 5u
 
     val wordList = GlobalSettings.strings
 

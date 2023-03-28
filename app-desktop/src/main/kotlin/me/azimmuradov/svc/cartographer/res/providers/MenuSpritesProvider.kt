@@ -18,17 +18,15 @@ package me.azimmuradov.svc.cartographer.res.providers
 
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolType
 import me.azimmuradov.svc.cartographer.res.Sprite
-import me.azimmuradov.svc.cartographer.res.providers.CommonProvider.common
 
 
 object MenuSpritesProvider {
 
     fun toolSpriteBy(type: ToolType): Sprite = sprites[type] ?: when (type) {
-        ToolType.Hand -> common(100)
-        ToolType.Pen -> common(101)
-        ToolType.Eraser -> common(102)
-        ToolType.EyeDropper -> common(103)
-        ToolType.Select -> common(104)
+        ToolType.Hand -> TODO()
+        ToolType.Pen -> TODO()
+        ToolType.Eraser -> TODO()
+        ToolType.Select -> TODO()
     }.also { sprites[type] = it }
 
 
