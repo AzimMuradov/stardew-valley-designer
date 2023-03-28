@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("PackageDirectoryMismatch")
+
 package me.azimmuradov.svc.engine.entity
 
 import me.azimmuradov.svc.engine.entity.ColoredFlavor.ColoredChestFlavor

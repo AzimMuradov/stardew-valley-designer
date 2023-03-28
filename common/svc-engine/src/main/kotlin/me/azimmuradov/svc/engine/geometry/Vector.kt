@@ -18,6 +18,7 @@ package me.azimmuradov.svc.engine.geometry
 
 import me.azimmuradov.svc.engine.*
 
+
 /**
  * 2D vector.
  */
