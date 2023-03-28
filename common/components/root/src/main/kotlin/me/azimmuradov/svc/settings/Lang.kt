@@ -22,5 +22,4 @@ package me.azimmuradov.svc.settings
  */
 enum class Lang {
     EN,
-    RU,
 }

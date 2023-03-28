@@ -16,12 +16,13 @@
 
 package me.azimmuradov.svc.settings
 
-import me.azimmuradov.svc.settings.wordlists.*
+import me.azimmuradov.svc.settings.wordlists.EnWordList
+import me.azimmuradov.svc.settings.wordlists.WordList
+
 
 object SettingsInterpreter {
 
     fun wordList(lang: Lang): WordList = when (lang) {
         Lang.EN -> EnWordList
-        Lang.RU -> RuWordList
     }
 }
