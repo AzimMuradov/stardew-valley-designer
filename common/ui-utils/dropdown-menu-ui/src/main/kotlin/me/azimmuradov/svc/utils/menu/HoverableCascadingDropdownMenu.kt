@@ -99,7 +99,7 @@ fun <MenuRoot, SubmenuRoot, ItemValue> HoverableCascadingDropdownMenu(
                         menuStacks,
                         menuStack = listOf(element),
                         onHoverEnter = { s ->
-                            menuStacks.removeAll { s.last() !in it }
+                            menuStacks.removeAll { it.isNotEmpty() && s.none { e -> e in it } }
                             if (s !in menuStacks) menuStacks.add(s)
                         },
                         onHoverExit = { menuStacks.remove(it) },
@@ -118,7 +118,7 @@ fun <MenuRoot, SubmenuRoot, ItemValue> HoverableCascadingDropdownMenu(
                         menuStacks,
                         menuStack = listOf(element),
                         onHoverEnter = { s ->
-                            menuStacks.removeAll { s.last() !in it }
+                            menuStacks.removeAll { it.isNotEmpty() && s.none { e -> e in it } }
                             if (s !in menuStacks) menuStacks.add(s)
                         },
                         onHoverExit = { menuStacks.remove(it) },
