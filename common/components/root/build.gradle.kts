@@ -16,8 +16,6 @@ dependencies {
     implementation(projects.common.components.screenCartographer)
     implementation(projects.common.components.screenSettings)
 
-    implementation(projects.common.uiUtils.dropdownMenu)
-
 
     implementation(kotlin("stdlib-jdk8"))
 

@@ -11,6 +11,8 @@ repositories {
 dependencies {
     implementation(projects.common.svcEngine)
 
+    implementation(projects.common.uiUtils.dropdownMenu)
+
 
     implementation(kotlin("stdlib-jdk8"))
 

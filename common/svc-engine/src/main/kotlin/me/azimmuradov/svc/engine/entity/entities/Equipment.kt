@@ -96,7 +96,7 @@ sealed interface Equipment : Entity<EquipmentType> {
         Sprinkler,
         QualitySprinkler,
         IridiumSprinkler,
-        IridiumSprinklerWithPressureNozzle,
+        // TODO : IridiumSprinklerWithPressureNozzle,
 
 
         // Terrain Elements (Fences + Signs + Lighting)

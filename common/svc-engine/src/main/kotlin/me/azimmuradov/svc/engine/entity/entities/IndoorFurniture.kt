@@ -72,7 +72,7 @@ sealed interface IndoorFurniture : Entity<IndoorFurnitureType> {
         ModernFishTank(rectOf(w = 2, h = 1)),
         LargeFishTank(rectOf(w = 4, h = 1)),
         DeluxeFishTank(rectOf(w = 5, h = 1)),
-        AquaticSanctuaryRect(rectOf(w = 7, h = 1)),
+        AquaticSanctuary(rectOf(w = 7, h = 1)),
 
 
         // Misc

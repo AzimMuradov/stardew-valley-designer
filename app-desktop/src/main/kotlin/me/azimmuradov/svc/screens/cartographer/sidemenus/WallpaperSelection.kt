@@ -16,9 +16,10 @@
 
 package me.azimmuradov.svc.screens.cartographer.sidemenus
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
+import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -27,8 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.azimmuradov.svc.cartographer.res.providers.WallpaperSpritesProvider
-import me.azimmuradov.svc.components.screens.cartographer.Wallpaper
+import me.azimmuradov.svc.cartographer.res.wallpaper
 import me.azimmuradov.svc.utils.drawSprite
 
 
@@ -72,7 +72,7 @@ fun WallpaperSelection() {
                             .fillMaxSize()
                             .drawBehind {
                                 drawSprite(
-                                    sprite = WallpaperSpritesProvider.wallpaper(index = n.toInt()),
+                                    sprite = wallpaper(index = n.toInt()),
                                     layoutSize = size
                                 )
                             }
@@ -84,5 +84,19 @@ fun WallpaperSelection() {
                 modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight()
             )
         }
+    }
+}
+
+data class Wallpaper(val n: UByte) {
+
+    init {
+        require(n < COUNT)
+    }
+
+    companion object {
+
+        fun all() = List(size = COUNT.toInt()) { Wallpaper(it.toUByte()) }
+
+        val COUNT: UByte = 112u
     }
 }

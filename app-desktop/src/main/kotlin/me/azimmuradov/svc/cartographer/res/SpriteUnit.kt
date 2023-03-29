@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.res.providers
+package me.azimmuradov.svc.cartographer.res
 
-import me.azimmuradov.svc.cartographer.modules.toolkit.ToolType
-import me.azimmuradov.svc.cartographer.res.Sprite
-
-
-object MenuSpritesProvider {
-
-    fun toolSpriteBy(type: ToolType): Sprite = sprites[type] ?: when (type) {
-        ToolType.Hand -> TODO()
-        ToolType.Pen -> TODO()
-        ToolType.Eraser -> TODO()
-        ToolType.Select -> TODO()
-    }.also { sprites[type] = it }
+import androidx.compose.ui.unit.IntOffset
 
 
-    private val sprites: MutableMap<ToolType, Sprite> = mutableMapOf()
-}
+const val SPRITE_UNIT = 16
+
+operator fun IntOffset.times(multiplier: Int): IntOffset = IntOffset(
+    x = x * multiplier,
+    y = y * multiplier
+)

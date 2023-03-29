@@ -33,9 +33,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.azimmuradov.svc.cartographer.CartographerIntent
+import me.azimmuradov.svc.cartographer.menus.OptionsItemValue
+import me.azimmuradov.svc.cartographer.menus.OptionsMenu
 import me.azimmuradov.svc.cartographer.modules.options.OptionsState
-import me.azimmuradov.svc.components.screens.cartographer.menus.OptionsItemValue
-import me.azimmuradov.svc.components.screens.cartographer.menus.OptionsMenu
 import me.azimmuradov.svc.utils.menu.HoverableCascadingDropdownMenu
 
 

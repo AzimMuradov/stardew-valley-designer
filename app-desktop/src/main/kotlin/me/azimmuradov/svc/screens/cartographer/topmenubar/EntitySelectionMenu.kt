@@ -31,8 +31,8 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.*
-import me.azimmuradov.svc.components.screens.cartographer.menus.EntitySelectionMenu
-import me.azimmuradov.svc.components.screens.cartographer.menus.filterElements
+import me.azimmuradov.svc.cartographer.menus.EntitySelectionMenu
+import me.azimmuradov.svc.cartographer.menus.filterElements
 import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.EntityType
 import me.azimmuradov.svc.utils.GlobalSettings

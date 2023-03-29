@@ -16,8 +16,8 @@
 
 package me.azimmuradov.svc.settings.wordlists
 
+import me.azimmuradov.svc.cartographer.menus.EntitySelectionRoot
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolType
-import me.azimmuradov.svc.components.screens.cartographer.menus.EntitySelectionRoot
 import me.azimmuradov.svc.engine.entity.*
 import me.azimmuradov.svc.engine.layer.LayerType
 
@@ -53,7 +53,14 @@ object EnWordList : WordList {
         EntitySelectionRoot.Furniture -> "Furniture"
         EntitySelectionRoot.FurnitureOutdoor -> "Outdoor Furniture"
         EntitySelectionRoot.FurnitureUniversal -> "Universal Furniture"
+        EntitySelectionRoot.FurnitureUniversalChairs -> "Chairs"
+        EntitySelectionRoot.FurnitureUniversalBenches -> "Benches"
         EntitySelectionRoot.FurnitureUniversalTables -> "Tables"
+        EntitySelectionRoot.FurnitureUniversalHousePlants -> "House Plants"
+        EntitySelectionRoot.FurnitureUniversalFreestandingDecorativePlants -> "Freestanding Decorative Plants"
+        EntitySelectionRoot.FurnitureUniversalTorches -> "Torches"
+        EntitySelectionRoot.FurnitureUniversalOtherDecorations -> "Other Decorations"
+        EntitySelectionRoot.FurnitureUniversalCatalogues -> "Catalogues"
         EntitySelectionRoot.FurnitureIndoor -> "Indoor Furniture"
         EntitySelectionRoot.FurnitureIndoorBookcases -> "Bookcases"
         EntitySelectionRoot.FurnitureIndoorFireplaces -> "Fireplaces"
@@ -71,10 +78,10 @@ object EnWordList : WordList {
 
         EntitySelectionRoot.FarmElements -> "Farm Elements"
         EntitySelectionRoot.FarmElementsCrops -> "Crops"
-        EntitySelectionRoot.FarmElementsSpringCrops -> "Spring Crops"
-        EntitySelectionRoot.FarmElementsSummerCrops -> "Summer Crops"
-        EntitySelectionRoot.FarmElementsFallCrops -> "Fall Crops"
-        EntitySelectionRoot.FarmElementsSpecialCrops -> "Special Crops"
+        EntitySelectionRoot.FarmElementsCropsSpring -> "Spring Crops"
+        EntitySelectionRoot.FarmElementsCropsSummer -> "Summer Crops"
+        EntitySelectionRoot.FarmElementsCropsFall -> "Fall Crops"
+        EntitySelectionRoot.FarmElementsCropsSpecial -> "Special Crops"
         EntitySelectionRoot.FarmElementsForaging -> "Foraging"
         EntitySelectionRoot.FarmElementsScarecrows -> "Scarecrows"
         EntitySelectionRoot.FarmElementsSprinklers -> "Sprinklers"
@@ -377,6 +384,7 @@ object EnWordList : WordList {
         UniversalFurniture.SimpleUniversalFurniture.WalnutTeaTable -> "Walnut Tea-Table"
         UniversalFurniture.SimpleUniversalFurniture.ModernTable -> "Modern Table"
         UniversalFurniture.SimpleUniversalFurniture.ModernTeaTable -> "Modern Tea-Table"
+        UniversalFurniture.SimpleUniversalFurniture.ModernEndTable -> "Modern End Table"
         UniversalFurniture.SimpleUniversalFurniture.PuzzleTable -> "Puzzle Table"
         UniversalFurniture.SimpleUniversalFurniture.SunTable -> "Sun Table"
         UniversalFurniture.SimpleUniversalFurniture.MoonTable -> "Moon Table"
@@ -500,7 +508,6 @@ object EnWordList : WordList {
         is UniversalFurniture.WoodenEndTable.BirchEndTable -> "Birch End Table"
         is UniversalFurniture.WoodenEndTable.MahoganyEndTable -> "Mahogany End Table"
         is UniversalFurniture.WoodenEndTable.WalnutEndTable -> "Walnut End Table"
-        is UniversalFurniture.WoodenEndTable.ModernEndTable -> "Modern End Table"
 
         is UniversalFurniture.CoffeeTable -> "Coffee Table"
 

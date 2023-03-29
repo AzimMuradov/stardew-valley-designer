@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.res.providers
+package me.azimmuradov.svc.cartographer.res
 
+import androidx.compose.ui.res.loadImageBitmap
+import androidx.compose.ui.res.useResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
-import me.azimmuradov.svc.cartographer.res.*
 import me.azimmuradov.svc.engine.layout.LayoutType
 
 
-object WallpaperSpritesProvider {
+object LayoutSpritesProvider {
 
-    private val wallpaperObjectSpriteSize: IntSize = IntSize(width = 16, height = 48)
-
-    internal fun wallpaper(index: Int): Sprite {
-        val (i, j) = (index % 16) to (index / 16)
-        val (w, h) = wallpaperObjectSpriteSize
-
-        return Sprite(
-            image = ImageProvider.imageOf(ImageFile.WallsAndFloors),
-            offset = IntOffset(x = i * w, y = j * h),
-            size = wallpaperObjectSpriteSize,
-        )
-    }
+    fun layoutSpriteBy(type: LayoutType): Sprite = sprites[type] ?: when (type) {
+        LayoutType.Shed -> TODO()
+        LayoutType.BigShed -> {
+            val img = useResource("layouts/big-shed-borders-light.png", ::loadImageBitmap)
+            Sprite(
+                image = img,
+                offset = IntOffset.Zero,
+                size = IntSize(img.width, img.height),
+            )
+        }
+    }.also { sprites[type] = it }
 
 
     private val sprites: MutableMap<LayoutType, Sprite> = mutableMapOf()

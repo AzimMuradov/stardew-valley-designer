@@ -21,10 +21,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import me.azimmuradov.svc.cartographer.CartographerIntent
+import me.azimmuradov.svc.cartographer.menus.MainOptionsMenu
+import me.azimmuradov.svc.cartographer.menus.entityselection.*
 import me.azimmuradov.svc.cartographer.modules.history.HistoryState
 import me.azimmuradov.svc.cartographer.modules.options.OptionsState
-import me.azimmuradov.svc.components.screens.cartographer.menus.MainOptionsMenu
-import me.azimmuradov.svc.components.screens.cartographer.menus.entityselection.*
 import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.EntityType
 

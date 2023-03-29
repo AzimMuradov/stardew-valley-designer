@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import me.azimmuradov.svc.cartographer.CartographerComponent
 import me.azimmuradov.svc.cartographer.CartographerIntent
-import me.azimmuradov.svc.cartographer.res.providers.LayoutSpritesProvider
+import me.azimmuradov.svc.cartographer.res.LayoutSpritesProvider
 import me.azimmuradov.svc.engine.layers.layeredEntitiesData
 import me.azimmuradov.svc.screens.cartographer.main.SvcLayout
 import me.azimmuradov.svc.screens.cartographer.sidemenus.LeftSideMenus

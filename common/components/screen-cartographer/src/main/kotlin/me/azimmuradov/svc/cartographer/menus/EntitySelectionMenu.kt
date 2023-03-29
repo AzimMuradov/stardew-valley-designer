@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.components.screens.cartographer.menus
+package me.azimmuradov.svc.cartographer.menus
 
 import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.EntityType
@@ -47,18 +47,38 @@ enum class EntitySelectionRoot {
 
     // Furniture Menu
 
-    // TODO : Furniture Menu
     Furniture,
+    FurnitureOutdoor,
+    FurnitureUniversal,
+    FurnitureUniversalChairs,
+    FurnitureUniversalBenches,
+    FurnitureUniversalTables,
+    FurnitureUniversalHousePlants,
+    FurnitureUniversalFreestandingDecorativePlants,
+    FurnitureUniversalTorches,
+    FurnitureUniversalOtherDecorations,
+    FurnitureUniversalCatalogues,
+    FurnitureIndoor,
+    FurnitureIndoorBookcases,
+    FurnitureIndoorFireplaces,
+    FurnitureIndoorLamps,
+    FurnitureIndoorTVs,
+    FurnitureIndoorFishTanks,
+    FurnitureIndoorCouches,
+    FurnitureIndoorArmchairs,
+    FurnitureIndoorDressers,
+    FurnitureHouse,
+    FurnitureFloor,
 
 
     // Farm Elements
 
     FarmElements,
     FarmElementsCrops,
-    FarmElementsSpringCrops,
-    FarmElementsSummerCrops,
-    FarmElementsFallCrops,
-    FarmElementsSpecialCrops,
+    FarmElementsCropsSpring,
+    FarmElementsCropsSummer,
+    FarmElementsCropsFall,
+    FarmElementsCropsSpecial,
     FarmElementsForaging,
     FarmElementsScarecrows,
     FarmElementsSprinklers,

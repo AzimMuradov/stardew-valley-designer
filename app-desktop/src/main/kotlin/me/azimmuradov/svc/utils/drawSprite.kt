@@ -39,12 +39,11 @@ fun DrawScope.drawSprite(
     val spriteRatio = sprite.size.ratio
     val layoutRatio = layoutSize.ratio
 
-    val dstSize =
-        if (spriteRatio > layoutRatio) {
-            IntSize(width = layoutW.roundToInt(), height = (spriteH * layoutW / spriteW).roundToInt())
-        } else {
-            IntSize(width = (spriteW * layoutH / spriteH).roundToInt(), height = layoutH.roundToInt())
-        }
+    val dstSize = if (spriteRatio > layoutRatio) {
+        IntSize(width = layoutW.roundToInt(), height = (spriteH * layoutW / spriteW).roundToInt())
+    } else {
+        IntSize(width = (spriteW * layoutH / spriteH).roundToInt(), height = layoutH.roundToInt())
+    }
 
     val dstOffset = offset + IntOffset(
         x = ((layoutW - dstSize.width) / 2).roundToInt(),

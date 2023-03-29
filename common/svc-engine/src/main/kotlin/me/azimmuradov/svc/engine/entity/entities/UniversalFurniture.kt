@@ -51,6 +51,7 @@ sealed interface UniversalFurniture : Entity<UniversalFurnitureType> {
         WalnutTeaTable(tableSize),
         ModernTable(tableSize),
         ModernTeaTable(tableSize),
+        ModernEndTable(endTableSize),
         PuzzleTable(tableSize),
         SunTable(tableSize),
         MoonTable(tableSize),
@@ -207,7 +208,6 @@ sealed interface UniversalFurniture : Entity<UniversalFurnitureType> {
         data class BirchEndTable(override var rotation: Rotations2 = Rotations2.R0) : WoodenEndTable()
         data class MahoganyEndTable(override var rotation: Rotations2 = Rotations2.R0) : WoodenEndTable()
         data class WalnutEndTable(override var rotation: Rotations2 = Rotations2.R0) : WoodenEndTable()
-        data class ModernEndTable(override var rotation: Rotations2 = Rotations2.R0) : WoodenEndTable()
     }
 
     data class CoffeeTable(override var rotation: Rotations2 = Rotations2.R0) : UniversalFurniture, RotatableFlavor2(

@@ -19,7 +19,7 @@ package me.azimmuradov.svc.utils
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.IntOffset
-import me.azimmuradov.svc.cartographer.res.providers.EntitySpritesProvider
+import me.azimmuradov.svc.cartographer.res.EntitySpritesProvider
 import me.azimmuradov.svc.engine.entity.Entity
 
 

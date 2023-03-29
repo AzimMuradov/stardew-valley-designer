@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.components.screens.cartographer.menus.entityselection
+package me.azimmuradov.svc.cartographer.menus.entityselection
 
-import me.azimmuradov.svc.components.screens.cartographer.menus.EntitySelectionMenu
+import me.azimmuradov.svc.cartographer.menus.EntitySelectionMenu
 import me.azimmuradov.svc.engine.entity.Equipment
 import me.azimmuradov.svc.utils.menu.menu
-import me.azimmuradov.svc.components.screens.cartographer.menus.EntitySelectionRoot as Root
+import me.azimmuradov.svc.cartographer.menus.EntitySelectionRoot as Root
 
 
 val FarmElementsMenu: EntitySelectionMenu = menu(root = Root.FarmElements) {
@@ -51,7 +51,7 @@ val FarmElementsMenu: EntitySelectionMenu = menu(root = Root.FarmElements) {
             Equipment.SimpleEquipment.Sprinkler,
             Equipment.SimpleEquipment.QualitySprinkler,
             Equipment.SimpleEquipment.IridiumSprinkler,
-            Equipment.SimpleEquipment.IridiumSprinklerWithPressureNozzle,
+            // TODO : Equipment.SimpleEquipment.IridiumSprinklerWithPressureNozzle,
         )
     }
 }

@@ -28,8 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.azimmuradov.svc.cartographer.res.providers.FlooringSpritesProvider
-import me.azimmuradov.svc.components.screens.cartographer.Flooring
+import me.azimmuradov.svc.cartographer.res.flooring
 import me.azimmuradov.svc.utils.drawSprite
 
 
@@ -73,7 +72,7 @@ fun FlooringSelection() {
                             .fillMaxSize()
                             .drawBehind {
                                 drawSprite(
-                                    sprite = FlooringSpritesProvider.flooring(index = n.toInt()),
+                                    sprite = flooring(index = n.toInt()),
                                     layoutSize = size
                                 )
                             }
@@ -85,5 +84,19 @@ fun FlooringSelection() {
                 modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight()
             )
         }
+    }
+}
+
+data class Flooring(val n: UByte) {
+
+    init {
+        require(n < COUNT)
+    }
+
+    companion object {
+
+        fun all() = List(size = COUNT.toInt()) { Flooring(it.toUByte()) }
+
+        val COUNT: UByte = 56u
     }
 }

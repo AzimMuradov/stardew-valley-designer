@@ -14,32 +14,11 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.components.screens.cartographer.menus
+package me.azimmuradov.svc.cartographer.res
 
-import me.azimmuradov.svc.utils.menu.Menu
-import me.azimmuradov.svc.utils.menu.menu
-
-
-typealias OptionsMenu = Menu<OptionsRoot, OptionsRoot, OptionsItemValue>
+import me.azimmuradov.svc.engine.entity.HouseFurniture
 
 
-enum class OptionsRoot {
-    Options,
+fun houseFurniture(entity: HouseFurniture): Sprite = when (entity) {
+    else -> TODO()
 }
-
-sealed interface OptionsItemValue {
-
-    sealed interface Toggleable : OptionsItemValue
-
-    object ShowAxis : Toggleable
-    object ShowGrid : Toggleable
-}
-
-
-val MainOptionsMenu: OptionsMenu =
-    menu(root = OptionsRoot.Options) {
-        items(
-            OptionsItemValue.ShowAxis,
-            OptionsItemValue.ShowGrid,
-        )
-    }

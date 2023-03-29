@@ -14,19 +14,31 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.components.screens.cartographer
+package me.azimmuradov.svc.cartographer.menus
+
+import me.azimmuradov.svc.utils.menu.Menu
+import me.azimmuradov.svc.utils.menu.menu
 
 
-data class Flooring(val n: UByte) {
+typealias OptionsMenu = Menu<OptionsRoot, OptionsRoot, OptionsItemValue>
 
-    init {
-        require(n < COUNT)
-    }
 
-    companion object {
+enum class OptionsRoot {
+    Options,
+}
 
-        fun all() = List(size = COUNT.toInt()) { Flooring(it.toUByte()) }
+sealed interface OptionsItemValue {
 
-        val COUNT: UByte = 56u
-    }
+    sealed interface Toggleable : OptionsItemValue
+
+    object ShowAxis : Toggleable
+    object ShowGrid : Toggleable
+}
+
+
+val MainOptionsMenu: OptionsMenu = menu(root = OptionsRoot.Options) {
+    items(
+        OptionsItemValue.ShowAxis,
+        OptionsItemValue.ShowGrid,
+    )
 }
