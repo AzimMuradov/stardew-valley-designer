@@ -19,7 +19,9 @@ package me.azimmuradov.svc.components
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import me.azimmuradov.svc.cartographer.CartographerComponent
-import me.azimmuradov.svc.components.screens.*
+import me.azimmuradov.svc.components.screens.MainMenuComponent
+import me.azimmuradov.svc.components.screens.WelcomeComponent
+
 
 interface RootComponent {
 

@@ -19,9 +19,9 @@ package me.azimmuradov.svc.cartographer
 import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
+import me.azimmuradov.svc.cartographer.modules.history.*
 import me.azimmuradov.svc.cartographer.modules.map.MapState
 import me.azimmuradov.svc.cartographer.modules.map.SvcEngineImpl
-import me.azimmuradov.svc.cartographer.modules.history.*
 import me.azimmuradov.svc.cartographer.modules.options.OptionsState
 import me.azimmuradov.svc.cartographer.modules.options.reduce
 import me.azimmuradov.svc.cartographer.modules.palette.PaletteState
@@ -78,6 +78,7 @@ class CartographerStoreFactory(private val storeFactory: StoreFactory) {
 
         private val toolkit = ToolkitImpl(engine, layout)
 
+        @Suppress("LongMethod", "CyclomaticComplexMethod", "NestedBlockDepth")
         override fun executeIntent(intent: Intent, getState: () -> State) {
             if (intent is Intent.History) {
                 when (intent) {
