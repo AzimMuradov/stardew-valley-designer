@@ -317,7 +317,7 @@ fun BoxScope.EditorLayout(
                     pathEffect = PathEffect.dashPathEffect(intervals = floatArrayOf(2f, 2f)),
                 )
             }
-            for ((_, y) in offsetsH.toSortedMap().toList().drop(n = 1)) {
+            for (y in (0..nH).map(offsetsH::getValue)) {
                 drawLine(
                     color = Color.LightGray,
                     start = Offset(x = workingOffset.x, y),
