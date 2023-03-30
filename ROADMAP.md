@@ -68,7 +68,7 @@
 - New shapes (heart, heart outline), change shapes menu, `shift` for NxN
 - Search fields for various types of items
 - Clipboard
-- Show various info (current coordinates, chosen elements, shope size, etc)
+- Show various info (current coordinates, chosen elements, shape size, etc)
 
 ### 1.3.0
 
