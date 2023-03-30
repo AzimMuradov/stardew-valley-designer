@@ -60,34 +60,41 @@
 
 ### 1.1.0
 
-- New shapes (heart, heart outline), change shapes menu
-- Define theme for Compose
+- New layouts (riverland farm, forest farm, hill-top farm, wilderness farm, four corners farm, beach farm, barns, coops, farmhouses)
 
 ### 1.2.0
 
+- New shapes (heart, heart outline), change shapes menu
 - Search fields for various types of items
 - Clipboard
 
 ### 1.3.0
 
-- Render (in every season)
+- Hotkeys
+- Define theme for Compose
+- New toggleables - show various functional areas (Scarecrows, Sprinklers, Bee Houses)
 
 ### 1.4.0
+
+- Render (in every season)
+
+### 1.5.0
 
 - Settings menu (with ability to store and restore settings)
 - Add rules to the menu
 
-### 1.5.0
+### 1.6.0
 
 - New languages (Azeri, Türkçe, Русский, Українська)
 
-### 1.6.0
+### 1.7.0
 
 - Plan saves
 
-### 1.7.0
+### 1.8.0
 
-- Show various functional areas (Scarecrows, Sprinklers, Bee Houses)
+- Tappers, crab pots and modified sprinklers
+- Building paintings
 
 ## 2.0.0
 
