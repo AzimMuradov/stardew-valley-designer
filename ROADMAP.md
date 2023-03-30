@@ -21,7 +21,7 @@
 
 ### 0.3.0
 
-- New shapes (circle, ellipse, circle outline, ellipse outline)
+- New shapes (ellipse, ellipse outline)
 - New tool (eye dropper)
 - Toolkit icons
 - Palette
@@ -31,12 +31,13 @@
 - Wallpapers and flooring menus
 - Rotation menu
 - Chest color menu
-- Toggle preview
+- Wall furniture
 
 ### 0.5.0
 
 - Layout menu
-- New layouts (shed, standard farm, slime hutch)
+- New layouts (shed, standard farm)
+- Toggle preview
 
 ### 0.6.0
 
@@ -60,13 +61,14 @@
 
 ### 1.1.0
 
-- New layouts (riverland farm, forest farm, hill-top farm, wilderness farm, four corners farm, beach farm, barns, coops, farmhouses)
+- New layouts (riverland farm, forest farm, hill-top farm, wilderness farm, four corners farm, beach farm, barns, coops, farmhouses, slime hutch)
 
 ### 1.2.0
 
-- New shapes (heart, heart outline), change shapes menu
+- New shapes (heart, heart outline), change shapes menu, `shift` for NxN
 - Search fields for various types of items
 - Clipboard
+- Show various info (current coordinates, chosen elements, shope size, etc)
 
 ### 1.3.0
 
