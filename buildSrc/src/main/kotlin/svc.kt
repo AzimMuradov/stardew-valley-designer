@@ -4,7 +4,7 @@ object SVC {
 
     const val NAME: String = "stardew-valley-cartographer"
 
-    const val VERSION: String = "0.1.4"
+    const val VERSION: String = "0.2.0"
 
 
     const val DESCRIPTION: String = "Stardew Valley Cartographer"
