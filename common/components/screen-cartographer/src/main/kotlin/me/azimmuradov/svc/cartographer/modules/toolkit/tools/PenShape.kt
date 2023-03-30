@@ -85,11 +85,22 @@ class PenShape(private val engine: SvcEngine, private val shape: ShapeType) : To
         val placedShape = shape
             .projectTo(CanonicalCorners.fromTwoCoordinates(start, coordinate))
 
+        val cs = mutableSetOf<Coordinate>()
+
         entitiesToDraw = placedShape
             .coordinates
             .asSequence()
+            .sortedWith(Comparator.comparingInt(Coordinate::x).thenComparingInt(Coordinate::y))
             .map(currentEntity!!::placeIt)
             .filter { it respectsLayout layout }
+            .filter {
+                if (it.coordinates.any(cs::contains)) {
+                    false
+                } else {
+                    cs += it.coordinates
+                    true
+                }
+            }
             .toMutableSet()
 
         return ActionReturn(
