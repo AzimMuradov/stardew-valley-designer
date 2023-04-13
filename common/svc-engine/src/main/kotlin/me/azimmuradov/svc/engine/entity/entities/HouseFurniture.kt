@@ -50,6 +50,12 @@ enum class HouseFurniture(override val size: Rect) : Entity<HouseFurnitureType> 
 
 
     override val type: HouseFurnitureType = HouseFurnitureType
+
+
+    companion object {
+
+        val all by lazy { HouseFurniture.values().toSet() }
+    }
 }
 
 private val bedSize = rectOf(w = 2, h = 3)

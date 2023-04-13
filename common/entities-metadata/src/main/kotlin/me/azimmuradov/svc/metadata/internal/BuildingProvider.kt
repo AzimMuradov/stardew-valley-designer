@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.res
+package me.azimmuradov.svc.metadata.internal
 
 import me.azimmuradov.svc.engine.entity.Building
 import me.azimmuradov.svc.engine.entity.Building.*
+import me.azimmuradov.svc.metadata.EntityMetadata
 
 
-fun building(entity: Building): Sprite = when (entity) {
+internal fun building(entity: Building): EntityMetadata = when (entity) {
 
     // Barns
 

@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.res
-
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
+package me.azimmuradov.svc.metadata
 
 
-class MapSpriteProvider(private val image: ImageBitmap) {
+data class EntityOffset(val x: Int, val y: Int)
 
-    internal fun sprite(x: Int, y: Int, w: Int, h: Int) = Sprite(
-        image = image,
-        offset = IntOffset(x, y) * SPRITE_UNIT,
-        size = IntSize(w, h) * SPRITE_UNIT
-    )
-}
+
+operator fun EntityOffset.times(multiplier: Int) = EntityOffset(x = x * multiplier, y = y * multiplier)
+
+operator fun EntityOffset.div(divider: Int) = EntityOffset(x = x / divider, y = y / divider)

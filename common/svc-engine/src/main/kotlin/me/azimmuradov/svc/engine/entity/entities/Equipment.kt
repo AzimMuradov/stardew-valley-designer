@@ -182,4 +182,14 @@ sealed interface Equipment : Entity<EquipmentType> {
     override val type: EquipmentType get() = EquipmentType
 
     override val size: Rect get() = rectOf(w = 1, h = 1)
+
+
+    companion object {
+
+        val all by lazy {
+            SimpleEquipment.values().toSet() + listOf(Chest(), StoneChest())
+            // ChestColors.values().mapTo(mutableSetOf(), Equipment::Chest) +
+            // ChestColors.values().mapTo(mutableSetOf(), Equipment::StoneChest)
+        }
+    }
 }

@@ -14,22 +14,13 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.res
+package me.azimmuradov.svc.metadata
 
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
 import me.azimmuradov.svc.engine.entity.Entity
-import me.azimmuradov.svc.metadata.EntityDataProvider
 
 
-object EntitySpritesProvider {
-
-    fun spriteBy(entity: Entity<*>): Sprite =
-        EntityDataProvider.entityToMetadata.getValue(entity).let { (page, offset, size) ->
-            Sprite(
-                image = ImageProvider.imageOf(page),
-                offset = offset.let { (x, y) -> IntOffset(x, y) },
-                size = size.let { (w, h) -> IntSize(w, h) },
-            )
-        }
-}
+data class EntityFullData(
+    val entity: Entity<*>,
+    val metadata: EntityMetadata,
+    // val flavor
+)

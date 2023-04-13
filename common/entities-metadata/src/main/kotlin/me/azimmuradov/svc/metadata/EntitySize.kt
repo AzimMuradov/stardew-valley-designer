@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.res
-
-import androidx.compose.ui.unit.IntOffset
+package me.azimmuradov.svc.metadata
 
 
-const val SPRITE_UNIT = 16
+data class EntitySize(val w: Int, val h: Int)
 
-operator fun IntOffset.times(multiplier: Int): IntOffset = IntOffset(
-    x = x * multiplier,
-    y = y * multiplier
-)
+
+operator fun EntitySize.times(multiplier: Int) = EntitySize(w = w * multiplier, h = h * multiplier)
+
+operator fun EntitySize.div(divider: Int) = EntitySize(w = w / divider, h = h / divider)

@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.res
+package me.azimmuradov.svc.metadata.internal
 
 import me.azimmuradov.svc.engine.entity.IndoorFurniture
 import me.azimmuradov.svc.engine.entity.IndoorFurniture.*
 import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations4.*
+import me.azimmuradov.svc.metadata.EntityMetadata
 
 
-fun indoorFurniture(entity: IndoorFurniture): Sprite = when (entity) {
+internal fun indoorFurniture(entity: IndoorFurniture): EntityMetadata = when (entity) {
 
     SimpleIndoorFurniture.ArtistBookcase -> furniture(x = 3, y = 40, w = 2, h = 3)
     SimpleIndoorFurniture.ModernBookcase -> furniture(x = 5, y = 40, w = 2, h = 3)

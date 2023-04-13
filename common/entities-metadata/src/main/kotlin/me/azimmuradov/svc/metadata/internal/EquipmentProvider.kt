@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.res
+package me.azimmuradov.svc.metadata.internal
 
 import me.azimmuradov.svc.engine.entity.ColoredFlavor.Colors.ChestColors.*
 import me.azimmuradov.svc.engine.entity.Equipment
 import me.azimmuradov.svc.engine.entity.Equipment.*
+import me.azimmuradov.svc.metadata.EntityMetadata
 
 
-fun equipment(entity: Equipment): Sprite = when (entity) {
+internal fun equipment(entity: Equipment): EntityMetadata = when (entity) {
 
     // Common Equipment
     // (Artisan Equipment + Other Tools + Refining Equipment + Misc + Storage Equipment)

@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.res
+package me.azimmuradov.svc.metadata.internal
 
 import me.azimmuradov.svc.engine.entity.Floor
 import me.azimmuradov.svc.engine.entity.Floor.*
+import me.azimmuradov.svc.metadata.EntityMetadata
 
 
-fun floor(entity: Floor): Sprite = when (entity) {
+internal fun floor(entity: Floor): EntityMetadata = when (entity) {
 
     // Floors
 

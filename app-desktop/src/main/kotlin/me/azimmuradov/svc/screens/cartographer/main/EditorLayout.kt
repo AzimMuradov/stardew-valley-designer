@@ -39,6 +39,7 @@ import me.azimmuradov.svc.engine.geometry.*
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 import me.azimmuradov.svc.engine.layers.flatten
 import me.azimmuradov.svc.engine.rectmap.coordinates
+import me.azimmuradov.svc.metadata.EntityPage.Companion.UNIT
 import me.azimmuradov.svc.utils.drawSprite
 import me.azimmuradov.svc.utils.toRect
 import kotlin.math.floor
@@ -185,7 +186,7 @@ fun BoxScope.EditorLayout(
         for ((_, objs) in visibleEntities.all) {
             for (e in objs.sortedBy { it.place.y }) {
                 val sprite = EntitySpritesProvider.spriteBy(e.rectObject)
-                val rect = (sprite.size / SPRITE_UNIT).toRect()
+                val rect = (sprite.size / UNIT).toRect()
                 drawSprite(
                     sprite = sprite,
                     offset = IntOffset(
@@ -216,7 +217,7 @@ fun BoxScope.EditorLayout(
             is ToolkitState.Hand.Point.Acting -> {
                 for (e in toolkit.heldEntities.flatten()) {
                     val sprite = EntitySpritesProvider.spriteBy(e.rectObject)
-                    val rect = (sprite.size / SPRITE_UNIT).toRect()
+                    val rect = (sprite.size / UNIT).toRect()
                     drawSprite(
                         sprite = sprite,
                         offset = IntOffset(
@@ -252,7 +253,7 @@ fun BoxScope.EditorLayout(
                 }
                 for (e in toolkit.entitiesToDraw) {
                     val sprite = EntitySpritesProvider.spriteBy(e.rectObject)
-                    val rect = (sprite.size / SPRITE_UNIT).toRect()
+                    val rect = (sprite.size / UNIT).toRect()
                     drawSprite(
                         sprite = sprite,
                         offset = IntOffset(
