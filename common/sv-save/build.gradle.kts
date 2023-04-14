@@ -3,7 +3,7 @@ plugins {
 
     id("io.gitlab.arturbosch.detekt")
 
-    `java-library`
+    kotlin("plugin.serialization") version V.P_KOTLINX_SERIALIZATION
 }
 
 repositories {
@@ -11,14 +11,18 @@ repositories {
 }
 
 dependencies {
+    implementation(projects.common.svcEngine)
+
+    implementation(projects.common.entitiesMetadata)
+
+
     implementation(kotlin("stdlib-jdk8"))
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${V.DETEKT}")
 
     // For XML
-    implementation(kotlin("reflect"))
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${V.JACKSON}")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${V.JACKSON}")
+    implementation("io.github.pdvrieze.xmlutil:core-jvm:${V.XML_UTIL}")
+    implementation("io.github.pdvrieze.xmlutil:serialization-jvm:${V.XML_UTIL}")
 }
 
 detekt {
