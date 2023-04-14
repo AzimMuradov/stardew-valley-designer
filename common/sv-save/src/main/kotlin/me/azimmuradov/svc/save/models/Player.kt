@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.res
+package me.azimmuradov.svc.save.models
 
-import androidx.compose.ui.unit.IntOffset
+import kotlinx.serialization.Serializable
 
 
-const val SPRITE_UNIT = 16
-
-operator fun IntOffset.times(multiplier: Int): IntOffset = IntOffset(
-    x = x * multiplier,
-    y = y * multiplier
+@Serializable
+data class Player(
+    val name: String,
 )

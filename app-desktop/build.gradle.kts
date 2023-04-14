@@ -21,6 +21,8 @@ repositories {
 dependencies {
     implementation(projects.common.svcEngine)
 
+    implementation(projects.common.entitiesMetadata)
+
     implementation(projects.common.components.root)
     implementation(projects.common.components.screenWelcome)
     implementation(projects.common.components.screenMainMenu)

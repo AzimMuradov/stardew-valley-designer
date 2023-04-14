@@ -129,6 +129,12 @@ sealed interface Building : Entity<BuildingType> {
 
 
     override val type: BuildingType get() = BuildingType
+
+
+    companion object {
+
+        val all by lazy { setOf<Building>() }
+    }
 }
 
 private val barnSize = rectOf(w = 7, h = 4)

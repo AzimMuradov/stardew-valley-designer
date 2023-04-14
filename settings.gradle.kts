@@ -10,6 +10,10 @@ include(":app-desktop")
 
 include(":common:svc-engine")
 
+// Entities metadata
+
+include(":common:entities-metadata")
+
 // Save data parser
 
 include(":common:sv-save")

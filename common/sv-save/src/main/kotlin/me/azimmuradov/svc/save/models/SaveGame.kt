@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.res
+package me.azimmuradov.svc.save.models
 
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
+import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.serialization.XmlChildrenName
 
 
-class MapSpriteProvider(private val image: ImageBitmap) {
-
-    internal fun sprite(x: Int, y: Int, w: Int, h: Int) = Sprite(
-        image = image,
-        offset = IntOffset(x, y) * SPRITE_UNIT,
-        size = IntSize(w, h) * SPRITE_UNIT
-    )
-}
+@Serializable
+data class SaveGame(
+    val player: Player,
+    @XmlChildrenName("GameLocation", "", "") val locations: List<GameLocation>,
+    val gameVersion: String,
+)

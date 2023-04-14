@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.res
+package me.azimmuradov.svc.metadata.internal
 
 import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations2
 import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations4
 import me.azimmuradov.svc.engine.entity.UniversalFurniture
+import me.azimmuradov.svc.metadata.EntityMetadata
 
 
-fun universalFurniture(entity: UniversalFurniture): Sprite = when (entity) {
+internal fun universalFurniture(entity: UniversalFurniture): EntityMetadata = when (entity) {
 
     UniversalFurniture.SimpleUniversalFurniture.GreenOfficeStool -> furniture(x = 30, y = 0, w = 1, h = 2)
     UniversalFurniture.SimpleUniversalFurniture.OrangeOfficeStool -> furniture(x = 31, y = 0, w = 1, h = 2)

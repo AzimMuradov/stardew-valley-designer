@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.res
+package me.azimmuradov.svc.metadata.internal
 
 import me.azimmuradov.svc.engine.entity.FloorFurniture
 import me.azimmuradov.svc.engine.entity.FloorFurniture.*
 import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations2.R0
 import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations2.R1
+import me.azimmuradov.svc.metadata.EntityMetadata
 
 
-fun floorFurniture(entity: FloorFurniture): Sprite = when (entity) {
+internal fun floorFurniture(entity: FloorFurniture): EntityMetadata = when (entity) {
 
     SimpleRug.BurlapRug -> furniture(x = 14, y = 54, w = 2, h = 2)
     SimpleRug.WoodcutRug -> furniture(x = 17, y = 55, w = 2, h = 2)

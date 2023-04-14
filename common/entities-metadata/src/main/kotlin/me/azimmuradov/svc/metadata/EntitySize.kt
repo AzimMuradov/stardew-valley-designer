@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.res
-
-import me.azimmuradov.svc.engine.entity.HouseFurniture
+package me.azimmuradov.svc.metadata
 
 
-fun houseFurniture(entity: HouseFurniture): Sprite = when (entity) {
-    else -> TODO()
-}
+data class EntitySize(val w: Int, val h: Int)
+
+
+operator fun EntitySize.times(multiplier: Int) = EntitySize(w = w * multiplier, h = h * multiplier)
+
+operator fun EntitySize.div(divider: Int) = EntitySize(w = w / divider, h = h / divider)

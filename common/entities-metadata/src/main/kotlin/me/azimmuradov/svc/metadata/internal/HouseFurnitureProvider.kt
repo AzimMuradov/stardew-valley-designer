@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.res
+package me.azimmuradov.svc.metadata.internal
 
-import androidx.compose.ui.res.loadImageBitmap
-import androidx.compose.ui.res.useResource
-import me.azimmuradov.svc.metadata.EntityPage
+import me.azimmuradov.svc.engine.entity.HouseFurniture
+import me.azimmuradov.svc.metadata.EntityMetadata
 
 
-object ImageProvider {
-
-    fun imageOf(file: EntityPage) = images.getValue(file)
-
-    private val images = mapOf(
-        EntityPage.CommonObjects to useResource("entities/common-objects.png", ::loadImageBitmap),
-        EntityPage.Craftables to useResource("entities/craftables.png", ::loadImageBitmap),
-        EntityPage.Furniture to useResource("entities/furniture.png", ::loadImageBitmap),
-    )
+internal fun houseFurniture(entity: HouseFurniture): EntityMetadata = when (entity) {
+    else -> TODO()
 }

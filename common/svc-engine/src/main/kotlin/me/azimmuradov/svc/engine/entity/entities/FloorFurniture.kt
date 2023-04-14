@@ -86,4 +86,26 @@ sealed interface FloorFurniture : Entity<FloorFurnitureType> {
 
 
     override val type: FloorFurnitureType get() = FloorFurnitureType
+
+
+    companion object {
+
+        val all by lazy {
+            FloorFurniture.SimpleRug.values().toSet() + setOf(
+                RotatableRug.BambooMat(),
+                RotatableRug.NauticalRug(),
+                RotatableRug.DarkRug(),
+                RotatableRug.RedRug(),
+                RotatableRug.LightGreenRug(),
+                RotatableRug.GreenCottageRug(),
+                RotatableRug.RedCottageRug(),
+                RotatableRug.MysticRug(),
+                RotatableRug.BoneRug(),
+                RotatableRug.SnowyRug(),
+                RotatableRug.PirateRug(),
+                RotatableRug.PatchworkRug(),
+                RotatableRug.FruitSaladRug(),
+            )/*  + FloorDivider.values().toSet() */
+        }
+    }
 }

@@ -124,6 +124,33 @@ sealed interface IndoorFurniture : Entity<IndoorFurnitureType> {
 
 
     override val type: IndoorFurnitureType get() = IndoorFurnitureType
+
+
+    companion object {
+
+        val all by lazy {
+            IndoorFurniture.SimpleIndoorFurniture.values().toSet() + setOf(
+                Couch.BlueCouch(),
+                Couch.BrownCouch(),
+                Couch.GreenCouch(),
+                Couch.RedCouch(),
+                Couch.YellowCouch(),
+                Couch.DarkCouch(),
+                Couch.WoodsyCouch(),
+                Couch.WizardCouch(),
+                LargeBrownCouch(),
+                Armchair.BlueArmchair(),
+                Armchair.BrownArmchair(),
+                Armchair.GreenArmchair(),
+                Armchair.RedArmchair(),
+                Armchair.YellowArmchair(),
+                Dresser.BirchDresser(),
+                Dresser.OakDresser(),
+                Dresser.WalnutDresser(),
+                Dresser.MahoganyDresser(),
+            )
+        }
+    }
 }
 
 private val bookcaseSize = rectOf(w = 2, h = 1)

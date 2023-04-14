@@ -14,44 +14,22 @@
  * limitations under the License.
  */
 
-@file:Suppress("PackageDirectoryMismatch")
+package me.azimmuradov.svc.metadata
 
-package me.azimmuradov.svc.engine.entity
-
-import me.azimmuradov.svc.engine.entity.RectsProvider.rectOf
 import me.azimmuradov.svc.engine.geometry.Rect
+import me.azimmuradov.svc.engine.geometry.rectOf
 
 
-enum class Floor : Entity<FloorType> {
+enum class EntityPage(val width: Int, val height: Int, val grain: Rect) {
 
-    // Floors (Floors + Paths + Grass)
-
-    WoodFloor,
-    RusticPlankFloor,
-    StrawFloor,
-    WeatheredFloor,
-    CrystalFloor,
-    StoneFloor,
-    StoneWalkwayFloor,
-    BrickFloor,
-
-    WoodPath,
-    GravelPath,
-    CobblestonePath,
-    SteppingStonePath,
-    CrystalPath,
-
-    Grass,
+    CommonObjects(width = 384, height = 624, grain = rectOf(1, 1)),
+    Craftables(width = 128, height = 1152, grain = rectOf(1, 2)),
+    Furniture(width = 512, height = 1488, grain = rectOf(1, 1)),
     ;
-
-
-    override val type: FloorType = FloorType
-
-    override val size: Rect = rectOf(w = 1, h = 1)
 
 
     companion object {
 
-        val all by lazy { Floor.values().toSet() }
+        const val UNIT = 16
     }
 }

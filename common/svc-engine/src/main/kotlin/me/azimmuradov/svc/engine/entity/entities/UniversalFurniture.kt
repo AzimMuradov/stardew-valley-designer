@@ -232,6 +232,53 @@ sealed interface UniversalFurniture : Entity<UniversalFurnitureType> {
 
 
     override val type: UniversalFurnitureType get() = UniversalFurnitureType
+
+
+    companion object {
+
+        val all by lazy {
+            UniversalFurniture.SimpleUniversalFurniture.values().toSet() + setOf(
+                Chair.OakChair(),
+                Chair.WalnutChair(),
+                Chair.BirchChair(),
+                Chair.MahoganyChair(),
+                Chair.RedDinerChair(),
+                Chair.BlueDinerChair(),
+                Chair.CountryChair(),
+                Chair.BreakfastChair(),
+                Chair.PinkOfficeChair(),
+                Chair.PurpleOfficeChair(),
+                Chair.DarkThrone(),
+                Chair.DiningChairYellow(),
+                Chair.DiningChairRed(),
+                Chair.GreenPlushSeat(),
+                Chair.PinkPlushSeat(),
+                Chair.WinterChair(),
+                Chair.GroovyChair(),
+                Chair.CuteChair(),
+                Chair.StumpSeat(),
+                Chair.MetalChair(),
+                Chair.KingChair(),
+                Chair.CrystalChair(),
+                Chair.TropicalChair(),
+                Bench.BirchBench(),
+                Bench.OakBench(),
+                Bench.WalnutBench(),
+                Bench.MahoganyBench(),
+                Bench.ModernBench(),
+                WoodenEndTable.OakEndTable(),
+                WoodenEndTable.BirchEndTable(),
+                WoodenEndTable.MahoganyEndTable(),
+                WoodenEndTable.WalnutEndTable(),
+                CoffeeTable(),
+                StoneSlab(),
+                LongTable.ModernDiningTable(),
+                LongTable.MahoganyDiningTable(),
+                LongTable.FestiveDiningTable(),
+                LongTable.WinterDiningTable(),
+            )
+        }
+    }
 }
 
 private val stoolSize = rectOf(w = 1, h = 1)

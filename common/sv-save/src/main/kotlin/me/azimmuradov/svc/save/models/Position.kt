@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.res
+package me.azimmuradov.svc.save.models
 
-import androidx.compose.ui.res.loadImageBitmap
-import androidx.compose.ui.res.useResource
-import me.azimmuradov.svc.metadata.EntityPage
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 
-object ImageProvider {
-
-    fun imageOf(file: EntityPage) = images.getValue(file)
-
-    private val images = mapOf(
-        EntityPage.CommonObjects to useResource("entities/common-objects.png", ::loadImageBitmap),
-        EntityPage.Craftables to useResource("entities/craftables.png", ::loadImageBitmap),
-        EntityPage.Furniture to useResource("entities/furniture.png", ::loadImageBitmap),
-    )
-}
+@Serializable
+data class Position(
+    @SerialName("X") val x: UInt,
+    @SerialName("Y") val y: UInt,
+)

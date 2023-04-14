@@ -16,22 +16,18 @@
 
 package me.azimmuradov.svc.cartographer.res
 
+import androidx.compose.ui.res.loadImageBitmap
+import androidx.compose.ui.res.useResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 
-
-fun common(index: Int) = commonMapSpriteProvider.sprite(x = index % 24, y = index / 24, w = 1, h = 1)
-
-fun craftable(index: Int) = craftableMapSpriteProvider.sprite(x = index % 8, y = index / 8 * 2, w = 1, h = 2)
-
-fun furniture(x: Int, y: Int, w: Int, h: Int) = furnitureMapSpriteProvider.sprite(x, y, w, h)
 
 fun flooring(index: Int): Sprite {
     val (i, j) = (index % 8) to (index / 8)
     val (w, h) = flooringObjectSpriteSize
 
     return Sprite(
-        image = ImageProvider.imageOf(ImageFile.WallsAndFloors),
+        image = wallsAndFloors,
         offset = IntOffset(x = i * w, y = 336 + j * h),
         size = flooringObjectSpriteSize,
     )
@@ -42,18 +38,14 @@ fun wallpaper(index: Int): Sprite {
     val (w, h) = wallpaperObjectSpriteSize
 
     return Sprite(
-        image = ImageProvider.imageOf(ImageFile.WallsAndFloors),
+        image = wallsAndFloors,
         offset = IntOffset(x = i * w, y = j * h),
         size = wallpaperObjectSpriteSize,
     )
 }
 
 
-private val commonMapSpriteProvider = MapSpriteProvider(ImageProvider.imageOf(ImageFile.CommonObjects))
-
-private val craftableMapSpriteProvider = MapSpriteProvider(ImageProvider.imageOf(ImageFile.Craftables))
-
-private val furnitureMapSpriteProvider = MapSpriteProvider(ImageProvider.imageOf(ImageFile.Furniture))
+private val wallsAndFloors = useResource("layouts/walls-and-floors.png", ::loadImageBitmap)
 
 private val flooringObjectSpriteSize: IntSize = IntSize(width = 32, height = 32)
 

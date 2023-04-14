@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.cartographer.res
-
-import androidx.compose.ui.res.loadImageBitmap
-import androidx.compose.ui.res.useResource
-import me.azimmuradov.svc.metadata.EntityPage
+package me.azimmuradov.svc.metadata
 
 
-object ImageProvider {
+data class EntityOffset(val x: Int, val y: Int)
 
-    fun imageOf(file: EntityPage) = images.getValue(file)
 
-    private val images = mapOf(
-        EntityPage.CommonObjects to useResource("entities/common-objects.png", ::loadImageBitmap),
-        EntityPage.Craftables to useResource("entities/craftables.png", ::loadImageBitmap),
-        EntityPage.Furniture to useResource("entities/furniture.png", ::loadImageBitmap),
-    )
-}
+operator fun EntityOffset.times(multiplier: Int) = EntityOffset(x = x * multiplier, y = y * multiplier)
+
+operator fun EntityOffset.div(divider: Int) = EntityOffset(x = x / divider, y = y / divider)
