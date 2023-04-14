@@ -16,9 +16,13 @@
 
 package me.azimmuradov.svc.save.models
 
+import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.serialization.XmlChildrenName
 
-// data class SaveGame(
-//     @JsonProperty("player") val player: Player,
-//     @JsonProperty("locations") val locations: List<GameLocation>,
-//     @JsonProperty("gameVersion") val gameVersion: String,
-// )
+
+@Serializable
+data class SaveGame(
+    val player: Player,
+    @XmlChildrenName("GameLocation", "", "") val locations: List<GameLocation>,
+    val gameVersion: String,
+)

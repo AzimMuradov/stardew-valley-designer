@@ -23,16 +23,16 @@ import me.azimmuradov.svc.engine.layout.LayoutsProvider
 import me.azimmuradov.svc.engine.putAll
 import me.azimmuradov.svc.engine.svcEngineOf
 import me.azimmuradov.svc.save.mappers.toPlacedEntity
-import me.azimmuradov.svc.save.models.GameLocation
+import me.azimmuradov.svc.save.models.SaveGame
 import nl.adaptivity.xmlutil.serialization.XML
 import java.io.File
 
 
 object SaveDataSerializers {
 
-    private const val RES_DIRECTORY = "common/sv-save/src/main/resources"
+    private const val RES_DIRECTORY = "../common/sv-save/src/main/resources"
 
-    private const val FARM_PATHNAME = "$RES_DIRECTORY/farm.xml"
+    private const val SD_PATHNAME = "$RES_DIRECTORY/sd.xml"
 
 
     @JvmStatic
@@ -50,8 +50,18 @@ object SaveDataSerializers {
             customPolicy()
         }
 
-        val f = xml.decodeFromString<GameLocation>(File(FARM_PATHNAME).readText())
-        val teaHouse = f.buildings.filter { it.buildingType == "Big Shed" }[4]
+        val text = File(SD_PATHNAME).readText().run {
+            if (first() == '\uFEFF') drop(n = 1) else this
+        }
+
+        println(text.take(100))
+
+        val f = xml.decodeFromString<SaveGame>(text)
+        // println(f.gameVersion)
+        // println(f.player)
+        // println(f.locations.map { it.name })
+        // println(f.locations.map { it.type })
+        val teaHouse = f.locations.first { it.type == "Farm" }.buildings.filter { it.buildingType == "Big Shed" }[4]
 
         requireNotNull(teaHouse.indoors)
 

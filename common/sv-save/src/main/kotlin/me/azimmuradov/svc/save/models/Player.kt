@@ -16,7 +16,10 @@
 
 package me.azimmuradov.svc.save.models
 
+import kotlinx.serialization.Serializable
 
-// data class Player(
-//     @JsonProperty("name") val name: String,
-// )
+
+@Serializable
+data class Player(
+    val name: String,
+)
