@@ -26,6 +26,7 @@
 ### 0.4.0
 
 - Main menu
+- Expanded API for savedata import
 
 ### 0.5.0
 
