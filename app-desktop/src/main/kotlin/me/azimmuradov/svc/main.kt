@@ -25,7 +25,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
-import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import me.azimmuradov.svc.components.RootComponent
 import me.azimmuradov.svc.components.rootComponent
@@ -44,11 +43,11 @@ fun main() {
             onCloseRequest = ::exitApplication,
             state = rememberWindowState(
                 position = WindowPosition(alignment = Alignment.Center),
-                size = DpSize(width = 1366.dp, height = 768.dp),
+                size = DpSize(width = 1000.dp, height = 700.dp),
             ),
             title = "",
             icon = painterResource(ICON_RES_PATH),
-            resizable = true,
+            resizable = false,
         ) {
             AppTheme(themeVariant = ThemeVariant.LIGHT) {
                 WithSettings(lang = Lang.EN) {
@@ -60,7 +59,6 @@ fun main() {
 }
 
 
-@OptIn(ExperimentalDecomposeApi::class)
 @Composable
 fun RootUi(component: RootComponent) {
     Box(modifier = Modifier.fillMaxSize()) {
@@ -74,4 +72,5 @@ fun RootUi(component: RootComponent) {
     }
 }
 
-private const val ICON_RES_PATH: String = "icon.png"
+
+const val ICON_RES_PATH: String = "icon.png"
