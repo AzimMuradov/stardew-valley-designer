@@ -94,21 +94,21 @@ fun LayoutChoosingMenu(
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth().height(48.dp),
+            modifier = Modifier.fillMaxWidth().height(56.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = onOk,
-                modifier = Modifier.width(100.dp).height(36.dp),
+                modifier = Modifier.height(36.dp),
                 enabled = chosenLayout != null
             ) {
                 Text(okText)
             }
             TextButton(
                 onClick = onCancel,
-                modifier = Modifier.width(100.dp).height(36.dp)
+                modifier = Modifier.height(36.dp)
             ) {
                 Text(cancelText)
             }

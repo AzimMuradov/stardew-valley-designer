@@ -64,7 +64,7 @@ fun RowScope.RightSideMenu(
                 enabled = false
             )
 
-            SaveImportMenu()
+            SaveImportMenu(state, intentConsumer)
 
             PlanMenuButton(
                 text = "Search for a plan",

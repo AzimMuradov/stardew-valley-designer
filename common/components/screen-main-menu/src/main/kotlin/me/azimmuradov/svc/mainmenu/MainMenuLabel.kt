@@ -17,9 +17,4 @@
 package me.azimmuradov.svc.mainmenu
 
 
-sealed interface MainMenuLabel {
-
-    data object CreateNewPlan : MainMenuLabel
-
-    data class LoadSaveData(val path: String) : MainMenuLabel
-}
+sealed interface MainMenuLabel

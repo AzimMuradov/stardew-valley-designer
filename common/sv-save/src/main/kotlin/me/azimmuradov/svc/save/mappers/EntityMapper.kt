@@ -16,7 +16,6 @@
 
 package me.azimmuradov.svc.save.mappers
 
-import me.azimmuradov.svc.engine.entity.Equipment
 import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.geometry.xy
 import me.azimmuradov.svc.engine.rectmap.placeIt
@@ -26,7 +25,7 @@ import me.azimmuradov.svc.metadata.EntityPage
 import me.azimmuradov.svc.save.models.*
 
 
-fun Object.toPlacedEntity(): PlacedEntity<*> {
+fun Object.toPlacedEntityOrNull(): PlacedEntity<*>? {
     val entityId = EntityId(
         page = when (type) {
             "Crafting" -> EntityPage.Craftables
@@ -34,19 +33,15 @@ fun Object.toPlacedEntity(): PlacedEntity<*> {
         },
         index = parentSheetIndex
     )
-    val entity = entityById[entityId] ?: Equipment.SimpleEquipment.Telephone
-
-    return entity.placeIt(there = tileLocation.toCoordinate())
+    return entityById[entityId]?.placeIt(there = tileLocation.toCoordinate())
 }
 
-fun Furniture.toPlacedEntity(): PlacedEntity<*> {
+fun Furniture.toPlacedEntityOrNull(): PlacedEntity<*>? {
     val entityId = EntityId(
         page = EntityPage.Furniture,
         index = parentSheetIndex
     )
-    val entity = entityById[entityId] ?: Equipment.SimpleEquipment.Telephone
-
-    return entity.placeIt(there = tileLocation.toCoordinate())
+    return entityById[entityId]?.placeIt(there = tileLocation.toCoordinate())
 }
 
 

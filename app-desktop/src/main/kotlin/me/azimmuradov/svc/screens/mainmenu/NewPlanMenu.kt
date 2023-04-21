@@ -41,11 +41,11 @@ fun RowScope.NewPlanMenu(
     PlanMenuButton(
         text = "New Plan",
         icon = Icons.Filled.Add,
-        onClick = { intentConsumer(MainMenuIntent.NewPlan.OpenMenu) }
+        onClick = { intentConsumer(MainMenuIntent.NewPlanMenu.OpenMenu) }
     )
 
     Dialog(
-        onCloseRequest = { intentConsumer(MainMenuIntent.NewPlan.Cancel) },
+        onCloseRequest = { intentConsumer(MainMenuIntent.NewPlanMenu.Cancel) },
         state = rememberDialogState(
             size = DpSize(width = 400.dp, height = 600.dp)
         ),
@@ -59,11 +59,11 @@ fun RowScope.NewPlanMenu(
                 layouts = (state as? MainMenuState.NewPlanMenu.Idle)?.availableLayouts,
                 placeholder = "",
                 chosenLayout = (state as? MainMenuState.NewPlanMenu.Idle)?.chosenLayout,
-                okText = wordList.ok,
+                okText = "CHOOSE",
                 cancelText = wordList.cancel,
-                onLayoutChosen = { intentConsumer(MainMenuIntent.NewPlan.ChooseLayout(it)) },
-                onOk = { intentConsumer(MainMenuIntent.NewPlan.CreateNewPlan) },
-                onCancel = { intentConsumer(MainMenuIntent.NewPlan.Cancel) }
+                onLayoutChosen = { intentConsumer(MainMenuIntent.NewPlanMenu.ChooseLayout(it)) },
+                onOk = { intentConsumer(MainMenuIntent.NewPlanMenu.AcceptChosen) },
+                onCancel = { intentConsumer(MainMenuIntent.NewPlanMenu.Cancel) }
             )
         }
     }

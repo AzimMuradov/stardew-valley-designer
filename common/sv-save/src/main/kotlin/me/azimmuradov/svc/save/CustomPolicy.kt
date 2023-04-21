@@ -24,7 +24,7 @@ import nl.adaptivity.xmlutil.serialization.*
 import nl.adaptivity.xmlutil.serialization.structure.SafeParentInfo
 
 
-fun XmlConfig.Builder.customPolicy() {
+internal fun XmlConfig.Builder.customPolicy() {
     policy = CustomPolicy
 }
 

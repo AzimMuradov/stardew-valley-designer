@@ -17,7 +17,6 @@
 package me.azimmuradov.svc.mainmenu
 
 import me.azimmuradov.svc.engine.SvcEngine
-import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 
 
 sealed interface MainMenuState {
@@ -32,20 +31,16 @@ sealed interface MainMenuState {
         ) : NewPlanMenu
     }
 
-    sealed interface SaveDataImportMenu : MainMenuState {
+    sealed interface SaveLoaderMenu : MainMenuState {
 
         data class Idle(
-            val path: String = "",
-            val layouts: List<LayeredEntitiesData> = emptyList(),
-        ) : SaveDataImportMenu
+            val availableLayouts: List<SvcEngine>?,
+            val chosenLayout: SvcEngine?,
+        ) : SaveLoaderMenu
 
-        data class Loading(
-            val path: String = "",
-        ) : SaveDataImportMenu
+        data object Loading : SaveLoaderMenu
 
-        data class Error(
-            val path: String = "",
-        ) : SaveDataImportMenu
+        data object Error : SaveLoaderMenu
     }
 
 

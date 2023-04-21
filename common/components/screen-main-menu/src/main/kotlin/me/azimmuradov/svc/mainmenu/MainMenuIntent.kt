@@ -21,19 +21,27 @@ import me.azimmuradov.svc.engine.SvcEngine
 
 sealed interface MainMenuIntent {
 
-    sealed interface NewPlan : MainMenuIntent {
+    sealed interface NewPlanMenu : MainMenuIntent {
 
-        data object OpenMenu : NewPlan
+        data object OpenMenu : NewPlanMenu
 
-        data class ChooseLayout(val layout: SvcEngine) : NewPlan
+        data class ChooseLayout(val layout: SvcEngine) : NewPlanMenu
 
-        data object Cancel : NewPlan
+        data object AcceptChosen : NewPlanMenu
 
-        data object CreateNewPlan : NewPlan
+        data object Cancel : NewPlanMenu
     }
 
-    sealed interface SaveData : MainMenuIntent {
+    sealed interface SaveLoaderMenu : MainMenuIntent {
 
-        data class Load(val path: String) : SaveData
+        data object OpenMenu : SaveLoaderMenu
+
+        data class LoadSave(val path: String) : SaveLoaderMenu
+
+        data class ChooseLayout(val layout: SvcEngine) : SaveLoaderMenu
+
+        data object AcceptChosen : SaveLoaderMenu
+
+        data object Cancel : SaveLoaderMenu
     }
 }

@@ -17,12 +17,9 @@
 package me.azimmuradov.svc.save
 
 import kotlinx.serialization.decodeFromString
-import me.azimmuradov.svc.engine.layers.*
-import me.azimmuradov.svc.engine.layout.LayoutType
-import me.azimmuradov.svc.engine.layout.LayoutsProvider
-import me.azimmuradov.svc.engine.putAll
-import me.azimmuradov.svc.engine.svcEngineOf
-import me.azimmuradov.svc.save.mappers.toPlacedEntity
+import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
+import me.azimmuradov.svc.engine.layers.layeredData
+import me.azimmuradov.svc.save.mappers.toPlacedEntityOrNull
 import me.azimmuradov.svc.save.models.SaveGame
 import nl.adaptivity.xmlutil.serialization.XML
 import java.io.File
@@ -30,19 +27,38 @@ import java.io.File
 
 object SaveDataSerializers {
 
-    private const val RES_DIRECTORY = "../common/sv-save/src/main/resources"
+    fun parse(path: String): List<LayeredEntitiesData> {
+        val xml = XML {
+            indent = 2
+            customPolicy()
+        }
 
-    private const val SD_PATHNAME = "$RES_DIRECTORY/sd.xml"
+        val text = File(path).readText().run {
+            if (first() == '\uFEFF') drop(n = 1) else this
+        }
 
+        val save = xml.decodeFromString<SaveGame>(text)
+        val buildings = save.locations
+            .first { it.type == "Farm" }
+            .buildings
+            .filter { it.buildingType == "Big Shed" }
 
-    @JvmStatic
-    fun main(args: Array<String>) {
-        val objs = fromSD()
+        return buildings.map { building ->
+            if (building.indoors != null) {
+                val furniture = building.indoors.furniture.mapNotNull { it.toPlacedEntityOrNull() }
+                val objects = building.indoors.objects.mapNotNull { it.value.obj.toPlacedEntityOrNull() }
 
-        val engine = svcEngineOf(layout = LayoutsProvider.layoutOf(LayoutType.BigShed)).apply {
-            putAll(objs.toLayeredEntities())
+                (furniture + objects).filter { it.place.y >= 0 }
+            } else {
+                emptyList()
+            }.layeredData()
         }
     }
+
+
+    /* private const val RES_DIRECTORY = "../common/sv-save/src/main/resources"
+
+    private const val SD_PATHNAME = "$RES_DIRECTORY/sd.xml"
 
     fun fromSD(): LayeredEntitiesData {
         val xml = XML {
@@ -54,7 +70,7 @@ object SaveDataSerializers {
             if (first() == '\uFEFF') drop(n = 1) else this
         }
 
-        println(text.take(100))
+        // println(text.take(100))
 
         val f = xml.decodeFromString<SaveGame>(text)
         // println(f.gameVersion)
@@ -80,8 +96,8 @@ object SaveDataSerializers {
         // })
 
 
-        return (teaHouse.indoors.furniture.map { it.toPlacedEntity() } +
-                teaHouse.indoors.objects.map { it.value.obj.toPlacedEntity() })
+        return (teaHouse.indoors.furniture.mapNotNull { it.toPlacedEntityOrNull() } +
+                teaHouse.indoors.objects.mapNotNull { it.value.obj.toPlacedEntityOrNull() })
             .filter { it.place.y >= 0 }.layeredData()
-    }
+    } */
 }

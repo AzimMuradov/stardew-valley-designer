@@ -19,10 +19,12 @@ package me.azimmuradov.svc.mainmenu
 import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import me.azimmuradov.svc.engine.SvcEngine
+import kotlinx.coroutines.*
+import me.azimmuradov.svc.engine.*
+import me.azimmuradov.svc.engine.layers.toLayeredEntities
 import me.azimmuradov.svc.engine.layout.LayoutType
 import me.azimmuradov.svc.engine.layout.LayoutsProvider.layoutOf
-import me.azimmuradov.svc.engine.svcEngineOf
+import me.azimmuradov.svc.save.SaveDataSerializers
 import me.azimmuradov.svc.mainmenu.MainMenuIntent as Intent
 import me.azimmuradov.svc.mainmenu.MainMenuLabel as Label
 import me.azimmuradov.svc.mainmenu.MainMenuState as State
@@ -49,9 +51,14 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
     private sealed interface Action
 
     private sealed interface Msg {
-        data object OpenMenu : Msg
-        data class ChooseLayout(val layout: SvcEngine) : Msg
-        data class UpdateState(val state: State) : Msg
+        data object ToMainMenu : Msg
+        data object OpenNewPlanMenu : Msg
+        data class ChooseLayoutFromNewPlanMenu(val layout: SvcEngine) : Msg
+        data object OpenSaveLoaderMenu : Msg
+        data object ShowLoadingInSaveLoaderMenu : Msg
+        data class ShowSuccessInSaveLoaderMenu(val layouts: List<SvcEngine>) : Msg
+        data object ShowErrorInSaveLoaderMenu : Msg
+        data class ChooseLayoutFromSaveLoaderMenu(val layout: SvcEngine) : Msg
     }
 
     private class BootstrapperImpl : CoroutineBootstrapper<Action>() {
@@ -65,17 +72,54 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
         override fun executeIntent(intent: Intent, getState: () -> State) {
             when (intent) {
-                Intent.NewPlan.OpenMenu -> dispatch(Msg.OpenMenu)
+                Intent.NewPlanMenu.OpenMenu -> dispatch(Msg.OpenNewPlanMenu)
 
-                is Intent.NewPlan.ChooseLayout -> dispatch(Msg.ChooseLayout(intent.layout))
+                is Intent.NewPlanMenu.ChooseLayout -> dispatch(Msg.ChooseLayoutFromNewPlanMenu(intent.layout))
 
-                Intent.NewPlan.Cancel -> dispatch(Msg.UpdateState(State.Idle))
-
-                Intent.NewPlan.CreateNewPlan -> onCartographerScreenCall(
+                Intent.NewPlanMenu.AcceptChosen -> onCartographerScreenCall(
                     (getState() as State.NewPlanMenu.Idle).chosenLayout!!
                 )
 
-                is Intent.SaveData.Load -> publish(Label.LoadSaveData(intent.path))
+                Intent.NewPlanMenu.Cancel -> dispatch(Msg.ToMainMenu)
+
+
+                Intent.SaveLoaderMenu.OpenMenu -> dispatch(Msg.OpenSaveLoaderMenu)
+
+                is Intent.SaveLoaderMenu.LoadSave -> {
+                    dispatch(Msg.ShowLoadingInSaveLoaderMenu)
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val parsed = try {
+                            SaveDataSerializers.parse(intent.path)
+                        } catch (e: Exception) {
+                            null
+                        }?.map {
+                            svcEngineOf(layoutOf(LayoutType.BigShed)).apply {
+                                putAll(it.toLayeredEntities())
+                            }
+                        }
+
+                        dispatch(
+                            if (parsed != null) {
+                                Msg.ShowSuccessInSaveLoaderMenu(parsed)
+                            } else {
+                                Msg.ShowErrorInSaveLoaderMenu
+                            }
+                        )
+                    }
+                }
+
+                is Intent.SaveLoaderMenu.ChooseLayout -> dispatch(Msg.ChooseLayoutFromSaveLoaderMenu(intent.layout))
+
+                Intent.SaveLoaderMenu.AcceptChosen -> {
+                    val layout = (getState() as State.SaveLoaderMenu.Idle).chosenLayout!!
+
+                    dispatch(Msg.ToMainMenu)
+
+                    onCartographerScreenCall(layout)
+                }
+
+                Intent.SaveLoaderMenu.Cancel -> dispatch(Msg.ToMainMenu)
             }
         }
 
@@ -84,21 +128,36 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
     private val reducer = Reducer<State, Msg> { msg ->
         when (msg) {
-            Msg.OpenMenu -> State.NewPlanMenu.Idle(
+            Msg.OpenNewPlanMenu -> State.NewPlanMenu.Idle(
                 availableLayouts = listOf(svcEngineOf(layoutOf(LayoutType.BigShed))),
                 chosenLayout = null
             )
 
-            is Msg.ChooseLayout -> if (this is State.NewPlanMenu.Idle) {
-                copy(chosenLayout = msg.layout)
-            } else {
-                State.NewPlanMenu.Idle(
-                    availableLayouts = listOf(svcEngineOf(layoutOf(LayoutType.BigShed))),
-                    chosenLayout = msg.layout
-                )
-            }
+            is Msg.ChooseLayoutFromNewPlanMenu -> (this as State.NewPlanMenu.Idle).copy(
+                chosenLayout = msg.layout
+            )
 
-            is Msg.UpdateState -> msg.state
+
+            Msg.OpenSaveLoaderMenu -> State.SaveLoaderMenu.Idle(
+                availableLayouts = null,
+                chosenLayout = null
+            )
+
+            Msg.ShowLoadingInSaveLoaderMenu -> State.SaveLoaderMenu.Loading
+
+            is Msg.ShowSuccessInSaveLoaderMenu -> State.SaveLoaderMenu.Idle(
+                availableLayouts = msg.layouts,
+                chosenLayout = null
+            )
+
+            Msg.ShowErrorInSaveLoaderMenu -> State.SaveLoaderMenu.Error
+
+            is Msg.ChooseLayoutFromSaveLoaderMenu -> (this as State.SaveLoaderMenu.Idle).copy(
+                chosenLayout = msg.layout
+            )
+
+
+            Msg.ToMainMenu -> State.Idle
         }
     }
 }
