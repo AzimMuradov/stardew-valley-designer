@@ -16,7 +16,7 @@
 
 package me.azimmuradov.svc.screens.mainmenu
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
@@ -24,23 +24,30 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import me.azimmuradov.svc.engine.layout.LayoutType
+import me.azimmuradov.svc.cartographer.res.LayoutSpritesProvider
+import me.azimmuradov.svc.engine.SvcEngine
+import me.azimmuradov.svc.engine.layers.entities
+import me.azimmuradov.svc.utils.GlobalSettings
 
 
 @Composable
 fun LayoutChoosingMenu(
     modifier: Modifier,
-    layouts: List<LayoutType>?,
+    layouts: List<SvcEngine>?,
     placeholder: String,
-    chosenLayout: LayoutType?,
+    chosenLayout: SvcEngine?,
     okText: String,
     cancelText: String,
-    onLayoutChosen: (LayoutType) -> Unit,
+    onLayoutChosen: (SvcEngine) -> Unit,
     onOk: () -> Unit,
     onCancel: () -> Unit,
 ) {
+    val wordList = GlobalSettings.strings
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -53,12 +60,30 @@ fun LayoutChoosingMenu(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 items(layouts) { layout ->
-                    Box(
+                    Column(
                         modifier = Modifier
-                            .background(Color.Cyan)
+                            .clip(MaterialTheme.shapes.medium)
+                            .border(
+                                width = if (chosenLayout == layout) 2.dp else Dp.Unspecified,
+                                color = Color.Black,
+                                shape = MaterialTheme.shapes.medium
+                            )
                             .clickable(onClick = { onLayoutChosen(layout) })
+                            .padding(4.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = layout.toString())
+                        Box {
+                            LayoutPreview(
+                                layoutSprite = LayoutSpritesProvider.layoutSpriteBy(layout.layers.layout.type),
+                                layoutSize = layout.layers.layout.size,
+                                entities = layout.layers.entities,
+                            )
+                        }
+                        Text(
+                            text = wordList.layout(layout.layers.layout.type),
+                            style = MaterialTheme.typography.subtitle2
+                        )
                     }
                 }
             }

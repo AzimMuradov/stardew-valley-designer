@@ -20,6 +20,7 @@ import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import me.azimmuradov.svc.engine.SvcEngine
+import me.azimmuradov.svc.engine.layout.LayoutType
 import me.azimmuradov.svc.engine.layout.LayoutsProvider.layoutOf
 import me.azimmuradov.svc.engine.svcEngineOf
 import me.azimmuradov.svc.mainmenu.MainMenuIntent as Intent
@@ -48,6 +49,8 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
     private sealed interface Action
 
     private sealed interface Msg {
+        data object OpenMenu : Msg
+        data class ChooseLayout(val layout: SvcEngine) : Msg
         data class UpdateState(val state: State) : Msg
     }
 
@@ -62,14 +65,14 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
         override fun executeIntent(intent: Intent, getState: () -> State) {
             when (intent) {
-                Intent.NewPlan.OpenMenu -> dispatch(Msg.UpdateState(State.NewPlanMenu.Idle()))
+                Intent.NewPlan.OpenMenu -> dispatch(Msg.OpenMenu)
 
-                is Intent.NewPlan.ChooseLayout -> dispatch(Msg.UpdateState(State.NewPlanMenu.Idle(intent.layout)))
+                is Intent.NewPlan.ChooseLayout -> dispatch(Msg.ChooseLayout(intent.layout))
 
                 Intent.NewPlan.Cancel -> dispatch(Msg.UpdateState(State.Idle))
 
                 Intent.NewPlan.CreateNewPlan -> onCartographerScreenCall(
-                    svcEngineOf(layoutOf((getState() as State.NewPlanMenu.Idle).layout!!))
+                    (getState() as State.NewPlanMenu.Idle).chosenLayout!!
                 )
 
                 is Intent.SaveData.Load -> publish(Label.LoadSaveData(intent.path))
@@ -81,6 +84,20 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
     private val reducer = Reducer<State, Msg> { msg ->
         when (msg) {
+            Msg.OpenMenu -> State.NewPlanMenu.Idle(
+                availableLayouts = listOf(svcEngineOf(layoutOf(LayoutType.BigShed))),
+                chosenLayout = null
+            )
+
+            is Msg.ChooseLayout -> if (this is State.NewPlanMenu.Idle) {
+                copy(chosenLayout = msg.layout)
+            } else {
+                State.NewPlanMenu.Idle(
+                    availableLayouts = listOf(svcEngineOf(layoutOf(LayoutType.BigShed))),
+                    chosenLayout = msg.layout
+                )
+            }
+
             is Msg.UpdateState -> msg.state
         }
     }

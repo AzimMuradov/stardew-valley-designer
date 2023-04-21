@@ -49,21 +49,21 @@ fun RowScope.NewPlanMenu(
         state = rememberDialogState(
             size = DpSize(width = 400.dp, height = 600.dp)
         ),
-        visible = state is MainMenuState.NewPlanMenu,
+        visible = state is MainMenuState.NewPlanMenu.Idle,
         title = "Choose from available layouts",
         resizable = false
     ) {
         Box(Modifier.fillMaxSize(), Alignment.Center) {
             LayoutChoosingMenu(
                 modifier = Modifier.fillMaxSize().padding(16.dp),
-                layouts = null,
+                layouts = (state as? MainMenuState.NewPlanMenu.Idle)?.availableLayouts,
                 placeholder = "",
-                chosenLayout = null,
+                chosenLayout = (state as? MainMenuState.NewPlanMenu.Idle)?.chosenLayout,
                 okText = wordList.ok,
                 cancelText = wordList.cancel,
-                onLayoutChosen = {},
-                onOk = {},
-                onCancel = {}
+                onLayoutChosen = { intentConsumer(MainMenuIntent.NewPlan.ChooseLayout(it)) },
+                onOk = { intentConsumer(MainMenuIntent.NewPlan.CreateNewPlan) },
+                onCancel = { intentConsumer(MainMenuIntent.NewPlan.Cancel) }
             )
         }
     }

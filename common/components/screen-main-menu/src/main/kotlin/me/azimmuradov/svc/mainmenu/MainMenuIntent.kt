@@ -16,7 +16,7 @@
 
 package me.azimmuradov.svc.mainmenu
 
-import me.azimmuradov.svc.engine.layout.LayoutType
+import me.azimmuradov.svc.engine.SvcEngine
 
 
 sealed interface MainMenuIntent {
@@ -25,7 +25,7 @@ sealed interface MainMenuIntent {
 
         data object OpenMenu : NewPlan
 
-        data class ChooseLayout(val layout: LayoutType) : NewPlan
+        data class ChooseLayout(val layout: SvcEngine) : NewPlan
 
         data object Cancel : NewPlan
 
