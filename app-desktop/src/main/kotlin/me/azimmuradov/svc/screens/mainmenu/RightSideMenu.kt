@@ -19,16 +19,27 @@ package me.azimmuradov.svc.screens.mainmenu
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import me.azimmuradov.svc.mainmenu.MainMenuIntent
+import me.azimmuradov.svc.mainmenu.MainMenuState
+import me.azimmuradov.svc.utils.GlobalSettings
 
 
 @Composable
-fun RowScope.RightSideMenu(onCartographerScreenCall: () -> Unit) {
+fun RowScope.RightSideMenu(
+    state: MainMenuState,
+    intentConsumer: (MainMenuIntent) -> Unit,
+    onCartographerScreenCall: () -> Unit,
+) {
+    val wordList = GlobalSettings.strings
+
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -41,18 +52,25 @@ fun RowScope.RightSideMenu(onCartographerScreenCall: () -> Unit) {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Row(Modifier.fillMaxWidth().height(56.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-            Button(onClick = onCartographerScreenCall, Modifier.fillMaxHeight().width(200.dp)) {
-                Text(text = "New Plan")
-            }
+        Row(
+            modifier = Modifier.fillMaxWidth().height(56.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            NewPlanMenu(state, intentConsumer)
 
-            Button(onClick = {}, Modifier.fillMaxHeight().width(200.dp)) {
-                Text(text = "Import plan from save")
-            }
+            PlanMenuButton(
+                text = "Open plan",
+                icon = painterResource(resourcePath = "main-menu/file_open_FILL1_wght400_GRAD0_opsz48.svg"),
+                enabled = false
+            )
 
-            Button(onClick = {}, Modifier.fillMaxHeight().width(200.dp), enabled = false) {
-                Text(text = "Search for a plan")
-            }
+            SaveImportMenu()
+
+            PlanMenuButton(
+                text = "Search for a plan",
+                icon = Icons.Filled.Search,
+                enabled = false
+            )
         }
 
 

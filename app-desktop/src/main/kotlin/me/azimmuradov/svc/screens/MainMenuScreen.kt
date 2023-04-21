@@ -19,16 +19,20 @@ package me.azimmuradov.svc.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import me.azimmuradov.svc.components.screens.MainMenuComponent
-import me.azimmuradov.svc.screens.mainmenu.LeftSideMenu
+import com.arkivanov.mvikotlin.extensions.coroutines.states
+import me.azimmuradov.svc.mainmenu.MainMenuComponent
+import me.azimmuradov.svc.screens.mainmenu.SideMenu
 import me.azimmuradov.svc.screens.mainmenu.RightSideMenu
 
 
 @Composable
-fun MainMenuUi(component: MainMenuComponent) {
+fun MainMenuScreen(component: MainMenuComponent) {
+    val store = component.store
+    val state by store.states.collectAsState(component.store.state)
+
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -36,7 +40,11 @@ fun MainMenuUi(component: MainMenuComponent) {
             .padding(10.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        LeftSideMenu()
-        RightSideMenu(component.onCartographerScreenCall)
+        SideMenu()
+        RightSideMenu(
+            state = state,
+            intentConsumer = store::accept,
+            onCartographerScreenCall = {}
+        )
     }
 }

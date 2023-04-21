@@ -35,7 +35,7 @@ import me.azimmuradov.svc.screens.cartographer.topmenubar.TopMenuBar
 
 
 @Composable
-fun CartographerUi(component: CartographerComponent) {
+fun CartographerScreen(component: CartographerComponent) {
     val store = component.store
     val state by store.states.collectAsState(component.store.state)
     val (history, map, toolkit, palette, /* flavors, */ visLayers, /* clipboard, */ options) = state

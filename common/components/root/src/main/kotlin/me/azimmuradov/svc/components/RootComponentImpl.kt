@@ -47,8 +47,8 @@ private class RootComponentImpl(
 
     private val stack = childStack(
         source = navigation,
-        initialConfiguration = CartographerConfig,
-        // initialConfiguration = WelcomeConfig,
+        // initialConfiguration = MainMenuConfig,
+        initialConfiguration = WelcomeConfig,
         childFactory = ::child,
     )
 
@@ -59,8 +59,8 @@ private class RootComponentImpl(
         navigation.replaceCurrent(configuration = MainMenuConfig)
     }
 
-    override fun onCartographerScreenCall() {
-        navigation.push(configuration = CartographerConfig)
+    override fun onCartographerScreenCall(layout: LayoutType) {
+        navigation.push(configuration = CartographerConfig(layout))
     }
 
     override fun onCartographerScreenReturn() {
@@ -68,31 +68,30 @@ private class RootComponentImpl(
     }
 
 
-    private fun child(config: Config, componentContext: ComponentContext): Child =
-        when (config) {
-            WelcomeConfig -> WelcomeChild(
-                WelcomeComponentImpl(
-                    this::onWelcomeScreenEnd,
-                )
+    private fun child(config: Config, componentContext: ComponentContext): Child = when (config) {
+        WelcomeConfig -> WelcomeChild(
+            WelcomeComponentImpl(
+                this::onWelcomeScreenEnd,
             )
+        )
 
-            MainMenuConfig -> MainMenuChild(
-                MainMenuComponentImpl(
-                    this::onCartographerScreenCall,
-                )
+        MainMenuConfig -> MainMenuChild(
+            MainMenuComponentImpl(
+                this::onCartographerScreenCall,
             )
+        )
 
-            CartographerConfig -> CartographerChild(
-                CartographerComponentImpl(
-                    layout = layoutOf(type = LayoutType.BigShed),
-                    onCartographerScreenReturn = this::onCartographerScreenReturn,
-                )
+        is CartographerConfig -> CartographerChild(
+            CartographerComponentImpl(
+                layout = layoutOf(type = config.layout),
+                onCartographerScreenReturn = this::onCartographerScreenReturn,
             )
-        }
+        )
+    }
 
     private sealed class Config : Parcelable {
-        object WelcomeConfig : Config()
-        object MainMenuConfig : Config()
-        object CartographerConfig : Config()
+        data object WelcomeConfig : Config()
+        data object MainMenuConfig : Config()
+        data class CartographerConfig(val layout: LayoutType) : Config()
     }
 }

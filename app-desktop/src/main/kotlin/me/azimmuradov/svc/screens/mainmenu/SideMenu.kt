@@ -19,7 +19,8 @@ package me.azimmuradov.svc.screens.mainmenu
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
@@ -30,20 +31,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.azimmuradov.svc.ICON_RES_PATH
 import me.azimmuradov.svc.utils.GlobalSettings
+import me.azimmuradov.svc.utils.openInBrowser
+import java.net.URI
 
 
 @Composable
-fun RowScope.LeftSideMenu() {
+fun RowScope.SideMenu() {
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -84,101 +83,35 @@ fun RowScope.LeftSideMenu() {
             Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            MenuButton(
+            SideMenuButton(
                 text = "Stardew Valley",
+                tooltip = "Official Stardew Valley Site",
                 icon = painterResource(resourcePath = "main-menu/captive_portal_FILL1_wght400_GRAD0_opsz48.svg"),
-                onClick = {},
+                onClick = {
+                    openInBrowser(URI.create("https://www.stardewvalley.net/"))
+                },
                 enabled = true
             )
-            MenuButton(
+            SideMenuButton(
                 text = "Switch theme",
+                tooltip = "WIP",
                 icon = painterResource(resourcePath = "main-menu/light_mode_FILL1_wght400_GRAD0_opsz48.svg")
             )
-            MenuButton(text = "Settings", icon = Icons.Filled.Settings)
-            MenuButton(
+            SideMenuButton(
+                text = "Settings",
+                tooltip = "WIP",
+                icon = Icons.Filled.Settings
+            )
+            SideMenuButton(
                 text = "Donate",
+                tooltip = "WIP",
                 icon = painterResource(resourcePath = "main-menu/emoji_food_beverage_FILL1_wght400_GRAD0_opsz48.svg")
             )
-            MenuButton(text = "Help", icon = Icons.Filled.Info)
+            SideMenuButton(
+                text = "Help",
+                tooltip = "WIP",
+                icon = Icons.Filled.Info
+            )
         }
-    }
-}
-
-
-@Composable
-private fun MenuButton(
-    text: String,
-    icon: ImageVector,
-    onClick: () -> Unit = {},
-    enabled: Boolean = false,
-) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier.height(48.dp).fillMaxWidth(),
-        enabled = enabled,
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = MaterialTheme.colors.surface,
-            contentColor = MaterialTheme.colors.primary
-        ),
-        contentPadding = PaddingValues(
-            start = 12.dp,
-            top = 8.dp,
-            end = 16.dp,
-            bottom = 8.dp
-        )
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            modifier = Modifier.size(24.dp)
-        )
-        Spacer(Modifier.width(12.dp))
-        Text(
-            text,
-            style = TextStyle(
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 14.sp
-            )
-        )
-        Spacer(Modifier.weight(1f))
-    }
-}
-
-@Composable
-private fun MenuButton(
-    text: String,
-    icon: Painter,
-    onClick: () -> Unit = {},
-    enabled: Boolean = false,
-) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier.height(48.dp).fillMaxWidth(),
-        enabled = enabled,
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = MaterialTheme.colors.surface,
-            contentColor = MaterialTheme.colors.primary
-        ),
-        contentPadding = PaddingValues(
-            start = 12.dp,
-            top = 8.dp,
-            end = 16.dp,
-            bottom = 8.dp
-        )
-    ) {
-        Icon(
-            painter = icon,
-            contentDescription = null,
-            modifier = Modifier.size(24.dp)
-        )
-        Spacer(Modifier.width(12.dp))
-        Text(
-            text,
-            style = TextStyle(
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 14.sp
-            )
-        )
-        Spacer(Modifier.weight(1f))
     }
 }

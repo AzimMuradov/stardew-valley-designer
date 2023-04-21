@@ -16,19 +16,12 @@
 
 package me.azimmuradov.svc
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
-import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
-import me.azimmuradov.svc.components.RootComponent
 import me.azimmuradov.svc.components.rootComponent
-import me.azimmuradov.svc.screens.*
 import me.azimmuradov.svc.settings.Lang
 import me.azimmuradov.svc.utils.WithSettings
 
@@ -43,30 +36,16 @@ fun main() {
             onCloseRequest = ::exitApplication,
             state = rememberWindowState(
                 position = WindowPosition(alignment = Alignment.Center),
-                size = DpSize(width = 1000.dp, height = 700.dp),
+                size = DpSize(width = 1200.dp, height = 700.dp),
             ),
             title = "",
             icon = painterResource(ICON_RES_PATH),
-            resizable = false,
+            resizable = true,
         ) {
             AppTheme(themeVariant = ThemeVariant.LIGHT) {
                 WithSettings(lang = Lang.EN) {
-                    RootUi(root)
+                    Root(root)
                 }
-            }
-        }
-    }
-}
-
-
-@Composable
-fun RootUi(component: RootComponent) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Children(stack = component.childStack) { (_, child) ->
-            when (child) {
-                is RootComponent.Child.WelcomeChild -> WelcomeUi(child.component)
-                is RootComponent.Child.MainMenuChild -> MainMenuUi(child.component)
-                is RootComponent.Child.CartographerChild -> CartographerUi(child.component)
             }
         }
     }

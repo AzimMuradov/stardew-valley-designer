@@ -32,7 +32,7 @@ import me.azimmuradov.svc.screens.IconAnimationState.DISAPPEARING
 
 
 @Composable
-fun WelcomeUi(component: WelcomeComponent) {
+fun WelcomeScreen(component: WelcomeComponent) {
     var iconAnimationState by remember { mutableStateOf(APPEARING) }
     val alpha = remember { Animatable(ICON_MIN_TRANSPARENCY) }
 

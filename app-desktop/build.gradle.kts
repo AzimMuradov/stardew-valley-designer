@@ -40,6 +40,10 @@ dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${V.DETEKT}")
 
     implementation(compose.desktop.currentOs)
+    implementation(compose.materialIconsExtended)
+
+    implementation("cafe.adriel.bonsai:bonsai-core:1.2.0")
+    implementation("cafe.adriel.bonsai:bonsai-file-system:1.2.0")
 
     implementation("com.arkivanov.decompose:decompose:${V.DECOMPOSE}")
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains:${V.DECOMPOSE}")

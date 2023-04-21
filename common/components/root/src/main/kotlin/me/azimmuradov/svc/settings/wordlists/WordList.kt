@@ -20,6 +20,7 @@ import me.azimmuradov.svc.cartographer.menus.EntitySelectionRoot
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolType
 import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.layer.LayerType
+import me.azimmuradov.svc.engine.layout.LayoutType
 
 
 /**
@@ -36,6 +37,18 @@ sealed interface WordList {
      * Author full name.
      */
     val author: String
+
+
+    // General
+
+    val ok: String
+
+    val cancel: String
+
+    /**
+     * TODO : Docs
+     */
+    fun layout(type: LayoutType): String
 
 
     // Cartographer Screen

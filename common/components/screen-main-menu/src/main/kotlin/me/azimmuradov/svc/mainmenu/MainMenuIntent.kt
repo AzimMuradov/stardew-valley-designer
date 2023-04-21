@@ -14,10 +14,26 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.components.screens
+package me.azimmuradov.svc.mainmenu
+
+import me.azimmuradov.svc.engine.layout.LayoutType
 
 
-interface MainMenuComponent {
+sealed interface MainMenuIntent {
 
-    val onCartographerScreenCall: () -> Unit
+    sealed interface NewPlan : MainMenuIntent {
+
+        data object OpenMenu : NewPlan
+
+        data class ChooseLayout(val layout: LayoutType) : NewPlan
+
+        data object Cancel : NewPlan
+
+        data object CreateNewPlan : NewPlan
+    }
+
+    sealed interface SaveData : MainMenuIntent {
+
+        data class Load(val path: String) : SaveData
+    }
 }

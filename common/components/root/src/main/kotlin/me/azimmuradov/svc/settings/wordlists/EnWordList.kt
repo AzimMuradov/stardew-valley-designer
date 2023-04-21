@@ -20,13 +20,26 @@ import me.azimmuradov.svc.cartographer.menus.EntitySelectionRoot
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolType
 import me.azimmuradov.svc.engine.entity.*
 import me.azimmuradov.svc.engine.layer.LayerType
+import me.azimmuradov.svc.engine.layout.LayoutType
 
 
-object EnWordList : WordList {
+data object EnWordList : WordList {
 
     override val application: String = "Stardew Valley Cartographer"
 
     override val author: String = "Azim Muradov"
+
+
+    // General
+
+    override val ok: String = "OK"
+
+    override val cancel: String = "CANCEL"
+
+    override fun layout(type: LayoutType): String = when (type) {
+        LayoutType.Shed -> "Shed"
+        LayoutType.BigShed -> "Big Shed"
+    }
 
 
     // Cartographer Screen
