@@ -19,7 +19,9 @@ package me.azimmuradov.svc.mainmenu
 import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import me.azimmuradov.svc.engine.layout.LayoutType
+import me.azimmuradov.svc.engine.SvcEngine
+import me.azimmuradov.svc.engine.layout.LayoutsProvider.layoutOf
+import me.azimmuradov.svc.engine.svcEngineOf
 import me.azimmuradov.svc.mainmenu.MainMenuIntent as Intent
 import me.azimmuradov.svc.mainmenu.MainMenuLabel as Label
 import me.azimmuradov.svc.mainmenu.MainMenuState as State
@@ -32,7 +34,9 @@ internal typealias MainMenuStore = Store<Intent, State, Label>
 
 class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
-    fun create(onCartographerScreenCall: (LayoutType) -> Unit): MainMenuStore = object : MainMenuStore by storeFactory.create(
+    fun create(
+        onCartographerScreenCall: (SvcEngine) -> Unit,
+    ): MainMenuStore = object : MainMenuStore by storeFactory.create(
         name = "MainMenuStore",
         initialState = State.default(),
         bootstrapper = BootstrapperImpl(),
@@ -53,15 +57,21 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
     }
 
     private class ExecutorImpl(
-        private val onCartographerScreenCall: (LayoutType) -> Unit,
+        private val onCartographerScreenCall: (SvcEngine) -> Unit,
     ) : CoroutineExecutor<Intent, Action, State, Msg, Label>() {
 
         override fun executeIntent(intent: Intent, getState: () -> State) {
             when (intent) {
                 Intent.NewPlan.OpenMenu -> dispatch(Msg.UpdateState(State.NewPlanMenu.Idle()))
+
                 is Intent.NewPlan.ChooseLayout -> dispatch(Msg.UpdateState(State.NewPlanMenu.Idle(intent.layout)))
+
                 Intent.NewPlan.Cancel -> dispatch(Msg.UpdateState(State.Idle))
-                Intent.NewPlan.CreateNewPlan -> onCartographerScreenCall((getState() as State.NewPlanMenu.Idle).layout!!)
+
+                Intent.NewPlan.CreateNewPlan -> onCartographerScreenCall(
+                    svcEngineOf(layoutOf((getState() as State.NewPlanMenu.Idle).layout!!))
+                )
+
                 is Intent.SaveData.Load -> publish(Label.LoadSaveData(intent.path))
             }
         }

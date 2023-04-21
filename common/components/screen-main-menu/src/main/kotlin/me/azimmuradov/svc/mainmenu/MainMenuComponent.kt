@@ -16,12 +16,12 @@
 
 package me.azimmuradov.svc.mainmenu
 
-import me.azimmuradov.svc.engine.layout.LayoutType
+import me.azimmuradov.svc.engine.SvcEngine
 
 
 interface MainMenuComponent {
 
     val store: MainMenuStore
 
-    val onCartographerScreenCall: (LayoutType) -> Unit
+    val onCartographerScreenCall: (SvcEngine) -> Unit
 }

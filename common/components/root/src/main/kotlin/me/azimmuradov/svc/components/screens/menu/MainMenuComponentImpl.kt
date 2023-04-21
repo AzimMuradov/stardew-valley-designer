@@ -19,13 +19,13 @@ package me.azimmuradov.svc.components.screens.menu
 import com.arkivanov.mvikotlin.logging.logger.DefaultLogFormatter
 import com.arkivanov.mvikotlin.logging.store.LoggingStoreFactory
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
-import me.azimmuradov.svc.engine.layout.LayoutType
+import me.azimmuradov.svc.engine.SvcEngine
 import me.azimmuradov.svc.mainmenu.MainMenuComponent
 import me.azimmuradov.svc.mainmenu.MainMenuStoreFactory
 
 
 internal class MainMenuComponentImpl(
-    override val onCartographerScreenCall: (LayoutType) -> Unit,
+    override val onCartographerScreenCall: (SvcEngine) -> Unit,
 ) : MainMenuComponent {
 
     override val store = MainMenuStoreFactory(

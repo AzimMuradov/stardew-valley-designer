@@ -28,8 +28,7 @@ import me.azimmuradov.svc.components.RootComponentImpl.Config.*
 import me.azimmuradov.svc.components.screens.cartographer.CartographerComponentImpl
 import me.azimmuradov.svc.components.screens.menu.MainMenuComponentImpl
 import me.azimmuradov.svc.components.screens.welcome.WelcomeComponentImpl
-import me.azimmuradov.svc.engine.layout.LayoutType
-import me.azimmuradov.svc.engine.layout.LayoutsProvider.layoutOf
+import me.azimmuradov.svc.engine.SvcEngine
 
 
 fun rootComponent(): RootComponent = RootComponentImpl(
@@ -59,8 +58,8 @@ private class RootComponentImpl(
         navigation.replaceCurrent(configuration = MainMenuConfig)
     }
 
-    override fun onCartographerScreenCall(layout: LayoutType) {
-        navigation.push(configuration = CartographerConfig(layout))
+    override fun onCartographerScreenCall(engine: SvcEngine) {
+        navigation.push(configuration = CartographerConfig(engine))
     }
 
     override fun onCartographerScreenReturn() {
@@ -83,7 +82,7 @@ private class RootComponentImpl(
 
         is CartographerConfig -> CartographerChild(
             CartographerComponentImpl(
-                layout = layoutOf(type = config.layout),
+                engine = config.engine,
                 onCartographerScreenReturn = this::onCartographerScreenReturn,
             )
         )
@@ -92,6 +91,6 @@ private class RootComponentImpl(
     private sealed class Config : Parcelable {
         data object WelcomeConfig : Config()
         data object MainMenuConfig : Config()
-        data class CartographerConfig(val layout: LayoutType) : Config()
+        data class CartographerConfig(val engine: SvcEngine) : Config()
     }
 }
