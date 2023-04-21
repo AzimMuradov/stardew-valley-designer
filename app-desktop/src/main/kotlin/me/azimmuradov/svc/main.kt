@@ -55,7 +55,7 @@ fun main() {
             state = state,
             title = "",
             icon = painterResource(ICON_RES_PATH),
-            resizable = true,
+            resizable = false,
         ) {
             AppTheme(themeVariant = ThemeVariant.LIGHT) {
                 WithSettings(lang = Lang.EN) {
