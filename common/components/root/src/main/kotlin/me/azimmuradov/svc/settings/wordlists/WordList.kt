@@ -20,6 +20,7 @@ import me.azimmuradov.svc.cartographer.menus.EntitySelectionRoot
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolType
 import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.layer.LayerType
+import me.azimmuradov.svc.engine.layout.LayoutType
 
 
 /**
@@ -36,6 +37,61 @@ sealed interface WordList {
      * Author full name.
      */
     val author: String
+
+
+    // General
+
+    val ok: String
+
+    val cancel: String
+
+    val choose: String
+
+    val load: String
+
+    fun layout(type: LayoutType): String
+
+
+    // Main menu screen
+
+    val buttonStardewValleyText: String
+
+    val buttonStardewValleyTooltip: String
+
+    val buttonSwitchThemeText: String
+
+    val buttonSwitchThemeTooltip: String
+
+    val buttonSettingsText: String
+
+    val buttonSettingsTooltip: String
+
+    val buttonDonateText: String
+
+    val buttonDonateTooltip: String
+
+    val buttonHelpText: String
+
+    val buttonHelpTooltip: String
+
+
+    val buttonNewPlanText: String
+
+    val newPlanWindowTitle: String
+
+    val buttonOpenPlanText: String
+
+    val buttonSaveImportText: String
+
+    val saveImportWindowTitle: String
+
+    val saveImportTextFieldLabel: String
+
+    val saveImportPlaceholder: String
+
+    val saveImportPlaceholderError: String
+
+    val buttonSearchForAPlanText: String
 
 
     // Cartographer Screen

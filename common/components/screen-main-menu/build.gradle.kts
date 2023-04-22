@@ -9,7 +9,14 @@ repositories {
 }
 
 dependencies {
+    implementation(projects.common.svcEngine)
+
+    implementation(projects.common.entitiesMetadata)
+
+    implementation(projects.common.svSave)
+
     implementation(kotlin("stdlib-jdk8"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${V.DETEKT}")
 

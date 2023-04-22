@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.components.screens
+package me.azimmuradov.svc.mainmenu
 
 
-interface MainMenuComponent {
-
-    val onCartographerScreenCall: () -> Unit
-}
+sealed interface MainMenuLabel

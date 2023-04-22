@@ -19,8 +19,9 @@ package me.azimmuradov.svc.components
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import me.azimmuradov.svc.cartographer.CartographerComponent
-import me.azimmuradov.svc.components.screens.MainMenuComponent
 import me.azimmuradov.svc.components.screens.WelcomeComponent
+import me.azimmuradov.svc.engine.SvcEngine
+import me.azimmuradov.svc.mainmenu.MainMenuComponent
 
 
 interface RootComponent {
@@ -36,7 +37,7 @@ interface RootComponent {
 
     fun onWelcomeScreenEnd()
 
-    fun onCartographerScreenCall()
+    fun onCartographerScreenCall(engine: SvcEngine)
 
     fun onCartographerScreenReturn()
 }

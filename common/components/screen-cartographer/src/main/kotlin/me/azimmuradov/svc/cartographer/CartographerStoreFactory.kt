@@ -30,8 +30,7 @@ import me.azimmuradov.svc.cartographer.modules.toolkit.*
 import me.azimmuradov.svc.cartographer.modules.vislayers.VisLayersState
 import me.azimmuradov.svc.cartographer.modules.vislayers.reduce
 import me.azimmuradov.svc.cartographer.utils.UNREACHABLE
-import me.azimmuradov.svc.engine.layout.Layout
-import me.azimmuradov.svc.engine.svcEngineOf
+import me.azimmuradov.svc.engine.SvcEngine
 import me.azimmuradov.svc.cartographer.CartographerIntent as Intent
 import me.azimmuradov.svc.cartographer.CartographerLabel as Label
 import me.azimmuradov.svc.cartographer.CartographerState as State
@@ -46,11 +45,11 @@ internal typealias CartographerStore = Store<Intent, State, Label>
 
 class CartographerStoreFactory(private val storeFactory: StoreFactory) {
 
-    fun create(layout: Layout): CartographerStore = object : CartographerStore by storeFactory.create(
+    fun create(engine: SvcEngine): CartographerStore = object : CartographerStore by storeFactory.create(
         name = "CartographerStore",
-        initialState = State.default(layout),
+        initialState = State.from(engine),
         bootstrapper = BootstrapperImpl(),
-        executorFactory = { ExecutorImpl(layout) },
+        executorFactory = { ExecutorImpl(engine) },
         reducer = reducer
     ) {}
 
@@ -67,16 +66,17 @@ class CartographerStoreFactory(private val storeFactory: StoreFactory) {
     }
 
     private class BootstrapperImpl : CoroutineBootstrapper<Action>() {
+
         override fun invoke() = Unit
     }
 
-    private class ExecutorImpl(layout: Layout) : CoroutineExecutor<Intent, Action, State, Msg, Label>() {
+    private class ExecutorImpl(engine: SvcEngine) : CoroutineExecutor<Intent, Action, State, Msg, Label>() {
 
-        private val history = HistoryManagerImpl(MapState.default(layout))
+        private val history = HistoryManagerImpl(MapState.from(engine))
 
-        private val engine = SvcEngineImpl(svcEngineOf(layout))
+        private val engine = SvcEngineImpl(engine)
 
-        private val toolkit = ToolkitImpl(engine, layout)
+        private val toolkit = ToolkitImpl(engine, engine.layers.layout)
 
         @Suppress("LongMethod", "CyclomaticComplexMethod", "NestedBlockDepth")
         override fun executeIntent(intent: Intent, getState: () -> State) {

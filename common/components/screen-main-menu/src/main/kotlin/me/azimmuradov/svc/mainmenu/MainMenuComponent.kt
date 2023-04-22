@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.screens
+package me.azimmuradov.svc.mainmenu
 
-import androidx.compose.runtime.Composable
-import me.azimmuradov.svc.components.screens.MainMenuComponent
+import me.azimmuradov.svc.engine.SvcEngine
 
 
-@Composable
-fun MainMenuUi(component: MainMenuComponent) {
-    // TODO
+interface MainMenuComponent {
+
+    val store: MainMenuStore
+
+    val onCartographerScreenCall: (SvcEngine) -> Unit
 }

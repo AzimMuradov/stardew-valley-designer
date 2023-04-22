@@ -21,11 +21,11 @@ import com.arkivanov.mvikotlin.logging.store.LoggingStoreFactory
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import me.azimmuradov.svc.cartographer.CartographerComponent
 import me.azimmuradov.svc.cartographer.CartographerStoreFactory
-import me.azimmuradov.svc.engine.layout.Layout
+import me.azimmuradov.svc.engine.SvcEngine
 
 
 internal class CartographerComponentImpl(
-    layout: Layout,
+    engine: SvcEngine,
     override val onCartographerScreenReturn: () -> Unit,
 ) : CartographerComponent {
 
@@ -34,5 +34,5 @@ internal class CartographerComponentImpl(
             delegate = DefaultStoreFactory(),
             logFormatter = DefaultLogFormatter(valueLengthLimit = Int.MAX_VALUE)
         )
-    ).create(layout)
+    ).create(engine)
 }

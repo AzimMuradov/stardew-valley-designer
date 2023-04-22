@@ -22,6 +22,7 @@ import me.azimmuradov.svc.cartographer.modules.options.OptionsState
 import me.azimmuradov.svc.cartographer.modules.palette.PaletteState
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolkitState
 import me.azimmuradov.svc.cartographer.modules.vislayers.VisLayersState
+import me.azimmuradov.svc.engine.SvcEngine
 import me.azimmuradov.svc.engine.layout.Layout
 
 
@@ -30,20 +31,27 @@ data class CartographerState(
     val map: MapState,
     val toolkit: ToolkitState,
     val palette: PaletteState,
-    // val flavors: FlavorsState,
     val visLayers: VisLayersState,
-    // val clipboard: ClipboardState,
     val options: OptionsState,
 ) {
+
     companion object {
+
         fun default(layout: Layout) = CartographerState(
             history = HistoryState.default(),
             map = MapState.default(layout),
-            // flavors = FlavorsState.default(),
             toolkit = ToolkitState.default(),
             palette = PaletteState.default(),
             visLayers = VisLayersState.default(),
-            // clipboard = ClipboardState.default(),
+            options = OptionsState.default(),
+        )
+
+        fun from(engine: SvcEngine) = CartographerState(
+            history = HistoryState.default(),
+            map = MapState.from(engine),
+            toolkit = ToolkitState.default(),
+            palette = PaletteState.default(),
+            visLayers = VisLayersState.default(),
             options = OptionsState.default(),
         )
     }

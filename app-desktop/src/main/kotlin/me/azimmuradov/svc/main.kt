@@ -16,20 +16,14 @@
 
 package me.azimmuradov.svc
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
-import com.arkivanov.decompose.ExperimentalDecomposeApi
-import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import me.azimmuradov.svc.components.RootComponent
 import me.azimmuradov.svc.components.rootComponent
-import me.azimmuradov.svc.screens.*
 import me.azimmuradov.svc.settings.Lang
 import me.azimmuradov.svc.utils.WithSettings
 
@@ -40,19 +34,32 @@ fun main() {
     application {
         // val rootModel by root.model.subscribeAsState()
 
+        val state = rememberWindowState(
+            position = WindowPosition(alignment = Alignment.Center),
+            size = DpSize(width = 1200.dp, height = 700.dp),
+        )
+
+        LaunchedEffect(Unit) {
+            root.childStack.subscribe {
+                state.size = when (it.active.instance) {
+                    is RootComponent.Child.WelcomeChild -> DpSize(width = 1200.dp, height = 700.dp)
+                    is RootComponent.Child.MainMenuChild -> DpSize(width = 1200.dp, height = 700.dp)
+                    is RootComponent.Child.CartographerChild -> DpSize(width = 1366.dp, height = 768.dp)
+                }
+                state.position = WindowPosition(alignment = Alignment.Center)
+            }
+        }
+
         Window(
             onCloseRequest = ::exitApplication,
-            state = rememberWindowState(
-                position = WindowPosition(alignment = Alignment.Center),
-                size = DpSize(width = 1366.dp, height = 768.dp),
-            ),
+            state = state,
             title = "",
             icon = painterResource(ICON_RES_PATH),
-            resizable = true,
+            resizable = false,
         ) {
             AppTheme(themeVariant = ThemeVariant.LIGHT) {
                 WithSettings(lang = Lang.EN) {
-                    RootUi(root)
+                    Root(root)
                 }
             }
         }
@@ -60,18 +67,4 @@ fun main() {
 }
 
 
-@OptIn(ExperimentalDecomposeApi::class)
-@Composable
-fun RootUi(component: RootComponent) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Children(stack = component.childStack) { (_, child) ->
-            when (child) {
-                is RootComponent.Child.WelcomeChild -> WelcomeUi(child.component)
-                is RootComponent.Child.MainMenuChild -> MainMenuUi(child.component)
-                is RootComponent.Child.CartographerChild -> CartographerUi(child.component)
-            }
-        }
-    }
-}
-
-private const val ICON_RES_PATH: String = "icon.png"
+const val ICON_RES_PATH: String = "icon.png"

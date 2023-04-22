@@ -16,8 +16,9 @@ repositories {
 subprojects {
     tasks.withType<KotlinCompile> {
         kotlinOptions {
-            freeCompilerArgs += listOf("-opt-in=kotlin.RequiresOptIn")
+            languageVersion = "1.9"
             jvmTarget = V.JVM
+            freeCompilerArgs += listOf("-opt-in=kotlin.RequiresOptIn")
         }
     }
 
