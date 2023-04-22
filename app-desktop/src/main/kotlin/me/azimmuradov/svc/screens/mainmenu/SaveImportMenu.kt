@@ -87,7 +87,8 @@ fun RowScope.SaveImportMenu(
                     cancelText = wordList.cancel,
                     onLayoutChosen = { intentConsumer(MainMenuIntent.SaveLoaderMenu.ChooseLayout(it)) },
                     onOk = { intentConsumer(MainMenuIntent.SaveLoaderMenu.AcceptChosen) },
-                    onCancel = { intentConsumer(MainMenuIntent.SaveLoaderMenu.Cancel) }
+                    onCancel = { intentConsumer(MainMenuIntent.SaveLoaderMenu.Cancel) },
+                    isLoading = state is MainMenuState.SaveLoaderMenu.Loading
                 )
             }
         }

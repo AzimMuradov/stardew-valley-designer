@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.cartographer.res.LayoutSpritesProvider
@@ -45,6 +46,7 @@ fun LayoutChoosingMenu(
     onLayoutChosen: (SvcEngine) -> Unit,
     onOk: () -> Unit,
     onCancel: () -> Unit,
+    isLoading: Boolean = false,
 ) {
     val wordList = GlobalSettings.strings
 
@@ -52,44 +54,54 @@ fun LayoutChoosingMenu(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        if (layouts != null) {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(count = 2),
-                modifier = Modifier.fillMaxWidth().weight(1f),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                items(layouts) { layout ->
-                    Column(
-                        modifier = Modifier
-                            .clip(MaterialTheme.shapes.medium)
-                            .border(
-                                width = if (chosenLayout == layout) 2.dp else Dp.Unspecified,
-                                color = Color.Black,
-                                shape = MaterialTheme.shapes.medium
-                            )
-                            .clickable(onClick = { onLayoutChosen(layout) })
-                            .padding(4.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Box {
-                            LayoutPreview(
-                                layoutSprite = LayoutSpritesProvider.layoutSpriteBy(layout.layers.layout.type),
-                                layoutSize = layout.layers.layout.size,
-                                entities = layout.layers.entities,
-                            )
-                        }
-                        Text(
-                            text = wordList.layout(layout.layers.layout.type),
-                            style = MaterialTheme.typography.subtitle2
-                        )
-                    }
+        when {
+            isLoading -> {
+                Box(Modifier.fillMaxWidth().weight(1f), Alignment.Center) {
+                    CircularProgressIndicator(strokeCap = StrokeCap.Round)
                 }
             }
-        } else {
-            Box(Modifier.fillMaxWidth().weight(1f), Alignment.Center) {
-                Text(placeholder)
+
+            layouts == null -> {
+                Box(Modifier.fillMaxWidth().weight(1f), Alignment.Center) {
+                    Text(placeholder)
+                }
+            }
+
+            else -> {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(count = 2),
+                    modifier = Modifier.fillMaxWidth().weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    items(layouts) { layout ->
+                        Column(
+                            modifier = Modifier
+                                .clip(MaterialTheme.shapes.medium)
+                                .border(
+                                    width = if (chosenLayout == layout) 2.dp else Dp.Unspecified,
+                                    color = Color.Black,
+                                    shape = MaterialTheme.shapes.medium
+                                )
+                                .clickable(onClick = { onLayoutChosen(layout) })
+                                .padding(4.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Box {
+                                LayoutPreview(
+                                    layoutSprite = LayoutSpritesProvider.layoutSpriteBy(layout.layers.layout.type),
+                                    layoutSize = layout.layers.layout.size,
+                                    entities = layout.layers.entities,
+                                )
+                            }
+                            Text(
+                                text = wordList.layout(layout.layers.layout.type),
+                                style = MaterialTheme.typography.subtitle2
+                            )
+                        }
+                    }
+                }
             }
         }
 
