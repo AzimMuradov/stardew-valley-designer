@@ -86,6 +86,7 @@ sealed interface IndoorFurniture : Entity<IndoorFurnitureType> {
         regularSize = rectOf(w = 3, h = 1),
         rotatedSize = rectOf(w = 2, h = 2),
     ) {
+
         data class BlueCouch(override var rotation: Rotations4 = R0) : Couch()
         data class BrownCouch(override var rotation: Rotations4 = R0) : Couch()
         data class GreenCouch(override var rotation: Rotations4 = R0) : Couch()
@@ -105,6 +106,7 @@ sealed interface IndoorFurniture : Entity<IndoorFurnitureType> {
         regularSize = rectOf(w = 2, h = 1),
         rotatedSize = rectOf(w = 2, h = 1),
     ) {
+
         data class BlueArmchair(override var rotation: Rotations4 = R0) : Armchair()
         data class BrownArmchair(override var rotation: Rotations4 = R0) : Armchair()
         data class GreenArmchair(override var rotation: Rotations4 = R0) : Armchair()
@@ -116,6 +118,7 @@ sealed interface IndoorFurniture : Entity<IndoorFurnitureType> {
         regularSize = rectOf(w = 2, h = 1),
         rotatedSize = rectOf(w = 1, h = 2),
     ) {
+
         data class BirchDresser(override var rotation: Rotations4 = R0) : Dresser()
         data class OakDresser(override var rotation: Rotations4 = R0) : Dresser()
         data class WalnutDresser(override var rotation: Rotations4 = R0) : Dresser()

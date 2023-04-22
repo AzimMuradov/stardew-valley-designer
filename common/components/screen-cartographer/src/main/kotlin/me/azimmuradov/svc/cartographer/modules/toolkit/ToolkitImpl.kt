@@ -101,6 +101,7 @@ class ToolkitImpl(
 
 
     private companion object {
+
         fun undefinedTool(): Nothing = error("Undefined tool")
     }
 }

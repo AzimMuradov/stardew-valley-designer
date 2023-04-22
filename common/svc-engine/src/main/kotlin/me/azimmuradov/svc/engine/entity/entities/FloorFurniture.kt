@@ -49,6 +49,7 @@ sealed interface FloorFurniture : Entity<FloorFurnitureType> {
         regularSize,
         rotatedSize = regularSize.rotated(),
     ) {
+
         data class BambooMat(override var rotation: Rotations2 = R0) : RotatableRug(regularSize = rectOf(w = 1, h = 2))
 
         data class NauticalRug(override var rotation: Rotations2 = R0) : RotatableRug()

@@ -96,6 +96,10 @@ sealed interface WordList {
 
     // Cartographer Screen
 
+    val optionShowAxis: String
+
+    val optionShowGrid: String
+
     /**
      * Get menu title by its root.
      */

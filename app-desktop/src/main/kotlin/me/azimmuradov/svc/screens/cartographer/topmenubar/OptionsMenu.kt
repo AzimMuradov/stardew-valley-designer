@@ -36,6 +36,7 @@ import me.azimmuradov.svc.cartographer.CartographerIntent
 import me.azimmuradov.svc.cartographer.menus.OptionsItemValue
 import me.azimmuradov.svc.cartographer.menus.OptionsMenu
 import me.azimmuradov.svc.cartographer.modules.options.OptionsState
+import me.azimmuradov.svc.utils.GlobalSettings
 import me.azimmuradov.svc.utils.menu.HoverableCascadingDropdownMenu
 
 
@@ -48,6 +49,8 @@ fun RowScope.OptionsMenu(
     menu: OptionsMenu,
     intentConsumer: (CartographerIntent.Options) -> Unit,
 ) {
+    val wordList = GlobalSettings.strings
+
     Box(modifier = Modifier.aspectRatio(1f).fillMaxHeight()) {
         HoverableCascadingDropdownMenu(
             menu = menu,
@@ -97,7 +100,7 @@ fun RowScope.OptionsMenu(
                         )
                         Spacer(modifier = Modifier.width(20.dp))
                         Text(
-                            text = "Show axis",
+                            text = wordList.optionShowAxis,
                             modifier = Modifier.weight(1f),
                             fontSize = 13.sp,
                         )
@@ -111,7 +114,7 @@ fun RowScope.OptionsMenu(
                         )
                         Spacer(modifier = Modifier.width(20.dp))
                         Text(
-                            text = "Show grid",
+                            text = wordList.optionShowGrid,
                             modifier = Modifier.weight(1f),
                             fontSize = 13.sp,
                         )

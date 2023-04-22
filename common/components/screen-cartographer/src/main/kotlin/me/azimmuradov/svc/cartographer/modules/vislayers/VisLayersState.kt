@@ -22,7 +22,9 @@ import me.azimmuradov.svc.engine.layer.LayerType
 data class VisLayersState(
     val visibleLayers: Set<LayerType<*>>,
 ) {
+
     companion object {
+
         fun default() = VisLayersState(LayerType.all.toSet())
     }
 }

@@ -43,10 +43,10 @@ enum class ThemeVariant {
 private fun AppLightTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colors = lightColors(
-            primary = Color(0xFF33691e),
-            primaryVariant = Color(0xFF003d00),
-            secondary = Color(0xFF00695c),
-            secondaryVariant = Color(0xFF003d33),
+            primary = Color(0xFF33691E),
+            primaryVariant = Color(0xFF003D00),
+            secondary = Color(0xFF00695C),
+            secondaryVariant = Color(0xFF003D33),
             // background =,
             // surface =,
             // error =,

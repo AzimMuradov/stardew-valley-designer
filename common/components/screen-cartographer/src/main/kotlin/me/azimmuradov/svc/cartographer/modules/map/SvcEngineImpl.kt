@@ -22,6 +22,7 @@ import me.azimmuradov.svc.engine.layers.*
 
 
 internal class SvcEngineImpl(engine: SvcEngine) : SvcEngine by engine {
+
     fun pushState(state: MapState) {
         clear()
         putAll(state.entities.toLayeredEntities())

@@ -26,14 +26,14 @@ import me.azimmuradov.svc.engine.layer.LayerType
 sealed interface CartographerIntent {
 
     sealed interface History : CartographerIntent {
-        object GoBack : History
-        object GoForward : History
+        data object GoBack : History
+        data object GoForward : History
     }
 
     sealed interface Engine : CartographerIntent {
         data class Start(val coordinate: Coordinate) : Engine
         data class Continue(val coordinate: Coordinate) : Engine
-        object End : Engine
+        data object End : Engine
     }
 
     sealed interface Toolkit : CartographerIntent {
@@ -44,9 +44,9 @@ sealed interface CartographerIntent {
     sealed interface Palette : CartographerIntent {
         data class AddToInUse(val entity: Entity<*>) : Palette
         data class AddToHotbar(val entity: Entity<*>, val i: UInt) : Palette
-        object ClearInUse : Palette
+        data object ClearInUse : Palette
         data class ClearHotbarCell(val i: UInt) : Palette
-        object Clear : Palette
+        data object Clear : Palette
     }
 
     sealed interface VisLayers : CartographerIntent {

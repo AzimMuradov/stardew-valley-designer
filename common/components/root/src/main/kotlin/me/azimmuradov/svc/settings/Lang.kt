@@ -21,5 +21,6 @@ package me.azimmuradov.svc.settings
  * Application language.
  */
 enum class Lang {
+
     EN,
 }

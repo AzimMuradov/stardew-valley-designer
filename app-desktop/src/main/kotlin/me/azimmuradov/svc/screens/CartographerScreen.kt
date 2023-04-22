@@ -76,7 +76,6 @@ fun CartographerScreen(component: CartographerComponent) {
                     store.accept(CartographerIntent.VisLayers.ChangeVisibility(layerType, visible))
                 },
                 layout = map.layout,
-                entities = map.entities,
                 width = SIDE_MENUS_WIDTH
             )
         }

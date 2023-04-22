@@ -74,6 +74,6 @@ private enum class IconAnimationState { APPEARING, DISAPPEARING }
 
 private const val ICON_MIN_TRANSPARENCY = 0.0f
 private const val ICON_MAX_TRANSPARENCY = 1.0f
-private const val ICON_ANIMATION_STIFFNESS = 7f
+private const val ICON_ANIMATION_STIFFNESS = 3f
 
 private const val ICON_RES_PATH = "icon.png"

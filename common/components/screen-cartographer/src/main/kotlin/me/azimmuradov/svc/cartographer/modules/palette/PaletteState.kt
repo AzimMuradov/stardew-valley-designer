@@ -23,7 +23,9 @@ data class PaletteState(
     val inUse: Entity<*>?,
     val hotbar: List<Entity<*>?>,
 ) {
+
     companion object {
+
         fun default() = PaletteState(
             inUse = null,
             hotbar = List(size = 10) { null },

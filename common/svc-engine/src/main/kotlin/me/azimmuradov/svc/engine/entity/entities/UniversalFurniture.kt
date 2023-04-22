@@ -164,6 +164,7 @@ sealed interface UniversalFurniture : Entity<UniversalFurnitureType> {
         regularSize = chairSize,
         rotatedSize = chairSize,
     ) {
+
         data class OakChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
         data class WalnutChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
         data class BirchChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
@@ -193,6 +194,7 @@ sealed interface UniversalFurniture : Entity<UniversalFurnitureType> {
         regularSize = rectOf(w = 2, h = 1),
         rotatedSize = rectOf(w = 1, h = 2),
     ) {
+
         data class BirchBench(override var rotation: Rotations4 = Rotations4.R0) : Bench()
         data class OakBench(override var rotation: Rotations4 = Rotations4.R0) : Bench()
         data class WalnutBench(override var rotation: Rotations4 = Rotations4.R0) : Bench()
@@ -204,6 +206,7 @@ sealed interface UniversalFurniture : Entity<UniversalFurnitureType> {
         regularSize = endTableSize,
         rotatedSize = endTableSize,
     ) {
+
         data class OakEndTable(override var rotation: Rotations2 = Rotations2.R0) : WoodenEndTable()
         data class BirchEndTable(override var rotation: Rotations2 = Rotations2.R0) : WoodenEndTable()
         data class MahoganyEndTable(override var rotation: Rotations2 = Rotations2.R0) : WoodenEndTable()
@@ -224,6 +227,7 @@ sealed interface UniversalFurniture : Entity<UniversalFurnitureType> {
         regularSize = rectOf(w = 2, h = 4),
         rotatedSize = rectOf(w = 5, h = 2),
     ) {
+
         data class ModernDiningTable(override var rotation: Rotations2 = Rotations2.R0) : LongTable()
         data class MahoganyDiningTable(override var rotation: Rotations2 = Rotations2.R0) : LongTable()
         data class FestiveDiningTable(override var rotation: Rotations2 = Rotations2.R0) : LongTable()

@@ -21,7 +21,9 @@ data class OptionsState(
     val showAxis: Boolean,
     val showGrid: Boolean,
 ) {
+
     companion object {
+
         fun default() = OptionsState(
             showAxis = true,
             showGrid = true,

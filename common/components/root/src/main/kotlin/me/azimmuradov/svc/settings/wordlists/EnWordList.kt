@@ -90,6 +90,10 @@ data object EnWordList : WordList {
 
     // Cartographer Screen
 
+    override val optionShowAxis: String = "Show axis"
+
+    override val optionShowGrid: String = "Show grid"
+
     override fun menuTitle(root: EntitySelectionRoot): String = menuTitles[root] ?: when (root) {
 
         // Buildings Menu

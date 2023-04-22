@@ -27,7 +27,6 @@ import me.azimmuradov.svc.cartographer.modules.palette.PaletteState
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolkitState
 import me.azimmuradov.svc.engine.layer.LayerType
 import me.azimmuradov.svc.engine.layer.allEntityTypes
-import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 
 
 @Composable
@@ -49,7 +48,6 @@ fun RightSideMenus(
     visibleLayers: Set<LayerType<*>>,
     onVisibilityChange: (LayerType<*>, Boolean) -> Unit,
     layout: LayoutState,
-    entities: LayeredEntitiesData,
     width: Dp,
 ) {
     FixedSideMenus(width) {

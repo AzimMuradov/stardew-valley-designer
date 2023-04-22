@@ -67,6 +67,7 @@ sealed class RotatableFlavor private constructor(
 
 
 sealed class ColoredFarmBuildingFlavor : EntityFlavor {
+
     abstract val building: Color?
     abstract val roof: Color?
     abstract val trim: Color?
