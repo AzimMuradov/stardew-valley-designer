@@ -90,7 +90,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
                     CoroutineScope(Dispatchers.IO).launch {
                         val parsed = try {
-                            SaveDataSerializers.parse(intent.path)
+                            SaveDataSerializers.parse(intent.path.trim())
                         } catch (e: Exception) {
                             null
                         }?.map {

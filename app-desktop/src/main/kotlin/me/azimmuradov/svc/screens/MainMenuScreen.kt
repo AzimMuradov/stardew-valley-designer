@@ -24,8 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import me.azimmuradov.svc.mainmenu.MainMenuComponent
-import me.azimmuradov.svc.screens.mainmenu.SideMenu
 import me.azimmuradov.svc.screens.mainmenu.RightSideMenu
+import me.azimmuradov.svc.screens.mainmenu.SideMenu
 
 
 @Composable
@@ -37,14 +37,10 @@ fun MainMenuScreen(component: MainMenuComponent) {
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colors.background)
-            .padding(10.dp),
-        horizontalArrangement = Arrangement.spacedBy(20.dp)
+            .padding(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(18.dp)
     ) {
         SideMenu()
-        RightSideMenu(
-            state = state,
-            intentConsumer = store::accept,
-            onCartographerScreenCall = {}
-        )
+        RightSideMenu(state, intentConsumer = store::accept)
     }
 }

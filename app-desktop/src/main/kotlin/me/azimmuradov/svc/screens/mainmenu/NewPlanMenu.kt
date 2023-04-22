@@ -39,7 +39,7 @@ fun RowScope.NewPlanMenu(
     val wordList = GlobalSettings.strings
 
     PlanMenuButton(
-        text = "New Plan",
+        text = wordList.buttonNewPlanText,
         icon = Icons.Filled.Add,
         onClick = { intentConsumer(MainMenuIntent.NewPlanMenu.OpenMenu) }
     )
@@ -50,7 +50,7 @@ fun RowScope.NewPlanMenu(
             size = DpSize(width = 400.dp, height = 600.dp)
         ),
         visible = state is MainMenuState.NewPlanMenu.Idle,
-        title = "Choose from available layouts",
+        title = wordList.newPlanWindowTitle,
         resizable = false
     ) {
         Box(Modifier.fillMaxSize(), Alignment.Center) {
@@ -59,7 +59,7 @@ fun RowScope.NewPlanMenu(
                 layouts = (state as? MainMenuState.NewPlanMenu.Idle)?.availableLayouts,
                 placeholder = "",
                 chosenLayout = (state as? MainMenuState.NewPlanMenu.Idle)?.chosenLayout,
-                okText = "CHOOSE",
+                okText = wordList.choose,
                 cancelText = wordList.cancel,
                 onLayoutChosen = { intentConsumer(MainMenuIntent.NewPlanMenu.ChooseLayout(it)) },
                 onOk = { intentConsumer(MainMenuIntent.NewPlanMenu.AcceptChosen) },

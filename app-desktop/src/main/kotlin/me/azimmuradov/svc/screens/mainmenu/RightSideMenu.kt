@@ -36,7 +36,6 @@ import me.azimmuradov.svc.utils.GlobalSettings
 fun RowScope.RightSideMenu(
     state: MainMenuState,
     intentConsumer: (MainMenuIntent) -> Unit,
-    onCartographerScreenCall: () -> Unit,
 ) {
     val wordList = GlobalSettings.strings
 
@@ -59,7 +58,7 @@ fun RowScope.RightSideMenu(
             NewPlanMenu(state, intentConsumer)
 
             PlanMenuButton(
-                text = "Open plan",
+                text = wordList.buttonOpenPlanText,
                 icon = painterResource(resourcePath = "main-menu/file_open_FILL1_wght400_GRAD0_opsz48.svg"),
                 enabled = false
             )
@@ -67,7 +66,7 @@ fun RowScope.RightSideMenu(
             SaveImportMenu(state, intentConsumer)
 
             PlanMenuButton(
-                text = "Search for a plan",
+                text = wordList.buttonSearchForAPlanText,
                 icon = Icons.Filled.Search,
                 enabled = false
             )

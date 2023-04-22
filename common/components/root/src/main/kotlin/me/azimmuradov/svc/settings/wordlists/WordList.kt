@@ -45,10 +45,53 @@ sealed interface WordList {
 
     val cancel: String
 
-    /**
-     * TODO : Docs
-     */
+    val choose: String
+
+    val load: String
+
     fun layout(type: LayoutType): String
+
+
+    // Main menu screen
+
+    val buttonStardewValleyText: String
+
+    val buttonStardewValleyTooltip: String
+
+    val buttonSwitchThemeText: String
+
+    val buttonSwitchThemeTooltip: String
+
+    val buttonSettingsText: String
+
+    val buttonSettingsTooltip: String
+
+    val buttonDonateText: String
+
+    val buttonDonateTooltip: String
+
+    val buttonHelpText: String
+
+    val buttonHelpTooltip: String
+
+
+    val buttonNewPlanText: String
+
+    val newPlanWindowTitle: String
+
+    val buttonOpenPlanText: String
+
+    val buttonSaveImportText: String
+
+    val saveImportWindowTitle: String
+
+    val saveImportTextFieldLabel: String
+
+    val saveImportPlaceholder: String
+
+    val saveImportPlaceholderError: String
+
+    val buttonSearchForAPlanText: String
 
 
     // Cartographer Screen

@@ -36,10 +36,56 @@ data object EnWordList : WordList {
 
     override val cancel: String = "CANCEL"
 
+    override val choose: String = "CHOOSE"
+
+    override val load: String = "LOAD"
+
     override fun layout(type: LayoutType): String = when (type) {
         LayoutType.Shed -> "Shed"
         LayoutType.BigShed -> "Big Shed"
     }
+
+
+    // Main menu screen
+
+    override val buttonStardewValleyText: String = "Stardew Valley"
+
+    override val buttonStardewValleyTooltip: String = "Official Stardew Valley Site"
+
+    override val buttonSwitchThemeText: String = "Switch theme"
+
+    override val buttonSwitchThemeTooltip: String = "WIP"
+
+    override val buttonSettingsText: String = "Settings"
+
+    override val buttonSettingsTooltip: String = "WIP"
+
+    override val buttonDonateText: String = "Donate"
+
+    override val buttonDonateTooltip: String = "WIP"
+
+    override val buttonHelpText: String = "Help"
+
+    override val buttonHelpTooltip: String = "WIP"
+
+
+    override val buttonNewPlanText: String = "New plan"
+
+    override val newPlanWindowTitle: String = "Choose from available layouts"
+
+    override val buttonOpenPlanText: String = "Open plan"
+
+    override val buttonSaveImportText: String = "Import from save"
+
+    override val saveImportWindowTitle: String = "Load your save file and then choose from available layouts"
+
+    override val saveImportTextFieldLabel: String = "Path to your save file"
+
+    override val saveImportPlaceholder: String = "Load your save file"
+
+    override val saveImportPlaceholderError: String = "Something went wrong, try again or choose another file"
+
+    override val buttonSearchForAPlanText: String = "Search for a plan"
 
 
     // Cartographer Screen

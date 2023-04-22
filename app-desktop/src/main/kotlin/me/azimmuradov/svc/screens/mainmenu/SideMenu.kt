@@ -43,6 +43,8 @@ import java.net.URI
 
 @Composable
 fun RowScope.SideMenu() {
+    val wordList = GlobalSettings.strings
+
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -79,13 +81,14 @@ fun RowScope.SideMenu() {
                 style = MaterialTheme.typography.h5
             )
         }
+
         Column(
             Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             SideMenuButton(
-                text = "Stardew Valley",
-                tooltip = "Official Stardew Valley Site",
+                text = wordList.buttonStardewValleyText,
+                tooltip = wordList.buttonStardewValleyTooltip,
                 icon = painterResource(resourcePath = "main-menu/captive_portal_FILL1_wght400_GRAD0_opsz48.svg"),
                 onClick = {
                     openInBrowser(URI.create("https://www.stardewvalley.net/"))
@@ -93,23 +96,23 @@ fun RowScope.SideMenu() {
                 enabled = true
             )
             SideMenuButton(
-                text = "Switch theme",
-                tooltip = "WIP",
+                text = wordList.buttonSwitchThemeText,
+                tooltip = wordList.buttonSwitchThemeTooltip,
                 icon = painterResource(resourcePath = "main-menu/light_mode_FILL1_wght400_GRAD0_opsz48.svg")
             )
             SideMenuButton(
-                text = "Settings",
-                tooltip = "WIP",
+                text = wordList.buttonSettingsText,
+                tooltip = wordList.buttonSettingsTooltip,
                 icon = Icons.Filled.Settings
             )
             SideMenuButton(
-                text = "Donate",
-                tooltip = "WIP",
+                text = wordList.buttonDonateText,
+                tooltip = wordList.buttonDonateTooltip,
                 icon = painterResource(resourcePath = "main-menu/emoji_food_beverage_FILL1_wght400_GRAD0_opsz48.svg")
             )
             SideMenuButton(
-                text = "Help",
-                tooltip = "WIP",
+                text = wordList.buttonHelpText,
+                tooltip = wordList.buttonHelpTooltip,
                 icon = Icons.Filled.Info
             )
         }

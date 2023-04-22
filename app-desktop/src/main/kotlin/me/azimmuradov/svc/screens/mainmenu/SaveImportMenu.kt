@@ -54,7 +54,7 @@ fun RowScope.SaveImportMenu(
     val wordList = GlobalSettings.strings
 
     PlanMenuButton(
-        text = "Import from save",
+        text = wordList.buttonSaveImportText,
         icon = painterResource(resourcePath = "main-menu/save_FILL1_wght400_GRAD0_opsz48.svg"),
         onClick = { intentConsumer(MainMenuIntent.SaveLoaderMenu.OpenMenu) }
     )
@@ -65,7 +65,7 @@ fun RowScope.SaveImportMenu(
             size = DpSize(width = 900.dp, height = 600.dp)
         ),
         visible = state is MainMenuState.SaveLoaderMenu,
-        title = "Load your save file and then choose from available layouts",
+        title = wordList.saveImportWindowTitle,
         resizable = false
     ) {
         Box(Modifier.fillMaxSize().padding(16.dp), Alignment.Center) {
@@ -78,12 +78,12 @@ fun RowScope.SaveImportMenu(
                     modifier = Modifier.fillMaxHeight().weight(1f),
                     layouts = (state as? MainMenuState.SaveLoaderMenu.Idle)?.availableLayouts,
                     placeholder = if (state !is MainMenuState.SaveLoaderMenu.Error) {
-                        "Load your save file"
+                        wordList.saveImportPlaceholder
                     } else {
-                        "Something went wrong, try again or choose another file"
+                        wordList.saveImportPlaceholderError
                     },
                     chosenLayout = (state as? MainMenuState.SaveLoaderMenu.Idle)?.chosenLayout,
-                    okText = "CHOOSE",
+                    okText = wordList.choose,
                     cancelText = wordList.cancel,
                     onLayoutChosen = { intentConsumer(MainMenuIntent.SaveLoaderMenu.ChooseLayout(it)) },
                     onOk = { intentConsumer(MainMenuIntent.SaveLoaderMenu.AcceptChosen) },
@@ -97,6 +97,8 @@ fun RowScope.SaveImportMenu(
 
 @Composable
 private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMenu) -> Unit) {
+    val wordList = GlobalSettings.strings
+
     Column(
         modifier = Modifier.fillMaxHeight().weight(1f),
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -131,7 +133,7 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
                 onValueChange = { path = it },
                 modifier = Modifier.weight(1f).height(56.dp),
                 textStyle = MaterialTheme.typography.body2,
-                label = { Text(text = "Path to your save file") },
+                label = { Text(wordList.saveImportTextFieldLabel) },
                 // leadingIcon = {
                 //     Icon(
                 //         imageVector = Icons.Filled.Save,
@@ -152,6 +154,8 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
                 //     )
                 // },
                 trailingIcon = {
+                    val interactionSource = remember { MutableInteractionSource() }
+
                     Icon(
                         imageVector = Icons.Filled.Cancel,
                         contentDescription = null,
@@ -159,7 +163,7 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
                             .pointerHoverIcon(PointerIcon.Hand)
                             .size(24.dp)
                             .clickable(
-                                interactionSource = MutableInteractionSource(),
+                                interactionSource = interactionSource,
                                 indication = rememberRipple(
                                     bounded = false,
                                     radius = 18.dp,
@@ -177,7 +181,7 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
                 modifier = Modifier.height(36.dp),
                 enabled = path.isNotBlank()
             ) {
-                Text(text = "LOAD")
+                Text(wordList.load)
             }
         }
     }
