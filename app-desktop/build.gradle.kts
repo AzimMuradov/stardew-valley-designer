@@ -66,9 +66,10 @@ compose.desktop {
             // vendor = ""
 
             targetFormats(
-                TargetFormat.Deb, TargetFormat.Rpm,
+                TargetFormat.Deb,
+                TargetFormat.Rpm,
                 TargetFormat.Exe, TargetFormat.Msi,
-                /* TargetFormat.Dmg, TargetFormat.Pkg, */
+                // TargetFormat.Pkg, // TODO : Signing
             )
         }
     }
