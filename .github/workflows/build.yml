@@ -2,7 +2,6 @@ name: "Build project"
 
 on:
   push:
-  #    branches: [ master ]
   workflow_dispatch:
 
 jobs:
@@ -12,10 +11,10 @@ jobs:
         include:
           - os: ubuntu-latest
             os-name: ubuntu
-            gradle-task: packageDeb
+            gradle-task: packageReleaseDeb
           - os: windows-latest
             os-name: windows
-            gradle-task: package
+            gradle-task: packageRelease
     runs-on: ${{ matrix.os }}
     steps:
       - name: "Checkout"
@@ -27,13 +26,13 @@ jobs:
           distribution: "adopt"
       - name: "Grant execute permission for gradlew"
         run: chmod +x gradlew
-      - name: "Package project with Gradle"
+      - name: "Package project release with Gradle"
         run: ./gradlew ${{ matrix.gradle-task }} --stacktrace
-      - name: "Upload build packages"
-        uses: actions/upload-artifact@v3
-        with:
-          name: package-${{ matrix.os-name }}
-          path: build/bin/**
+#      - name: "Upload build packages"
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: package-${{ matrix.os-name }}
+#          path: build/bin/**
 
 #  build-fedora-latest:
 #    runs-on: ubuntu-latest

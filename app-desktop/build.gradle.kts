@@ -58,6 +58,14 @@ compose.desktop {
         // jvmArgs += listOf("-Xmx2G")
         // args += listOf("-customArgument")
 
+        buildTypes {
+            release {
+                proguard {
+                    configurationFiles.from(project.file("compose-desktop.pro"))
+                }
+            }
+        }
+
         nativeDistributions {
             packageName = SVC.NAME
             packageVersion = SVC.VERSION
