@@ -63,6 +63,7 @@ compose.desktop {
             packageVersion = SVC.VERSION
             description = SVC.DESCRIPTION
             copyright = SVC.COPYRIGHT
+            licenseFile.set(rootProject.file("LICENSE"))
 
             outputBaseDir.set(rootProject.buildDir.resolve(relative = "bin"))
 
