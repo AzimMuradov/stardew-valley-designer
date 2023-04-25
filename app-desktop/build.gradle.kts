@@ -63,7 +63,8 @@ compose.desktop {
             packageVersion = SVC.VERSION
             description = SVC.DESCRIPTION
             copyright = SVC.COPYRIGHT
-            // vendor = ""
+
+            outputBaseDir.set(rootProject.buildDir.resolve(relative = "bin"))
 
             targetFormats(
                 TargetFormat.Deb,
@@ -73,6 +74,10 @@ compose.desktop {
             )
         }
     }
+}
+
+tasks.clean {
+    delete(rootProject.buildDir)
 }
 
 detekt {

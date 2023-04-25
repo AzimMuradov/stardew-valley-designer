@@ -23,7 +23,7 @@ jobs:
       - name: "Build project with Gradle"
         run: ./gradlew test --stacktrace
 
-  test-fedora:
+  test-fedora-latest:
     runs-on: ubuntu-latest
     container: fedora:latest
     steps:
