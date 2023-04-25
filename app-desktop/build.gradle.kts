@@ -69,7 +69,7 @@ compose.desktop {
 
             targetFormats(
                 TargetFormat.Deb,
-                TargetFormat.Rpm,
+                // TargetFormat.Rpm,
                 TargetFormat.Exe, TargetFormat.Msi,
                 // TargetFormat.Pkg, // TODO : Signing
             )
