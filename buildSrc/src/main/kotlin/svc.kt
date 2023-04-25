@@ -2,7 +2,7 @@ object SVC {
 
     const val GROUP: String = "me.azimmuradov"
 
-    const val NAME: String = "stardew-valley-cartographer"
+    const val NAME: String = "Stardew Valley Cartographer"
 
     const val VERSION: String = "0.3.0"
 

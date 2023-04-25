@@ -13,7 +13,7 @@ object V {
 
     // Kotlin Compile
 
-    const val JVM: String = "16"
+    const val JDK: String = "17"
 
 
     // Tools
