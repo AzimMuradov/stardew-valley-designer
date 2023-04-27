@@ -19,9 +19,7 @@
 package me.azimmuradov.svc.engine.layers
 
 import me.azimmuradov.svc.engine.entity.*
-import me.azimmuradov.svc.engine.layer.LayerType
-import me.azimmuradov.svc.engine.layer.layerType
-import me.azimmuradov.svc.engine.rectmap.asDisjoint
+import me.azimmuradov.svc.engine.layer.*
 
 
 data class LayeredEntitiesData(

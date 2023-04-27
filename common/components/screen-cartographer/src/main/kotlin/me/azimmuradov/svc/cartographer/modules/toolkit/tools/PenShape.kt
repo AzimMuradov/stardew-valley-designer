@@ -23,12 +23,11 @@ import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.geometry.CanonicalCorners
 import me.azimmuradov.svc.engine.geometry.Coordinate
 import me.azimmuradov.svc.engine.getReplacedBy
-import me.azimmuradov.svc.engine.layer.LayerType
+import me.azimmuradov.svc.engine.layer.*
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 import me.azimmuradov.svc.engine.layers.flatten
 import me.azimmuradov.svc.engine.layout.Layout
 import me.azimmuradov.svc.engine.layout.respectsLayout
-import me.azimmuradov.svc.engine.rectmap.*
 import kotlin.properties.Delegates
 
 

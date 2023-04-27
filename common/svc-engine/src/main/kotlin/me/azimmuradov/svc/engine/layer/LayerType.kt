@@ -22,13 +22,13 @@ import me.azimmuradov.svc.engine.impossible
 
 sealed interface LayerType<out EType : EntityType> {
 
-    object Floor : LayerType<FloorType>
+    data object Floor : LayerType<FloorType>
 
-    object FloorFurniture : LayerType<FloorFurnitureType>
+    data object FloorFurniture : LayerType<FloorFurnitureType>
 
-    object Object : LayerType<ObjectType>
+    data object Object : LayerType<ObjectType>
 
-    object EntityWithoutFloor : LayerType<EntityWithoutFloorType>
+    data object EntityWithoutFloor : LayerType<EntityWithoutFloorType>
 
 
     companion object {

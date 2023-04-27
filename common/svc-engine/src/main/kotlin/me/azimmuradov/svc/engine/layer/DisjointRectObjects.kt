@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.engine.rectmap
+package me.azimmuradov.svc.engine.layer
 
 import me.azimmuradov.svc.engine.geometry.Coordinate
 

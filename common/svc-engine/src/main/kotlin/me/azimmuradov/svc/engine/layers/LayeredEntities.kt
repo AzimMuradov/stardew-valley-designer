@@ -21,7 +21,6 @@ package me.azimmuradov.svc.engine.layers
 import me.azimmuradov.svc.engine.entity.*
 import me.azimmuradov.svc.engine.layer.*
 import me.azimmuradov.svc.engine.notOverlapsWith
-import me.azimmuradov.svc.engine.rectmap.*
 
 
 class LayeredEntities(

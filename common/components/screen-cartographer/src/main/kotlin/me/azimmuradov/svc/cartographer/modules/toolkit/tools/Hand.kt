@@ -22,10 +22,10 @@ import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.geometry.*
 import me.azimmuradov.svc.engine.layer.LayerType
+import me.azimmuradov.svc.engine.layer.coordinates
 import me.azimmuradov.svc.engine.layers.*
 import me.azimmuradov.svc.engine.layout.Layout
 import me.azimmuradov.svc.engine.layout.respectsLayout
-import me.azimmuradov.svc.engine.rectmap.coordinates
 import kotlin.properties.Delegates
 
 
