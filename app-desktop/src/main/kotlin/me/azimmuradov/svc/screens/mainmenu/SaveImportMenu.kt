@@ -27,12 +27,14 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.rememberDialogState
 import cafe.adriel.bonsai.core.Bonsai
@@ -68,29 +70,30 @@ fun RowScope.SaveImportMenu(
         title = wordList.saveImportWindowTitle,
         resizable = false
     ) {
-        Box(Modifier.fillMaxSize().padding(16.dp), Alignment.Center) {
-            Row(Modifier.fillMaxSize(), Arrangement.spacedBy(16.dp)) {
-                SaveFileLoader(intentConsumer)
+        Row(
+            modifier = Modifier.fillMaxSize()
+                .background(MaterialTheme.colors.background)
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(18.dp)
+        ) {
+            SaveFileLoader(intentConsumer)
 
-                Box(modifier = Modifier.fillMaxHeight().width(1.dp).background(Color.Black))
-
-                LayoutChoosingMenu(
-                    modifier = Modifier.fillMaxHeight().weight(1f),
-                    layouts = (state as? MainMenuState.SaveLoaderMenu.Idle)?.availableLayouts,
-                    placeholder = if (state !is MainMenuState.SaveLoaderMenu.Error) {
-                        wordList.saveImportPlaceholder
-                    } else {
-                        wordList.saveImportPlaceholderError
-                    },
-                    chosenLayout = (state as? MainMenuState.SaveLoaderMenu.Idle)?.chosenLayout,
-                    okText = wordList.choose,
-                    cancelText = wordList.cancel,
-                    onLayoutChosen = { intentConsumer(MainMenuIntent.SaveLoaderMenu.ChooseLayout(it)) },
-                    onOk = { intentConsumer(MainMenuIntent.SaveLoaderMenu.AcceptChosen) },
-                    onCancel = { intentConsumer(MainMenuIntent.SaveLoaderMenu.Cancel) },
-                    isLoading = state is MainMenuState.SaveLoaderMenu.Loading
-                )
-            }
+            LayoutChoosingMenu(
+                modifier = Modifier.fillMaxHeight().weight(1f),
+                layouts = (state as? MainMenuState.SaveLoaderMenu.Idle)?.availableLayouts,
+                placeholder = if (state !is MainMenuState.SaveLoaderMenu.Error) {
+                    wordList.saveImportPlaceholder
+                } else {
+                    wordList.saveImportPlaceholderError
+                },
+                chosenLayout = (state as? MainMenuState.SaveLoaderMenu.Idle)?.chosenLayout,
+                okText = wordList.choose,
+                cancelText = wordList.cancel,
+                onLayoutChosen = { intentConsumer(MainMenuIntent.SaveLoaderMenu.ChooseLayout(it)) },
+                onOk = { intentConsumer(MainMenuIntent.SaveLoaderMenu.AcceptChosen) },
+                onCancel = { intentConsumer(MainMenuIntent.SaveLoaderMenu.Cancel) },
+                isLoading = state is MainMenuState.SaveLoaderMenu.Loading
+            )
         }
     }
 }
@@ -101,7 +104,15 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
     val wordList = GlobalSettings.strings
 
     Column(
-        modifier = Modifier.fillMaxHeight().weight(1f),
+        modifier = Modifier
+            .fillMaxHeight()
+            .weight(1f)
+            .shadow(
+                elevation = 4.dp,
+                shape = MaterialTheme.shapes.large
+            )
+            .background(MaterialTheme.colors.secondary)
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         val tree = FileSystemTree(
@@ -111,7 +122,13 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
 
         var path by remember { mutableStateOf("") }
 
-        Box(Modifier.fillMaxWidth().weight(1f)) {
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .background(MaterialTheme.colors.surface)
+                .padding(8.dp)
+        ) {
             Bonsai(
                 tree = tree,
                 modifier = Modifier.fillMaxSize(),
@@ -175,14 +192,25 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
                             }
                     )
                 },
-                singleLine = true
+                singleLine = true,
+                colors = TextFieldDefaults.textFieldColors(backgroundColor = MaterialTheme.colors.surface)
             )
             Button(
                 onClick = { intentConsumer(MainMenuIntent.SaveLoaderMenu.LoadSave(path)) },
                 modifier = Modifier.height(36.dp),
-                enabled = path.isNotBlank()
+                enabled = path.isNotBlank(),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = MaterialTheme.colors.surface,
+                    contentColor = MaterialTheme.colors.primary
+                )
             ) {
-                Text(wordList.load)
+                Text(
+                    wordList.load,
+                    style = TextStyle(
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 14.sp
+                    )
+                )
             }
         }
     }

@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -53,18 +52,16 @@ fun RowScope.NewPlanMenu(
         title = wordList.newPlanWindowTitle,
         resizable = false
     ) {
-        Box(Modifier.fillMaxSize(), Alignment.Center) {
-            LayoutChoosingMenu(
-                modifier = Modifier.fillMaxSize().padding(16.dp),
-                layouts = (state as? MainMenuState.NewPlanMenu.Idle)?.availableLayouts,
-                placeholder = "",
-                chosenLayout = (state as? MainMenuState.NewPlanMenu.Idle)?.chosenLayout,
-                okText = wordList.choose,
-                cancelText = wordList.cancel,
-                onLayoutChosen = { intentConsumer(MainMenuIntent.NewPlanMenu.ChooseLayout(it)) },
-                onOk = { intentConsumer(MainMenuIntent.NewPlanMenu.AcceptChosen) },
-                onCancel = { intentConsumer(MainMenuIntent.NewPlanMenu.Cancel) }
-            )
-        }
+        LayoutChoosingMenu(
+            modifier = Modifier.fillMaxSize().padding(12.dp),
+            layouts = (state as? MainMenuState.NewPlanMenu.Idle)?.availableLayouts,
+            placeholder = "",
+            chosenLayout = (state as? MainMenuState.NewPlanMenu.Idle)?.chosenLayout,
+            okText = wordList.choose,
+            cancelText = wordList.cancel,
+            onLayoutChosen = { intentConsumer(MainMenuIntent.NewPlanMenu.ChooseLayout(it)) },
+            onOk = { intentConsumer(MainMenuIntent.NewPlanMenu.AcceptChosen) },
+            onCancel = { intentConsumer(MainMenuIntent.NewPlanMenu.Cancel) }
+        )
     }
 }
