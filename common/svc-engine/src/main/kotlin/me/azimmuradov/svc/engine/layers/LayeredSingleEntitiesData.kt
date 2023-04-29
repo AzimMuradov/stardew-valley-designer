@@ -51,6 +51,13 @@ fun layeredSingleEntitiesData(entitiesSelector: (LayerType<*>) -> PlacedEntity<*
 
 fun LayeredSingleEntitiesData.flatten(): List<PlacedEntity<*>> = all.mapNotNull { (_, entity) -> entity }
 
+fun LayeredSingleEntitiesData.toLayeredEntitiesData(): LayeredEntitiesData = LayeredEntitiesData(
+    floorEntities = floorEntity?.let(::setOf) ?: emptySet(),
+    floorFurnitureEntities = floorFurnitureEntity?.let(::setOf) ?: emptySet(),
+    objectEntities = objectEntity?.let(::setOf) ?: emptySet(),
+    entityWithoutFloorEntities = entityWithoutFloorEntity?.let(::setOf) ?: emptySet()
+)
+
 
 // Utils
 

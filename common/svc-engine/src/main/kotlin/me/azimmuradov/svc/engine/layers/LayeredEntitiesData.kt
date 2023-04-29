@@ -49,20 +49,16 @@ fun layeredEntitiesData(entitiesSelector: (LayerType<*>) -> Set<PlacedEntity<*>>
 
 // Conversions
 
-fun LayeredEntitiesData.flatten(): List<PlacedEntity<*>> =
-    all.flatMap { (_, es) -> es }
-
-fun <C : MutableCollection<in PlacedEntity<*>>> LayeredEntitiesData.flattenTo(destination: C): C =
-    all.flatMapTo(destination) { (_, es) -> es }
+fun LayeredEntitiesData.flatten(): List<PlacedEntity<*>> = all.flatMap { (_, es) -> es }
 
 fun Iterable<PlacedEntity<*>>.layeredData(): LayeredEntitiesData =
     groupBy(PlacedEntity<*>::layerType).mapValues { (_, es) -> es.toSet() }.asLayeredEntitiesData()
 
 fun LayeredEntitiesData.toLayeredEntities(): LayeredEntities = LayeredEntities(
-    floorEntities.toList().asDisjoint(),
-    floorFurnitureEntities.toList().asDisjoint(),
-    objectEntities.toList().asDisjoint(),
-    entityWithoutFloorEntities.toList().asDisjoint(),
+    floorEntities.toList().asDisjointUnsafe(),
+    floorFurnitureEntities.toList().asDisjointUnsafe(),
+    objectEntities.toList().asDisjointUnsafe(),
+    entityWithoutFloorEntities.toList().asDisjointUnsafe(),
 )
 
 

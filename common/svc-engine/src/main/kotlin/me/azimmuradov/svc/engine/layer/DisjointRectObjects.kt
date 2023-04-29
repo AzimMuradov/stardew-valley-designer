@@ -22,24 +22,32 @@ import me.azimmuradov.svc.engine.geometry.Coordinate
 /**
  * List of disjoint placed rectangular objects.
  */
-class DisjointRectObjects<out RO : RectObject> internal constructor(
+class DisjointRectObjects<out RO : RectObject> private constructor(
     private val objects: List<PlacedRectObject<RO>>,
 ) : List<PlacedRectObject<RO>> by objects {
 
-    init {
-        val cs = mutableSetOf<Coordinate>()
+    companion object {
 
-        objects
-            .asSequence()
-            .flatMap(PlacedRectObject<RO>::coordinates)
-            .forEach {
-                require(cs.add(it)) { "Wrong `DisjointRectObjects` definition." }
-            }
+        internal fun <RO : RectObject> unsafe(objects: List<PlacedRectObject<RO>>): DisjointRectObjects<RO> =
+            DisjointRectObjects(objects)
+
+        internal fun <RO : RectObject> verified(objects: List<PlacedRectObject<RO>>): DisjointRectObjects<RO> {
+            val cs = mutableSetOf<Coordinate>()
+
+            objects
+                .asSequence()
+                .flatMap(PlacedRectObject<RO>::coordinates)
+                .forEach {
+                    require(cs.add(it)) { "Wrong `DisjointRectObjects` definition." }
+                }
+
+            return DisjointRectObjects(objects)
+        }
     }
 }
 
 fun <RO : RectObject> emptyDisjointRectObjects(): DisjointRectObjects<RO> =
-    listOf<PlacedRectObject<RO>>().asDisjoint()
+    DisjointRectObjects.unsafe(emptyList())
 
-fun <RO : RectObject> List<PlacedRectObject<RO>>.asDisjoint(): DisjointRectObjects<RO> =
-    if (this is DisjointRectObjects<RO>) this else DisjointRectObjects(objects = this)
+fun <RO : RectObject> List<PlacedRectObject<RO>>.asDisjointUnsafe(): DisjointRectObjects<RO> =
+    if (this is DisjointRectObjects<RO>) this else DisjointRectObjects.unsafe(objects = this)

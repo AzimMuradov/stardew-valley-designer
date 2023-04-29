@@ -35,7 +35,7 @@ class EraserPoint(private val engine: SvcEngine) : Tool {
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
-        engine.remove(coordinate)
+        engine.remove(coordinate, visLayers)
         return ActionReturn(
             toolkit = ToolkitState.Eraser.Point.Acting,
             selectedEntities = selectedEntities
@@ -49,7 +49,7 @@ class EraserPoint(private val engine: SvcEngine) : Tool {
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
-        engine.remove(coordinate)
+        engine.remove(coordinate, visLayers)
         return ActionReturn(
             toolkit = ToolkitState.Eraser.Point.Acting,
             selectedEntities = selectedEntities

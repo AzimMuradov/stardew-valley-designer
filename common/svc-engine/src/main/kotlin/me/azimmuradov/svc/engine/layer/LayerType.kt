@@ -33,14 +33,22 @@ sealed interface LayerType<out EType : EntityType> {
 
     companion object {
 
-        val withFloor = listOf(Floor, FloorFurniture, Object)
+        val withFloor = setOf(Floor, FloorFurniture, Object)
 
-        val withoutFloor = listOf(EntityWithoutFloor)
+        val withoutFloor = setOf(EntityWithoutFloor)
 
 
         val all = withFloor + withoutFloor
     }
 }
+
+
+val LayerType<*>.incompatibleLayers
+    get() = if (this in LayerType.withFloor) {
+        LayerType.withoutFloor
+    } else {
+        LayerType.withFloor
+    }
 
 
 // TODO : Report the issue
