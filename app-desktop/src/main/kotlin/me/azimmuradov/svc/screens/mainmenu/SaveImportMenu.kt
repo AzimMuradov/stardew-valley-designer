@@ -193,7 +193,7 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
                     imageVector = Icons.Filled.Home,
                     contentDescription = null,
                     modifier = Modifier.pointerHoverIcon(PointerIcon.Hand),
-                    tint = Color.White
+                    tint = Color.White.copy(alpha = LocalContentAlpha.current)
                 )
             }
             IconButton(onClick = { currentDir = savePath!! }, enabled = savePath != null) {
@@ -201,7 +201,7 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
                     imageVector = Icons.Filled.Save,
                     contentDescription = null,
                     modifier = Modifier.pointerHoverIcon(PointerIcon.Hand),
-                    tint = Color.White
+                    tint = Color.White.copy(alpha = LocalContentAlpha.current)
                 )
             }
         }
