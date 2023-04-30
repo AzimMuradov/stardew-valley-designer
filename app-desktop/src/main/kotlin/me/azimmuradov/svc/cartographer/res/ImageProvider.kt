@@ -29,5 +29,6 @@ object ImageProvider {
         EntityPage.CommonObjects to useResource("entities/common-objects.png", ::loadImageBitmap),
         EntityPage.Craftables to useResource("entities/craftables.png", ::loadImageBitmap),
         EntityPage.Furniture to useResource("entities/furniture.png", ::loadImageBitmap),
+        EntityPage.Flooring to useResource("entities/flooring.png", ::loadImageBitmap),
     )
 }

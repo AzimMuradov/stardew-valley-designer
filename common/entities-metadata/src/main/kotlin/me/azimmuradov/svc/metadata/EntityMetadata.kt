@@ -16,20 +16,12 @@
 
 package me.azimmuradov.svc.metadata
 
-import me.azimmuradov.svc.metadata.EntityPage.Companion.UNIT
-
 
 data class EntityMetadata(
-    val page: EntityPage,
+    val id: EntityId,
     val sourceOffset: EntityOffset,
     val sourceSize: EntitySize,
 ) {
-
-    val id = EntityId(
-        page = page,
-        index = (page.width / UNIT * sourceOffset.y / page.grain.h + sourceOffset.x / page.grain.w) / UNIT
-    )
-
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -38,10 +30,5 @@ data class EntityMetadata(
         return id == other.id
     }
 
-    override fun hashCode(): Int {
-        return id.hashCode()
-    }
-
-    override fun toString(): String =
-        "EntityMetadata(page=$page, sourceOffset=$sourceOffset, sourceSize=$sourceSize, id=$id)"
+    override fun hashCode(): Int = id.hashCode()
 }

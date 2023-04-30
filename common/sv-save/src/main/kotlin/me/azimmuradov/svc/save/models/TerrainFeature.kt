@@ -14,10 +14,21 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.metadata
+package me.azimmuradov.svc.save.models
+
+import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.XMLConstants
+import nl.adaptivity.xmlutil.serialization.XmlElement
+import nl.adaptivity.xmlutil.serialization.XmlSerialName
 
 
-data class EntityId(
-    val page: EntityPage,
-    val localId: Int,
+@Serializable
+data class TerrainFeature(
+    @XmlSerialName(value = "type", XMLConstants.XSI_NS_URI, XMLConstants.XSI_PREFIX)
+    @XmlElement(false)
+    val typeAttr: String,
+    val whichFloor: Int,
+    val whichView: Int,
+    val isPathway: Boolean,
+    val isSteppingStone: Boolean,
 )

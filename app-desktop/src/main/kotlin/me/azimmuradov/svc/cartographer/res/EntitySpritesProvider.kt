@@ -25,9 +25,9 @@ import me.azimmuradov.svc.metadata.EntityDataProvider
 object EntitySpritesProvider {
 
     fun spriteBy(entity: Entity<*>): Sprite =
-        EntityDataProvider.entityToMetadata.getValue(entity).let { (page, offset, size) ->
+        EntityDataProvider.entityToMetadata.getValue(entity).let { (id, offset, size) ->
             Sprite(
-                image = ImageProvider.imageOf(page),
+                image = ImageProvider.imageOf(id.page),
                 offset = offset.let { (x, y) -> IntOffset(x, y) },
                 size = size.let { (w, h) -> IntSize(w, h) },
             )
