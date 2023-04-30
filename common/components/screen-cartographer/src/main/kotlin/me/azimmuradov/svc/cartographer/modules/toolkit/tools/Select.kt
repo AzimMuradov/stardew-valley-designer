@@ -46,7 +46,7 @@ class Select(private val engine: SvcEngine, private val shape: ShapeType) : Tool
 
         return ActionReturn(
             toolkit = ToolkitState.Select.Shape.Acting(placedShape),
-            selectedEntities = engine.getAll(placedShape.coordinates)
+            selectedEntities = engine.getAll(placedShape.coordinates, visLayers)
         )
     }
 
@@ -61,7 +61,7 @@ class Select(private val engine: SvcEngine, private val shape: ShapeType) : Tool
 
         return ActionReturn(
             toolkit = ToolkitState.Select.Shape.Acting(placedShape),
-            selectedEntities = engine.getAll(placedShape.coordinates)
+            selectedEntities = engine.getAll(placedShape.coordinates, visLayers)
         )
     }
 

@@ -36,9 +36,9 @@ import me.azimmuradov.svc.cartographer.modules.options.OptionsState
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolkitState
 import me.azimmuradov.svc.cartographer.res.*
 import me.azimmuradov.svc.engine.geometry.*
+import me.azimmuradov.svc.engine.layer.coordinates
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 import me.azimmuradov.svc.engine.layers.flatten
-import me.azimmuradov.svc.engine.rectmap.coordinates
 import me.azimmuradov.svc.metadata.EntityPage.Companion.UNIT
 import me.azimmuradov.svc.utils.drawSprite
 import me.azimmuradov.svc.utils.toRect

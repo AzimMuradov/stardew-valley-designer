@@ -18,8 +18,7 @@ package me.azimmuradov.svc.engine
 
 import me.azimmuradov.svc.engine.entity.*
 import me.azimmuradov.svc.engine.geometry.Coordinate
-import me.azimmuradov.svc.engine.layer.LayerType
-import me.azimmuradov.svc.engine.layer.layerType
+import me.azimmuradov.svc.engine.layer.*
 import me.azimmuradov.svc.engine.layers.*
 import me.azimmuradov.svc.engine.layout.Layout
 
@@ -39,33 +38,18 @@ private class SvcEngineImpl(layout: Layout) : SvcEngine {
     override fun <EType : EntityType> get(type: LayerType<EType>, c: Coordinate) = layers.layerBy(type)[c]
 
     override fun put(obj: PlacedEntity<*>): LayeredEntitiesData {
-        val type = obj.layerType
+        val objLayer = obj.layerType
 
-        val replaced = buildList<PlacedEntity<*>> {
-            addAll(
-                when (type) {
-                    LayerType.Object, LayerType.Floor, LayerType.FloorFurniture -> {
-                        LayerType.withoutFloor.flatMapTo(mutableSetOf()) {
-                            layers.layerBy(it).removeAll(obj.coordinates)
-                        }
-                    }
+        val replaced = buildList {
+            addAll(objLayer.incompatibleLayers.flatMap { removeAll(it, obj.coordinates) })
 
-                    LayerType.EntityWithoutFloor -> {
-                        LayerType.withFloor.flatMapTo(mutableSetOf()) { layers.layerBy(it).removeAll(obj.coordinates) }
-                    }
-                }
-            )
-
-            addAll(
-                try {
-                    layers.layerBy(type).put(obj)
-                } catch (e: IllegalArgumentException) {
-                    putAll(layered())
-                    throw e
-                }
-            )
+            try {
+                addAll(layers.layerBy(objLayer).put(obj))
+            } catch (e: IllegalArgumentException) {
+                putAll(layered())
+                throw e
+            }
         }.layeredData()
-
 
         return replaced
     }

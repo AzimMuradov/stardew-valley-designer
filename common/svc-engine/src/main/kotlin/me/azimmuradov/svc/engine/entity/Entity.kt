@@ -16,7 +16,7 @@
 
 package me.azimmuradov.svc.engine.entity
 
-import me.azimmuradov.svc.engine.rectmap.*
+import me.azimmuradov.svc.engine.layer.*
 
 
 sealed interface Entity<out EType : EntityType> : RectObject {

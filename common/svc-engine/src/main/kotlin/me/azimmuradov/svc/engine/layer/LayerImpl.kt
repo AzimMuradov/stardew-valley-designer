@@ -17,10 +17,9 @@
 package me.azimmuradov.svc.engine.layer
 
 import me.azimmuradov.svc.engine.entity.*
+import me.azimmuradov.svc.engine.geometry.Coordinate
 import me.azimmuradov.svc.engine.layout.Layout
 import me.azimmuradov.svc.engine.layout.respects
-import me.azimmuradov.svc.engine.rectmap.MutableRectMap
-import me.azimmuradov.svc.engine.rectmap.mutableRectMapOf
 
 
 fun <EType : EntityType> layerOf(layout: Layout): Layer<EType> = LayerImpl(MutableLayerImpl(layout))
@@ -32,19 +31,56 @@ fun <EType : EntityType> mutableLayerOf(layout: Layout): MutableLayer<EType> = M
 
 private class LayerImpl<EType : EntityType>(layer: Layer<EType>) : Layer<EType> by layer
 
-private class MutableLayerImpl<EType : EntityType>(
-    layout: Layout,
-    private val rectMap: MutableRectMap<Entity<EType>> = mutableRectMapOf(layout.size),
-) : MutableLayer<EType>, MutableRectMap<Entity<EType>> by rectMap {
+private class MutableLayerImpl<EType : EntityType>(layout: Layout) : MutableLayer<EType> {
 
     override val size = layout.size
 
     override val layoutRules = layout
 
 
+    private val map = mutableMapOf<Coordinate, PlacedEntity<EType>>()
+
+
+    // Query Operations
+
+    override operator fun get(c: Coordinate) = map[c]
+
+
+    // Bulk Query Operations
+
+    override fun getAll(cs: Iterable<Coordinate>) = cs.mapNotNullTo(mutableSetOf(), map::get)
+
+
+    // Views
+
+    override val objects get() = map.values.toSet()
+
+
+    // Modification Operations
+
     override fun put(obj: PlacedEntity<EType>): Set<PlacedEntity<EType>> {
+        require(obj in size) { "Object coordinates are out of `RectMap` bounds." }
         require(obj respects layoutRules) { "The object ($obj) failed to satisfy layout rules." }
 
-        return rectMap.put(obj)
+        val cs = obj.coordinates
+        val replaced = removeAll(cs)
+        map.putAll(cs.associateWith { obj })
+
+        return replaced
     }
+
+    override fun remove(c: Coordinate): PlacedEntity<EType>? {
+        val removed = map[c]
+        removed?.coordinates?.forEach(map::remove)
+        return removed
+    }
+
+
+    // Bulk Modification Operations
+
+    override fun putAll(objs: DisjointRectObjects<Entity<EType>>) = objs.flatMapTo(mutableSetOf(), this::put)
+
+    override fun removeAll(cs: Iterable<Coordinate>) = cs.mapNotNullTo(mutableSetOf(), this::remove)
+
+    override fun clear() = map.clear()
 }

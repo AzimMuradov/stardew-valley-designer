@@ -19,13 +19,12 @@ package me.azimmuradov.svc.cartographer.modules.toolkit.tools
 import me.azimmuradov.svc.cartographer.modules.toolkit.*
 import me.azimmuradov.svc.engine.*
 import me.azimmuradov.svc.engine.entity.Entity
-import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.geometry.*
 import me.azimmuradov.svc.engine.layer.LayerType
+import me.azimmuradov.svc.engine.layer.coordinates
 import me.azimmuradov.svc.engine.layers.*
 import me.azimmuradov.svc.engine.layout.Layout
 import me.azimmuradov.svc.engine.layout.respectsLayout
-import me.azimmuradov.svc.engine.rectmap.coordinates
 import kotlin.properties.Delegates
 
 
@@ -35,7 +34,7 @@ class Hand(private val engine: SvcEngine) : Tool {
 
     private var start: Coordinate by Delegates.notNull()
 
-    private var isSelected by Delegates.notNull<Boolean>()
+    private var isSelected: Boolean by Delegates.notNull()
 
     private lateinit var heldEntities: LayeredEntitiesData
 
@@ -49,12 +48,11 @@ class Hand(private val engine: SvcEngine) : Tool {
     ): ActionReturn? {
         val flattenSelectedEntities = selectedEntities.flatten()
         start = coordinate
-        initMovedEntities = if (coordinate in flattenSelectedEntities.coordinates) {
-            isSelected = true
+        isSelected = coordinate in flattenSelectedEntities.coordinates
+        initMovedEntities = if (isSelected) {
             engine.removeAll(flattenSelectedEntities)
         } else {
-            isSelected = false
-            engine.remove(coordinate).run { layeredEntitiesData { type -> setOfNotNull(entityOrNullBy(type)) } }
+            engine.remove(coordinate, visLayers).toLayeredEntitiesData()
         }
         heldEntities = initMovedEntities
 
@@ -75,10 +73,11 @@ class Hand(private val engine: SvcEngine) : Tool {
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
-        val flattenMovedEntities = initMovedEntities.flatten().map { (entity, place) ->
-            PlacedEntity(entity, place = place + (coordinate - start))
-        }.filter { it respectsLayout layout }
-        heldEntities = flattenMovedEntities.layeredData()
+        heldEntities = initMovedEntities
+            .flatten()
+            .map { it.copy(place = it.place + (coordinate - start)) }
+            .filter { it respectsLayout layout }
+            .layeredData()
 
         return ActionReturn(
             toolkit = ToolkitState.Hand.Point.Acting(heldEntities),
@@ -92,21 +91,11 @@ class Hand(private val engine: SvcEngine) : Tool {
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
-        val flattenMovedEntities = heldEntities.flatten()
-
-        return if (flattenMovedEntities.all { it respectsLayout layout }) {
-            engine.putAll(heldEntities.toLayeredEntities())
-            ActionReturn(
-                toolkit = ToolkitState.Hand.Point.Idle,
-                selectedEntities = if (isSelected) heldEntities else selectedEntities
-            )
-        } else {
-            engine.putAll(initMovedEntities.toLayeredEntities())
-            ActionReturn(
-                toolkit = ToolkitState.Hand.Point.Idle,
-                selectedEntities = initMovedEntities
-            )
-        }
+        engine.putAll(heldEntities.toLayeredEntities())
+        return ActionReturn(
+            toolkit = ToolkitState.Hand.Point.Idle,
+            selectedEntities = if (isSelected) heldEntities else LayeredEntitiesData()
+        )
     }
 
 

@@ -18,7 +18,7 @@ package me.azimmuradov.svc.save.mappers
 
 import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.geometry.xy
-import me.azimmuradov.svc.engine.rectmap.placeIt
+import me.azimmuradov.svc.engine.layer.placeIt
 import me.azimmuradov.svc.metadata.EntityDataProvider.entityById
 import me.azimmuradov.svc.metadata.EntityId
 import me.azimmuradov.svc.metadata.EntityPage

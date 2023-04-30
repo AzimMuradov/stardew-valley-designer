@@ -26,21 +26,21 @@ sealed interface EntityType {
 }
 
 
-object FloorType : EntityType
+data object FloorType : EntityType
 
-object FloorFurnitureType : EntityType
+data object FloorFurnitureType : EntityType
 
 sealed interface ObjectType : EntityType {
 
-    object EquipmentType : ObjectType
+    data object EquipmentType : ObjectType
 
     sealed interface FurnitureType : ObjectType {
 
-        object HouseFurnitureType : FurnitureType
+        data object HouseFurnitureType : FurnitureType
 
-        object IndoorFurnitureType : FurnitureType
+        data object IndoorFurnitureType : FurnitureType
 
-        object UniversalFurnitureType : FurnitureType
+        data object UniversalFurnitureType : FurnitureType
 
 
         companion object {
@@ -59,7 +59,7 @@ sealed interface ObjectType : EntityType {
 
 sealed interface EntityWithoutFloorType : EntityType {
 
-    object BuildingType : EntityWithoutFloorType
+    data object BuildingType : EntityWithoutFloorType
 
     // TODO
     //

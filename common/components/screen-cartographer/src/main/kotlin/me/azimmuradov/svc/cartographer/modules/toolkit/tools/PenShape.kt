@@ -23,12 +23,11 @@ import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.geometry.CanonicalCorners
 import me.azimmuradov.svc.engine.geometry.Coordinate
 import me.azimmuradov.svc.engine.getReplacedBy
-import me.azimmuradov.svc.engine.layer.LayerType
+import me.azimmuradov.svc.engine.layer.*
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 import me.azimmuradov.svc.engine.layers.flatten
 import me.azimmuradov.svc.engine.layout.Layout
 import me.azimmuradov.svc.engine.layout.respectsLayout
-import me.azimmuradov.svc.engine.rectmap.*
 import kotlin.properties.Delegates
 
 
@@ -49,8 +48,7 @@ class PenShape(private val engine: SvcEngine, private val shape: ShapeType) : To
         start = coordinate
 
         if (currentEntity != null) {
-            val placedShape = shape
-                .projectTo(CanonicalCorners(start, coordinate))
+            val placedShape = shape.projectTo(CanonicalCorners(start, coordinate))
 
             entitiesToDraw = placedShape
                 .coordinates
@@ -64,7 +62,7 @@ class PenShape(private val engine: SvcEngine, private val shape: ShapeType) : To
                     placedShape = placedShape,
                     entitiesToDraw = entitiesToDraw,
                     entitiesToDelete = engine
-                        .getReplacedBy(entitiesToDraw.toList().asDisjoint())
+                        .getReplacedBy(entitiesToDraw.toList().asDisjointUnsafe())
                         .flatten()
                         .coordinates
                 ),
@@ -82,8 +80,7 @@ class PenShape(private val engine: SvcEngine, private val shape: ShapeType) : To
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
-        val placedShape = shape
-            .projectTo(CanonicalCorners.fromTwoCoordinates(start, coordinate))
+        val placedShape = shape.projectTo(CanonicalCorners.fromTwoCoordinates(start, coordinate))
 
         val cs = mutableSetOf<Coordinate>()
 
@@ -108,7 +105,7 @@ class PenShape(private val engine: SvcEngine, private val shape: ShapeType) : To
                 placedShape = placedShape,
                 entitiesToDraw = entitiesToDraw,
                 entitiesToDelete = engine
-                    .getReplacedBy(entitiesToDraw.toList().asDisjoint())
+                    .getReplacedBy(entitiesToDraw.toList().asDisjointUnsafe())
                     .flatten()
                     .coordinates
             ),
@@ -122,7 +119,7 @@ class PenShape(private val engine: SvcEngine, private val shape: ShapeType) : To
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
-        engine.putAll(entitiesToDraw.toList().asDisjoint())
+        engine.putAll(entitiesToDraw.toList().asDisjointUnsafe())
         return ActionReturn(
             toolkit = ToolkitState.Pen.Shape.Idle(shape),
             selectedEntities = selectedEntities

@@ -16,17 +16,57 @@
 
 package me.azimmuradov.svc.engine.layer
 
-import me.azimmuradov.svc.engine.entity.Entity
-import me.azimmuradov.svc.engine.entity.EntityType
+import me.azimmuradov.svc.engine.entity.*
+import me.azimmuradov.svc.engine.geometry.Coordinate
+import me.azimmuradov.svc.engine.geometry.Rect
 import me.azimmuradov.svc.engine.layout.LayoutRules
-import me.azimmuradov.svc.engine.rectmap.MutableRectMap
-import me.azimmuradov.svc.engine.rectmap.RectMap
 
 
-interface Layer<out EType : EntityType> : RectMap<Entity<EType>> {
+interface Layer<out EType : EntityType> {
+
+    val size: Rect
+
+
+    // Query Operations
+
+    operator fun get(c: Coordinate): PlacedEntity<EType>?
+
+
+    // Bulk Query Operations
+
+    fun getAll(cs: Iterable<Coordinate>): Set<PlacedEntity<EType>>
+
+
+    // Views
+
+    val objects: Set<PlacedEntity<EType>>
+
 
     val layoutRules: LayoutRules
 }
 
 
-interface MutableLayer<EType : EntityType> : Layer<EType>, MutableRectMap<Entity<EType>>
+interface MutableLayer<EType : EntityType> : Layer<EType> {
+
+    // Modification Operations
+
+    fun put(obj: PlacedEntity<EType>): Set<PlacedEntity<EType>>
+
+    fun remove(c: Coordinate): PlacedEntity<EType>?
+
+
+    // Bulk Modification Operations
+
+    fun putAll(objs: DisjointRectObjects<Entity<EType>>): Set<PlacedEntity<EType>>
+
+    fun removeAll(cs: Iterable<Coordinate>): Set<PlacedEntity<EType>>
+
+    fun clear()
+}
+
+
+// Extensions
+
+fun Layer<*>.isEmpty(): Boolean = objects.isEmpty()
+
+fun Layer<*>.isNotEmpty(): Boolean = objects.isNotEmpty()

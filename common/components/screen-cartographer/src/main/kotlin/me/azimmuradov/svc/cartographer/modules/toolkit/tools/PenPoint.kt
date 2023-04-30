@@ -21,11 +21,11 @@ import me.azimmuradov.svc.engine.SvcEngine
 import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.geometry.Coordinate
 import me.azimmuradov.svc.engine.layer.LayerType
+import me.azimmuradov.svc.engine.layer.placeIt
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 import me.azimmuradov.svc.engine.layout.Layout
 import me.azimmuradov.svc.engine.layout.respectsLayout
 import me.azimmuradov.svc.engine.notOverlapsWith
-import me.azimmuradov.svc.engine.rectmap.placeIt
 
 
 class PenPoint(private val engine: SvcEngine) : Tool {
