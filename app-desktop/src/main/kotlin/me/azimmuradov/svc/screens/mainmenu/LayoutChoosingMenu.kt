@@ -28,6 +28,7 @@ import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.azimmuradov.svc.cartographer.res.LayoutSpritesProvider
@@ -61,10 +62,16 @@ fun LayoutChoosingMenu(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        val m = Modifier
+            .fillMaxWidth()
+            .weight(1f)
+            .background(MaterialTheme.colors.surface)
+            .padding(8.dp)
+
         when {
             isLoading -> {
                 Box(
-                    modifier = Modifier.fillMaxWidth().weight(1f).background(MaterialTheme.colors.surface),
+                    modifier = m,
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator(strokeCap = StrokeCap.Round)
@@ -73,21 +80,17 @@ fun LayoutChoosingMenu(
 
             layouts == null -> {
                 Box(
-                    modifier = Modifier.fillMaxWidth().weight(1f).background(MaterialTheme.colors.surface),
+                    modifier = m.padding(40.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(placeholder)
+                    Text(placeholder, textAlign = TextAlign.Center)
                 }
             }
 
             else -> {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(count = 2),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                        .background(MaterialTheme.colors.surface),
-                    contentPadding = PaddingValues(8.dp),
+                    modifier = m,
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {

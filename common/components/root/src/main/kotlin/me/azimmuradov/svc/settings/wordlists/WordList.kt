@@ -85,6 +85,8 @@ sealed interface WordList {
 
     val saveImportWindowTitle: String
 
+    val saveImportCurrentDirectoryLabel: String
+
     val saveImportTextFieldLabel: String
 
     val saveImportPlaceholder: String

@@ -21,8 +21,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.TextFieldDefaults.IconOpacity
+import androidx.compose.material.TextFieldDefaults.UnfocusedIndicatorLineOpacity
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -41,11 +43,18 @@ import cafe.adriel.bonsai.core.Bonsai
 import cafe.adriel.bonsai.core.tree.Tree
 import cafe.adriel.bonsai.filesystem.FileSystemBonsaiStyle
 import cafe.adriel.bonsai.filesystem.FileSystemTree
+import kotlinx.coroutines.delay
 import me.azimmuradov.svc.mainmenu.MainMenuIntent
 import me.azimmuradov.svc.mainmenu.MainMenuState
 import me.azimmuradov.svc.utils.GlobalSettings
+import mu.KotlinLogging
 import okio.Path
+import okio.Path.Companion.toPath
+import java.io.File
+import java.util.*
 import kotlin.io.path.*
+import kotlin.time.Duration.Companion.milliseconds
+import java.io.File.separator as sep
 
 
 @Composable
@@ -115,13 +124,87 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        val tree = FileSystemTree(
-            rootPath = Path("${System.getProperty("user.home")}/.config/StardewValley/Saves"),
-            selfInclude = true
-        ).apply(Tree<Path>::expandAll)
+        val roots by remember { mutableStateOf(File.listRoots()) }
+        val root by remember { mutableStateOf(roots.first().absolutePath) }
+
+        LaunchedEffect(Unit) {
+            KotlinLogging.logger(name = "log").info { roots.asList() }
+        }
+
+        var currentDir by remember { mutableStateOf(savePath()) }
+
+        val tree = PathTree(currentDir).apply {
+            LaunchedEffect(key1 = this) {
+                collapseRoot()
+                while (nodes.size != 1) delay(10.milliseconds)
+                expandRoot()
+            }
+        }
 
         var path by remember { mutableStateOf("") }
 
+
+        Row(
+            modifier = Modifier.fillMaxWidth().height(56.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextField(
+                value = currentDir,
+                onValueChange = {},
+                modifier = Modifier.weight(1f).height(56.dp),
+                readOnly = true,
+                label = { Text(wordList.saveImportCurrentDirectoryLabel) },
+                trailingIcon = {
+                    val interactionSource = remember(::MutableInteractionSource)
+
+                    Icon(
+                        imageVector = Icons.Filled.ArrowUpward,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .pointerHoverIcon(PointerIcon.Hand)
+                            .size(24.dp)
+                            .clickable(
+                                interactionSource = interactionSource,
+                                indication = rememberRipple(
+                                    bounded = false,
+                                    radius = 18.dp,
+                                    color = Color.White
+                                )
+                            ) {
+                                currentDir = currentDir.toPath().parent?.toNioPath()?.absolutePathString() ?: currentDir
+                            }
+                    )
+                },
+                singleLine = true,
+                colors = TextFieldDefaults.textFieldColors(
+                    textColor = MaterialTheme.colors.onPrimary,
+                    backgroundColor = MaterialTheme.colors.secondaryVariant,
+                    cursorColor = MaterialTheme.colors.onPrimary,
+                    focusedIndicatorColor = MaterialTheme.colors.onPrimary.copy(ContentAlpha.high),
+                    unfocusedIndicatorColor = MaterialTheme.colors.onPrimary.copy(UnfocusedIndicatorLineOpacity),
+                    trailingIconColor = MaterialTheme.colors.onPrimary.copy(IconOpacity),
+                    focusedLabelColor = MaterialTheme.colors.onPrimary.copy(ContentAlpha.high),
+                    unfocusedLabelColor = MaterialTheme.colors.onPrimary.copy(ContentAlpha.medium),
+                )
+            )
+            IconButton(onClick = { currentDir = System.getProperty("user.home") }) {
+                Icon(
+                    imageVector = Icons.Filled.Home,
+                    contentDescription = null,
+                    modifier = Modifier.pointerHoverIcon(PointerIcon.Hand),
+                    tint = Color.White
+                )
+            }
+            IconButton(onClick = { currentDir = savePath() }) {
+                Icon(
+                    imageVector = Icons.Filled.Save,
+                    contentDescription = null,
+                    modifier = Modifier.pointerHoverIcon(PointerIcon.Hand),
+                    tint = Color.White
+                )
+            }
+        }
         Box(
             Modifier
                 .fillMaxWidth()
@@ -134,7 +217,16 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
                 modifier = Modifier.fillMaxSize(),
                 onClick = {
                     val p = it.content.toNioPath()
-                    if (p.isRegularFile()) path = p.absolutePathString()
+                    when {
+                        p.isRegularFile() -> path = p.absolutePathString()
+                        p.isDirectory() -> {
+                            currentDir = if (p.absolutePathString() != root) {
+                                p.absolutePathString()
+                            } else {
+                                currentDir.toPath().parent?.toString() ?: currentDir
+                            }
+                        }
+                    }
                 },
                 onDoubleClick = null,
                 onLongClick = null,
@@ -150,29 +242,9 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
                 value = path,
                 onValueChange = { path = it },
                 modifier = Modifier.weight(1f).height(56.dp),
-                textStyle = MaterialTheme.typography.body2,
                 label = { Text(wordList.saveImportTextFieldLabel) },
-                // leadingIcon = {
-                //     Icon(
-                //         imageVector = Icons.Filled.Save,
-                //         contentDescription = null,
-                //         modifier = Modifier
-                //             .pointerHoverIcon(PointerIcon.Hand)
-                //             .size(24.dp)
-                //             .clickable(
-                //                 interactionSource = MutableInteractionSource(),
-                //                 indication = rememberRipple(
-                //                     bounded = false,
-                //                     radius = 18.dp,
-                //                     color = Color.Black
-                //                 )
-                //             ) {
-                //                 path = "${System.getProperty("user.home")}/.config/StardewValley/Saves"
-                //             }
-                //     )
-                // },
                 trailingIcon = {
-                    val interactionSource = remember { MutableInteractionSource() }
+                    val interactionSource = remember(::MutableInteractionSource)
 
                     Icon(
                         imageVector = Icons.Filled.Cancel,
@@ -193,7 +265,16 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
                     )
                 },
                 singleLine = true,
-                colors = TextFieldDefaults.textFieldColors(backgroundColor = MaterialTheme.colors.surface)
+                colors = TextFieldDefaults.textFieldColors(
+                    textColor = MaterialTheme.colors.onSecondary,
+                    backgroundColor = MaterialTheme.colors.onPrimary,
+                    cursorColor = MaterialTheme.colors.onSecondary,
+                    focusedIndicatorColor = MaterialTheme.colors.onSecondary.copy(ContentAlpha.high),
+                    unfocusedIndicatorColor = MaterialTheme.colors.onSecondary.copy(UnfocusedIndicatorLineOpacity),
+                    trailingIconColor = MaterialTheme.colors.secondaryVariant.copy(IconOpacity),
+                    focusedLabelColor = MaterialTheme.colors.secondaryVariant.copy(ContentAlpha.high),
+                    unfocusedLabelColor = MaterialTheme.colors.secondaryVariant.copy(ContentAlpha.medium),
+                )
             )
             Button(
                 onClick = { intentConsumer(MainMenuIntent.SaveLoaderMenu.LoadSave(path)) },
@@ -214,4 +295,35 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
             }
         }
     }
+}
+
+
+// Shit code to force bonsai to recompose.
+// Bonsai should fix that someday...
+
+@Composable
+private fun PathTree(root: String): Tree<Path> {
+    var rooty by remember { mutableStateOf("") }
+    return if (root != rooty) {
+        rooty = root
+        FileSystemTree(
+            rootPath = Path(root),
+            selfInclude = true
+        )
+    } else {
+        FileSystemTree(
+            rootPath = Path(rooty),
+            selfInclude = true
+        )
+    }
+}
+
+private fun savePath(): String {
+    val os = System.getProperty("os.name").uppercase(Locale.getDefault())
+    val dataRoot = if ("WIN" in os) {
+        System.getenv("APPDATA")
+    } else {
+        "${System.getProperty("user.home")}${sep}.config"
+    }
+    return "$dataRoot${sep}StardewValley${sep}Saves"
 }
