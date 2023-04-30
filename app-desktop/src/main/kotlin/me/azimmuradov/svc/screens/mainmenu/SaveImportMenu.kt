@@ -131,7 +131,7 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
             KotlinLogging.logger(name = "log").info { roots.asList() }
         }
 
-        var currentDir by remember { mutableStateOf(savePath()) }
+        var currentDir by remember { mutableStateOf(savePath ?: homePath) }
 
         val tree = PathTree(currentDir).apply {
             LaunchedEffect(key1 = this) {
@@ -188,7 +188,7 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
                     unfocusedLabelColor = MaterialTheme.colors.onPrimary.copy(ContentAlpha.medium),
                 )
             )
-            IconButton(onClick = { currentDir = System.getProperty("user.home") }) {
+            IconButton(onClick = { currentDir = homePath }) {
                 Icon(
                     imageVector = Icons.Filled.Home,
                     contentDescription = null,
@@ -196,7 +196,7 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
                     tint = Color.White
                 )
             }
-            IconButton(onClick = { currentDir = savePath() }) {
+            IconButton(onClick = { currentDir = savePath!! }, enabled = savePath != null) {
                 Icon(
                     imageVector = Icons.Filled.Save,
                     contentDescription = null,
@@ -318,12 +318,19 @@ private fun PathTree(root: String): Tree<Path> {
     }
 }
 
-private fun savePath(): String {
+
+private val homePath: String = System.getProperty("user.home")
+
+private val savePath: String? = run {
     val os = System.getProperty("os.name").uppercase(Locale.getDefault())
-    val dataRoot = if ("WIN" in os) {
+    val dataPath = if ("WIN" in os) {
         System.getenv("APPDATA")
     } else {
-        "${System.getProperty("user.home")}${sep}.config"
+        "$homePath${sep}.config"
     }
-    return "$dataRoot${sep}StardewValley${sep}Saves"
+
+    "$dataPath${sep}StardewValley${sep}Saves".takeIf {
+        KotlinLogging.logger(name = "log").info { it }
+        File(it).exists()
+    }
 }
