@@ -79,7 +79,9 @@ data object EnWordList : WordList {
 
     override val saveImportWindowTitle: String = "Load your save file and then choose from available layouts"
 
-    override val saveImportTextFieldLabel: String = "Path to your save file"
+    override val saveImportCurrentDirectoryLabel: String = "current directory"
+
+    override val saveImportTextFieldLabel: String = "path to your save file"
 
     override val saveImportPlaceholder: String = "Load your save file"
 
