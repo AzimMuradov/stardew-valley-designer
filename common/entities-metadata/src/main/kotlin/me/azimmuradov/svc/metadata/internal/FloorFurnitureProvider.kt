@@ -18,8 +18,8 @@ package me.azimmuradov.svc.metadata.internal
 
 import me.azimmuradov.svc.engine.entity.FloorFurniture
 import me.azimmuradov.svc.engine.entity.FloorFurniture.*
-import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations2.R0
-import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations2.R1
+import me.azimmuradov.svc.engine.entity.Rotations.Rotations2.R0
+import me.azimmuradov.svc.engine.entity.Rotations.Rotations2.R1
 import me.azimmuradov.svc.metadata.EntityMetadata
 
 

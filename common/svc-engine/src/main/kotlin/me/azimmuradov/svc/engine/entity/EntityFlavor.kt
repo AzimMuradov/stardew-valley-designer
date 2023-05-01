@@ -16,113 +16,61 @@
 
 package me.azimmuradov.svc.engine.entity
 
-import me.azimmuradov.svc.engine.entity.ColoredFlavor.Colors.ChestColors
-import me.azimmuradov.svc.engine.entity.ColoredFlavor.Colors.FishPondColors
-import me.azimmuradov.svc.engine.entity.EntityWithoutFloorType.BuildingType
-import me.azimmuradov.svc.engine.entity.ObjectType.EquipmentType
-import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations2
-import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations4
-import me.azimmuradov.svc.engine.geometry.Rect
-
 
 sealed interface EntityFlavor
 
 
-sealed class RotatableFlavor private constructor(
-    private val regularSize: Rect,
-    private val rotatedSize: Rect,
-) : EntityFlavor {
+sealed interface Rotations : EntityFlavor {
 
-    abstract val rotation: Rotations
-
-    val size: Rect get() = if (rotation.ordinal % 2 == 0) regularSize else rotatedSize
+    val ordinal: Int
 
 
-    sealed class RotatableFlavor2(
-        regularSize: Rect,
-        rotatedSize: Rect,
-    ) : RotatableFlavor(regularSize, rotatedSize) {
+    enum class Rotations2 : Rotations { R0, R1 }
 
-        abstract override val rotation: Rotations2
-    }
-
-    sealed class RotatableFlavor4(
-        regularSize: Rect,
-        rotatedSize: Rect,
-    ) : RotatableFlavor(regularSize, rotatedSize) {
-
-        abstract override val rotation: Rotations4
-    }
-
-    sealed interface Rotations {
-
-        val ordinal: Int
-
-
-        enum class Rotations2 : Rotations { R0, R1 }
-
-        enum class Rotations4 : Rotations { R0, R1, R2, R3 }
-    }
+    enum class Rotations4 : Rotations { R0, R1, R2, R3 }
 }
 
 
-sealed class ColoredFarmBuildingFlavor : EntityFlavor {
-
-    abstract val building: Color?
-    abstract val roof: Color?
-    abstract val trim: Color?
-}
+data class FarmBuildingColors(
+    val building: Color? = null,
+    val roof: Color? = null,
+    val trim: Color? = null,
+) : EntityFlavor
 
 data class Color(val r: UByte, val g: UByte, val b: UByte)
 
 
-sealed class ColoredFlavor<out EType : EntityType> private constructor() : EntityFlavor {
+sealed interface Colors : EntityFlavor {
 
-    abstract val color: Colors
-
-
-    sealed class ColoredFishPondFlavor : ColoredFlavor<BuildingType>() {
-
-        abstract override val color: FishPondColors
+    enum class FishPondColors : Colors {
+        Default,
+        LavaEel,
+        SuperCucumber,
+        Slimejack,
+        VoidSalmon,
     }
 
-    sealed class ColoredChestFlavor : ColoredFlavor<EquipmentType>() {
-
-        abstract override val color: ChestColors
-    }
-
-    sealed interface Colors {
-
-        enum class FishPondColors : Colors {
-            Default,
-            LavaEel,
-            SuperCucumber,
-            Slimejack,
-            VoidSalmon,
-        }
-
-        enum class ChestColors : Colors {
-            Default,
-            Blue,
-            LightBlue,
-            Teal,
-            Aqua,
-            Green,
-            LimeGreen,
-            Yellow,
-            LightOrange,
-            Orange,
-            Red,
-            DarkRed,
-            LightPink,
-            Pink,
-            Magenta,
-            Purple,
-            DarkPurple,
-            DarkGrey,
-            MediumGrey,
-            LightGrey,
-            White,
-        }
+    enum class ChestColors : Colors {
+        Default,
+        Blue,
+        LightBlue,
+        Teal,
+        Aqua,
+        Green,
+        LimeGreen,
+        Yellow,
+        LightOrange,
+        Orange,
+        Red,
+        DarkRed,
+        LightPink,
+        Pink,
+        Magenta,
+        Purple,
+        DarkPurple,
+        DarkGrey,
+        MediumGrey,
+        LightGrey,
+        White,
     }
 }

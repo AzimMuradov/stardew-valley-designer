@@ -20,9 +20,9 @@ package me.azimmuradov.svc.engine.entity
 
 import me.azimmuradov.svc.engine.entity.RectsProvider.rectOf
 import me.azimmuradov.svc.engine.entity.RectsProvider.rotated
-import me.azimmuradov.svc.engine.entity.RotatableFlavor.RotatableFlavor2
-import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations2
-import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations2.R0
+import me.azimmuradov.svc.engine.entity.Rotatable.Rotatable2
+import me.azimmuradov.svc.engine.entity.Rotations.Rotations2
+import me.azimmuradov.svc.engine.entity.Rotations.Rotations2.R0
 import me.azimmuradov.svc.engine.geometry.Rect
 
 
@@ -45,7 +45,7 @@ sealed interface FloorFurniture : Entity<FloorFurnitureType> {
         ModernRug(rectOf(w = 5, h = 4)),
     }
 
-    sealed class RotatableRug(regularSize: Rect = rectOf(w = 2, h = 3)) : FloorFurniture, RotatableFlavor2(
+    sealed class RotatableRug(regularSize: Rect = rectOf(w = 2, h = 3)) : FloorFurniture, Rotatable2(
         regularSize,
         rotatedSize = regularSize.rotated(),
     ) {

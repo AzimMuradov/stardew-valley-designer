@@ -18,7 +18,7 @@ package me.azimmuradov.svc.metadata.internal
 
 import me.azimmuradov.svc.engine.entity.IndoorFurniture
 import me.azimmuradov.svc.engine.entity.IndoorFurniture.*
-import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations4.*
+import me.azimmuradov.svc.engine.entity.Rotations.Rotations4.*
 import me.azimmuradov.svc.metadata.EntityMetadata
 
 

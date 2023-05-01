@@ -20,9 +20,9 @@ package me.azimmuradov.svc.engine.entity
 
 import me.azimmuradov.svc.engine.entity.ObjectType.FurnitureType.IndoorFurnitureType
 import me.azimmuradov.svc.engine.entity.RectsProvider.rectOf
-import me.azimmuradov.svc.engine.entity.RotatableFlavor.RotatableFlavor4
-import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations4
-import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations4.R0
+import me.azimmuradov.svc.engine.entity.Rotatable.Rotatable4
+import me.azimmuradov.svc.engine.entity.Rotations.Rotations4
+import me.azimmuradov.svc.engine.entity.Rotations.Rotations4.R0
 import me.azimmuradov.svc.engine.geometry.Rect
 
 
@@ -82,7 +82,7 @@ sealed interface IndoorFurniture : Entity<IndoorFurnitureType> {
         // TODO : IndustrialPipe(RECT_1x1),
     }
 
-    sealed class Couch : IndoorFurniture, RotatableFlavor4(
+    sealed class Couch : IndoorFurniture, Rotatable4(
         regularSize = rectOf(w = 3, h = 1),
         rotatedSize = rectOf(w = 2, h = 2),
     ) {
@@ -97,12 +97,12 @@ sealed interface IndoorFurniture : Entity<IndoorFurnitureType> {
         data class WizardCouch(override var rotation: Rotations4 = R0) : Couch()
     }
 
-    data class LargeBrownCouch(override var rotation: Rotations4 = R0) : IndoorFurniture, RotatableFlavor4(
+    data class LargeBrownCouch(override var rotation: Rotations4 = R0) : IndoorFurniture, Rotatable4(
         regularSize = rectOf(w = 4, h = 1),
         rotatedSize = rectOf(w = 2, h = 3),
     )
 
-    sealed class Armchair : IndoorFurniture, RotatableFlavor4(
+    sealed class Armchair : IndoorFurniture, Rotatable4(
         regularSize = rectOf(w = 2, h = 1),
         rotatedSize = rectOf(w = 2, h = 1),
     ) {
@@ -114,7 +114,7 @@ sealed interface IndoorFurniture : Entity<IndoorFurnitureType> {
         data class YellowArmchair(override var rotation: Rotations4 = R0) : Armchair()
     }
 
-    sealed class Dresser : IndoorFurniture, RotatableFlavor4(
+    sealed class Dresser : IndoorFurniture, Rotatable4(
         regularSize = rectOf(w = 2, h = 1),
         rotatedSize = rectOf(w = 1, h = 2),
     ) {

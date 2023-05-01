@@ -16,7 +16,7 @@
 
 package me.azimmuradov.svc.metadata.internal
 
-import me.azimmuradov.svc.engine.entity.ColoredFlavor.Colors.ChestColors.*
+import me.azimmuradov.svc.engine.entity.Colors.ChestColors.*
 import me.azimmuradov.svc.engine.entity.Equipment
 import me.azimmuradov.svc.engine.entity.Equipment.*
 import me.azimmuradov.svc.metadata.EntityMetadata
