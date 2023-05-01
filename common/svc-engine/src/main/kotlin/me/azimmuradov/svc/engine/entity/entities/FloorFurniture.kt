@@ -22,7 +22,7 @@ import me.azimmuradov.svc.engine.entity.RectsProvider.rectOf
 import me.azimmuradov.svc.engine.entity.RectsProvider.rotated
 import me.azimmuradov.svc.engine.entity.Rotatable.Rotatable2
 import me.azimmuradov.svc.engine.entity.Rotations.Rotations2
-import me.azimmuradov.svc.engine.entity.Rotations.Rotations2.R1
+import me.azimmuradov.svc.engine.entity.Rotations.Rotations2.R2
 import me.azimmuradov.svc.engine.geometry.Rect
 
 
@@ -50,20 +50,20 @@ sealed interface FloorFurniture : Entity<FloorFurnitureType> {
         rotatedSize = regularSize.rotated(),
     ) {
 
-        data class BambooMat(override var rotation: Rotations2 = R1) : RotatableRug(regularSize = rectOf(w = 2, h = 1))
+        data class BambooMat(override var rotation: Rotations2 = R2) : RotatableRug(regularSize = rectOf(w = 2, h = 1))
 
-        data class NauticalRug(override var rotation: Rotations2 = R1) : RotatableRug()
-        data class DarkRug(override var rotation: Rotations2 = R1) : RotatableRug()
-        data class RedRug(override var rotation: Rotations2 = R1) : RotatableRug()
-        data class LightGreenRug(override var rotation: Rotations2 = R1) : RotatableRug()
-        data class GreenCottageRug(override var rotation: Rotations2 = R1) : RotatableRug()
-        data class RedCottageRug(override var rotation: Rotations2 = R1) : RotatableRug()
-        data class MysticRug(override var rotation: Rotations2 = R1) : RotatableRug()
-        data class BoneRug(override var rotation: Rotations2 = R1) : RotatableRug()
-        data class SnowyRug(override var rotation: Rotations2 = R1) : RotatableRug()
-        data class PirateRug(override var rotation: Rotations2 = R1) : RotatableRug()
-        data class PatchworkRug(override var rotation: Rotations2 = R1) : RotatableRug()
-        data class FruitSaladRug(override var rotation: Rotations2 = R1) : RotatableRug()
+        data class NauticalRug(override var rotation: Rotations2 = R2) : RotatableRug()
+        data class DarkRug(override var rotation: Rotations2 = R2) : RotatableRug()
+        data class RedRug(override var rotation: Rotations2 = R2) : RotatableRug()
+        data class LightGreenRug(override var rotation: Rotations2 = R2) : RotatableRug()
+        data class GreenCottageRug(override var rotation: Rotations2 = R2) : RotatableRug()
+        data class RedCottageRug(override var rotation: Rotations2 = R2) : RotatableRug()
+        data class MysticRug(override var rotation: Rotations2 = R2) : RotatableRug()
+        data class BoneRug(override var rotation: Rotations2 = R2) : RotatableRug()
+        data class SnowyRug(override var rotation: Rotations2 = R2) : RotatableRug()
+        data class PirateRug(override var rotation: Rotations2 = R2) : RotatableRug()
+        data class PatchworkRug(override var rotation: Rotations2 = R2) : RotatableRug()
+        data class FruitSaladRug(override var rotation: Rotations2 = R2) : RotatableRug()
     }
 
 

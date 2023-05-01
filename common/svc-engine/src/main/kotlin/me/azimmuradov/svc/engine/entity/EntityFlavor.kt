@@ -25,9 +25,9 @@ sealed interface Rotations : EntityFlavor {
     val ordinal: Int
 
 
-    enum class Rotations2 : Rotations { R0, R1 }
+    enum class Rotations2 : Rotations { R1, R2 }
 
-    enum class Rotations4 : Rotations { R0, R1, R2, R3 }
+    enum class Rotations4 : Rotations { R1, R2, R3, R4 }
 }
 
 

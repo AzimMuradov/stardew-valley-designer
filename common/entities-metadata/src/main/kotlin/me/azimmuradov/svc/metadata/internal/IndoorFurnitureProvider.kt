@@ -58,130 +58,130 @@ internal fun indoorFurniture(entity: IndoorFurniture): EntityMetadata = when (en
 
 
     is Couch.BlueCouch -> when (entity.rotation) {
-        R0 -> furniture(id = 416, x = 0, y = 13, w = 3, h = 2, r = entity.rotation)
-        R1 -> TODO()
+        R1 -> furniture(id = 416, x = 0, y = 13, w = 3, h = 2, r = entity.rotation)
         R2 -> TODO()
         R3 -> TODO()
+        R4 -> TODO()
     }
 
     is Couch.BrownCouch -> when (entity.rotation) {
-        R0 -> furniture(id = 512, x = 0, y = 16, w = 3, h = 2, r = entity.rotation)
-        R1 -> TODO()
+        R1 -> furniture(id = 512, x = 0, y = 16, w = 3, h = 2, r = entity.rotation)
         R2 -> TODO()
         R3 -> TODO()
+        R4 -> TODO()
     }
 
     is Couch.GreenCouch -> when (entity.rotation) {
-        R0 -> furniture(id = 432, x = 16, y = 13, w = 3, h = 2, r = entity.rotation)
-        R1 -> TODO()
+        R1 -> furniture(id = 432, x = 16, y = 13, w = 3, h = 2, r = entity.rotation)
         R2 -> TODO()
         R3 -> TODO()
+        R4 -> TODO()
     }
 
     is Couch.RedCouch -> when (entity.rotation) {
-        R0 -> furniture(id = 424, x = 8, y = 13, w = 3, h = 2, r = entity.rotation)
-        R1 -> TODO()
+        R1 -> furniture(id = 424, x = 8, y = 13, w = 3, h = 2, r = entity.rotation)
         R2 -> TODO()
         R3 -> TODO()
+        R4 -> TODO()
     }
 
     is Couch.YellowCouch -> when (entity.rotation) {
-        R0 -> furniture(id = 440, x = 24, y = 13, w = 3, h = 2, r = entity.rotation)
-        R1 -> TODO()
+        R1 -> furniture(id = 440, x = 24, y = 13, w = 3, h = 2, r = entity.rotation)
         R2 -> TODO()
         R3 -> TODO()
+        R4 -> TODO()
     }
 
     is Couch.DarkCouch -> when (entity.rotation) {
-        R0 -> furniture(id = 520, x = 8, y = 16, w = 3, h = 2, r = entity.rotation)
-        R1 -> TODO()
+        R1 -> furniture(id = 520, x = 8, y = 16, w = 3, h = 2, r = entity.rotation)
         R2 -> TODO()
         R3 -> TODO()
+        R4 -> TODO()
     }
 
     is Couch.WoodsyCouch -> when (entity.rotation) {
-        R0 -> furniture(id = 536, x = 24, y = 16, w = 3, h = 2, r = entity.rotation)
-        R1 -> TODO()
+        R1 -> furniture(id = 536, x = 24, y = 16, w = 3, h = 2, r = entity.rotation)
         R2 -> TODO()
         R3 -> TODO()
+        R4 -> TODO()
     }
 
     is Couch.WizardCouch -> when (entity.rotation) {
-        R0 -> furniture(id = 528, x = 16, y = 16, w = 3, h = 2, r = entity.rotation)
-        R1 -> TODO()
+        R1 -> furniture(id = 528, x = 16, y = 16, w = 3, h = 2, r = entity.rotation)
         R2 -> TODO()
         R3 -> TODO()
+        R4 -> TODO()
     }
 
     is LargeBrownCouch -> when (entity.rotation) {
-        R0 -> furniture(id = 2720, x = 0, y = 85, w = 4, h = 2, r = entity.rotation)
-        R1 -> TODO()
+        R1 -> furniture(id = 2720, x = 0, y = 85, w = 4, h = 2, r = entity.rotation)
         R2 -> TODO()
         R3 -> TODO()
+        R4 -> TODO()
     }
 
 
     is Armchair.BlueArmchair -> when (entity.rotation) {
-        R0 -> furniture(id = 288, x = 0, y = 9, w = 2, h = 2, r = entity.rotation)
-        R1 -> TODO()
+        R1 -> furniture(id = 288, x = 0, y = 9, w = 2, h = 2, r = entity.rotation)
         R2 -> TODO()
         R3 -> TODO()
+        R4 -> TODO()
     }
 
     is Armchair.BrownArmchair -> when (entity.rotation) {
-        R0 -> furniture(id = 312, x = 24, y = 9, w = 2, h = 2, r = entity.rotation)
-        R1 -> TODO()
+        R1 -> furniture(id = 312, x = 24, y = 9, w = 2, h = 2, r = entity.rotation)
         R2 -> TODO()
         R3 -> TODO()
+        R4 -> TODO()
     }
 
     is Armchair.GreenArmchair -> when (entity.rotation) {
-        R0 -> furniture(id = 300, x = 12, y = 9, w = 2, h = 2, r = entity.rotation)
-        R1 -> TODO()
+        R1 -> furniture(id = 300, x = 12, y = 9, w = 2, h = 2, r = entity.rotation)
         R2 -> TODO()
         R3 -> TODO()
+        R4 -> TODO()
     }
 
     is Armchair.RedArmchair -> when (entity.rotation) {
-        R0 -> furniture(id = 294, x = 6, y = 9, w = 2, h = 2, r = entity.rotation)
-        R1 -> TODO()
+        R1 -> furniture(id = 294, x = 6, y = 9, w = 2, h = 2, r = entity.rotation)
         R2 -> TODO()
         R3 -> TODO()
+        R4 -> TODO()
     }
 
     is Armchair.YellowArmchair -> when (entity.rotation) {
-        R0 -> furniture(id = 294, x = 18, y = 9, w = 2, h = 2, r = entity.rotation)
-        R1 -> TODO()
+        R1 -> furniture(id = 294, x = 18, y = 9, w = 2, h = 2, r = entity.rotation)
         R2 -> TODO()
         R3 -> TODO()
+        R4 -> TODO()
     }
 
 
     is Dresser.BirchDresser -> when (entity.rotation) {
-        R0 -> furniture(id = 714, x = 10, y = 22, w = 2, h = 2, r = entity.rotation)
-        R1 -> TODO()
+        R1 -> furniture(id = 714, x = 10, y = 22, w = 2, h = 2, r = entity.rotation)
         R2 -> TODO()
         R3 -> TODO()
+        R4 -> TODO()
     }
 
     is Dresser.OakDresser -> when (entity.rotation) {
-        R0 -> furniture(id = 704, x = 0, y = 22, w = 2, h = 2, r = entity.rotation)
-        R1 -> TODO()
+        R1 -> furniture(id = 704, x = 0, y = 22, w = 2, h = 2, r = entity.rotation)
         R2 -> TODO()
         R3 -> TODO()
+        R4 -> TODO()
     }
 
     is Dresser.WalnutDresser -> when (entity.rotation) {
-        R0 -> furniture(id = 709, x = 5, y = 22, w = 2, h = 2, r = entity.rotation)
-        R1 -> TODO()
+        R1 -> furniture(id = 709, x = 5, y = 22, w = 2, h = 2, r = entity.rotation)
         R2 -> TODO()
         R3 -> TODO()
+        R4 -> TODO()
     }
 
     is Dresser.MahoganyDresser -> when (entity.rotation) {
-        R0 -> furniture(id = 719, x = 15, y = 22, w = 2, h = 2, r = entity.rotation)
-        R1 -> TODO()
+        R1 -> furniture(id = 719, x = 15, y = 22, w = 2, h = 2, r = entity.rotation)
         R2 -> TODO()
         R3 -> TODO()
+        R4 -> TODO()
     }
 }

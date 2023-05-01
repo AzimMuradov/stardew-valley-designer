@@ -165,29 +165,29 @@ sealed interface UniversalFurniture : Entity<UniversalFurnitureType> {
         rotatedSize = chairSize,
     ) {
 
-        data class OakChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class WalnutChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class BirchChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class MahoganyChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class RedDinerChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class BlueDinerChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class CountryChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class BreakfastChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class PinkOfficeChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class PurpleOfficeChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class DarkThrone(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class DiningChairYellow(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class DiningChairRed(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class GreenPlushSeat(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class PinkPlushSeat(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class WinterChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class GroovyChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class CuteChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class StumpSeat(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class MetalChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class KingChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class CrystalChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
-        data class TropicalChair(override var rotation: Rotations4 = Rotations4.R0) : Chair()
+        data class OakChair(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class WalnutChair(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class BirchChair(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class MahoganyChair(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class RedDinerChair(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class BlueDinerChair(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class CountryChair(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class BreakfastChair(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class PinkOfficeChair(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class PurpleOfficeChair(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class DarkThrone(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class DiningChairYellow(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class DiningChairRed(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class GreenPlushSeat(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class PinkPlushSeat(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class WinterChair(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class GroovyChair(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class CuteChair(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class StumpSeat(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class MetalChair(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class KingChair(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class CrystalChair(override var rotation: Rotations4 = Rotations4.R1) : Chair()
+        data class TropicalChair(override var rotation: Rotations4 = Rotations4.R1) : Chair()
     }
 
     sealed class Bench : UniversalFurniture, Rotatable4(
@@ -195,11 +195,11 @@ sealed interface UniversalFurniture : Entity<UniversalFurnitureType> {
         rotatedSize = rectOf(w = 1, h = 2),
     ) {
 
-        data class BirchBench(override var rotation: Rotations4 = Rotations4.R0) : Bench()
-        data class OakBench(override var rotation: Rotations4 = Rotations4.R0) : Bench()
-        data class WalnutBench(override var rotation: Rotations4 = Rotations4.R0) : Bench()
-        data class MahoganyBench(override var rotation: Rotations4 = Rotations4.R0) : Bench()
-        data class ModernBench(override var rotation: Rotations4 = Rotations4.R0) : Bench()
+        data class BirchBench(override var rotation: Rotations4 = Rotations4.R1) : Bench()
+        data class OakBench(override var rotation: Rotations4 = Rotations4.R1) : Bench()
+        data class WalnutBench(override var rotation: Rotations4 = Rotations4.R1) : Bench()
+        data class MahoganyBench(override var rotation: Rotations4 = Rotations4.R1) : Bench()
+        data class ModernBench(override var rotation: Rotations4 = Rotations4.R1) : Bench()
     }
 
     sealed class WoodenEndTable : UniversalFurniture, Rotatable2(
@@ -207,18 +207,18 @@ sealed interface UniversalFurniture : Entity<UniversalFurnitureType> {
         rotatedSize = endTableSize,
     ) {
 
-        data class OakEndTable(override var rotation: Rotations2 = Rotations2.R0) : WoodenEndTable()
-        data class BirchEndTable(override var rotation: Rotations2 = Rotations2.R0) : WoodenEndTable()
-        data class MahoganyEndTable(override var rotation: Rotations2 = Rotations2.R0) : WoodenEndTable()
-        data class WalnutEndTable(override var rotation: Rotations2 = Rotations2.R0) : WoodenEndTable()
+        data class OakEndTable(override var rotation: Rotations2 = Rotations2.R1) : WoodenEndTable()
+        data class BirchEndTable(override var rotation: Rotations2 = Rotations2.R1) : WoodenEndTable()
+        data class MahoganyEndTable(override var rotation: Rotations2 = Rotations2.R1) : WoodenEndTable()
+        data class WalnutEndTable(override var rotation: Rotations2 = Rotations2.R1) : WoodenEndTable()
     }
 
-    data class CoffeeTable(override var rotation: Rotations2 = Rotations2.R0) : UniversalFurniture, Rotatable2(
+    data class CoffeeTable(override var rotation: Rotations2 = Rotations2.R1) : UniversalFurniture, Rotatable2(
         regularSize = rectOf(w = 1, h = 2),
         rotatedSize = rectOf(w = 2, h = 1),
     )
 
-    data class StoneSlab(override var rotation: Rotations2 = Rotations2.R0) : UniversalFurniture, Rotatable2(
+    data class StoneSlab(override var rotation: Rotations2 = Rotations2.R1) : UniversalFurniture, Rotatable2(
         regularSize = rectOf(w = 1, h = 2),
         rotatedSize = rectOf(w = 2, h = 1),
     )
@@ -228,10 +228,10 @@ sealed interface UniversalFurniture : Entity<UniversalFurnitureType> {
         rotatedSize = rectOf(w = 5, h = 2),
     ) {
 
-        data class ModernDiningTable(override var rotation: Rotations2 = Rotations2.R0) : LongTable()
-        data class MahoganyDiningTable(override var rotation: Rotations2 = Rotations2.R0) : LongTable()
-        data class FestiveDiningTable(override var rotation: Rotations2 = Rotations2.R0) : LongTable()
-        data class WinterDiningTable(override var rotation: Rotations2 = Rotations2.R0) : LongTable()
+        data class ModernDiningTable(override var rotation: Rotations2 = Rotations2.R1) : LongTable()
+        data class MahoganyDiningTable(override var rotation: Rotations2 = Rotations2.R1) : LongTable()
+        data class FestiveDiningTable(override var rotation: Rotations2 = Rotations2.R1) : LongTable()
+        data class WinterDiningTable(override var rotation: Rotations2 = Rotations2.R1) : LongTable()
     }
 
 
