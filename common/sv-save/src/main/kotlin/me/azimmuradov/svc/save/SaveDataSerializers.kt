@@ -47,8 +47,9 @@ object SaveDataSerializers {
             if (building.indoors != null) {
                 val furniture = building.indoors.furniture.mapNotNull { it.toPlacedEntityOrNull() }
                 val objects = building.indoors.objects.mapNotNull { it.value.obj.toPlacedEntityOrNull() }
+                val flooring = building.indoors.terrainFeatures.mapNotNull { it.toPlacedEntityOrNull() }
 
-                (furniture + objects).filter { it.place.y >= 0 }
+                (furniture + objects + flooring).filter { it.place.y >= 0 }
             } else {
                 emptyList()
             }.layeredData()

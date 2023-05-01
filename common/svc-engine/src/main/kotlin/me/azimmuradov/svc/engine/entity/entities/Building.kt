@@ -18,9 +18,9 @@
 
 package me.azimmuradov.svc.engine.entity
 
-import me.azimmuradov.svc.engine.entity.ColoredFlavor.ColoredFishPondFlavor
-import me.azimmuradov.svc.engine.entity.ColoredFlavor.Colors.FishPondColors
-import me.azimmuradov.svc.engine.entity.ColoredFlavor.Colors.FishPondColors.Default
+import me.azimmuradov.svc.engine.entity.Colored.ColoredFishPond
+import me.azimmuradov.svc.engine.entity.Colors.FishPondColors
+import me.azimmuradov.svc.engine.entity.Colors.FishPondColors.Default
 import me.azimmuradov.svc.engine.entity.EntityWithoutFloorType.BuildingType
 import me.azimmuradov.svc.engine.entity.RectsProvider.rectOf
 import me.azimmuradov.svc.engine.geometry.Rect
@@ -78,51 +78,39 @@ sealed interface Building : Entity<BuildingType> {
         ShippingBin(size = rectOf(w = 2, h = 1)),
     }
 
-    sealed class ColoredFarmBuilding(override val size: Rect) : Building, ColoredFarmBuildingFlavor()
+    sealed class ColoredFarmBuilding(override val size: Rect) : Building, TripleColoredFarmBuilding()
 
     data class Barn3(
-        override var building: Color? = null,
-        override var roof: Color? = null,
-        override var trim: Color? = null,
+        override var farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
     ) : ColoredFarmBuilding(barnSize)
 
     data class Coop3(
-        override var building: Color? = null,
-        override var roof: Color? = null,
-        override var trim: Color? = null,
+        override var farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
     ) : ColoredFarmBuilding(coopSize)
 
     data class Shed2(
-        override var building: Color? = null,
-        override var roof: Color? = null,
-        override var trim: Color? = null,
+        override var farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
     ) : ColoredFarmBuilding(shedSize)
 
     data class Stable(
-        override var building: Color? = null,
-        override var roof: Color? = null,
-        override var trim: Color? = null,
+        override var farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
     ) : ColoredFarmBuilding(size = rectOf(w = 2, h = 1))
 
     data class StoneCabin3(
-        override var building: Color? = null,
-        override var roof: Color? = null,
-        override var trim: Color? = null,
+        override var farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
     ) : ColoredFarmBuilding(cabinSize)
 
     data class PlankCabin3(
-        override var building: Color? = null,
-        override var roof: Color? = null,
-        override var trim: Color? = null,
+        override var farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
     ) : ColoredFarmBuilding(cabinSize)
 
     data class LogCabin3(
-        override var building: Color? = null,
-        override var roof: Color? = null,
-        override var trim: Color? = null,
+        override var farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
     ) : ColoredFarmBuilding(cabinSize)
 
-    data class FishPond(override var color: FishPondColors = Default) : Building, ColoredFishPondFlavor() {
+    data class FishPond(
+        override var color: FishPondColors = Default,
+    ) : Building, ColoredFishPond() {
 
         override val size: Rect = rectOf(w = 5, h = 5)
     }

@@ -20,11 +20,12 @@ import me.azimmuradov.svc.engine.geometry.Rect
 import me.azimmuradov.svc.engine.geometry.rectOf
 
 
-enum class EntityPage(val width: Int, val height: Int, val grain: Rect) {
+enum class EntityPage(val width: Int, val height: Int, val grain: Rect = rectOf(1, 1)) {
 
-    CommonObjects(width = 384, height = 624, grain = rectOf(1, 1)),
+    CommonObjects(width = 384, height = 624),
     Craftables(width = 128, height = 1152, grain = rectOf(1, 2)),
-    Furniture(width = 512, height = 1488, grain = rectOf(1, 1)),
+    Furniture(width = 512, height = 1488),
+    Flooring(width = 256, height = 256),
     ;
 
 

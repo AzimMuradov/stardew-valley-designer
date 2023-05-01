@@ -16,6 +16,8 @@
 
 package me.azimmuradov.svc.metadata.internal
 
+import me.azimmuradov.svc.engine.entity.EntityFlavor
+import me.azimmuradov.svc.engine.entity.Rotations
 import me.azimmuradov.svc.metadata.*
 import me.azimmuradov.svc.metadata.EntityPage.*
 import me.azimmuradov.svc.metadata.EntityPage.Companion.UNIT
@@ -23,33 +25,81 @@ import me.azimmuradov.svc.metadata.EntityPage.Companion.UNIT
 
 internal fun common(index: Int) = metadata(
     page = CommonObjects,
-    index,
+    localId = index,
     w = 1, h = 1
 )
 
 internal fun craftable(index: Int) = metadata(
     page = Craftables,
-    index,
+    localId = index,
     w = 1, h = 2
 )
 
-internal fun furniture(x: Int, y: Int, w: Int, h: Int) = metadata(
+internal fun furniture(
+    id: Int,
+    x: Int, y: Int,
+    w: Int, h: Int,
+    r: Rotations,
+) = metadata(
+    page = Furniture,
+    localId = id,
+    x, y,
+    w, h,
+    flavor = r
+)
+
+internal fun furniture(
+    x: Int, y: Int,
+    w: Int, h: Int,
+) = metadata(
     page = Furniture,
     x, y,
     w, h
 )
 
+internal fun flooring(whichFloor: Int) = metadata(
+    page = Flooring,
+    localId = whichFloor,
+    x = (whichFloor % 4) * 4, y = (whichFloor / 4) * 4,
+    w = 1, h = 1
+)
+
 
 @Suppress("SameParameterValue")
-private fun metadata(page: EntityPage, index: Int, w: Int, h: Int) = metadata(
+private fun metadata(
+    page: EntityPage,
+    localId: Int,
+    w: Int, h: Int,
+) = metadata(
     page,
-    x = index % (page.width / UNIT) * page.grain.w,
-    y = index / (page.width / UNIT) * page.grain.h,
+    localId,
+    x = localId % (page.width / UNIT) * page.grain.w,
+    y = localId / (page.width / UNIT) * page.grain.h,
     w, h
 )
 
-private fun metadata(page: EntityPage, x: Int, y: Int, w: Int, h: Int) = EntityMetadata(
+@Suppress("SameParameterValue")
+private fun metadata(
+    page: EntityPage,
+    x: Int, y: Int,
+    w: Int, h: Int,
+    flavor: EntityFlavor? = null,
+) = metadata(
     page,
+    localId = (page.width / UNIT) * y / page.grain.h + x / page.grain.w,
+    x, y,
+    w, h,
+    flavor
+)
+
+private fun metadata(
+    page: EntityPage,
+    localId: Int,
+    x: Int, y: Int,
+    w: Int, h: Int,
+    flavor: EntityFlavor? = null,
+) = EntityMetadata(
+    id = EntityId(page, localId, flavor),
     sourceOffset = EntityOffset(x, y) * UNIT,
     sourceSize = EntitySize(w, h) * UNIT
 )

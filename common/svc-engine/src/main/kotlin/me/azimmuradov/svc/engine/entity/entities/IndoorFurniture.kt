@@ -20,9 +20,9 @@ package me.azimmuradov.svc.engine.entity
 
 import me.azimmuradov.svc.engine.entity.ObjectType.FurnitureType.IndoorFurnitureType
 import me.azimmuradov.svc.engine.entity.RectsProvider.rectOf
-import me.azimmuradov.svc.engine.entity.RotatableFlavor.RotatableFlavor4
-import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations4
-import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations4.R0
+import me.azimmuradov.svc.engine.entity.Rotatable.Rotatable4
+import me.azimmuradov.svc.engine.entity.Rotations.Rotations4
+import me.azimmuradov.svc.engine.entity.Rotations.Rotations4.R1
 import me.azimmuradov.svc.engine.geometry.Rect
 
 
@@ -82,47 +82,47 @@ sealed interface IndoorFurniture : Entity<IndoorFurnitureType> {
         // TODO : IndustrialPipe(RECT_1x1),
     }
 
-    sealed class Couch : IndoorFurniture, RotatableFlavor4(
+    sealed class Couch : IndoorFurniture, Rotatable4(
         regularSize = rectOf(w = 3, h = 1),
         rotatedSize = rectOf(w = 2, h = 2),
     ) {
 
-        data class BlueCouch(override var rotation: Rotations4 = R0) : Couch()
-        data class BrownCouch(override var rotation: Rotations4 = R0) : Couch()
-        data class GreenCouch(override var rotation: Rotations4 = R0) : Couch()
-        data class RedCouch(override var rotation: Rotations4 = R0) : Couch()
-        data class YellowCouch(override var rotation: Rotations4 = R0) : Couch()
-        data class DarkCouch(override var rotation: Rotations4 = R0) : Couch()
-        data class WoodsyCouch(override var rotation: Rotations4 = R0) : Couch()
-        data class WizardCouch(override var rotation: Rotations4 = R0) : Couch()
+        data class BlueCouch(override var rotation: Rotations4 = R1) : Couch()
+        data class BrownCouch(override var rotation: Rotations4 = R1) : Couch()
+        data class GreenCouch(override var rotation: Rotations4 = R1) : Couch()
+        data class RedCouch(override var rotation: Rotations4 = R1) : Couch()
+        data class YellowCouch(override var rotation: Rotations4 = R1) : Couch()
+        data class DarkCouch(override var rotation: Rotations4 = R1) : Couch()
+        data class WoodsyCouch(override var rotation: Rotations4 = R1) : Couch()
+        data class WizardCouch(override var rotation: Rotations4 = R1) : Couch()
     }
 
-    data class LargeBrownCouch(override var rotation: Rotations4 = R0) : IndoorFurniture, RotatableFlavor4(
+    data class LargeBrownCouch(override var rotation: Rotations4 = R1) : IndoorFurniture, Rotatable4(
         regularSize = rectOf(w = 4, h = 1),
         rotatedSize = rectOf(w = 2, h = 3),
     )
 
-    sealed class Armchair : IndoorFurniture, RotatableFlavor4(
+    sealed class Armchair : IndoorFurniture, Rotatable4(
         regularSize = rectOf(w = 2, h = 1),
         rotatedSize = rectOf(w = 2, h = 1),
     ) {
 
-        data class BlueArmchair(override var rotation: Rotations4 = R0) : Armchair()
-        data class BrownArmchair(override var rotation: Rotations4 = R0) : Armchair()
-        data class GreenArmchair(override var rotation: Rotations4 = R0) : Armchair()
-        data class RedArmchair(override var rotation: Rotations4 = R0) : Armchair()
-        data class YellowArmchair(override var rotation: Rotations4 = R0) : Armchair()
+        data class BlueArmchair(override var rotation: Rotations4 = R1) : Armchair()
+        data class BrownArmchair(override var rotation: Rotations4 = R1) : Armchair()
+        data class GreenArmchair(override var rotation: Rotations4 = R1) : Armchair()
+        data class RedArmchair(override var rotation: Rotations4 = R1) : Armchair()
+        data class YellowArmchair(override var rotation: Rotations4 = R1) : Armchair()
     }
 
-    sealed class Dresser : IndoorFurniture, RotatableFlavor4(
+    sealed class Dresser : IndoorFurniture, Rotatable4(
         regularSize = rectOf(w = 2, h = 1),
         rotatedSize = rectOf(w = 1, h = 2),
     ) {
 
-        data class BirchDresser(override var rotation: Rotations4 = R0) : Dresser()
-        data class OakDresser(override var rotation: Rotations4 = R0) : Dresser()
-        data class WalnutDresser(override var rotation: Rotations4 = R0) : Dresser()
-        data class MahoganyDresser(override var rotation: Rotations4 = R0) : Dresser()
+        data class BirchDresser(override var rotation: Rotations4 = R1) : Dresser()
+        data class OakDresser(override var rotation: Rotations4 = R1) : Dresser()
+        data class WalnutDresser(override var rotation: Rotations4 = R1) : Dresser()
+        data class MahoganyDresser(override var rotation: Rotations4 = R1) : Dresser()
     }
 
 

@@ -32,6 +32,7 @@ data class Building(
 data class Indoors(
     @XmlChildrenName("item", "", "") val objects: List<Item<Vector2Wrapper, ObjectWrapper>>,
     @XmlChildrenName("Furniture", "", "") val furniture: List<Furniture>,
+    @XmlChildrenName("item", "", "") val terrainFeatures: List<Item<Vector2Wrapper, TerrainFeatureWrapper>>,
     val wallPaper: IntWrapper? = null,
     val floor: IntWrapper? = null,
 )
@@ -41,6 +42,9 @@ data class Vector2Wrapper(@SerialName("Vector2") val pos: Position)
 
 @Serializable
 data class ObjectWrapper(@SerialName("Object") val obj: Object)
+
+@Serializable
+data class TerrainFeatureWrapper(@SerialName("TerrainFeature") val tf: TerrainFeature)
 
 @Serializable
 data class IntWrapper(val int: Int? = null)

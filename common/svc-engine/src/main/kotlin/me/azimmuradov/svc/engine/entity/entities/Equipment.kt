@@ -18,9 +18,9 @@
 
 package me.azimmuradov.svc.engine.entity
 
-import me.azimmuradov.svc.engine.entity.ColoredFlavor.ColoredChestFlavor
-import me.azimmuradov.svc.engine.entity.ColoredFlavor.Colors.ChestColors
-import me.azimmuradov.svc.engine.entity.ColoredFlavor.Colors.ChestColors.Default
+import me.azimmuradov.svc.engine.entity.Colored.ColoredChest
+import me.azimmuradov.svc.engine.entity.Colors.ChestColors
+import me.azimmuradov.svc.engine.entity.Colors.ChestColors.Default
 import me.azimmuradov.svc.engine.entity.ObjectType.EquipmentType
 import me.azimmuradov.svc.engine.entity.RectsProvider.rectOf
 import me.azimmuradov.svc.engine.geometry.Rect
@@ -174,9 +174,9 @@ sealed interface Equipment : Entity<EquipmentType> {
         SecretEmptyCapsule,
     }
 
-    data class Chest(override var color: ChestColors = Default) : Equipment, ColoredChestFlavor()
+    data class Chest(override var color: ChestColors = Default) : Equipment, ColoredChest()
 
-    data class StoneChest(override var color: ChestColors = Default) : Equipment, ColoredChestFlavor()
+    data class StoneChest(override var color: ChestColors = Default) : Equipment, ColoredChest()
 
 
     override val type: EquipmentType get() = EquipmentType

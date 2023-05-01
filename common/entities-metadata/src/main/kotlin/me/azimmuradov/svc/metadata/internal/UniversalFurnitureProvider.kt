@@ -16,8 +16,8 @@
 
 package me.azimmuradov.svc.metadata.internal
 
-import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations2
-import me.azimmuradov.svc.engine.entity.RotatableFlavor.Rotations.Rotations4
+import me.azimmuradov.svc.engine.entity.Rotations.Rotations2
+import me.azimmuradov.svc.engine.entity.Rotations.Rotations4
 import me.azimmuradov.svc.engine.entity.UniversalFurniture
 import me.azimmuradov.svc.metadata.EntityMetadata
 
@@ -131,253 +131,253 @@ internal fun universalFurniture(entity: UniversalFurniture): EntityMetadata = wh
 
 
     is UniversalFurniture.Chair.OakChair -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 0, y = 0, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 0, x = 0, y = 0, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.WalnutChair -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 3, y = 0, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 3, x = 3, y = 0, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.BirchChair -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 6, y = 0, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 6, x = 6, y = 0, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.MahoganyChair -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 9, y = 0, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 9, x = 9, y = 0, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.RedDinerChair -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 12, y = 0, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 12, x = 12, y = 0, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.BlueDinerChair -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 15, y = 0, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 15, x = 15, y = 0, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.CountryChair -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 18, y = 0, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 18, x = 18, y = 0, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.BreakfastChair -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 21, y = 0, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 21, x = 21, y = 0, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.PinkOfficeChair -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 24, y = 0, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 24, x = 24, y = 0, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.PurpleOfficeChair -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 27, y = 0, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 27, x = 27, y = 0, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.DarkThrone -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 0, y = 2, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 64, x = 0, y = 2, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.DiningChairYellow -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 3, y = 2, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 67, x = 3, y = 2, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.DiningChairRed -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 6, y = 2, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 70, x = 6, y = 2, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.GreenPlushSeat -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 9, y = 2, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 73, x = 9, y = 2, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.PinkPlushSeat -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 12, y = 2, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 76, x = 12, y = 2, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.WinterChair -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 15, y = 2, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 79, x = 15, y = 2, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.GroovyChair -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 18, y = 2, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 82, x = 18, y = 2, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.CuteChair -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 21, y = 2, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 85, x = 21, y = 2, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.StumpSeat -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 24, y = 2, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 88, x = 24, y = 2, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.MetalChair -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 27, y = 2, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 91, x = 27, y = 2, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.KingChair -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 0, y = 4, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 128, x = 0, y = 4, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.CrystalChair -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 3, y = 4, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 131, x = 3, y = 4, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Chair.TropicalChair -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 6, y = 4, w = 1, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 134, x = 6, y = 4, w = 1, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
 
     is UniversalFurniture.Bench.BirchBench -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 10, y = 6, w = 2, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 202, x = 10, y = 6, w = 2, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Bench.OakBench -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 0, y = 6, w = 2, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 192, x = 0, y = 6, w = 2, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Bench.WalnutBench -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 5, y = 6, w = 2, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 197, x = 5, y = 6, w = 2, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Bench.MahoganyBench -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 15, y = 6, w = 2, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 207, x = 15, y = 6, w = 2, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
     is UniversalFurniture.Bench.ModernBench -> when (entity.rotation) {
-        Rotations4.R0 -> furniture(x = 20, y = 6, w = 2, h = 2)
-        Rotations4.R1 -> TODO()
+        Rotations4.R1 -> furniture(id = 212, x = 20, y = 6, w = 2, h = 2, r = entity.rotation)
         Rotations4.R2 -> TODO()
         Rotations4.R3 -> TODO()
+        Rotations4.R4 -> TODO()
     }
 
 
     is UniversalFurniture.WoodenEndTable.OakEndTable -> when (entity.rotation) {
-        Rotations2.R0 -> furniture(x = 15, y = 43, w = 1, h = 2)
-        Rotations2.R1 -> TODO()
+        Rotations2.R1 -> furniture(id = 1391, x = 15, y = 43, w = 1, h = 2, r = entity.rotation)
+        Rotations2.R2 -> TODO()
     }
 
     is UniversalFurniture.WoodenEndTable.BirchEndTable -> when (entity.rotation) {
-        Rotations2.R0 -> furniture(x = 19, y = 43, w = 1, h = 2)
-        Rotations2.R1 -> TODO()
+        Rotations2.R1 -> furniture(id = 1395, x = 19, y = 43, w = 1, h = 2, r = entity.rotation)
+        Rotations2.R2 -> TODO()
     }
 
     is UniversalFurniture.WoodenEndTable.MahoganyEndTable -> when (entity.rotation) {
-        Rotations2.R0 -> furniture(x = 21, y = 43, w = 1, h = 2)
-        Rotations2.R1 -> TODO()
+        Rotations2.R1 -> furniture(id = 1397, x = 21, y = 43, w = 1, h = 2, r = entity.rotation)
+        Rotations2.R2 -> TODO()
     }
 
     is UniversalFurniture.WoodenEndTable.WalnutEndTable -> when (entity.rotation) {
-        Rotations2.R0 -> furniture(x = 17, y = 43, w = 1, h = 2)
-        Rotations2.R1 -> TODO()
+        Rotations2.R1 -> furniture(id = 1393, x = 17, y = 43, w = 1, h = 2, r = entity.rotation)
+        Rotations2.R2 -> TODO()
     }
 
 
     is UniversalFurniture.CoffeeTable -> when (entity.rotation) {
-        Rotations2.R0 -> furniture(x = 20, y = 22, w = 2, h = 2)
-        Rotations2.R1 -> TODO()
+        Rotations2.R1 -> furniture(id = 724, x = 20, y = 22, w = 2, h = 2, r = entity.rotation)
+        Rotations2.R2 -> TODO()
     }
 
 
     is UniversalFurniture.StoneSlab -> when (entity.rotation) {
-        Rotations2.R0 -> furniture(x = 23, y = 22, w = 2, h = 2)
-        Rotations2.R1 -> TODO()
+        Rotations2.R1 -> furniture(id = 727, x = 23, y = 22, w = 2, h = 2, r = entity.rotation)
+        Rotations2.R2 -> TODO()
     }
 
 
     is UniversalFurniture.LongTable.ModernDiningTable -> when (entity.rotation) {
-        Rotations2.R0 -> furniture(x = 26, y = 25, w = 2, h = 5)
-        Rotations2.R1 -> TODO()
+        Rotations2.R1 -> furniture(id = 826, x = 26, y = 25, w = 2, h = 5, r = entity.rotation)
+        Rotations2.R2 -> TODO()
     }
 
     is UniversalFurniture.LongTable.MahoganyDiningTable -> when (entity.rotation) {
-        Rotations2.R0 -> furniture(x = 19, y = 25, w = 2, h = 5)
-        Rotations2.R1 -> TODO()
+        Rotations2.R1 -> furniture(id = 819, x = 19, y = 25, w = 2, h = 5, r = entity.rotation)
+        Rotations2.R2 -> TODO()
     }
 
     is UniversalFurniture.LongTable.FestiveDiningTable -> when (entity.rotation) {
-        Rotations2.R0 -> furniture(x = 12, y = 25, w = 2, h = 5)
-        Rotations2.R1 -> TODO()
+        Rotations2.R1 -> furniture(id = 812, x = 12, y = 25, w = 2, h = 5, r = entity.rotation)
+        Rotations2.R2 -> TODO()
     }
 
     is UniversalFurniture.LongTable.WinterDiningTable -> when (entity.rotation) {
-        Rotations2.R0 -> furniture(x = 5, y = 25, w = 2, h = 5)
-        Rotations2.R1 -> TODO()
+        Rotations2.R1 -> furniture(id = 805, x = 5, y = 25, w = 2, h = 5, r = entity.rotation)
+        Rotations2.R2 -> TODO()
     }
 }

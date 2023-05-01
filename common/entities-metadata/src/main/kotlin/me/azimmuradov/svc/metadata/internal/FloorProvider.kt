@@ -25,23 +25,23 @@ internal fun floor(entity: Floor): EntityMetadata = when (entity) {
 
     // Floors
 
-    WoodFloor -> common(328)
-    RusticPlankFloor -> common(840)
-    StrawFloor -> common(401)
-    WeatheredFloor -> common(331)
-    CrystalFloor -> common(333)
-    StoneFloor -> common(329)
-    StoneWalkwayFloor -> common(841)
-    BrickFloor -> common(293)
+    WoodFloor -> flooring(0)
+    RusticPlankFloor -> flooring(11)
+    StrawFloor -> flooring(4)
+    WeatheredFloor -> flooring(2)
+    CrystalFloor -> flooring(3)
+    StoneFloor -> flooring(1)
+    StoneWalkwayFloor -> flooring(12)
+    BrickFloor -> flooring(10)
 
 
     // Paths
 
-    WoodPath -> common(405)
-    GravelPath -> common(407)
-    CobblestonePath -> common(411)
-    SteppingStonePath -> common(415)
-    CrystalPath -> common(409)
+    WoodPath -> flooring(6)
+    GravelPath -> flooring(5)
+    CobblestonePath -> flooring(8)
+    SteppingStonePath -> flooring(9)
+    CrystalPath -> flooring(7)
 
 
     // Grass
