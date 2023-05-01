@@ -17,6 +17,7 @@
 package me.azimmuradov.svc.save.mappers
 
 import me.azimmuradov.svc.engine.entity.PlacedEntity
+import me.azimmuradov.svc.engine.entity.Rotations
 import me.azimmuradov.svc.engine.geometry.xy
 import me.azimmuradov.svc.engine.layer.placeIt
 import me.azimmuradov.svc.metadata.EntityDataProvider.entityById
@@ -37,10 +38,30 @@ fun Object.toPlacedEntityOrNull(): PlacedEntity<*>? {
 }
 
 fun Furniture.toPlacedEntityOrNull(): PlacedEntity<*>? {
+    val rotation = when (rotations) {
+        2 -> when (currentRotation) {
+            1 -> Rotations.Rotations2.R0
+            2 -> Rotations.Rotations2.R1
+            else -> Rotations.Rotations2.R0
+        }
+
+        4 -> when (currentRotation) {
+            1 -> Rotations.Rotations4.R0
+            2 -> Rotations.Rotations4.R1
+            3 -> Rotations.Rotations4.R2
+            4 -> Rotations.Rotations4.R3
+            else -> Rotations.Rotations4.R0
+        }
+
+        else -> null
+    }
+
     val entityId = EntityId(
         page = EntityPage.Furniture,
-        localId = parentSheetIndex
+        localId = parentSheetIndex,
+        flavor = rotation
     )
+
     return entityById[entityId]?.placeIt(there = tileLocation.toCoordinate())
 }
 

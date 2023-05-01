@@ -16,6 +16,8 @@
 
 package me.azimmuradov.svc.metadata.internal
 
+import me.azimmuradov.svc.engine.entity.EntityFlavor
+import me.azimmuradov.svc.engine.entity.Rotations
 import me.azimmuradov.svc.metadata.*
 import me.azimmuradov.svc.metadata.EntityPage.*
 import me.azimmuradov.svc.metadata.EntityPage.Companion.UNIT
@@ -33,7 +35,23 @@ internal fun craftable(index: Int) = metadata(
     w = 1, h = 2
 )
 
-internal fun furniture(x: Int, y: Int, w: Int, h: Int) = metadata(
+internal fun furniture(
+    id: Int,
+    x: Int, y: Int,
+    w: Int, h: Int,
+    r: Rotations,
+) = metadata(
+    page = Furniture,
+    localId = id,
+    x, y,
+    w, h,
+    flavor = r
+)
+
+internal fun furniture(
+    x: Int, y: Int,
+    w: Int, h: Int,
+) = metadata(
     page = Furniture,
     x, y,
     w, h
@@ -48,7 +66,11 @@ internal fun flooring(whichFloor: Int) = metadata(
 
 
 @Suppress("SameParameterValue")
-private fun metadata(page: EntityPage, localId: Int, w: Int, h: Int) = metadata(
+private fun metadata(
+    page: EntityPage,
+    localId: Int,
+    w: Int, h: Int,
+) = metadata(
     page,
     localId,
     x = localId % (page.width / UNIT) * page.grain.w,
@@ -57,15 +79,27 @@ private fun metadata(page: EntityPage, localId: Int, w: Int, h: Int) = metadata(
 )
 
 @Suppress("SameParameterValue")
-private fun metadata(page: EntityPage, x: Int, y: Int, w: Int, h: Int) = metadata(
+private fun metadata(
+    page: EntityPage,
+    x: Int, y: Int,
+    w: Int, h: Int,
+    flavor: EntityFlavor? = null,
+) = metadata(
     page,
     localId = (page.width / UNIT) * y / page.grain.h + x / page.grain.w,
     x, y,
-    w, h
+    w, h,
+    flavor
 )
 
-private fun metadata(page: EntityPage, localId: Int, x: Int, y: Int, w: Int, h: Int) = EntityMetadata(
-    id = EntityId(page, localId),
+private fun metadata(
+    page: EntityPage,
+    localId: Int,
+    x: Int, y: Int,
+    w: Int, h: Int,
+    flavor: EntityFlavor? = null,
+) = EntityMetadata(
+    id = EntityId(page, localId, flavor),
     sourceOffset = EntityOffset(x, y) * UNIT,
     sourceSize = EntitySize(w, h) * UNIT
 )

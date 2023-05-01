@@ -16,8 +16,11 @@
 
 package me.azimmuradov.svc.metadata
 
+import me.azimmuradov.svc.engine.entity.EntityFlavor
+
 
 data class EntityId(
     val page: EntityPage,
     val localId: Int,
+    val flavor: EntityFlavor? = null,
 )
