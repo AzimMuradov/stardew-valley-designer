@@ -23,7 +23,7 @@ include(":common:sv-save")
 include(":common:components:root")
 
 include(
-    ":common:components:screen-welcome",
+    ":common:components:screen-splash",
     ":common:components:screen-main-menu",
     ":common:components:screen-cartographer",
     ":common:components:screen-settings",

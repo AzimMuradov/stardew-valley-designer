@@ -27,7 +27,7 @@ import me.azimmuradov.svc.components.RootComponent.Child.*
 import me.azimmuradov.svc.components.RootComponentImpl.Config.*
 import me.azimmuradov.svc.components.screens.cartographer.CartographerComponentImpl
 import me.azimmuradov.svc.components.screens.menu.MainMenuComponentImpl
-import me.azimmuradov.svc.components.screens.welcome.WelcomeComponentImpl
+import me.azimmuradov.svc.components.screens.splash.SplashComponentImpl
 import me.azimmuradov.svc.engine.SvcEngine
 
 
@@ -47,14 +47,14 @@ private class RootComponentImpl(
     private val stack = childStack(
         source = navigation,
         // initialConfiguration = MainMenuConfig,
-        initialConfiguration = WelcomeConfig,
+        initialConfiguration = SplashConfig,
         childFactory = ::child,
     )
 
     override val childStack: Value<ChildStack<*, Child>> = stack
 
 
-    override fun onWelcomeScreenEnd() {
+    override fun onSplashScreenEnd() {
         navigation.replaceCurrent(configuration = MainMenuConfig)
     }
 
@@ -68,9 +68,9 @@ private class RootComponentImpl(
 
 
     private fun child(config: Config, componentContext: ComponentContext): Child = when (config) {
-        WelcomeConfig -> WelcomeChild(
-            WelcomeComponentImpl(
-                this::onWelcomeScreenEnd,
+        SplashConfig -> SplashChild(
+            SplashComponentImpl(
+                this::onSplashScreenEnd,
             )
         )
 
@@ -89,7 +89,7 @@ private class RootComponentImpl(
     }
 
     private sealed class Config : Parcelable {
-        data object WelcomeConfig : Config()
+        data object SplashConfig : Config()
         data object MainMenuConfig : Config()
         data class CartographerConfig(val engine: SvcEngine) : Config()
     }

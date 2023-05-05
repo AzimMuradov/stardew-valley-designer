@@ -42,7 +42,7 @@ fun main() {
         LaunchedEffect(Unit) {
             root.childStack.subscribe {
                 state.size = when (it.active.instance) {
-                    is RootComponent.Child.WelcomeChild -> DpSize(width = 1200.dp, height = 700.dp)
+                    is RootComponent.Child.SplashChild -> DpSize(width = 1200.dp, height = 700.dp)
                     is RootComponent.Child.MainMenuChild -> DpSize(width = 1200.dp, height = 700.dp)
                     is RootComponent.Child.CartographerChild -> DpSize(width = 1366.dp, height = 768.dp)
                 }

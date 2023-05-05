@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.components.screens.welcome
-
-import me.azimmuradov.svc.components.screens.WelcomeComponent
+package me.azimmuradov.svc.components.screens
 
 
-internal class WelcomeComponentImpl(
-    override val onWelcomeScreenEnd: () -> Unit,
-) : WelcomeComponent
+interface SplashComponent {
+
+    val onSplashScreenEnd: () -> Unit
+}

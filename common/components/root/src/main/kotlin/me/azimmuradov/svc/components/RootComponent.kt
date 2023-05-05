@@ -19,7 +19,7 @@ package me.azimmuradov.svc.components
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import me.azimmuradov.svc.cartographer.CartographerComponent
-import me.azimmuradov.svc.components.screens.WelcomeComponent
+import me.azimmuradov.svc.components.screens.SplashComponent
 import me.azimmuradov.svc.engine.SvcEngine
 import me.azimmuradov.svc.mainmenu.MainMenuComponent
 
@@ -29,13 +29,13 @@ interface RootComponent {
     val childStack: Value<ChildStack<*, Child>>
 
     sealed class Child {
-        class WelcomeChild(val component: WelcomeComponent) : Child()
+        class SplashChild(val component: SplashComponent) : Child()
         class MainMenuChild(val component: MainMenuComponent) : Child()
         class CartographerChild(val component: CartographerComponent) : Child()
     }
 
 
-    fun onWelcomeScreenEnd()
+    fun onSplashScreenEnd()
 
     fun onCartographerScreenCall(engine: SvcEngine)
 

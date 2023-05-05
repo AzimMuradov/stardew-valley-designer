@@ -36,7 +36,7 @@ fun Root(component: RootComponent) {
             Box(modifier = Modifier.fillMaxSize()) {
                 Children(stack = component.childStack) { (_, child) ->
                     when (child) {
-                        is RootComponent.Child.WelcomeChild -> WelcomeScreen(child.component)
+                        is RootComponent.Child.SplashChild -> SplashScreen(child.component)
                         is RootComponent.Child.MainMenuChild -> MainMenuScreen(child.component)
                         is RootComponent.Child.CartographerChild -> CartographerScreen(child.component)
                     }

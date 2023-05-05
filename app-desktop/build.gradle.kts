@@ -24,7 +24,7 @@ dependencies {
     implementation(projects.common.entitiesMetadata)
 
     implementation(projects.common.components.root)
-    implementation(projects.common.components.screenWelcome)
+    implementation(projects.common.components.screenSplash)
     implementation(projects.common.components.screenMainMenu)
     implementation(projects.common.components.screenCartographer)
     implementation(projects.common.components.screenSettings)
