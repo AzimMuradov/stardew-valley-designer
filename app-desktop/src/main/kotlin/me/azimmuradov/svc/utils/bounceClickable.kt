@@ -27,19 +27,18 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 
-private enum class ButtonState { Pressed, Idle }
 
-fun Modifier.bounceClick(pressedScale: Float = 0.8f, onClick: () -> Unit) = composed {
+fun Modifier.bounceClickable(pressedScale: Float = 0.8f, onClick: () -> Unit) = composed {
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val scale by animateFloatAsState(
-        targetValue = if (buttonState == ButtonState.Pressed) pressedScale.coerceIn(0f, 1f) else 1f,
+        targetValue = if (buttonState == ButtonState.Pressed) pressedScale.coerceAtLeast(minimumValue = 0f) else 1f,
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioMediumBouncy,
             stiffness = Spring.StiffnessMedium
         )
     )
 
-    this
+    return@composed this
         .graphicsLayer {
             scaleX = scale
             scaleY = scale
@@ -51,13 +50,19 @@ fun Modifier.bounceClick(pressedScale: Float = 0.8f, onClick: () -> Unit) = comp
         )
         .pointerInput(buttonState) {
             awaitPointerEventScope {
-                buttonState = if (buttonState == ButtonState.Pressed) {
-                    waitForUpOrCancellation()
-                    ButtonState.Idle
-                } else {
-                    awaitFirstDown(false)
-                    ButtonState.Pressed
+                buttonState = when (buttonState) {
+                    ButtonState.Idle -> {
+                        awaitFirstDown(requireUnconsumed = false)
+                        ButtonState.Pressed
+                    }
+
+                    ButtonState.Pressed -> {
+                        waitForUpOrCancellation()
+                        ButtonState.Idle
+                    }
                 }
             }
         }
 }
+
+private enum class ButtonState { Idle, Pressed }
