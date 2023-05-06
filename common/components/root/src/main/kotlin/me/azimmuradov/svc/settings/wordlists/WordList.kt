@@ -121,4 +121,8 @@ sealed interface WordList {
      * Get layer name by its type.
      */
     fun layer(type: LayerType<*>): String
+
+    val wallpapersTabTitle: String
+
+    val flooringTabTitle: String
 }

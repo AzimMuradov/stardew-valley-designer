@@ -34,8 +34,7 @@ import me.azimmuradov.svc.cartographer.res.flooring
 import me.azimmuradov.svc.cartographer.res.wallpaper
 import me.azimmuradov.svc.engine.Flooring
 import me.azimmuradov.svc.engine.Wallpaper
-import me.azimmuradov.svc.utils.bounceClick
-import me.azimmuradov.svc.utils.drawSprite
+import me.azimmuradov.svc.utils.*
 
 
 @Composable
@@ -43,6 +42,8 @@ fun WallpaperAndFlooringSelection(
     onWallpaperSelection: (Wallpaper) -> Unit,
     onFlooringSelection: (Flooring) -> Unit,
 ) {
+    val wordList = GlobalSettings.strings
+
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -77,14 +78,14 @@ fun WallpaperAndFlooringSelection(
                 onClick = { chosenTab = Tab.Wallpaper },
                 modifier = Modifier.weight(1f).fillMaxHeight().background(wallpaperTabBg)
             ) {
-                Text(text = "Wallpaper", fontSize = 14.sp)
+                Text(wordList.wallpapersTabTitle, fontSize = 14.sp)
             }
             Tab(
                 selected = chosenTab == Tab.Flooring,
                 onClick = { chosenTab = Tab.Flooring },
                 modifier = Modifier.weight(1f).fillMaxHeight().background(flooringTabBg)
             ) {
-                Text(text = "Flooring", fontSize = 14.sp)
+                Text(wordList.flooringTabTitle, fontSize = 14.sp)
             }
         }
 
