@@ -26,11 +26,15 @@ internal class SvcEngineImpl(engine: SvcEngine) : SvcEngine by engine {
     fun pushState(state: MapState) {
         clear()
         putAll(state.entities.toLayeredEntities())
+        wallpaper = state.wallpaper
+        flooring = state.flooring
     }
 
     fun pullState(selectedEntities: LayeredEntitiesData? = null) = MapState(
         entities = layers.entities,
         selectedEntities = selectedEntities ?: LayeredEntitiesData(),
+        wallpaper = wallpaper,
+        flooring = flooring,
         layout = layers.layout.toState()
     )
 }

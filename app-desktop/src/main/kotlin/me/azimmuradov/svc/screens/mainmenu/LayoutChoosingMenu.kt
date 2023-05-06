@@ -116,6 +116,8 @@ fun LayoutChoosingMenu(
                                     layoutSprite = LayoutSpritesProvider.layoutSpriteBy(layout.layers.layout.type),
                                     layoutSize = layout.layers.layout.size,
                                     entities = layout.layers.entities,
+                                    wallpaper = layout.wallpaper,
+                                    flooring = layout.flooring,
                                 )
                             }
                             Text(

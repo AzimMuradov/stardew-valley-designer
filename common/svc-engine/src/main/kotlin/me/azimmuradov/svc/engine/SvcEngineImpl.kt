@@ -32,6 +32,10 @@ private class SvcEngineImpl(layout: Layout) : SvcEngine {
 
     override val layers = mutableLayersOf(layout)
 
+    override var wallpaper: Wallpaper? = null
+
+    override var flooring: Flooring? = null
+
 
     // Operations
 

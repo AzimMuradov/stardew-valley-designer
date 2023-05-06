@@ -30,6 +30,8 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import me.azimmuradov.svc.cartographer.res.*
+import me.azimmuradov.svc.engine.Flooring
+import me.azimmuradov.svc.engine.Wallpaper
 import me.azimmuradov.svc.engine.geometry.Rect
 import me.azimmuradov.svc.engine.geometry.aspectRatio
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
@@ -44,6 +46,8 @@ fun BoxScope.LayoutPreview(
     layoutSprite: Sprite,
     layoutSize: Rect,
     entities: LayeredEntitiesData,
+    wallpaper: Wallpaper?,
+    flooring: Flooring?,
 ) {
     val (imgW, imgH) = layoutSprite.size
     val (nW, nH) = layoutSize
@@ -81,7 +85,7 @@ fun BoxScope.LayoutPreview(
 
         off1.zipWithNext().forEach { (st1, en1) ->
             off2.zipWithNext().forEach { (st2, en2) ->
-                val sprite = flooring(0)
+                val sprite = flooring(index = flooring?.n?.toInt() ?: 0)
 
                 drawImage(
                     image = sprite.image,
@@ -101,7 +105,7 @@ fun BoxScope.LayoutPreview(
             .map { it.roundToInt() }
 
         off.zipWithNext().forEach { (st, en) ->
-            val sprite = wallpaper(0)
+            val sprite = wallpaper(index = wallpaper?.n?.toInt() ?: 0)
 
             drawImage(
                 image = sprite.image,

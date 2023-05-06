@@ -144,6 +144,25 @@ class CartographerStoreFactory(private val storeFactory: StoreFactory) {
 
                     is Intent.VisLayers -> dispatch(Msg.UpdateVisLayers(getState().visLayers.reduce(intent)))
 
+                    is Intent.WallpaperAndFlooring -> {
+                        dispatch(
+                            when (intent) {
+                                is Intent.WallpaperAndFlooring.ChooseWallpaper -> {
+                                    engine.wallpaper = intent.wallpaper
+                                    Msg.UpdateMap(getState().map.copy(wallpaper = intent.wallpaper))
+                                }
+
+                                is Intent.WallpaperAndFlooring.ChooseFlooring -> {
+                                    engine.flooring = intent.flooring
+                                    Msg.UpdateMap(getState().map.copy(flooring = intent.flooring))
+                                }
+                            }
+                        )
+
+                        history.register(getState().map)
+                        dispatch(Msg.UpdateHistory(history.state))
+                    }
+
                     is Intent.Options -> dispatch(Msg.UpdateOptions(getState().options.reduce(intent)))
 
                     else -> UNREACHABLE()

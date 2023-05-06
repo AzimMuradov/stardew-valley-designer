@@ -18,6 +18,8 @@ package me.azimmuradov.svc.cartographer
 
 import me.azimmuradov.svc.cartographer.modules.toolkit.ShapeType
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolType
+import me.azimmuradov.svc.engine.Flooring
+import me.azimmuradov.svc.engine.Wallpaper
 import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.geometry.Coordinate
 import me.azimmuradov.svc.engine.layer.LayerType
@@ -54,6 +56,11 @@ sealed interface CartographerIntent {
             val layerType: LayerType<*>,
             val visible: Boolean,
         ) : VisLayers
+    }
+
+    sealed interface WallpaperAndFlooring : CartographerIntent {
+        data class ChooseWallpaper(val wallpaper: Wallpaper) : WallpaperAndFlooring
+        data class ChooseFlooring(val flooring: Flooring) : WallpaperAndFlooring
     }
 
     sealed interface Options : CartographerIntent {

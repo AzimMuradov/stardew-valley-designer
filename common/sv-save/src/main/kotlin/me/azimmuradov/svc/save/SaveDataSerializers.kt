@@ -17,8 +17,10 @@
 package me.azimmuradov.svc.save
 
 import kotlinx.serialization.decodeFromString
-import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
-import me.azimmuradov.svc.engine.layers.layeredData
+import me.azimmuradov.svc.engine.*
+import me.azimmuradov.svc.engine.layers.layered
+import me.azimmuradov.svc.engine.layout.LayoutType
+import me.azimmuradov.svc.engine.layout.LayoutsProvider
 import me.azimmuradov.svc.save.mappers.toPlacedEntityOrNull
 import me.azimmuradov.svc.save.models.SaveGame
 import nl.adaptivity.xmlutil.serialization.XML
@@ -27,7 +29,7 @@ import java.io.File
 
 object SaveDataSerializers {
 
-    fun parse(path: String): List<LayeredEntitiesData> {
+    fun parse(path: String): List<SvcEngine> {
         val xml = XML {
             indent = 2
             customPolicy()
@@ -44,15 +46,21 @@ object SaveDataSerializers {
             .filter { it.buildingType == "Big Shed" }
 
         return buildings.map { building ->
-            if (building.indoors != null) {
-                val furniture = building.indoors.furniture.mapNotNull { it.toPlacedEntityOrNull() }
-                val objects = building.indoors.objects.mapNotNull { it.value.obj.toPlacedEntityOrNull() }
-                val flooring = building.indoors.terrainFeatures.mapNotNull { it.toPlacedEntityOrNull() }
+            svcEngineOf(LayoutsProvider.layoutOf(LayoutType.BigShed)).apply {
+                putAll(
+                    if (building.indoors != null) {
+                        val furniture = building.indoors.furniture.mapNotNull { it.toPlacedEntityOrNull() }
+                        val objects = building.indoors.objects.mapNotNull { it.value.obj.toPlacedEntityOrNull() }
+                        val flooring = building.indoors.terrainFeatures.mapNotNull { it.toPlacedEntityOrNull() }
 
-                (furniture + objects + flooring).filter { it.place.y >= 0 }
-            } else {
-                emptyList()
-            }.layeredData()
+                        (furniture + objects + flooring).filter { it.place.y >= 0 }
+                    } else {
+                        emptyList()
+                    }.layered()
+                )
+                wallpaper = building.indoors?.wallPaper?.int?.toUByte()?.run(::Wallpaper)
+                flooring = building.indoors?.floor?.int?.toUByte()?.run(::Flooring)
+            }
         }
     }
 
