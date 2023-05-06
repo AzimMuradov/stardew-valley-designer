@@ -108,7 +108,7 @@ fun WallpaperAndFlooringSelection(
                             Box(
                                 modifier = Modifier
                                     .pointerHoverIcon(PointerIcon.Hand)
-                                    .bounceClick { onWallpaperSelection(w) }
+                                    .bounceClickable { onWallpaperSelection(w) }
                                     .aspectRatio(ratio = 1f / 3f)
                                     .fillMaxSize()
                                     .drawBehind {
@@ -138,7 +138,7 @@ fun WallpaperAndFlooringSelection(
                             Box(
                                 modifier = Modifier
                                     .pointerHoverIcon(PointerIcon.Hand)
-                                    .bounceClick { onFlooringSelection(f) }
+                                    .bounceClickable { onFlooringSelection(f) }
                                     .aspectRatio(ratio = 1f)
                                     .fillMaxSize()
                                     .drawBehind {
