@@ -112,7 +112,7 @@ fun WallpaperAndFlooringSelection(
                                     .fillMaxSize()
                                     .drawBehind {
                                         drawSprite(
-                                            sprite = wallpaper(index = w.n.toInt()),
+                                            sprite = wallpaper(w),
                                             layoutSize = size
                                         )
                                     }
@@ -142,7 +142,7 @@ fun WallpaperAndFlooringSelection(
                                     .fillMaxSize()
                                     .drawBehind {
                                         drawSprite(
-                                            sprite = flooring(index = f.n.toInt()),
+                                            sprite = flooring(f),
                                             layoutSize = size
                                         )
                                     }

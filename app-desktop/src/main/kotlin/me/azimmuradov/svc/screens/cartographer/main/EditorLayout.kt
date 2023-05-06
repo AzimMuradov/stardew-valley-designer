@@ -152,7 +152,7 @@ fun BoxScope.EditorLayout(
 
         off1.zipWithNext().forEach { (st1, en1) ->
             off2.zipWithNext().forEach { (st2, en2) ->
-                val sprite = flooring(index = flooring?.n?.toInt() ?: 0)
+                val sprite = flooring(flooring ?: Flooring.all().first())
 
                 drawImage(
                     image = sprite.image,
@@ -172,7 +172,7 @@ fun BoxScope.EditorLayout(
             .map { it.roundToInt() }
 
         off.zipWithNext().forEach { (st, en) ->
-            val sprite = wallpaper(index = wallpaper?.n?.toInt() ?: 0)
+            val sprite = wallpaper(wallpaper ?: Wallpaper.all().first())
 
             drawImage(
                 image = sprite.image,
