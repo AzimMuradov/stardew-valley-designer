@@ -16,16 +16,16 @@
 
 package me.azimmuradov.svc.screens.cartographer.sidemenus
 
-import androidx.compose.foundation.VerticalScrollbar
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
-import androidx.compose.foundation.rememberScrollbarAdapter
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
@@ -51,26 +51,44 @@ fun WallpaperAndFlooringSelection(
     ) {
         var chosenTab by remember { mutableStateOf(Tab.Wallpaper) }
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
+        val wallpaperTabBg by animateColorAsState(
+            if (chosenTab == Tab.Wallpaper) {
+                MaterialTheme.colors.primarySurface.copy(alpha = 0.15f)
+            } else {
+                Color.Transparent
+            }
+        )
+
+        val flooringTabBg by animateColorAsState(
+            if (chosenTab == Tab.Flooring) {
+                MaterialTheme.colors.primarySurface.copy(alpha = 0.15f)
+            } else {
+                Color.Transparent
+            }
+        )
+
+        TabRow(
+            selectedTabIndex = chosenTab.ordinal,
+            modifier = Modifier.fillMaxWidth().height(36.dp),
+            backgroundColor = MaterialTheme.colors.surface
         ) {
-            Button(
+            Tab(
+                selected = chosenTab == Tab.Wallpaper,
                 onClick = { chosenTab = Tab.Wallpaper },
-                modifier = Modifier.weight(1f).heightIn(max = 36.dp)
+                modifier = Modifier.weight(1f).fillMaxHeight().background(wallpaperTabBg)
             ) {
                 Text(text = "Wallpaper", fontSize = 14.sp)
             }
-            Spacer(modifier = Modifier.width(8.dp))
-            Button(
+            Tab(
+                selected = chosenTab == Tab.Flooring,
                 onClick = { chosenTab = Tab.Flooring },
-                modifier = Modifier.weight(1f).heightIn(max = 36.dp)
+                modifier = Modifier.weight(1f).fillMaxHeight().background(flooringTabBg)
             ) {
                 Text(text = "Flooring", fontSize = 14.sp)
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Box(Modifier.fillMaxSize()) {
             val wallpaperState = rememberLazyGridState()
