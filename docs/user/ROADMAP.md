@@ -59,7 +59,6 @@
 - Search fields for various types of items
 - Clipboard
 - Show various info (current coordinates, chosen elements, shape size, etc)
-- Hotkeys
 - Define theme for Compose
 - New toggleables - show various functional areas (Scarecrows, Sprinklers, Bee Houses)
 - Render (in every season)
