@@ -17,7 +17,7 @@
 package me.azimmuradov.svc.cartographer.modules.map
 
 import me.azimmuradov.svc.cartographer.utils.toState
-import me.azimmuradov.svc.engine.SvcEngine
+import me.azimmuradov.svc.engine.*
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 import me.azimmuradov.svc.engine.layers.entities
 import me.azimmuradov.svc.engine.layout.Layout
@@ -26,6 +26,8 @@ import me.azimmuradov.svc.engine.layout.Layout
 data class MapState(
     val entities: LayeredEntitiesData,
     val selectedEntities: LayeredEntitiesData,
+    val wallpaper: Wallpaper?,
+    val flooring: Flooring?,
     val layout: LayoutState,
 ) {
 
@@ -34,12 +36,16 @@ data class MapState(
         fun default(layout: Layout) = MapState(
             entities = LayeredEntitiesData(),
             selectedEntities = LayeredEntitiesData(),
+            wallpaper = null,
+            flooring = null,
             layout = layout.toState(),
         )
 
         fun from(engine: SvcEngine) = MapState(
             entities = engine.layers.entities,
             selectedEntities = LayeredEntitiesData(),
+            wallpaper = engine.wallpaper,
+            flooring = engine.flooring,
             layout = engine.layers.layout.toState(),
         )
     }

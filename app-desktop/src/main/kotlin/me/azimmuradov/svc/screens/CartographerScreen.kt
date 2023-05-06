@@ -66,6 +66,8 @@ fun CartographerScreen(component: CartographerComponent) {
                     layeredEntitiesData { all.getOrDefault(key = it, defaultValue = setOf()) }
                 },
                 selectedEntities = map.selectedEntities,
+                wallpaper = map.wallpaper,
+                flooring = map.flooring,
                 toolkit = toolkit,
                 options = options,
                 intentConsumer = store::accept
@@ -76,7 +78,8 @@ fun CartographerScreen(component: CartographerComponent) {
                     store.accept(CartographerIntent.VisLayers.ChangeVisibility(layerType, visible))
                 },
                 layout = map.layout,
-                width = SIDE_MENUS_WIDTH
+                width = SIDE_MENUS_WIDTH,
+                intentConsumer = store::accept
             )
         }
     }

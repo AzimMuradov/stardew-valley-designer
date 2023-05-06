@@ -29,6 +29,10 @@ interface SvcEngine {
 
     val layers: Layers
 
+    var wallpaper: Wallpaper?
+
+    var flooring: Flooring?
+
 
     // Operations
 

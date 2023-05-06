@@ -21,12 +21,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
-import me.azimmuradov.svc.cartographer.CartographerIntent
 import me.azimmuradov.svc.cartographer.modules.map.LayoutState
 import me.azimmuradov.svc.cartographer.modules.palette.PaletteState
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolkitState
 import me.azimmuradov.svc.engine.layer.LayerType
 import me.azimmuradov.svc.engine.layer.allEntityTypes
+import me.azimmuradov.svc.cartographer.CartographerIntent as Intent
 
 
 @Composable
@@ -34,12 +34,11 @@ fun LeftSideMenus(
     toolkit: ToolkitState,
     palette: PaletteState,
     width: Dp,
-    intentConsumer: (CartographerIntent) -> Unit,
+    intentConsumer: (Intent) -> Unit,
 ) {
     FixedSideMenus(width) {
         menu { Toolbar(toolkit, intentConsumer) }
         menu { Palette(palette, intentConsumer) }
-        // menu { FlooringSelection() }
     }
 }
 
@@ -49,6 +48,7 @@ fun RightSideMenus(
     onVisibilityChange: (LayerType<*>, Boolean) -> Unit,
     layout: LayoutState,
     width: Dp,
+    intentConsumer: (Intent) -> Unit,
 ) {
     FixedSideMenus(width) {
         menu {
@@ -60,7 +60,12 @@ fun RightSideMenus(
                 onVisibilityChange = onVisibilityChange
             )
         }
-        // menu { WallpaperSelection() }
+        menu {
+            WallpaperAndFlooringSelection(
+                onWallpaperSelection = { intentConsumer(Intent.WallpaperAndFlooring.ChooseWallpaper(it)) },
+                onFlooringSelection = { intentConsumer(Intent.WallpaperAndFlooring.ChooseFlooring(it)) },
+            )
+        }
     }
 }
 

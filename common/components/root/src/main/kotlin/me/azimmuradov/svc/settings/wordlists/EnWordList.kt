@@ -652,6 +652,10 @@ data object EnWordList : WordList {
         LayerType.EntityWithoutFloor -> TODO()
     }.also { layers[type] = it }
 
+    override val wallpapersTabTitle: String = "Wallpapers"
+
+    override val flooringTabTitle: String = "Flooring"
+
 
     // Private
 

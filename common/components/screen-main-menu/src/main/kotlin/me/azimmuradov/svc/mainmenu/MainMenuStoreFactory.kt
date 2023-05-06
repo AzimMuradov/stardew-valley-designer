@@ -20,10 +20,10 @@ import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import kotlinx.coroutines.*
-import me.azimmuradov.svc.engine.*
-import me.azimmuradov.svc.engine.layers.toLayeredEntities
+import me.azimmuradov.svc.engine.SvcEngine
 import me.azimmuradov.svc.engine.layout.LayoutType
 import me.azimmuradov.svc.engine.layout.LayoutsProvider.layoutOf
+import me.azimmuradov.svc.engine.svcEngineOf
 import me.azimmuradov.svc.save.SaveDataSerializers
 import me.azimmuradov.svc.mainmenu.MainMenuIntent as Intent
 import me.azimmuradov.svc.mainmenu.MainMenuLabel as Label
@@ -93,10 +93,6 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                             SaveDataSerializers.parse(intent.path.trim())
                         } catch (e: Exception) {
                             null
-                        }?.map {
-                            svcEngineOf(layoutOf(LayoutType.BigShed)).apply {
-                                putAll(it.toLayeredEntities())
-                            }
                         }
 
                         dispatch(

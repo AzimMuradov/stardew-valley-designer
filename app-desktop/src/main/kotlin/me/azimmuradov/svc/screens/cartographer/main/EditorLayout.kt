@@ -35,6 +35,8 @@ import me.azimmuradov.svc.cartographer.CartographerIntent
 import me.azimmuradov.svc.cartographer.modules.options.OptionsState
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolkitState
 import me.azimmuradov.svc.cartographer.res.*
+import me.azimmuradov.svc.engine.Flooring
+import me.azimmuradov.svc.engine.Wallpaper
 import me.azimmuradov.svc.engine.geometry.*
 import me.azimmuradov.svc.engine.layer.coordinates
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
@@ -53,6 +55,8 @@ fun BoxScope.EditorLayout(
     layoutSize: Rect,
     visibleEntities: LayeredEntitiesData,
     selectedEntities: LayeredEntitiesData,
+    wallpaper: Wallpaper?,
+    flooring: Flooring?,
     toolkit: ToolkitState,
     options: OptionsState,
     intentConsumer: (CartographerIntent) -> Unit,
@@ -148,7 +152,7 @@ fun BoxScope.EditorLayout(
 
         off1.zipWithNext().forEach { (st1, en1) ->
             off2.zipWithNext().forEach { (st2, en2) ->
-                val sprite = flooring(0)
+                val sprite = flooring(flooring ?: Flooring.all().first())
 
                 drawImage(
                     image = sprite.image,
@@ -168,7 +172,7 @@ fun BoxScope.EditorLayout(
             .map { it.roundToInt() }
 
         off.zipWithNext().forEach { (st, en) ->
-            val sprite = wallpaper(0)
+            val sprite = wallpaper(wallpaper ?: Wallpaper.all().first())
 
             drawImage(
                 image = sprite.image,

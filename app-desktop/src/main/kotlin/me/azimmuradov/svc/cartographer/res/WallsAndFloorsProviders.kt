@@ -20,9 +20,12 @@ import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.res.useResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
+import me.azimmuradov.svc.engine.Flooring
+import me.azimmuradov.svc.engine.Wallpaper
 
 
-fun flooring(index: Int): Sprite {
+fun flooring(fl: Flooring): Sprite {
+    val index = fl.n.toInt()
     val (i, j) = (index % 8) to (index / 8)
     val (w, h) = flooringObjectSpriteSize
 
@@ -33,7 +36,8 @@ fun flooring(index: Int): Sprite {
     )
 }
 
-fun wallpaper(index: Int): Sprite {
+fun wallpaper(wp: Wallpaper): Sprite {
+    val index = wp.n.toInt()
     val (i, j) = (index % 16) to (index / 16)
     val (w, h) = wallpaperObjectSpriteSize
 
