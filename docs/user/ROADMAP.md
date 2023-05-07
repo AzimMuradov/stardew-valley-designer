@@ -32,20 +32,20 @@
 
 - Toolkit icons
 - Wallpapers and flooring menus
-- Toggle preview
 
 ### 0.6.0
 
-- Save plan as an image
+- New layouts (shed, standard farm)
 - Window resizing
-- New tool (eye dropper)
 
 ### 0.7.0
 
-- New layouts (shed, standard farm)
+- Toggle preview
+- Save plan as an image
 
 ## 1.0.0 -- ??? (unmapped territory)
 
+- New tool (eye dropper)
 - Palette
 - Rotation menu
 - Chest color menu
@@ -68,7 +68,7 @@
 - Plan saves
 - Tappers, crab pots and modified sprinklers
 - Building paintings
-- Tooltips, Hotkeys & Other PC Features
+- Tooltips, Hotkeys, Cursors (Pointers) & Other PC Features
 - Web version
 - Dark theme, OS theme
 - Stardew Valley mods support
