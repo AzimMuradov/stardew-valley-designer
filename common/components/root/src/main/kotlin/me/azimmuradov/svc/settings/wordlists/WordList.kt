@@ -17,6 +17,7 @@
 package me.azimmuradov.svc.settings.wordlists
 
 import me.azimmuradov.svc.cartographer.menus.EntitySelectionRoot
+import me.azimmuradov.svc.cartographer.modules.toolkit.ShapeType
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolType
 import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.layer.LayerType
@@ -116,6 +117,13 @@ sealed interface WordList {
      * Get tool name by its type.
      */
     fun tool(type: ToolType?): String
+
+    /**
+     * Get shape name by its type.
+     */
+    fun shape(type: ShapeType?): String
+
+    val notAvailableForThisTool: String
 
     /**
      * Get layer name by its type.

@@ -17,6 +17,7 @@
 package me.azimmuradov.svc.settings.wordlists
 
 import me.azimmuradov.svc.cartographer.menus.EntitySelectionRoot
+import me.azimmuradov.svc.cartographer.modules.toolkit.ShapeType
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolType
 import me.azimmuradov.svc.engine.entity.*
 import me.azimmuradov.svc.engine.layer.LayerType
@@ -637,13 +638,21 @@ data object EnWordList : WordList {
         Building.SimpleBuilding.ShippingBin -> "Shipping Bin"
     }.also { entities[e] = it }
 
-    override fun tool(type: ToolType?): String = tools[type] ?: when (type) {
+    override fun tool(type: ToolType?): String = when (type) {
         null -> "No tool selected"
         ToolType.Hand -> "Hand"
         ToolType.Pen -> "Pen"
         ToolType.Eraser -> "Eraser"
         ToolType.Select -> "Select"
-    }.also { tools[type] = it }
+    }
+
+    override fun shape(type: ShapeType?): String = when (type) {
+        null -> "Point"
+        ShapeType.Rect -> "Rect"
+        ShapeType.RectOutline -> "Rect outline"
+    }
+
+    override val notAvailableForThisTool: String = "not available for this tool"
 
     override fun layer(type: LayerType<*>): String = layers[type] ?: when (type) {
         LayerType.Floor -> "Floor layer"
@@ -662,8 +671,6 @@ data object EnWordList : WordList {
     private val menuTitles: MutableMap<EntitySelectionRoot, String> = mutableMapOf()
 
     private val entities: MutableMap<Entity<*>, String> = mutableMapOf()
-
-    private val tools: MutableMap<ToolType?, String> = mutableMapOf()
 
     private val layers: MutableMap<LayerType<*>, String> = mutableMapOf()
 }
