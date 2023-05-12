@@ -26,7 +26,15 @@ import me.azimmuradov.svc.engine.layout.LayoutType
 object LayoutSpritesProvider {
 
     fun layoutSpriteBy(type: LayoutType): Sprite = sprites[type] ?: when (type) {
-        LayoutType.Shed -> TODO()
+        LayoutType.Shed -> {
+            val img = useResource("layouts/shed-borders-light.png", ::loadImageBitmap)
+            Sprite(
+                image = img,
+                offset = IntOffset.Zero,
+                size = IntSize(img.width, img.height),
+            )
+        }
+
         LayoutType.BigShed -> {
             val img = useResource("layouts/big-shed-borders-light.png", ::loadImageBitmap)
             Sprite(

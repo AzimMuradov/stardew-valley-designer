@@ -125,7 +125,10 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
     private val reducer = Reducer<State, Msg> { msg ->
         when (msg) {
             Msg.OpenNewPlanMenu -> State.NewPlanMenu.Idle(
-                availableLayouts = listOf(svcEngineOf(layoutOf(LayoutType.BigShed))),
+                availableLayouts = listOf(
+                    svcEngineOf(layoutOf(LayoutType.Shed)),
+                    svcEngineOf(layoutOf(LayoutType.BigShed)),
+                ),
                 chosenLayout = null
             )
 
