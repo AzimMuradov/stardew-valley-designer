@@ -17,15 +17,18 @@
 package me.azimmuradov.svc
 
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
+import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import me.azimmuradov.svc.components.RootComponent
 import me.azimmuradov.svc.components.rootComponent
 import me.azimmuradov.svc.settings.Lang
 import me.azimmuradov.svc.utils.WithSettings
+import java.awt.Dimension
 
 
 fun main() {
@@ -35,31 +38,37 @@ fun main() {
         // val rootModel by root.model.subscribeAsState()
 
         val state = rememberWindowState(
-            position = WindowPosition(alignment = Alignment.Center),
+            position = WindowPosition(Alignment.Center),
             size = DpSize(width = 1200.dp, height = 700.dp),
         )
-
-        LaunchedEffect(Unit) {
-            root.childStack.subscribe {
-                state.size = when (it.active.instance) {
-                    is RootComponent.Child.SplashChild -> DpSize(width = 1200.dp, height = 700.dp)
-                    is RootComponent.Child.MainMenuChild -> DpSize(width = 1200.dp, height = 700.dp)
-                    is RootComponent.Child.CartographerChild -> DpSize(width = 1366.dp, height = 768.dp)
-                }
-                state.position = WindowPosition(alignment = Alignment.Center)
-            }
-        }
 
         Window(
             onCloseRequest = ::exitApplication,
             state = state,
             title = "",
             icon = painterResource(ICON_RES_PATH),
-            resizable = false,
+            resizable = true,
         ) {
             AppTheme(themeVariant = ThemeVariant.LIGHT) {
                 WithSettings(lang = Lang.EN) {
                     Root(root)
+                }
+            }
+
+            val childStack by root.childStack.subscribeAsState()
+            val currentChild = childStack.active.instance
+
+            LaunchedEffect(currentChild) {
+                window.minimumSize = when (currentChild) {
+                    is RootComponent.Child.SplashChild -> Dimension(1200, 700)
+                    is RootComponent.Child.MainMenuChild -> Dimension(1200, 700)
+                    is RootComponent.Child.CartographerChild -> Dimension(1366, 768)
+                }
+
+                state.size = when (currentChild) {
+                    is RootComponent.Child.SplashChild -> DpSize(width = 1200.dp, height = 700.dp)
+                    is RootComponent.Child.MainMenuChild -> DpSize(width = 1200.dp, height = 700.dp)
+                    is RootComponent.Child.CartographerChild -> DpSize(width = 1366.dp, height = 768.dp)
                 }
             }
         }
