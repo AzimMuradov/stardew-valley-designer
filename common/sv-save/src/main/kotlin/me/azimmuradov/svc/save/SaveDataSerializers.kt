@@ -35,18 +35,23 @@ object SaveDataSerializers {
             customPolicy()
         }
 
+        // Fix BOM bug
         val text = File(path).readText().run {
             if (first() == '\uFEFF') drop(n = 1) else this
         }
 
         val save = xml.decodeFromString<SaveGame>(text)
-        val buildings = save.locations
+
+        val buildings = save
+            .locations
             .first { it.type == "Farm" }
             .buildings
-            .filter { it.buildingType == "Big Shed" }
+            .filter { it.buildingType in buildingsByType }
 
         return buildings.map { building ->
-            svcEngineOf(LayoutsProvider.layoutOf(LayoutType.BigShed)).apply {
+            val layout = LayoutsProvider.layoutOf(buildingsByType.getValue(building.buildingType))
+
+            svcEngineOf(layout).apply {
                 putAll(
                     if (building.indoors != null) {
                         val furniture = building.indoors.furniture.mapNotNull { it.toPlacedEntityOrNull() }
@@ -64,49 +69,8 @@ object SaveDataSerializers {
         }
     }
 
-
-    /* private const val RES_DIRECTORY = "../common/sv-save/src/main/resources"
-
-    private const val SD_PATHNAME = "$RES_DIRECTORY/sd.xml"
-
-    fun fromSD(): LayeredEntitiesData {
-        val xml = XML {
-            indent = 2
-            customPolicy()
-        }
-
-        val text = File(SD_PATHNAME).readText().run {
-            if (first() == '\uFEFF') drop(n = 1) else this
-        }
-
-        // println(text.take(100))
-
-        val f = xml.decodeFromString<SaveGame>(text)
-        // println(f.gameVersion)
-        // println(f.player)
-        // println(f.locations.map { it.name })
-        // println(f.locations.map { it.type })
-        val teaHouse = f.locations.first { it.type == "Farm" }.buildings.filter { it.buildingType == "Big Shed" }[4]
-
-        requireNotNull(teaHouse.indoors)
-
-        // println(xml.encodeToString(teaHouse))
-        // println("\n")
-        // println(teaHouse.indoors!!.objects.map { it.value.obj.name })
-        // println("\n")
-        // println(teaHouse.indoors!!.objects.joinToString(separator = "\n") { it.value.obj.toPlacedEntity().toString() })
-        // println("\n")
-        // println(teaHouse.indoors.furniture.joinToString(separator = "\n") { it.toPlacedEntity().toString() })
-        // println("\n")
-        // println(teaHouse.indoors.furniture.map { it.toPlacedEntity().rectObject })
-        // println("\n")
-        // println(entityById.entries.joinToString(separator = "\n") {
-        //     "${it.key} --- ${it.value}"
-        // })
-
-
-        return (teaHouse.indoors.furniture.mapNotNull { it.toPlacedEntityOrNull() } +
-                teaHouse.indoors.objects.mapNotNull { it.value.obj.toPlacedEntityOrNull() })
-            .filter { it.place.y >= 0 }.layeredData()
-    } */
+    private val buildingsByType = mapOf(
+        "Shed" to LayoutType.Shed,
+        "Big Shed" to LayoutType.BigShed
+    )
 }
