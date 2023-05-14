@@ -75,4 +75,4 @@ fun Item<Vector2Wrapper, TerrainFeatureWrapper>.toPlacedEntityOrNull(): PlacedEn
 }
 
 
-fun Position.toCoordinate() = xy(x = x.toInt() - 1, y = y.toInt() - 4)
+fun Position.toCoordinate() = xy(x = x.toInt(), y = y.toInt())
