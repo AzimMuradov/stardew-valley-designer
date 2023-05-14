@@ -73,7 +73,7 @@ fun BoxScope.LayoutPreview(
             image = layoutSprite.bgImage,
             srcSize = layoutSprite.size,
             dstSize = size.toIntSize(),
-            filterQuality = FilterQuality.None,
+            filterQuality = FilterQuality.High,
         )
 
 
@@ -93,7 +93,7 @@ fun BoxScope.LayoutPreview(
                     srcSize = sprite.size,
                     dstOffset = IntOffset(x = st1, y = st2),
                     dstSize = IntSize(width = (en1 - st1), height = (en2 - st2)),
-                    filterQuality = FilterQuality.None,
+                    filterQuality = FilterQuality.High,
                 )
             }
         }
@@ -112,7 +112,7 @@ fun BoxScope.LayoutPreview(
                 srcSize = sprite.size,
                 dstOffset = IntOffset(x = st, y = stepSize.roundToInt()),
                 dstSize = IntSize(width = (en - st), height = (stepSize * 3).roundToInt()),
-                filterQuality = FilterQuality.None,
+                filterQuality = FilterQuality.High,
             )
         }
 
@@ -144,7 +144,7 @@ fun BoxScope.LayoutPreview(
             image = layoutSprite.fgImage,
             srcSize = layoutSprite.size,
             dstSize = size.toIntSize(),
-            filterQuality = FilterQuality.None,
+            filterQuality = FilterQuality.High,
         )
     }
 }
