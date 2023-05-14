@@ -23,9 +23,15 @@ import me.azimmuradov.svc.engine.layout.Layout
 import me.azimmuradov.svc.engine.layout.LayoutType
 
 
-internal val ShedLayout: Layout = shedLayoutOf(type = LayoutType.Shed, size = rectOf(w = 11, h = 10))
+internal val ShedLayout: Layout = shedLayoutOf(
+    type = LayoutType.Shed,
+    size = rectOf(w = 13, h = 14)
+)
 
-internal val BigShedLayout: Layout = shedLayoutOf(type = LayoutType.BigShed, size = rectOf(w = 17, h = 13))
+internal val BigShedLayout: Layout = shedLayoutOf(
+    type = LayoutType.BigShed,
+    size = rectOf(w = 19, h = 17)
+)
 
 
 private fun shedLayoutOf(type: LayoutType, size: Rect) = Layout(
@@ -33,5 +39,17 @@ private fun shedLayoutOf(type: LayoutType, size: Rect) = Layout(
     size,
     disallowedTypes = setOf(HouseFurnitureType) + EntityWithoutFloorType.all,
     disallowedTypesMap = mapOf(),
-    disallowedCoordinates = ((0 until size.w) - size.w / 2).map { x -> xy(x, y = size.h - 1) }.toSet(),
+    disallowedCoordinates = buildSet {
+        this += (0 until size.w).flatMap { x ->
+            listOf(0, 1, 2, 3, size.h - 1).map { y ->
+                xy(x, y)
+            }
+        }
+        this += (0 until size.h).flatMap { y ->
+            listOf(0, size.w - 1).map { x ->
+                xy(x, y)
+            }
+        }
+        this -= xy(x = size.w / 2, y = size.h - 1)
+    }
 )

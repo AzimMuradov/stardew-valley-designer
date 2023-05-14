@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.cartographer.CartographerIntent
 import me.azimmuradov.svc.cartographer.modules.options.OptionsState
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolkitState
-import me.azimmuradov.svc.cartographer.res.Sprite
+import me.azimmuradov.svc.cartographer.res.LayoutSprites
 import me.azimmuradov.svc.engine.Flooring
 import me.azimmuradov.svc.engine.Wallpaper
 import me.azimmuradov.svc.engine.geometry.Rect
@@ -32,7 +32,7 @@ import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 
 @Composable
 fun RowScope.SvcLayout(
-    layoutSprite: Sprite,
+    layoutSprite: LayoutSprites,
     layoutSize: Rect,
     visibleEntities: LayeredEntitiesData,
     selectedEntities: LayeredEntitiesData,

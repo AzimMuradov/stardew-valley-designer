@@ -18,33 +18,23 @@ package me.azimmuradov.svc.cartographer.res
 
 import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.res.useResource
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
 import me.azimmuradov.svc.engine.layout.LayoutType
 
 
 object LayoutSpritesProvider {
 
-    fun layoutSpriteBy(type: LayoutType): Sprite = sprites[type] ?: when (type) {
-        LayoutType.Shed -> {
-            val img = useResource("layouts/shed-borders-light.png", ::loadImageBitmap)
-            Sprite(
-                image = img,
-                offset = IntOffset.Zero,
-                size = IntSize(img.width, img.height),
-            )
-        }
+    fun layoutSpriteBy(type: LayoutType): LayoutSprites = sprites[type] ?: when (type) {
+        LayoutType.Shed -> LayoutSprites(
+            fgImage = useResource("layouts/shed-fg-light.png", ::loadImageBitmap),
+            bgImage = useResource("layouts/shed-bg-light.png", ::loadImageBitmap),
+        )
 
-        LayoutType.BigShed -> {
-            val img = useResource("layouts/big-shed-borders-light.png", ::loadImageBitmap)
-            Sprite(
-                image = img,
-                offset = IntOffset.Zero,
-                size = IntSize(img.width, img.height),
-            )
-        }
+        LayoutType.BigShed -> LayoutSprites(
+            fgImage = useResource("layouts/big-shed-fg-light.png", ::loadImageBitmap),
+            bgImage = useResource("layouts/big-shed-bg-light.png", ::loadImageBitmap),
+        )
     }.also { sprites[type] = it }
 
 
-    private val sprites: MutableMap<LayoutType, Sprite> = mutableMapOf()
+    private val sprites: MutableMap<LayoutType, LayoutSprites> = mutableMapOf()
 }
