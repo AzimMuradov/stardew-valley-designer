@@ -64,6 +64,18 @@ internal fun flooring(whichFloor: Int) = metadata(
     w = 1, h = 1
 )
 
+internal fun building(page: EntityPage) = EntityMetadata(
+    id = EntityId(page, localId = 0, flavor = null),
+    sourceOffset = EntityOffset(x = 0, y = 0),
+    sourceSize = EntitySize(page.width, page.height)
+)
+
+internal fun cabin(page: EntityPage, id: Int) = EntityMetadata(
+    id = EntityId(page, localId = id, flavor = null),
+    sourceOffset = EntityOffset(x = id * (page.width / 3), y = 0),
+    sourceSize = EntitySize(w = page.width / 3, h = page.height)
+)
+
 
 @Suppress("SameParameterValue")
 private fun metadata(

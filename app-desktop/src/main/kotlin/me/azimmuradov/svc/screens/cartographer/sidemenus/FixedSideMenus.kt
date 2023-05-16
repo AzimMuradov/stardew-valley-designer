@@ -60,11 +60,13 @@ fun RightSideMenus(
                 onVisibilityChange = onVisibilityChange
             )
         }
-        menu {
-            WallpaperAndFlooringSelection(
-                onWallpaperSelection = { intentConsumer(Intent.WallpaperAndFlooring.ChooseWallpaper(it)) },
-                onFlooringSelection = { intentConsumer(Intent.WallpaperAndFlooring.ChooseFlooring(it)) },
-            )
+        if (layout.type.isShed()) {
+            menu {
+                WallpaperAndFlooringSelection(
+                    onWallpaperSelection = { intentConsumer(Intent.WallpaperAndFlooring.ChooseWallpaper(it)) },
+                    onFlooringSelection = { intentConsumer(Intent.WallpaperAndFlooring.ChooseFlooring(it)) },
+                )
+            }
         }
     }
 }

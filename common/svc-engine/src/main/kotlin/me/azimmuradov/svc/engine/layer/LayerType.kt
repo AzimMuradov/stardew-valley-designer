@@ -22,13 +22,28 @@ import me.azimmuradov.svc.engine.impossible
 
 sealed interface LayerType<out EType : EntityType> {
 
-    data object Floor : LayerType<FloorType>
+    val ordinal: Int
 
-    data object FloorFurniture : LayerType<FloorFurnitureType>
 
-    data object Object : LayerType<ObjectType>
+    data object Floor : LayerType<FloorType> {
 
-    data object EntityWithoutFloor : LayerType<EntityWithoutFloorType>
+        override val ordinal: Int = 0
+    }
+
+    data object FloorFurniture : LayerType<FloorFurnitureType> {
+
+        override val ordinal: Int = 1
+    }
+
+    data object Object : LayerType<ObjectType> {
+
+        override val ordinal: Int = 2
+    }
+
+    data object EntityWithoutFloor : LayerType<EntityWithoutFloorType> {
+
+        override val ordinal: Int = 0
+    }
 
 
     companion object {

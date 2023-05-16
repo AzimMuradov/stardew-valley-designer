@@ -44,6 +44,7 @@ data object EnWordList : WordList {
     override fun layout(type: LayoutType): String = when (type) {
         LayoutType.Shed -> "Shed"
         LayoutType.BigShed -> "Big Shed"
+        LayoutType.StandardFarm -> "Standard Farm"
     }
 
 
@@ -658,7 +659,7 @@ data object EnWordList : WordList {
         LayerType.Floor -> "Floor layer"
         LayerType.FloorFurniture -> "Rug layer"
         LayerType.Object -> "Object layer"
-        LayerType.EntityWithoutFloor -> TODO()
+        LayerType.EntityWithoutFloor -> "Buildings and crops layer"
     }.also { layers[type] = it }
 
     override val wallpapersTabTitle: String = "Wallpapers"

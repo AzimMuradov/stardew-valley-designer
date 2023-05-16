@@ -42,29 +42,49 @@ object SaveDataSerializers {
 
         val save = xml.decodeFromString<SaveGame>(text)
 
-        val buildings = save
-            .locations
-            .first { it.type == "Farm" }
-            .buildings
-            .filter { it.buildingType in buildingsByType }
+        val farm = save.locations.first { it.type == "Farm" }
+        val buildings = farm.buildings.filter { it.buildingType in buildingsByType }
 
-        return buildings.map { building ->
-            val layout = LayoutsProvider.layoutOf(buildingsByType.getValue(building.buildingType))
-
-            svcEngineOf(layout).apply {
+        return buildList {
+            this += svcEngineOf(LayoutsProvider.layoutOf(LayoutType.StandardFarm)).apply {
                 putAll(
-                    if (building.indoors != null) {
-                        val furniture = building.indoors.furniture.mapNotNull { it.toPlacedEntityOrNull() }
-                        val objects = building.indoors.objects.mapNotNull { it.value.obj.toPlacedEntityOrNull() }
-                        val flooring = building.indoors.terrainFeatures.mapNotNull { it.toPlacedEntityOrNull() }
+                    run {
+                        val furniture = farm.furniture.mapNotNull { it.toPlacedEntityOrNull() }
+                        val objects = farm.objects.mapNotNull { it.value.obj.toPlacedEntityOrNull() }
+                        val flooring = farm.terrainFeatures.mapNotNull { it.toPlacedEntityOrNull() }
 
-                        (furniture + objects + flooring).filter { it.place.y >= 0 }
-                    } else {
-                        emptyList()
-                    }.layered()
+                        (furniture + objects + flooring).filter { it.place.y >= 0 }.layered()
+                    }
                 )
-                wallpaper = building.indoors?.wallPaper?.int?.toUByte()?.run(::Wallpaper)
-                flooring = building.indoors?.floor?.int?.toUByte()?.run(::Flooring)
+                putAll(
+                    farm.buildings.mapNotNull { it.toPlacedEntityOrNull() }.layered()
+                )
+            }
+
+            println(
+                farm.buildings.joinToString(separator = "\n") {
+                    "${it.buildingType} ${it.tileX} ${it.tileY} ${it.tilesWide} ${it.tilesHigh}"
+                }
+            )
+
+            this += buildings.map { building ->
+                val layout = LayoutsProvider.layoutOf(buildingsByType.getValue(building.buildingType))
+
+                svcEngineOf(layout).apply {
+                    putAll(
+                        if (building.indoors != null) {
+                            val furniture = building.indoors.furniture.mapNotNull { it.toPlacedEntityOrNull() }
+                            val objects = building.indoors.objects.mapNotNull { it.value.obj.toPlacedEntityOrNull() }
+                            val flooring = building.indoors.terrainFeatures.mapNotNull { it.toPlacedEntityOrNull() }
+
+                            (furniture + objects + flooring).filter { it.place.y >= 0 }
+                        } else {
+                            emptyList()
+                        }.layered()
+                    )
+                    wallpaper = building.indoors?.wallPaper?.int?.toUByte()?.run(::Wallpaper)
+                    flooring = building.indoors?.floor?.int?.toUByte()?.run(::Flooring)
+                }
             }
         }
     }

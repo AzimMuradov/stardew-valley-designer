@@ -33,6 +33,11 @@ object LayoutSpritesProvider {
             fgImage = useResource("layouts/big-shed-fg-light.png", ::loadImageBitmap),
             bgImage = useResource("layouts/big-shed-bg-light.png", ::loadImageBitmap),
         )
+
+        LayoutType.StandardFarm -> LayoutSprites(
+            fgImage = useResource("layouts/standard-farm-fg-spring.png", ::loadImageBitmap),
+            bgImage = useResource("layouts/standard-farm-bg-spring.png", ::loadImageBitmap),
+        )
     }.also { sprites[type] = it }
 
 

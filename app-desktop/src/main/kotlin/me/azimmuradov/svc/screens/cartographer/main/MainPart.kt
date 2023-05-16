@@ -28,10 +28,12 @@ import me.azimmuradov.svc.engine.Flooring
 import me.azimmuradov.svc.engine.Wallpaper
 import me.azimmuradov.svc.engine.geometry.Rect
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
+import me.azimmuradov.svc.engine.layout.LayoutType
 
 
 @Composable
 fun RowScope.SvcLayout(
+    layoutType: LayoutType,
     layoutSprite: LayoutSprites,
     layoutSize: Rect,
     visibleEntities: LayeredEntitiesData,
@@ -44,6 +46,7 @@ fun RowScope.SvcLayout(
 ) {
     Box(modifier = Modifier.fillMaxHeight().weight(1f).padding(30.dp)) {
         EditorLayout(
+            layoutType = layoutType,
             layoutSprite = layoutSprite,
             layoutSize = layoutSize,
             visibleEntities = visibleEntities,

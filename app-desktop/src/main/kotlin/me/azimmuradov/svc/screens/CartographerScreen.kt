@@ -57,6 +57,7 @@ fun CartographerScreen(component: CartographerComponent) {
                 intentConsumer = store::accept
             )
             SvcLayout(
+                layoutType = map.layout.type,
                 layoutSprite = LayoutSpritesProvider.layoutSpriteBy(map.layout.type),
                 layoutSize = map.layout.size,
                 visibleEntities = run {

@@ -128,6 +128,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 availableLayouts = listOf(
                     svcEngineOf(layoutOf(LayoutType.Shed)),
                     svcEngineOf(layoutOf(LayoutType.BigShed)),
+                    svcEngineOf(layoutOf(LayoutType.StandardFarm)),
                 ),
                 chosenLayout = null
             )
