@@ -20,6 +20,7 @@ import me.azimmuradov.svc.engine.entity.*
 import me.azimmuradov.svc.engine.geometry.xy
 import me.azimmuradov.svc.engine.layer.placeIt
 import me.azimmuradov.svc.metadata.EntityDataProvider.entityById
+import me.azimmuradov.svc.metadata.EntityDataProvider.entityToId
 import me.azimmuradov.svc.metadata.EntityId
 import me.azimmuradov.svc.metadata.EntityPage
 import me.azimmuradov.svc.save.models.*
@@ -29,11 +30,22 @@ import me.azimmuradov.svc.engine.entity.Building as BuildingEntity
 
 fun Object.toPlacedEntityOrNull(): PlacedEntity<*>? {
     val entityId = EntityId(
-        page = when (type) {
-            "Crafting" -> EntityPage.Craftables
+        page = when {
+            type == "Crafting" && typeAttr != "Fence" -> EntityPage.Craftables
             else -> EntityPage.CommonObjects
         },
-        localId = parentSheetIndex
+        localId = when (typeAttr) {
+            "Fence" -> when (name) {
+                "Wood Fence" -> entityToId[Equipment.SimpleEquipment.WoodFence]?.localId
+                "Stone Fence" -> entityToId[Equipment.SimpleEquipment.StoneFence]?.localId
+                "Iron Fence" -> entityToId[Equipment.SimpleEquipment.IronFence]?.localId
+                "Gate" -> entityToId[Equipment.SimpleEquipment.Gate]?.localId
+                "Hardwood Fence" -> entityToId[Equipment.SimpleEquipment.HardwoodFence]?.localId
+                else -> null
+            } ?: return null
+
+            else -> parentSheetIndex
+        }
     )
     return entityById[entityId]?.placeIt(there = tileLocation.toCoordinate())
 }

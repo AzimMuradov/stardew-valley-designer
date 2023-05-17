@@ -61,12 +61,6 @@ object SaveDataSerializers {
                 )
             }
 
-            println(
-                farm.buildings.joinToString(separator = "\n") {
-                    "${it.buildingType} ${it.tileX} ${it.tileY} ${it.tilesWide} ${it.tilesHigh}"
-                }
-            )
-
             this += buildings.map { building ->
                 val layout = LayoutsProvider.layoutOf(buildingsByType.getValue(building.buildingType))
 
