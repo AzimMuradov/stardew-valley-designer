@@ -17,6 +17,7 @@
 package me.azimmuradov.svc.cartographer.menus.entityselection
 
 import me.azimmuradov.svc.cartographer.menus.EntitySelectionMenu
+import me.azimmuradov.svc.engine.entity.Crop
 import me.azimmuradov.svc.engine.entity.Equipment
 import me.azimmuradov.svc.utils.menu.menu
 import me.azimmuradov.svc.cartographer.menus.EntitySelectionRoot as Root
@@ -24,7 +25,65 @@ import me.azimmuradov.svc.cartographer.menus.EntitySelectionRoot as Root
 
 val FarmElementsMenu: EntitySelectionMenu = menu(root = Root.FarmElements) {
     submenu(root = Root.FarmElementsCrops) {
-        // TODO
+        submenu(Root.FarmElementsCropsSpring) {
+            items(
+                Crop.SimpleCrop.BlueJazz,
+                Crop.SimpleCrop.Cauliflower,
+                Crop.SimpleCrop.CoffeeBean,
+                Crop.SimpleCrop.Garlic,
+                Crop.SimpleCrop.GreenBean,
+                Crop.SimpleCrop.Kale,
+                Crop.SimpleCrop.Parsnip,
+                Crop.SimpleCrop.Potato,
+                Crop.SimpleCrop.Rhubarb,
+                Crop.SimpleCrop.Strawberry,
+                Crop.SimpleCrop.Tulip,
+                Crop.SimpleCrop.Rice,
+            )
+        }
+
+        submenu(Root.FarmElementsCropsSummer) {
+            items(
+                Crop.SimpleCrop.Blueberry,
+                Crop.SimpleCrop.Corn,
+                Crop.SimpleCrop.Hops,
+                Crop.SimpleCrop.HotPepper,
+                Crop.SimpleCrop.Melon,
+                Crop.SimpleCrop.Poppy,
+                Crop.SimpleCrop.Radish,
+                Crop.SimpleCrop.RedCabbage,
+                Crop.SimpleCrop.Starfruit,
+                Crop.SimpleCrop.SummerSpangle,
+                Crop.SimpleCrop.Sunflower,
+                Crop.SimpleCrop.Tomato,
+                Crop.SimpleCrop.Wheat,
+            )
+        }
+
+        submenu(Root.FarmElementsCropsFall) {
+            items(
+                Crop.SimpleCrop.Amaranth,
+                Crop.SimpleCrop.Artichoke,
+                Crop.SimpleCrop.Beet,
+                Crop.SimpleCrop.BokChoy,
+                Crop.SimpleCrop.Cranberries,
+                Crop.SimpleCrop.Eggplant,
+                Crop.SimpleCrop.FairyRose,
+                Crop.SimpleCrop.Grape,
+                Crop.SimpleCrop.Pumpkin,
+                Crop.SimpleCrop.Yam,
+            )
+        }
+
+        submenu(Root.FarmElementsCropsSpecial) {
+            items(
+                Crop.SimpleCrop.AncientFruit,
+                Crop.SimpleCrop.CactusFruit,
+                Crop.SimpleCrop.Pineapple,
+                Crop.SimpleCrop.TaroRoot,
+                Crop.SimpleCrop.SweetGemBerry,
+            )
+        }
     }
 
     submenu(root = Root.FarmElementsForaging) {

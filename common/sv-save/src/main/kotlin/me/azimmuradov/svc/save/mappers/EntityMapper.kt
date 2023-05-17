@@ -92,7 +92,12 @@ fun Item<Vector2Wrapper, TerrainFeatureWrapper>.toPlacedEntityOrNull(): PlacedEn
 
         "Tree" -> null
 
-        "HoeDirt" -> null
+        "HoeDirt" -> entityById[
+            EntityId(
+                page = EntityPage.Crops,
+                localId = tfw.tf.crop?.rowInSpriteSheet ?: return null
+            )
+        ]
 
         else -> null
     }

@@ -17,25 +17,9 @@
 package me.azimmuradov.svc.save.models
 
 import kotlinx.serialization.Serializable
-import nl.adaptivity.xmlutil.XMLConstants
-import nl.adaptivity.xmlutil.serialization.XmlElement
-import nl.adaptivity.xmlutil.serialization.XmlSerialName
 
 
 @Serializable
-data class TerrainFeature(
-    @XmlSerialName(value = "type", XMLConstants.XSI_NS_URI, XMLConstants.XSI_PREFIX)
-    @XmlElement(false)
-    val typeAttr: String,
-
-    // For floor
-
-    val whichFloor: Int? = null,
-    val whichView: Int? = null,
-    val isPathway: Boolean? = null,
-    val isSteppingStone: Boolean? = null,
-
-    // For hoe dirt
-
-    val crop: Crop? = null,
+data class Crop(
+    val rowInSpriteSheet: Int? = null,
 )

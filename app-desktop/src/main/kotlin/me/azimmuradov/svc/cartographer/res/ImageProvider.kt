@@ -30,6 +30,7 @@ object ImageProvider {
         EntityPage.Craftables to useResource("entities/craftables.png", ::loadImageBitmap),
         EntityPage.Furniture to useResource("entities/furniture.png", ::loadImageBitmap),
         EntityPage.Flooring to useResource("entities/flooring.png", ::loadImageBitmap),
+        EntityPage.Crops to useResource("entities/crops.png", ::loadImageBitmap),
 
         EntityPage.Barn1 to useResource("buildings/barn.png", ::loadImageBitmap),
         EntityPage.Barn2 to useResource("buildings/big-barn.png", ::loadImageBitmap),

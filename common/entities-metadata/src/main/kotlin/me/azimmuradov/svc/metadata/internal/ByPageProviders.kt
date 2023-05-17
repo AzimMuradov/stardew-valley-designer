@@ -64,6 +64,12 @@ internal fun flooring(whichFloor: Int) = metadata(
     w = 1, h = 1
 )
 
+internal fun crop(id: Int) = metadata(
+    page = Crops,
+    localId = id,
+    w = 1, h = 2
+)
+
 internal fun building(page: EntityPage) = EntityMetadata(
     id = EntityId(page, localId = 0, flavor = null),
     sourceOffset = EntityOffset(x = 0, y = 0),

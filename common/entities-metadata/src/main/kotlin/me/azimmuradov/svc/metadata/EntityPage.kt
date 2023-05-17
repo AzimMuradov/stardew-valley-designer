@@ -26,6 +26,7 @@ enum class EntityPage(val width: Int, val height: Int, val grain: Rect = rectOf(
     Craftables(width = 128, height = 1152, grain = rectOf(1, 2)),
     Furniture(width = 512, height = 1488),
     Flooring(width = 256, height = 256),
+    Crops(width = 32, height = 768, grain = rectOf(1, 2)),
 
     // Buildings
 
