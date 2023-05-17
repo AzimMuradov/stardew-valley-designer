@@ -113,6 +113,7 @@ fun LayoutChoosingMenu(
                         ) {
                             Box {
                                 LayoutPreview(
+                                    layoutType = layout.layers.layout.type,
                                     layoutSprite = LayoutSpritesProvider.layoutSpriteBy(layout.layers.layout.type),
                                     layoutSize = layout.layers.layout.size,
                                     entities = layout.layers.entities,
