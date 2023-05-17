@@ -19,8 +19,8 @@ package me.azimmuradov.svc.utils
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import me.azimmuradov.svc.cartographer.res.Sprite
 import me.azimmuradov.svc.engine.entity.Entity
+import me.azimmuradov.svc.utils.DrawerUtils.drawSpriteBy
 
 
 @Composable
@@ -30,15 +30,5 @@ fun Sprite(
 ) {
     Canvas(modifier) {
         drawSpriteBy(entity = entity, layoutSize = this.size)
-    }
-}
-
-@Composable
-fun Sprite(
-    sprite: Sprite,
-    modifier: Modifier = Modifier,
-) {
-    Canvas(modifier) {
-        drawSprite(sprite = sprite, layoutSize = this.size)
     }
 }

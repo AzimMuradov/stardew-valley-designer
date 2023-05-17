@@ -30,41 +30,38 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
 import me.azimmuradov.svc.cartographer.CartographerIntent
+import me.azimmuradov.svc.cartographer.modules.map.MapState
 import me.azimmuradov.svc.cartographer.modules.options.OptionsState
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolkitState
-import me.azimmuradov.svc.cartographer.res.*
-import me.azimmuradov.svc.engine.Flooring
-import me.azimmuradov.svc.engine.Wallpaper
-import me.azimmuradov.svc.engine.entity.PlacedEntity
+import me.azimmuradov.svc.cartographer.res.EntitySpritesProvider
+import me.azimmuradov.svc.cartographer.res.LayoutSpritesProvider.layoutSpriteBy
 import me.azimmuradov.svc.engine.geometry.*
+import me.azimmuradov.svc.engine.layer.LayerType
 import me.azimmuradov.svc.engine.layer.coordinates
-import me.azimmuradov.svc.engine.layer.toLayerType
-import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
 import me.azimmuradov.svc.engine.layers.flatten
-import me.azimmuradov.svc.engine.layout.LayoutType
 import me.azimmuradov.svc.metadata.EntityPage.Companion.UNIT
-import me.azimmuradov.svc.utils.*
+import me.azimmuradov.svc.utils.DrawerUtils.drawFlooring
+import me.azimmuradov.svc.utils.DrawerUtils.drawSprite
+import me.azimmuradov.svc.utils.DrawerUtils.drawVisibleEntities
+import me.azimmuradov.svc.utils.DrawerUtils.drawWallpaper
+import me.azimmuradov.svc.utils.toIntSize
+import me.azimmuradov.svc.utils.toRect
 import kotlin.math.floor
-import kotlin.math.roundToInt
 
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun BoxScope.EditorLayout(
-    layoutType: LayoutType,
-    layoutSprite: LayoutSprites,
-    layoutSize: Rect,
-    visibleEntities: LayeredEntitiesData,
-    selectedEntities: LayeredEntitiesData,
-    wallpaper: Wallpaper?,
-    flooring: Flooring?,
+    map: MapState,
+    visibleLayers: Set<LayerType<*>>,
     toolkit: ToolkitState,
     options: OptionsState,
     intentConsumer: (CartographerIntent) -> Unit,
 ) {
-    val (nW, nH) = layoutSize
+    val layout = map.layout
+    val (nW, nH) = layout.size
+    val layoutSprite = layoutSpriteBy(layout.type)
 
     val hoveredColor = MaterialTheme.colors.secondary
 
@@ -132,7 +129,7 @@ fun BoxScope.EditorLayout(
         val offsetsH = List(size = nH + 1) { it * stepSize }
 
 
-        // Bottom layer
+        // Background
 
         drawImage(
             image = layoutSprite.bgImage,
@@ -142,77 +139,19 @@ fun BoxScope.EditorLayout(
         )
 
 
-        // Flooring
+        // Main content
 
-        if (layoutType.isShed()) {
-            val off1 = List(nW) { -stepSize + stepSize * 2 * it }.map { it.roundToInt() }
-            val off2 = List(nH) { stepSize * 2 * (it + 1) }.map { it.roundToInt() }
-
-            off1.zipWithNext().forEach { (st1, en1) ->
-                off2.zipWithNext().forEach { (st2, en2) ->
-                    val sprite = flooring(flooring ?: Flooring.all().first())
-
-                    drawImage(
-                        image = sprite.image,
-                        srcOffset = sprite.offset,
-                        srcSize = sprite.size,
-                        dstOffset = IntOffset(x = st1, y = st2),
-                        dstSize = IntSize(width = (en1 - st1), height = (en2 - st2)),
-                        filterQuality = FilterQuality.None,
-                    )
-                }
-            }
+        if (layout.type.isShed()) {
+            drawFlooring(map.flooring, nW, nH, stepSize)
+            drawWallpaper(map.wallpaper, nW, stepSize)
         }
 
-
-        // Wallpaper
-
-        if (layoutType.isShed()) {
-            val off = (List(nW) { stepSize * it } + size.width).map { it.roundToInt() }
-
-            off.zipWithNext().forEach { (st, en) ->
-                val sprite = wallpaper(wallpaper ?: Wallpaper.all().first())
-
-                drawImage(
-                    image = sprite.image,
-                    srcOffset = sprite.offset,
-                    srcSize = sprite.size,
-                    dstOffset = IntOffset(x = st, y = stepSize.roundToInt()),
-                    dstSize = IntSize(width = (en - st), height = (stepSize * 3).roundToInt()),
-                    filterQuality = FilterQuality.None,
-                )
-            }
-        }
-
-
-        // Entities
-
-        val sorted = visibleEntities.flatten().sortedWith(
-            Comparator
-                .comparing<PlacedEntity<*>, Int> { (_, p) -> p.y }
-                .thenComparing { (e, _) -> e.type.toLayerType().ordinal }
-        )
-
-        for ((e, place) in sorted) {
-            val sprite = EntitySpritesProvider.spriteBy(e)
-            val rect = (sprite.size / UNIT).toRect()
-            drawSprite(
-                sprite = sprite,
-                offset = IntOffset(
-                    x = offsetsW[place.x].toInt(),
-                    y = offsetsH[place.y - (rect.h - e.size.h)].toInt()
-                ),
-                layoutSize = Size(
-                    width = (cellSize.width * rect.w).coerceAtLeast(1f),
-                    height = (cellSize.height * rect.h).coerceAtLeast(1f)
-                ),
-            )
-        }
+        drawVisibleEntities(map.entities, visibleLayers, offsetsW, offsetsH, cellSize)
 
 
         // Beeps and Bops
 
-        for (e in selectedEntities.flatten().coordinates) {
+        for (e in map.selectedEntities.flatten().coordinates) {
             drawRect(
                 color = Color.Blue,
                 topLeft = Offset(x = offsetsW[e.x], y = offsetsH[e.y]),
@@ -369,7 +308,7 @@ fun BoxScope.EditorLayout(
         }
 
 
-        // Top layer
+        // Foreground
 
         drawImage(
             image = layoutSprite.fgImage,

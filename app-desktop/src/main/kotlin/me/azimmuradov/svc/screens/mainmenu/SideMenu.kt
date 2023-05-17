@@ -36,8 +36,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.azimmuradov.svc.ICON_RES_PATH
+import me.azimmuradov.svc.utils.BrowserUtils
 import me.azimmuradov.svc.utils.GlobalSettings
-import me.azimmuradov.svc.utils.openInBrowser
 import java.net.URI
 
 
@@ -90,9 +90,7 @@ fun RowScope.SideMenu() {
                 text = wordList.buttonStardewValleyText,
                 tooltip = wordList.buttonStardewValleyTooltip,
                 icon = painterResource(resourcePath = "main-menu/captive_portal_FILL1_wght400_GRAD0_opsz48.svg"),
-                onClick = {
-                    openInBrowser(URI.create("https://www.stardewvalley.net/"))
-                },
+                onClick = { BrowserUtils.open(URI.create("https://www.stardewvalley.net/")) },
                 enabled = true
             )
             SideMenuButton(

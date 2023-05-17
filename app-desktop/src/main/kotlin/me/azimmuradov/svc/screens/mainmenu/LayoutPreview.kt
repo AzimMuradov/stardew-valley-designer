@@ -26,33 +26,29 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
-import me.azimmuradov.svc.cartographer.res.*
+import me.azimmuradov.svc.cartographer.res.LayoutSpritesProvider.layoutSpriteBy
 import me.azimmuradov.svc.engine.Flooring
 import me.azimmuradov.svc.engine.Wallpaper
-import me.azimmuradov.svc.engine.entity.PlacedEntity
-import me.azimmuradov.svc.engine.geometry.Rect
 import me.azimmuradov.svc.engine.geometry.aspectRatio
-import me.azimmuradov.svc.engine.layer.toLayerType
+import me.azimmuradov.svc.engine.layer.LayerType
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
-import me.azimmuradov.svc.engine.layers.flatten
-import me.azimmuradov.svc.engine.layout.LayoutType
-import me.azimmuradov.svc.metadata.EntityPage.Companion.UNIT
-import me.azimmuradov.svc.utils.*
-import kotlin.math.roundToInt
+import me.azimmuradov.svc.engine.layout.Layout
+import me.azimmuradov.svc.utils.DrawerUtils.drawFlooring
+import me.azimmuradov.svc.utils.DrawerUtils.drawVisibleEntities
+import me.azimmuradov.svc.utils.DrawerUtils.drawWallpaper
+import me.azimmuradov.svc.utils.toIntSize
+import me.azimmuradov.svc.utils.toRect
 
 
 @Composable
 fun BoxScope.LayoutPreview(
-    layoutType: LayoutType,
-    layoutSprite: LayoutSprites,
-    layoutSize: Rect,
+    layout: Layout,
     entities: LayeredEntitiesData,
     wallpaper: Wallpaper?,
     flooring: Flooring?,
 ) {
-    val (nW, nH) = layoutSize
+    val (nW, nH) = layout.size
+    val layoutSprite = layoutSpriteBy(layout.type)
 
     var stepSize by remember { mutableStateOf(-1f) }
 
@@ -72,7 +68,7 @@ fun BoxScope.LayoutPreview(
         val offsetsH = List(size = nH + 1) { it * stepSize }
 
 
-        // Bottom layer
+        // Background
 
         drawImage(
             image = layoutSprite.bgImage,
@@ -82,75 +78,17 @@ fun BoxScope.LayoutPreview(
         )
 
 
-        // Flooring
+        // Main content
 
-        if (layoutType.isShed()) {
-            val off1 = List(nW) { -stepSize + stepSize * 2 * it }.map { it.roundToInt() }
-            val off2 = List(nH) { stepSize * 2 * (it + 1) }.map { it.roundToInt() }
-
-            off1.zipWithNext().forEach { (st1, en1) ->
-                off2.zipWithNext().forEach { (st2, en2) ->
-                    val sprite = flooring(flooring ?: Flooring.all().first())
-
-                    drawImage(
-                        image = sprite.image,
-                        srcOffset = sprite.offset,
-                        srcSize = sprite.size,
-                        dstOffset = IntOffset(x = st1, y = st2),
-                        dstSize = IntSize(width = (en1 - st1), height = (en2 - st2)),
-                        filterQuality = FilterQuality.High,
-                    )
-                }
-            }
+        if (layout.type.isShed()) {
+            drawFlooring(flooring, nW, nH, stepSize)
+            drawWallpaper(wallpaper, nW, stepSize)
         }
 
-
-        // Wallpaper
-
-        if (layoutType.isShed()) {
-            val off = (List(nW) { stepSize * it } + size.width).map { it.roundToInt() }
-
-            off.zipWithNext().forEach { (st, en) ->
-                val sprite = wallpaper(wallpaper ?: Wallpaper.all().first())
-
-                drawImage(
-                    image = sprite.image,
-                    srcOffset = sprite.offset,
-                    srcSize = sprite.size,
-                    dstOffset = IntOffset(x = st, y = stepSize.roundToInt()),
-                    dstSize = IntSize(width = (en - st), height = (stepSize * 3).roundToInt()),
-                    filterQuality = FilterQuality.High,
-                )
-            }
-        }
+        drawVisibleEntities(entities, LayerType.all, offsetsW, offsetsH, cellSize)
 
 
-        // Entities
-
-        val sorted = entities.flatten().sortedWith(
-            Comparator
-                .comparing<PlacedEntity<*>, Int> { (_, p) -> p.y }
-                .thenComparing { (e, _) -> e.type.toLayerType().ordinal }
-        )
-
-        for ((e, place) in sorted) {
-            val sprite = EntitySpritesProvider.spriteBy(e)
-            val rect = (sprite.size / UNIT).toRect()
-            drawSprite(
-                sprite = sprite,
-                offset = IntOffset(
-                    x = offsetsW[place.x].toInt(),
-                    y = offsetsH[place.y - (rect.h - e.size.h)].toInt()
-                ),
-                layoutSize = Size(
-                    width = (cellSize.width * rect.w).coerceAtLeast(1f),
-                    height = (cellSize.height * rect.h).coerceAtLeast(1f)
-                ),
-            )
-        }
-
-
-        // Top layer
+        // Foreground
 
         drawImage(
             image = layoutSprite.fgImage,

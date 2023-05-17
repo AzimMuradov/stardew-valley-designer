@@ -17,17 +17,13 @@
 package me.azimmuradov.svc.screens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import me.azimmuradov.svc.cartographer.CartographerComponent
 import me.azimmuradov.svc.cartographer.CartographerIntent
-import me.azimmuradov.svc.cartographer.res.LayoutSpritesProvider
-import me.azimmuradov.svc.engine.layers.layeredEntitiesData
 import me.azimmuradov.svc.screens.cartographer.main.SvcLayout
 import me.azimmuradov.svc.screens.cartographer.sidemenus.LeftSideMenus
 import me.azimmuradov.svc.screens.cartographer.sidemenus.RightSideMenus
@@ -57,18 +53,8 @@ fun CartographerScreen(component: CartographerComponent) {
                 intentConsumer = store::accept
             )
             SvcLayout(
-                layoutType = map.layout.type,
-                layoutSprite = LayoutSpritesProvider.layoutSpriteBy(map.layout.type),
-                layoutSize = map.layout.size,
-                visibleEntities = run {
-                    val all = map.entities.all.filter { (layerType) ->
-                        layerType in visLayers.visibleLayers
-                    }.toMap()
-                    layeredEntitiesData { all.getOrDefault(key = it, defaultValue = setOf()) }
-                },
-                selectedEntities = map.selectedEntities,
-                wallpaper = map.wallpaper,
-                flooring = map.flooring,
+                map = map,
+                visibleLayers = visLayers.visibleLayers,
                 toolkit = toolkit,
                 options = options,
                 intentConsumer = store::accept

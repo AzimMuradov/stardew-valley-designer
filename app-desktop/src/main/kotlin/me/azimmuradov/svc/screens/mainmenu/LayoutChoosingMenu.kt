@@ -31,7 +31,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.azimmuradov.svc.cartographer.res.LayoutSpritesProvider
 import me.azimmuradov.svc.engine.SvcEngine
 import me.azimmuradov.svc.engine.layers.entities
 import me.azimmuradov.svc.utils.GlobalSettings
@@ -113,9 +112,7 @@ fun LayoutChoosingMenu(
                         ) {
                             Box {
                                 LayoutPreview(
-                                    layoutType = layout.layers.layout.type,
-                                    layoutSprite = LayoutSpritesProvider.layoutSpriteBy(layout.layers.layout.type),
-                                    layoutSize = layout.layers.layout.size,
+                                    layout = layout.layers.layout,
                                     entities = layout.layers.entities,
                                     wallpaper = layout.wallpaper,
                                     flooring = layout.flooring,

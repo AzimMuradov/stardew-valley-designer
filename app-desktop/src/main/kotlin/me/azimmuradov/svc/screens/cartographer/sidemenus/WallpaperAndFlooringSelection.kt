@@ -34,7 +34,9 @@ import me.azimmuradov.svc.cartographer.res.flooring
 import me.azimmuradov.svc.cartographer.res.wallpaper
 import me.azimmuradov.svc.engine.Flooring
 import me.azimmuradov.svc.engine.Wallpaper
-import me.azimmuradov.svc.utils.*
+import me.azimmuradov.svc.utils.DrawerUtils.drawSprite
+import me.azimmuradov.svc.utils.GlobalSettings
+import me.azimmuradov.svc.utils.bounceClickable
 
 
 @Composable
@@ -111,12 +113,7 @@ fun WallpaperAndFlooringSelection(
                                     .bounceClickable { onWallpaperSelection(w) }
                                     .aspectRatio(ratio = 1f / 3f)
                                     .fillMaxSize()
-                                    .drawBehind {
-                                        drawSprite(
-                                            sprite = wallpaper(w),
-                                            layoutSize = size
-                                        )
-                                    }
+                                    .drawBehind { drawSprite(sprite = wallpaper(w), layoutSize = size) }
                             )
                         }
                     }
