@@ -683,6 +683,8 @@ data object EnWordList : WordList {
         Crop.SimpleCrop.Pineapple -> "Pineapple"
     }.also { entities[e] = it }
 
+    override val buttonMakeScreenshotTooltip: String = "Save layout as image to home folder"
+
     override fun tool(type: ToolType?): String = when (type) {
         null -> "No tool selected"
         ToolType.Hand -> "Hand"

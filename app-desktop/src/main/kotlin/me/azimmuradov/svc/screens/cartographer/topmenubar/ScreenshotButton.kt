@@ -16,14 +16,16 @@
 
 package me.azimmuradov.svc.screens.cartographer.topmenubar
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.TooltipArea
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 import me.azimmuradov.svc.cartographer.modules.map.MapState
@@ -35,6 +37,7 @@ import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.layer.LayerType
 import me.azimmuradov.svc.engine.layer.toLayerType
 import me.azimmuradov.svc.metadata.EntityPage.Companion.UNIT
+import me.azimmuradov.svc.utils.GlobalSettings
 import me.azimmuradov.svc.utils.toRect
 import java.io.File
 import java.time.Instant
@@ -43,19 +46,37 @@ import java.time.format.DateTimeFormatter
 import javax.imageio.ImageIO
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ScreenshotButton(map: MapState, visibleLayers: Set<LayerType<*>>) {
+    val wordList = GlobalSettings.strings
+
     Box(modifier = Modifier.aspectRatio(1f).fillMaxHeight()) {
-        IconButton(
-            onClick = { makeScreenshot(map, visibleLayers) },
-            modifier = Modifier.fillMaxHeight(),
+        TooltipArea(
+            tooltip = {
+                Surface(
+                    modifier = Modifier.shadow(4.dp),
+                    color = Color(red = 255, green = 255, blue = 210),
+                    shape = MaterialTheme.shapes.small
+                ) {
+                    Text(
+                        text = wordList.buttonMakeScreenshotTooltip,
+                        modifier = Modifier.padding(10.dp)
+                    )
+                }
+            }
         ) {
-            Icon(
-                imageVector = Icons.Rounded.Image,
-                contentDescription = null,
-                modifier = Modifier.padding(8.dp).align(Alignment.Center),
-                tint = Color.White,
-            )
+            IconButton(
+                onClick = { makeScreenshot(map, visibleLayers) },
+                modifier = Modifier.fillMaxHeight(),
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Image,
+                    contentDescription = null,
+                    modifier = Modifier.padding(8.dp).align(Alignment.Center),
+                    tint = Color.White,
+                )
+            }
         }
     }
 }
