@@ -66,5 +66,6 @@ sealed interface CartographerIntent {
     sealed interface Options : CartographerIntent {
         data class ChangeAxisVisibility(val isVisible: Boolean) : Options
         data class ChangeGridVisibility(val isVisible: Boolean) : Options
+        data class ChangeSpritesRender(val isRenderedFully: Boolean) : Options
     }
 }

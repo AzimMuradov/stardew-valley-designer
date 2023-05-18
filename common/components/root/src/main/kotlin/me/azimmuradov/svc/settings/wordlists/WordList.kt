@@ -103,6 +103,8 @@ sealed interface WordList {
 
     val optionShowGrid: String
 
+    val optionSpritesFully: String
+
     /**
      * Get menu title by its root.
      */

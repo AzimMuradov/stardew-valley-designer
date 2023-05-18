@@ -85,7 +85,14 @@ fun BoxScope.LayoutPreview(
             drawWallpaper(wallpaper, nW, stepSize)
         }
 
-        drawVisibleEntities(entities, LayerType.all, offsetsW, offsetsH, cellSize)
+        drawVisibleEntities(
+            entities = entities,
+            visibleLayers = LayerType.all,
+            renderSpritesFully = true,
+            offsetsW = offsetsW,
+            offsetsH = offsetsH,
+            cellSize = cellSize
+        )
 
 
         // Foreground

@@ -98,6 +98,8 @@ data object EnWordList : WordList {
 
     override val optionShowGrid: String = "Show grid"
 
+    override val optionSpritesFully: String = "Show sprites fully"
+
     override fun menuTitle(root: EntitySelectionRoot): String = menuTitles[root] ?: when (root) {
 
         // Buildings Menu

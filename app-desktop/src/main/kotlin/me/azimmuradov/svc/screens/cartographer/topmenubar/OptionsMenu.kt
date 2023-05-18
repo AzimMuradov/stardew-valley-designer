@@ -40,9 +40,6 @@ import me.azimmuradov.svc.utils.GlobalSettings
 import me.azimmuradov.svc.utils.menu.HoverableCascadingDropdownMenu
 
 
-// TODO
-
-
 @Composable
 fun RowScope.OptionsMenu(
     options: OptionsState,
@@ -92,37 +89,40 @@ fun RowScope.OptionsMenu(
             },
             itemValueContent = { value, _ ->
                 when (value) {
-                    OptionsItemValue.ShowAxis -> {
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Checkbox(
-                            checked = options.showAxis,
-                            onCheckedChange = { intentConsumer(CartographerIntent.Options.ChangeAxisVisibility(it)) }
-                        )
-                        Spacer(modifier = Modifier.width(20.dp))
-                        Text(
-                            text = wordList.optionShowAxis,
-                            modifier = Modifier.weight(1f),
-                            fontSize = 13.sp,
-                        )
-                    }
+                    OptionsItemValue.ShowAxis -> Option(
+                        name = wordList.optionShowAxis,
+                        checked = options.showAxis,
+                        onCheckedChange = { intentConsumer(CartographerIntent.Options.ChangeAxisVisibility(it)) }
+                    )
 
-                    OptionsItemValue.ShowGrid -> {
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Checkbox(
-                            checked = options.showGrid,
-                            onCheckedChange = { intentConsumer(CartographerIntent.Options.ChangeGridVisibility(it)) }
-                        )
-                        Spacer(modifier = Modifier.width(20.dp))
-                        Text(
-                            text = wordList.optionShowGrid,
-                            modifier = Modifier.weight(1f),
-                            fontSize = 13.sp,
-                        )
-                    }
+                    OptionsItemValue.ShowGrid -> Option(
+                        name = wordList.optionShowGrid,
+                        checked = options.showGrid,
+                        onCheckedChange = { intentConsumer(CartographerIntent.Options.ChangeGridVisibility(it)) }
+                    )
+
+                    OptionsItemValue.ShowSpritesFully -> Option(
+                        name = wordList.optionSpritesFully,
+                        checked = options.showSpritesFully,
+                        onCheckedChange = { intentConsumer(CartographerIntent.Options.ChangeSpritesRender(it)) }
+                    )
                 }
             },
         )
     }
+}
+
+
+@Composable
+private fun RowScope.Option(name: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+    Spacer(modifier = Modifier.width(8.dp))
+    Checkbox(checked, onCheckedChange)
+    Spacer(modifier = Modifier.width(20.dp))
+    Text(
+        text = name,
+        modifier = Modifier.weight(1f),
+        fontSize = 13.sp,
+    )
 }
 
 

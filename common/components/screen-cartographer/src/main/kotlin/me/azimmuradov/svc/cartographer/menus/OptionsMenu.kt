@@ -31,8 +31,9 @@ sealed interface OptionsItemValue {
 
     sealed interface Toggleable : OptionsItemValue
 
-    object ShowAxis : Toggleable
-    object ShowGrid : Toggleable
+    data object ShowAxis : Toggleable
+    data object ShowGrid : Toggleable
+    data object ShowSpritesFully : Toggleable
 }
 
 
@@ -40,5 +41,6 @@ val MainOptionsMenu: OptionsMenu = menu(root = OptionsRoot.Options) {
     items(
         OptionsItemValue.ShowAxis,
         OptionsItemValue.ShowGrid,
+        OptionsItemValue.ShowSpritesFully,
     )
 }

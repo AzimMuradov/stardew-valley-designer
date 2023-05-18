@@ -45,6 +45,7 @@ import me.azimmuradov.svc.utils.DrawerUtils.drawFlooring
 import me.azimmuradov.svc.utils.DrawerUtils.drawSprite
 import me.azimmuradov.svc.utils.DrawerUtils.drawVisibleEntities
 import me.azimmuradov.svc.utils.DrawerUtils.drawWallpaper
+import me.azimmuradov.svc.utils.DrawerUtils.placedEntityComparator
 import me.azimmuradov.svc.utils.toIntSize
 import me.azimmuradov.svc.utils.toRect
 import kotlin.math.floor
@@ -146,7 +147,14 @@ fun BoxScope.EditorLayout(
             drawWallpaper(map.wallpaper, nW, stepSize)
         }
 
-        drawVisibleEntities(map.entities, visibleLayers, offsetsW, offsetsH, cellSize)
+        drawVisibleEntities(
+            entities = map.entities,
+            visibleLayers = visibleLayers,
+            renderSpritesFully = options.showSpritesFully,
+            offsetsW = offsetsW,
+            offsetsH = offsetsH,
+            cellSize = cellSize
+        )
 
 
         // Beeps and Bops
@@ -162,14 +170,24 @@ fun BoxScope.EditorLayout(
 
         when (toolkit) {
             is ToolkitState.Hand.Point.Acting -> {
-                for (e in toolkit.heldEntities.flatten()) {
-                    val sprite = EntitySpritesProvider.spriteBy(e.rectObject)
+                val sorted = toolkit.heldEntities.flatten().sortedWith(placedEntityComparator)
+                for ((e, place) in sorted) {
+                    val sprite = EntitySpritesProvider.spriteBy(e).run {
+                        if (options.showSpritesFully) {
+                            this
+                        } else {
+                            copy(
+                                offset = offset.copy(y = offset.y + (size.height - e.size.h * UNIT)),
+                                size = e.size.toIntSize() * UNIT
+                            )
+                        }
+                    }
                     val rect = (sprite.size / UNIT).toRect()
                     drawSprite(
                         sprite = sprite,
                         offset = IntOffset(
-                            x = offsetsW[e.place.x].toInt() + 2,
-                            y = offsetsH[e.place.y - (rect.h - e.rectObject.size.h)].toInt() + 2
+                            x = offsetsW[place.x].toInt() + 2,
+                            y = offsetsH[place.y - (rect.h - e.size.h)].toInt() + 2
                         ),
                         layoutSize = Size(
                             width = (cellSize.width * rect.w - 4).coerceAtLeast(1f),
@@ -181,8 +199,7 @@ fun BoxScope.EditorLayout(
             }
 
             is ToolkitState.Pen.Shape.Acting -> {
-                val coordinates = toolkit.placedShape.coordinates
-                for (c in coordinates) {
+                for (c in toolkit.placedShape.coordinates) {
                     drawRect(
                         color = Color.Black,
                         topLeft = Offset(offsetsW[c.x], offsetsH[c.y]),
@@ -198,14 +215,23 @@ fun BoxScope.EditorLayout(
                         alpha = 0.5f,
                     )
                 }
-                for (e in toolkit.entitiesToDraw) {
-                    val sprite = EntitySpritesProvider.spriteBy(e.rectObject)
+                for ((e, place) in toolkit.entitiesToDraw) {
+                    val sprite = EntitySpritesProvider.spriteBy(e).run {
+                        if (options.showSpritesFully) {
+                            this
+                        } else {
+                            copy(
+                                offset = offset.copy(y = offset.y + (size.height - e.size.h * UNIT)),
+                                size = e.size.toIntSize() * UNIT
+                            )
+                        }
+                    }
                     val rect = (sprite.size / UNIT).toRect()
                     drawSprite(
                         sprite = sprite,
                         offset = IntOffset(
-                            x = offsetsW[e.place.x].toInt(),
-                            y = offsetsH[e.place.y - (rect.h - e.rectObject.size.h)].toInt()
+                            x = offsetsW[place.x].toInt(),
+                            y = offsetsH[place.y - (rect.h - e.size.h)].toInt()
                         ),
                         layoutSize = Size(
                             width = (cellSize.width * rect.w).coerceAtLeast(1f),
@@ -217,8 +243,7 @@ fun BoxScope.EditorLayout(
             }
 
             is ToolkitState.Eraser.Shape.Acting -> {
-                val coordinates = toolkit.placedShape.coordinates
-                for (c in coordinates) {
+                for (c in toolkit.placedShape.coordinates) {
                     drawRect(
                         color = Color.Black,
                         topLeft = Offset(offsetsW[c.x], offsetsH[c.y]),
@@ -238,8 +263,7 @@ fun BoxScope.EditorLayout(
 
             is ToolkitState.Select.Shape -> {
                 if (toolkit is ToolkitState.Select.Shape.Acting) {
-                    val coordinates = toolkit.placedShape.coordinates
-                    for (c in coordinates) {
+                    for (c in toolkit.placedShape.coordinates) {
                         drawRect(
                             color = Color.Black,
                             topLeft = Offset(offsetsW[c.x], offsetsH[c.y]),
