@@ -30,7 +30,7 @@ import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.layer.LayerType
 import me.azimmuradov.svc.engine.layer.toLayerType
 import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
-import me.azimmuradov.svc.metadata.EntityPage
+import me.azimmuradov.svc.metadata.EntityPage.Companion.UNIT
 import kotlin.math.roundToInt
 
 
@@ -91,6 +91,7 @@ object DrawerUtils {
     fun DrawScope.drawVisibleEntities(
         entities: LayeredEntitiesData,
         visibleLayers: Set<LayerType<*>>,
+        renderSpritesFully: Boolean,
         offsetsW: List<Float>,
         offsetsH: List<Float>,
         cellSize: Size,
@@ -98,8 +99,17 @@ object DrawerUtils {
         val sorted = visibleLayers.flatMap(entities::entitiesBy).sortedWith(placedEntityComparator)
 
         for ((e, place) in sorted) {
-            val sprite = EntitySpritesProvider.spriteBy(e)
-            val rect = (sprite.size / EntityPage.UNIT).toRect()
+            val sprite = EntitySpritesProvider.spriteBy(e).run {
+                if (renderSpritesFully) {
+                    this
+                } else {
+                    copy(
+                        offset = offset.copy(y = offset.y + (size.height - e.size.h * UNIT)),
+                        size = e.size.toIntSize() * UNIT
+                    )
+                }
+            }
+            val rect = (sprite.size / UNIT).toRect()
             drawSprite(
                 sprite = sprite,
                 offset = IntOffset(

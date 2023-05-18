@@ -20,6 +20,7 @@ package me.azimmuradov.svc.cartographer.modules.options
 data class OptionsState(
     val showAxis: Boolean,
     val showGrid: Boolean,
+    val showSpritesFully: Boolean,
 ) {
 
     companion object {
@@ -27,6 +28,7 @@ data class OptionsState(
         fun default() = OptionsState(
             showAxis = true,
             showGrid = true,
+            showSpritesFully = true,
         )
     }
 }
