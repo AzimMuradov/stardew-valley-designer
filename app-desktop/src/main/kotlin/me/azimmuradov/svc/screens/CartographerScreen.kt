@@ -38,6 +38,8 @@ fun CartographerScreen(component: CartographerComponent) {
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopMenuBar(
+            map = map,
+            visibleLayers = visLayers.visibleLayers,
             history = history,
             disallowedTypes = map.layout.disallowedTypes,
             onEntitySelection = { component.store.accept(CartographerIntent.Palette.AddToInUse(it)) },

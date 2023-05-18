@@ -24,13 +24,17 @@ import me.azimmuradov.svc.cartographer.CartographerIntent
 import me.azimmuradov.svc.cartographer.menus.MainOptionsMenu
 import me.azimmuradov.svc.cartographer.menus.entityselection.*
 import me.azimmuradov.svc.cartographer.modules.history.HistoryState
+import me.azimmuradov.svc.cartographer.modules.map.MapState
 import me.azimmuradov.svc.cartographer.modules.options.OptionsState
 import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.EntityType
+import me.azimmuradov.svc.engine.layer.LayerType
 
 
 @Composable
 fun TopMenu(
+    map: MapState,
+    visibleLayers: Set<LayerType<*>>,
     history: HistoryState,
     disallowedTypes: Set<EntityType>,
     onEntitySelection: (Entity<*>) -> Unit,
@@ -81,7 +85,7 @@ fun TopMenu(
 
         // TODO : Entity Search
 
-        // TODO : Layout Selection Menu
+        ScreenshotButton(map, visibleLayers)
 
         OptionsMenu(
             options = options,
