@@ -254,6 +254,16 @@ fun BoxScope.EditorLayout(
         }
 
 
+        // Foreground
+
+        drawImage(
+            image = layoutSprite.fgImage,
+            srcSize = layoutSprite.size,
+            dstSize = size.toIntSize(),
+            filterQuality = FilterQuality.None,
+        )
+
+
         // Grid
 
         if (options.showGrid) {
@@ -275,7 +285,6 @@ fun BoxScope.EditorLayout(
             }
         }
 
-
         // Hovered cell & Axis
 
         if (hoveredId != UNDEFINED) {
@@ -287,7 +296,6 @@ fun BoxScope.EditorLayout(
                 size = cellSize,
                 alpha = 0.3f,
             )
-
 
             // Axis
 
@@ -306,16 +314,6 @@ fun BoxScope.EditorLayout(
                 )
             }
         }
-
-
-        // Foreground
-
-        drawImage(
-            image = layoutSprite.fgImage,
-            srcSize = layoutSprite.size,
-            dstSize = size.toIntSize(),
-            filterQuality = FilterQuality.None,
-        )
     }
 }
 
