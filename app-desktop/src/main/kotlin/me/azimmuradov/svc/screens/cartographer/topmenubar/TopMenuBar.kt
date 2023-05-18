@@ -25,13 +25,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.cartographer.CartographerIntent
 import me.azimmuradov.svc.cartographer.modules.history.HistoryState
+import me.azimmuradov.svc.cartographer.modules.map.MapState
 import me.azimmuradov.svc.cartographer.modules.options.OptionsState
 import me.azimmuradov.svc.engine.entity.Entity
 import me.azimmuradov.svc.engine.entity.EntityType
+import me.azimmuradov.svc.engine.layer.LayerType
 
 
 @Composable
 fun TopMenuBar(
+    map: MapState,
+    visibleLayers: Set<LayerType<*>>,
     history: HistoryState,
     disallowedTypes: Set<EntityType>,
     onEntitySelection: (Entity<*>) -> Unit,
@@ -46,6 +50,8 @@ fun TopMenuBar(
                     .background(color = MaterialTheme.colors.primaryVariant),
             )
             TopMenu(
+                map = map,
+                visibleLayers = visibleLayers,
                 history = history,
                 disallowedTypes = disallowedTypes,
                 onEntitySelection = onEntitySelection,
