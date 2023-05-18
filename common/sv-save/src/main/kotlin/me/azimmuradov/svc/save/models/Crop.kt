@@ -14,25 +14,12 @@
  * limitations under the License.
  */
 
-package me.azimmuradov.svc.utils
+package me.azimmuradov.svc.save.models
 
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.unit.IntOffset
-import me.azimmuradov.svc.cartographer.res.EntitySpritesProvider
-import me.azimmuradov.svc.engine.entity.Entity
+import kotlinx.serialization.Serializable
 
 
-fun DrawScope.drawSpriteBy(
-    entity: Entity<*>,
-    offset: IntOffset = IntOffset.Zero,
-    layoutSize: Size,
-    alpha: Float = 1.0f,
-) {
-    drawSprite(
-        sprite = EntitySpritesProvider.spriteBy(entity),
-        offset = offset,
-        layoutSize = layoutSize,
-        alpha = alpha,
-    )
-}
+@Serializable
+data class Crop(
+    val rowInSpriteSheet: Int? = null,
+)

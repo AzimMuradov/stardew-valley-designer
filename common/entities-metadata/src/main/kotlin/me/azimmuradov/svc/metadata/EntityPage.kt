@@ -26,6 +26,39 @@ enum class EntityPage(val width: Int, val height: Int, val grain: Rect = rectOf(
     Craftables(width = 128, height = 1152, grain = rectOf(1, 2)),
     Furniture(width = 512, height = 1488),
     Flooring(width = 256, height = 256),
+    Crops(width = 32, height = 768, grain = rectOf(1, 2)),
+
+    // Buildings
+
+    Barn1(width = 112, height = 112),
+    Barn2(width = 112, height = 112),
+    Barn3(width = 112, height = 112),
+
+    Coop1(width = 96, height = 112),
+    Coop2(width = 96, height = 112),
+    Coop3(width = 96, height = 112),
+
+    Shed(width = 112, height = 128),
+    BigShed(width = 112, height = 128),
+
+    StoneCabin(width = 240, height = 112),
+    PlankCabin(width = 240, height = 112),
+    LogCabin(width = 240, height = 112),
+
+    EarthObelisk(width = 48, height = 128),
+    WaterObelisk(width = 48, height = 128),
+    DesertObelisk(width = 48, height = 128),
+    IslandObelisk(width = 48, height = 128),
+    JunimoHut(width = 48, height = 64),
+    GoldClock(width = 48, height = 80),
+
+    Mill(width = 64, height = 128),
+    Silo(width = 48, height = 128),
+    Well(width = 48, height = 80),
+    Stable(width = 64, height = 96),
+    FishPond(width = 80, height = 112),
+    SlimeHutch(width = 176, height = 144),
+    ShippingBin(width = 32, height = 32),
     ;
 
 

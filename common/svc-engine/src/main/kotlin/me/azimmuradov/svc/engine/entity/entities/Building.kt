@@ -94,7 +94,7 @@ sealed interface Building : Entity<BuildingType> {
 
     data class Stable(
         override var farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
-    ) : ColoredFarmBuilding(size = rectOf(w = 2, h = 1))
+    ) : ColoredFarmBuilding(size = rectOf(w = 4, h = 2))
 
     data class StoneCabin3(
         override var farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
@@ -121,7 +121,19 @@ sealed interface Building : Entity<BuildingType> {
 
     companion object {
 
-        val all by lazy { setOf<Building>() }
+        val all by lazy {
+            buildSet {
+                addAll(SimpleBuilding.values())
+                add(Barn3())
+                add(Coop3())
+                add(Shed2())
+                add(Stable())
+                add(StoneCabin3())
+                add(PlankCabin3())
+                add(LogCabin3())
+                add(FishPond())
+            }
+        }
     }
 }
 

@@ -27,5 +27,8 @@ data class GameLocation(
     @XmlElement(false)
     val type: String? = null,
     val name: String? = null,
+    @XmlChildrenName("item", "", "") val objects: List<Item<Vector2Wrapper, ObjectWrapper>>,
+    @XmlChildrenName("Furniture", "", "") val furniture: List<Furniture>,
+    @XmlChildrenName("item", "", "") val terrainFeatures: List<Item<Vector2Wrapper, TerrainFeatureWrapper>>,
     @XmlChildrenName("Building", "", "") val buildings: List<Building>,
 )

@@ -36,6 +36,7 @@ object EntityDataProvider {
 
     val entityToMetadata by lazy {
         Building.all.associateWith(::building) +
+                Crop.all.associateWith(::crop) +
                 Equipment.all.associateWith(::equipment) +
                 Floor.all.associateWith(::floor) +
                 FloorFurniture.all.associateWith(::floorFurniture) +

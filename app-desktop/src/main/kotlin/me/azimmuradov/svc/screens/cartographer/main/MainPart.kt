@@ -21,35 +21,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.azimmuradov.svc.cartographer.CartographerIntent
+import me.azimmuradov.svc.cartographer.modules.map.MapState
 import me.azimmuradov.svc.cartographer.modules.options.OptionsState
 import me.azimmuradov.svc.cartographer.modules.toolkit.ToolkitState
-import me.azimmuradov.svc.cartographer.res.LayoutSprites
-import me.azimmuradov.svc.engine.Flooring
-import me.azimmuradov.svc.engine.Wallpaper
-import me.azimmuradov.svc.engine.geometry.Rect
-import me.azimmuradov.svc.engine.layers.LayeredEntitiesData
+import me.azimmuradov.svc.engine.layer.LayerType
 
 
 @Composable
 fun RowScope.SvcLayout(
-    layoutSprite: LayoutSprites,
-    layoutSize: Rect,
-    visibleEntities: LayeredEntitiesData,
-    selectedEntities: LayeredEntitiesData,
-    wallpaper: Wallpaper?,
-    flooring: Flooring?,
+    map: MapState,
+    visibleLayers: Set<LayerType<*>>,
     toolkit: ToolkitState,
     options: OptionsState,
     intentConsumer: (CartographerIntent) -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxHeight().weight(1f).padding(30.dp)) {
         EditorLayout(
-            layoutSprite = layoutSprite,
-            layoutSize = layoutSize,
-            visibleEntities = visibleEntities,
-            selectedEntities = selectedEntities,
-            wallpaper = wallpaper,
-            flooring = flooring,
+            map = map,
+            visibleLayers = visibleLayers,
             toolkit = toolkit,
             options = options,
             intentConsumer = intentConsumer

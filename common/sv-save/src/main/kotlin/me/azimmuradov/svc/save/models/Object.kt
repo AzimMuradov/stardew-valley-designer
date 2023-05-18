@@ -27,7 +27,7 @@ data class Object(
     @XmlSerialName(value = "type", XMLConstants.XSI_NS_URI, XMLConstants.XSI_PREFIX)
     @XmlElement(false)
     val typeAttr: String? = null,
-    val type: String,
+    val type: String? = null,
     val name: String,
     // @SerialName("DisplayName") val displayName: String,
     // @SerialName("Name") val name2: String,

@@ -25,6 +25,8 @@ import nl.adaptivity.xmlutil.serialization.XmlChildrenName
 data class Building(
     val buildingType: String,
     val indoors: Indoors? = null,
+    val tileX: Int, val tileY: Int,
+    val tilesWide: Int, val tilesHigh: Int,
 )
 
 

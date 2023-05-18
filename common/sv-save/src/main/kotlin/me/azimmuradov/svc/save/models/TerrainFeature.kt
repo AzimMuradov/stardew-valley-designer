@@ -27,8 +27,15 @@ data class TerrainFeature(
     @XmlSerialName(value = "type", XMLConstants.XSI_NS_URI, XMLConstants.XSI_PREFIX)
     @XmlElement(false)
     val typeAttr: String,
-    val whichFloor: Int,
-    val whichView: Int,
-    val isPathway: Boolean,
-    val isSteppingStone: Boolean,
+
+    // For floor
+
+    val whichFloor: Int? = null,
+    val whichView: Int? = null,
+    val isPathway: Boolean? = null,
+    val isSteppingStone: Boolean? = null,
+
+    // For hoe dirt
+
+    val crop: Crop? = null,
 )

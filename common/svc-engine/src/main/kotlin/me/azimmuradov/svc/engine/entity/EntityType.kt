@@ -61,9 +61,9 @@ sealed interface EntityWithoutFloorType : EntityType {
 
     data object BuildingType : EntityWithoutFloorType
 
+    data object CropType : EntityWithoutFloorType
+
     // TODO
-    //
-    // object CropType : EntityWithoutFloorType
     //
     // object TreeType : EntityWithoutFloorType
     //
@@ -74,7 +74,7 @@ sealed interface EntityWithoutFloorType : EntityType {
 
     companion object {
 
-        val all = setOf(BuildingType)
+        val all = setOf(BuildingType, CropType)
     }
 }
 
@@ -84,7 +84,3 @@ sealed interface EntityWithoutFloorType : EntityType {
 // TODO : Greenhouse
 
 // TODO : WallFurniture
-
-// TODO : Flooring [1-56]
-
-// TODO : Wallpaper [1-112]

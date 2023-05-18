@@ -44,6 +44,7 @@ data object EnWordList : WordList {
     override fun layout(type: LayoutType): String = when (type) {
         LayoutType.Shed -> "Shed"
         LayoutType.BigShed -> "Big Shed"
+        LayoutType.StandardFarm -> "Standard Farm"
     }
 
 
@@ -636,6 +637,50 @@ data object EnWordList : WordList {
         is Building.FishPond -> "Fish Pond"
         Building.SimpleBuilding.SlimeHutch -> "Slime Hutch"
         Building.SimpleBuilding.ShippingBin -> "Shipping Bin"
+
+
+        // Crops
+
+        Crop.SimpleCrop.Parsnip -> "Parsnip"
+        Crop.SimpleCrop.GreenBean -> "Green Bean"
+        Crop.SimpleCrop.Cauliflower -> "Cauliflower"
+        Crop.SimpleCrop.Potato -> "Potato"
+        Crop.SimpleCrop.Garlic -> "Garlic"
+        Crop.SimpleCrop.Kale -> "Kale"
+        Crop.SimpleCrop.Rhubarb -> "Rhubarb"
+        Crop.SimpleCrop.Melon -> "Melon"
+        Crop.SimpleCrop.Tomato -> "Tomato"
+        Crop.SimpleCrop.Blueberry -> "Blueberry"
+        Crop.SimpleCrop.HotPepper -> "Hot Pepper"
+        Crop.SimpleCrop.Wheat -> "Wheat"
+        Crop.SimpleCrop.Radish -> "Radish"
+        Crop.SimpleCrop.RedCabbage -> "Red Cabbage"
+        Crop.SimpleCrop.Starfruit -> "Starfruit"
+        Crop.SimpleCrop.Corn -> "Corn"
+        Crop.SimpleCrop.Eggplant -> "Eggplant"
+        Crop.SimpleCrop.Artichoke -> "Artichoke"
+        Crop.SimpleCrop.Pumpkin -> "Pumpkin"
+        Crop.SimpleCrop.BokChoy -> "Bok Choy"
+        Crop.SimpleCrop.Yam -> "Yam"
+        Crop.SimpleCrop.Cranberries -> "Cranberries"
+        Crop.SimpleCrop.Beet -> "Beet"
+        Crop.SimpleCrop.AncientFruit -> "Ancient Fruit"
+        Crop.SimpleCrop.Tulip -> "Tulip"
+        Crop.SimpleCrop.BlueJazz -> "Blue Jazz"
+        Crop.SimpleCrop.Poppy -> "Poppy"
+        Crop.SimpleCrop.SummerSpangle -> "Summer Spangle"
+        Crop.SimpleCrop.Sunflower -> "Sunflower"
+        Crop.SimpleCrop.FairyRose -> "Fairy Rose"
+        Crop.SimpleCrop.SweetGemBerry -> "Sweet Gem Berry"
+        Crop.SimpleCrop.Rice -> "Rice"
+        Crop.SimpleCrop.Strawberry -> "Strawberry"
+        Crop.SimpleCrop.Hops -> "Hops"
+        Crop.SimpleCrop.Grape -> "Grape"
+        Crop.SimpleCrop.Amaranth -> "Amaranth"
+        Crop.SimpleCrop.CoffeeBean -> "Coffee Bean"
+        Crop.SimpleCrop.CactusFruit -> "Cactus Fruit"
+        Crop.SimpleCrop.TaroRoot -> "Taro Root"
+        Crop.SimpleCrop.Pineapple -> "Pineapple"
     }.also { entities[e] = it }
 
     override fun tool(type: ToolType?): String = when (type) {
@@ -658,7 +703,7 @@ data object EnWordList : WordList {
         LayerType.Floor -> "Floor layer"
         LayerType.FloorFurniture -> "Rug layer"
         LayerType.Object -> "Object layer"
-        LayerType.EntityWithoutFloor -> TODO()
+        LayerType.EntityWithoutFloor -> "Buildings and crops layer"
     }.also { layers[type] = it }
 
     override val wallpapersTabTitle: String = "Wallpapers"

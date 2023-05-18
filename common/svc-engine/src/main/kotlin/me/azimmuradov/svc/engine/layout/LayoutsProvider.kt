@@ -16,10 +16,8 @@
 
 package me.azimmuradov.svc.engine.layout
 
-import me.azimmuradov.svc.engine.layout.LayoutType.BigShed
-import me.azimmuradov.svc.engine.layout.LayoutType.Shed
-import me.azimmuradov.svc.engine.layout.layouts.BigShedLayout
-import me.azimmuradov.svc.engine.layout.layouts.ShedLayout
+import me.azimmuradov.svc.engine.layout.LayoutType.*
+import me.azimmuradov.svc.engine.layout.layouts.*
 
 
 object LayoutsProvider {
@@ -27,5 +25,6 @@ object LayoutsProvider {
     fun layoutOf(type: LayoutType): Layout = when (type) {
         Shed -> ShedLayout
         BigShed -> BigShedLayout
+        StandardFarm -> StandardFarmLayout
     }
 }

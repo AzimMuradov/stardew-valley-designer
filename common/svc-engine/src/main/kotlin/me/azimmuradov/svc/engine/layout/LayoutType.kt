@@ -20,4 +20,8 @@ package me.azimmuradov.svc.engine.layout
 enum class LayoutType {
     Shed,
     BigShed,
+    StandardFarm,
+    ;
+
+    fun isShed(): Boolean = this == Shed || this == BigShed
 }

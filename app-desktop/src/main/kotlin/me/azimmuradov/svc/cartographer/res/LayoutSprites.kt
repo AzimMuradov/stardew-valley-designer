@@ -25,5 +25,5 @@ data class LayoutSprites(
     val bgImage: ImageBitmap,
 ) {
 
-    val size = IntSize(fgImage.width, fgImage.height)
+    val size = IntSize(bgImage.width, bgImage.height)
 }

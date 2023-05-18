@@ -27,9 +27,11 @@ object PlacedRectOutlineStrategy : PlacedShapeStrategy {
         val xs = bl.x..tr.x
         val ys = bl.y..tr.y
 
-        val cs = xs.map { xy(it, bl.y) } + xs.map { xy(it, tr.y) } +
-                ys.map { xy(bl.x, it) } + ys.map { xy(tr.x, it) }
-
-        return cs.toSet()
+        return buildSet {
+            addAll(xs.map { xy(it, bl.y) })
+            addAll(xs.map { xy(it, tr.y) })
+            addAll(ys.map { xy(bl.x, it) })
+            addAll(ys.map { xy(tr.x, it) })
+        }
     }
 }
