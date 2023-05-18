@@ -33,10 +33,9 @@ import me.azimmuradov.svc.cartographer.res.*
 import me.azimmuradov.svc.cartographer.res.LayoutSpritesProvider.layoutSpriteBy
 import me.azimmuradov.svc.engine.Flooring
 import me.azimmuradov.svc.engine.Wallpaper
-import me.azimmuradov.svc.engine.entity.PlacedEntity
 import me.azimmuradov.svc.engine.layer.LayerType
-import me.azimmuradov.svc.engine.layer.toLayerType
 import me.azimmuradov.svc.metadata.EntityPage.Companion.UNIT
+import me.azimmuradov.svc.utils.DrawerUtils.placedEntityComparator
 import me.azimmuradov.svc.utils.GlobalSettings
 import me.azimmuradov.svc.utils.toRect
 import java.io.File
@@ -132,11 +131,7 @@ private fun makeScreenshot(map: MapState, visibleLayers: Set<LayerType<*>>) {
             }
         }
 
-        val sorted = visibleLayers.flatMap(map.entities::entitiesBy).sortedWith(
-            Comparator
-                .comparing<PlacedEntity<*>, Int> { (_, p) -> p.y }
-                .thenComparing { (e, _) -> e.type.toLayerType().ordinal }
-        )
+        val sorted = visibleLayers.flatMap(map.entities::entitiesBy).sortedWith(placedEntityComparator)
 
         for ((e, place) in sorted) {
             val sprite = EntitySpritesProvider.spriteBy(e)
