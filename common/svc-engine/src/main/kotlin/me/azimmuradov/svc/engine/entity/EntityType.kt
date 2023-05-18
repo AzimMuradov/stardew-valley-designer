@@ -74,7 +74,7 @@ sealed interface EntityWithoutFloorType : EntityType {
 
     companion object {
 
-        val all = setOf(BuildingType)
+        val all = setOf(BuildingType, CropType)
     }
 }
 
