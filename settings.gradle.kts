@@ -38,6 +38,11 @@ include(
 )
 
 
+// Logger
+
+include(":common:logger")
+
+
 // Plugin Management
 
 pluginManagement {

@@ -1,10 +1,10 @@
 object SVC {
 
-    const val GROUP: String = "me.azimmuradov"
+    const val GROUP: String = "me.azimmuradov.svc"
 
     const val NAME: String = "Stardew Valley Cartographer"
 
-    const val VERSION: String = "0.5.0"
+    const val VERSION: String = "0.7.0"
 
 
     const val DESCRIPTION: String = "Stardew Valley Cartographer"

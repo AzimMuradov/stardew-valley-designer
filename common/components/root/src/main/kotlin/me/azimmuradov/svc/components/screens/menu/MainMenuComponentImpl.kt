@@ -16,9 +16,7 @@
 
 package me.azimmuradov.svc.components.screens.menu
 
-import com.arkivanov.mvikotlin.logging.logger.DefaultLogFormatter
-import com.arkivanov.mvikotlin.logging.store.LoggingStoreFactory
-import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
+import me.azimmuradov.svc.LoggerUtils.createLoggerAwareStoreFactory
 import me.azimmuradov.svc.engine.SvcEngine
 import me.azimmuradov.svc.mainmenu.MainMenuComponent
 import me.azimmuradov.svc.mainmenu.MainMenuStoreFactory
@@ -28,10 +26,5 @@ internal class MainMenuComponentImpl(
     override val onCartographerScreenCall: (SvcEngine) -> Unit,
 ) : MainMenuComponent {
 
-    override val store = MainMenuStoreFactory(
-        storeFactory = LoggingStoreFactory(
-            delegate = DefaultStoreFactory(),
-            logFormatter = DefaultLogFormatter(valueLengthLimit = Int.MAX_VALUE)
-        )
-    ).create(onCartographerScreenCall)
+    override val store = MainMenuStoreFactory(createLoggerAwareStoreFactory()).create(onCartographerScreenCall)
 }

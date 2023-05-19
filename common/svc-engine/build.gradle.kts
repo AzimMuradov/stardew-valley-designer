@@ -2,18 +2,15 @@ plugins {
     kotlin("jvm")
 
     id("io.gitlab.arturbosch.detekt")
-
-    `java-library`
-}
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
+    // Meta-code
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${V.DETEKT}")
+
+    implementation(projects.common.logger)
+    implementation("io.github.microutils:kotlin-logging-jvm:${V.KOTLIN_LOGGING}")
 }
 
 detekt {

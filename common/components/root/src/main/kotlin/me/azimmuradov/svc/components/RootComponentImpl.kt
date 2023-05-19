@@ -46,7 +46,6 @@ private class RootComponentImpl(
 
     private val stack = childStack(
         source = navigation,
-        // initialConfiguration = MainMenuConfig,
         initialConfiguration = SplashConfig,
         childFactory = ::child,
     )

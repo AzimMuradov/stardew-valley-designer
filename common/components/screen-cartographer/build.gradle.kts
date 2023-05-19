@@ -4,23 +4,21 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation(projects.common.svcEngine)
-
     implementation(projects.common.uiUtils.dropdownMenu)
-
-
-    implementation(kotlin("stdlib-jdk8"))
-
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${V.DETEKT}")
 
     implementation("com.arkivanov.decompose:decompose:${V.DECOMPOSE}")
     implementation("com.arkivanov.mvikotlin:mvikotlin:${V.MVI_KOTLIN}")
     implementation("com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines:${V.MVI_KOTLIN}")
+
+
+    // Meta-code
+
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${V.DETEKT}")
+
+    implementation(projects.common.logger)
+    implementation("io.github.microutils:kotlin-logging-jvm:${V.KOTLIN_LOGGING}")
 }
 
 detekt {

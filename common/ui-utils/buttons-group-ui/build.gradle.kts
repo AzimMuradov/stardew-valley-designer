@@ -1,27 +1,24 @@
 plugins {
     kotlin("jvm")
+    id("org.jetbrains.compose") version V.P_COMPOSE
 
     id("io.gitlab.arturbosch.detekt")
-
-    id("org.jetbrains.compose") version V.P_COMPOSE
-}
-
-repositories {
-    mavenCentral()
-    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-    google()
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${V.DETEKT}")
-
     implementation(compose.foundation)
     implementation(compose.runtime)
     implementation(compose.animation)
     implementation(compose.ui)
     implementation(compose.material)
+
+
+    // Meta-code
+
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${V.DETEKT}")
+
+    implementation(projects.common.logger)
+    implementation("io.github.microutils:kotlin-logging-jvm:${V.KOTLIN_LOGGING}")
 }
 
 detekt {

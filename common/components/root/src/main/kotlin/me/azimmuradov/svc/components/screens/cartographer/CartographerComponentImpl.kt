@@ -16,9 +16,7 @@
 
 package me.azimmuradov.svc.components.screens.cartographer
 
-import com.arkivanov.mvikotlin.logging.logger.DefaultLogFormatter
-import com.arkivanov.mvikotlin.logging.store.LoggingStoreFactory
-import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
+import me.azimmuradov.svc.LoggerUtils.createLoggerAwareStoreFactory
 import me.azimmuradov.svc.cartographer.CartographerComponent
 import me.azimmuradov.svc.cartographer.CartographerStoreFactory
 import me.azimmuradov.svc.engine.SvcEngine
@@ -29,10 +27,5 @@ internal class CartographerComponentImpl(
     override val onCartographerScreenReturn: () -> Unit,
 ) : CartographerComponent {
 
-    override val store = CartographerStoreFactory(
-        storeFactory = LoggingStoreFactory(
-            delegate = DefaultStoreFactory(),
-            logFormatter = DefaultLogFormatter(valueLengthLimit = Int.MAX_VALUE)
-        )
-    ).create(engine)
+    override val store = CartographerStoreFactory(createLoggerAwareStoreFactory()).create(engine)
 }

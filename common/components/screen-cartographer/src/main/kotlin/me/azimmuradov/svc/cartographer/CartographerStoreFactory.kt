@@ -36,8 +36,6 @@ import me.azimmuradov.svc.cartographer.CartographerLabel as Label
 import me.azimmuradov.svc.cartographer.CartographerState as State
 
 
-// private val logger = KotlinLogging.logger(name = "SVC-LOGGER")
-
 internal typealias CartographerStore = Store<Intent, State, Label>
 
 

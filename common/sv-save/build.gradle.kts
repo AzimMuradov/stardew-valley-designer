@@ -1,28 +1,24 @@
 plugins {
     kotlin("jvm")
+    kotlin("plugin.serialization") version V.P_KOTLINX_SERIALIZATION
 
     id("io.gitlab.arturbosch.detekt")
-
-    kotlin("plugin.serialization") version V.P_KOTLINX_SERIALIZATION
-}
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {
     implementation(projects.common.svcEngine)
-
     implementation(projects.common.entitiesMetadata)
 
+    implementation("io.github.pdvrieze.xmlutil:core-jvm:${V.XML_UTIL}")
+    implementation("io.github.pdvrieze.xmlutil:serialization-jvm:${V.XML_UTIL}")
 
-    implementation(kotlin("stdlib-jdk8"))
+
+    // Meta-code
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${V.DETEKT}")
 
-    // For XML
-    implementation("io.github.pdvrieze.xmlutil:core-jvm:${V.XML_UTIL}")
-    implementation("io.github.pdvrieze.xmlutil:serialization-jvm:${V.XML_UTIL}")
+    implementation(projects.common.logger)
+    implementation("io.github.microutils:kotlin-logging-jvm:${V.KOTLIN_LOGGING}")
 }
 
 detekt {

@@ -4,25 +4,24 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation(projects.common.svcEngine)
-
     implementation(projects.common.entitiesMetadata)
-
     implementation(projects.common.svSave)
 
-    implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${V.DETEKT}")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${V.KOTLINX_COROUTINES}")
 
     implementation("com.arkivanov.decompose:decompose:${V.DECOMPOSE}")
     implementation("com.arkivanov.mvikotlin:mvikotlin:${V.MVI_KOTLIN}")
     implementation("com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines:${V.MVI_KOTLIN}")
+
+
+    // Meta-code
+
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${V.DETEKT}")
+
+    implementation(projects.common.logger)
+    implementation("io.github.microutils:kotlin-logging-jvm:${V.KOTLIN_LOGGING}")
 }
 
 detekt {

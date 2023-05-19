@@ -44,10 +44,10 @@ import cafe.adriel.bonsai.core.tree.Tree
 import cafe.adriel.bonsai.filesystem.FileSystemBonsaiStyle
 import cafe.adriel.bonsai.filesystem.FileSystemTree
 import kotlinx.coroutines.delay
+import me.azimmuradov.svc.LoggerUtils
 import me.azimmuradov.svc.mainmenu.MainMenuIntent
 import me.azimmuradov.svc.mainmenu.MainMenuState
 import me.azimmuradov.svc.utils.GlobalSettings
-import mu.KotlinLogging
 import okio.Path
 import okio.Path.Companion.toPath
 import java.io.File
@@ -128,7 +128,7 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
         val root by remember { mutableStateOf(roots.first().absolutePath) }
 
         LaunchedEffect(Unit) {
-            KotlinLogging.logger(name = "log").info { roots.asList() }
+            LoggerUtils.logger.debug { "Roots: ${roots.asList()}" }
         }
 
         var currentDir by remember { mutableStateOf(savePath ?: homePath) }
@@ -330,7 +330,7 @@ private val savePath: String? = run {
     }
 
     "$dataPath${sep}StardewValley${sep}Saves".takeIf {
-        KotlinLogging.logger(name = "log").info { it }
+        LoggerUtils.logger.debug { "Saves path: $it" }
         File(it).exists()
     }
 }

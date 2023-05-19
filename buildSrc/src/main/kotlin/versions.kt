@@ -27,5 +27,18 @@ object V {
 
     const val MVI_KOTLIN: String = "3.2.0"
 
+    const val KOTLINX_COROUTINES: String = "1.6.4"
+
+    const val BONSAI: String = "1.2.0"
+
     const val XML_UTIL: String = "0.85.0"
+
+
+    // Logging
+
+    const val KOTLIN_LOGGING: String = "3.0.5"
+
+    const val SLFJ: String = "2.0.7"
+
+    const val LOG4J: String = "2.20.0"
 }

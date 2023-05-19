@@ -8,12 +8,11 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version V.P_DETEKT apply false
 }
 
-repositories {
-    mavenCentral()
-}
-
-
 subprojects {
+    repositories {
+        mavenCentral()
+    }
+
     tasks.withType<KotlinCompile> {
         kotlinOptions {
             languageVersion = "1.9"
