@@ -29,6 +29,8 @@ object V {
 
     const val KOTLINX_COROUTINES: String = "1.6.4"
 
+    const val DIRECTORIES: String = "26"
+
     const val BONSAI: String = "1.2.0"
 
     const val XML_UTIL: String = "0.85.0"

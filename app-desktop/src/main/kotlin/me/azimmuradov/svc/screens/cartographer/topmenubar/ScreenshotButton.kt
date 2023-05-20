@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
+import dev.dirs.UserDirectories
 import me.azimmuradov.svc.cartographer.modules.map.MapState
 import me.azimmuradov.svc.cartographer.res.*
 import me.azimmuradov.svc.cartographer.res.LayoutSpritesProvider.layoutSpriteBy
@@ -43,6 +44,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import javax.imageio.ImageIO
+import java.io.File.separator as sep
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -163,6 +165,6 @@ private fun makeScreenshot(map: MapState, visibleLayers: Set<LayerType<*>>) {
     ImageIO.write(
         imageBitmap.toAwtImage(),
         "png",
-        File(System.getProperty("user.home") + File.separator + filename)
+        File(UserDirectories.get().pictureDir + sep + "SVC" + sep + filename)
     )
 }

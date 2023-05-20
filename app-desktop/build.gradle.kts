@@ -35,6 +35,8 @@ dependencies {
     implementation("com.arkivanov.mvikotlin:mvikotlin:${V.MVI_KOTLIN}")
     implementation("com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines:${V.MVI_KOTLIN}")
 
+    implementation("dev.dirs:directories:${V.DIRECTORIES}")
+
     implementation("cafe.adriel.bonsai:bonsai-core:${V.BONSAI}")
     implementation("cafe.adriel.bonsai:bonsai-file-system:${V.BONSAI}")
 
