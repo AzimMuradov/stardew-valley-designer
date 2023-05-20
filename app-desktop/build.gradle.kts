@@ -48,20 +48,15 @@ dependencies {
 }
 
 
-tasks.withType<JavaExec> {
-    @Suppress("UNCHECKED_CAST")
-    systemProperties = System.getProperties() as MutableMap<String, Any>
-}
-
 compose.desktop {
     application {
         mainClass = "me.azimmuradov.svc.MainKt"
-        // jvmArgs += listOf("-Xmx2G")
-        // args += listOf("-customArgument")
+        jvmArgs += System.getProperties().entries.map { (k, v) -> "-D$k=$v" }
+        jvmArgs += "-Dlog4j2.disableJmx=true"
 
         buildTypes.release.proguard {
             configurationFiles.from(project.file("compose-desktop.pro"))
-            obfuscate.set(true)
+            // obfuscate.set(true)
         }
 
         nativeDistributions {
