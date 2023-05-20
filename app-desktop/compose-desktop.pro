@@ -20,8 +20,8 @@
 # -keepnames class org.slf4j.** { *; }
 
 -assumenosideeffects class * implements org.slf4j.Logger {
-    # public *** trace(...);
-    # public *** debug(...);
+    public *** trace(...);
+    public *** debug(...);
     # public *** info(...);
     # public *** warn(...);
     # public *** error(...);
