@@ -165,7 +165,7 @@ private fun makeScreenshot(map: MapState, visibleLayers: Set<LayerType<*>>) {
     val dir = "${UserDirectories.get().pictureDir}${sep}SVC"
     val filename = "svc-screenshot-$formatted.png"
 
-    Files.createDirectory(Path.of(dir))
+    Files.createDirectories(Path.of(dir))
 
     ImageIO.write(
         imageBitmap.toAwtImage(),
