@@ -51,8 +51,10 @@ dependencies {
 compose.desktop {
     application {
         mainClass = "me.azimmuradov.svc.MainKt"
-        jvmArgs += System.getProperties().entries.map { (k, v) -> "-D$k=$v" }
-        jvmArgs += "-Dlog4j2.disableJmx=true"
+
+        System.getProperty("log4j2.disableJmx")?.let { value ->
+            jvmArgs += "-Ddebug=$value"
+        }
 
         buildTypes.release.proguard {
             configurationFiles.from(project.file("compose-desktop.pro"))
