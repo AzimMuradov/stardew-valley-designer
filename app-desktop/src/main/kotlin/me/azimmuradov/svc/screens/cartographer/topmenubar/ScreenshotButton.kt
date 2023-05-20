@@ -40,6 +40,8 @@ import me.azimmuradov.svc.utils.DrawerUtils.placedEntityComparator
 import me.azimmuradov.svc.utils.GlobalSettings
 import me.azimmuradov.svc.utils.toRect
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -160,11 +162,14 @@ private fun makeScreenshot(map: MapState, visibleLayers: Set<LayerType<*>>) {
         .withZone(ZoneId.systemDefault())
         .format(Instant.now())
 
+    val dir = "${UserDirectories.get().pictureDir}${sep}SVC"
     val filename = "svc-screenshot-$formatted.png"
+
+    Files.createDirectory(Path.of(dir))
 
     ImageIO.write(
         imageBitmap.toAwtImage(),
         "png",
-        File(UserDirectories.get().pictureDir + sep + "SVC" + sep + filename)
+        File("$dir$sep$filename")
     )
 }
