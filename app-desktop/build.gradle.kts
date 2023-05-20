@@ -52,7 +52,7 @@ compose.desktop {
     application {
         mainClass = "me.azimmuradov.svc.MainKt"
 
-        System.getProperty("log4j2.disableJmx")?.let { value ->
+        System.getProperty("debug")?.let { value ->
             jvmArgs += "-Ddebug=$value"
         }
 
