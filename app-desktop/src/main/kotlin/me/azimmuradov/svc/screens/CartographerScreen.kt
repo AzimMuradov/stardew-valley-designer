@@ -18,7 +18,9 @@ package me.azimmuradov.svc.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.arkivanov.mvikotlin.extensions.coroutines.states
@@ -30,13 +32,30 @@ import me.azimmuradov.svc.screens.cartographer.sidemenus.RightSideMenus
 import me.azimmuradov.svc.screens.cartographer.topmenubar.TopMenuBar
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CartographerScreen(component: CartographerComponent) {
     val store = component.store
     val state by store.states.collectAsState(component.store.state)
     val (history, map, toolkit, palette, /* flavors, */ visLayers, /* clipboard, */ options) = state
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier.fillMaxSize().onKeyEvent {
+            when {
+                it.isCtrlPressed && it.key == Key.Z && it.type == KeyEventType.KeyUp -> {
+                    store.accept(CartographerIntent.History.GoBack)
+                    true
+                }
+
+                it.isCtrlPressed && it.key == Key.Y && it.type == KeyEventType.KeyUp -> {
+                    store.accept(CartographerIntent.History.GoForward)
+                    true
+                }
+
+                else -> false
+            }
+        }
+    ) {
         TopMenuBar(
             map = map,
             visibleLayers = visLayers.visibleLayers,
