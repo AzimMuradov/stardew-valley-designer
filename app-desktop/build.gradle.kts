@@ -78,6 +78,13 @@ compose.desktop {
                 TargetFormat.Exe, TargetFormat.Msi,
                 // TargetFormat.Pkg, // TODO : Signing
             )
+
+            linux {
+                iconFile.set(project.file("icon.png"))
+            }
+            windows {
+                iconFile.set(project.file("icon.ico"))
+            }
         }
     }
 }
