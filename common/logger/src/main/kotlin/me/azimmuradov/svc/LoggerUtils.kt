@@ -22,18 +22,9 @@ import com.arkivanov.mvikotlin.logging.logger.Logger
 import com.arkivanov.mvikotlin.logging.store.LoggingStoreFactory
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import mu.KotlinLogging
-import org.apache.logging.log4j.Level
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.core.config.Configurator
 
 
 object LoggerUtils {
-
-    init {
-        if (isDebug) {
-            Configurator.setAllLevels(LogManager.getRootLogger().name, Level.DEBUG)
-        }
-    }
 
     val isDebug get() = System.getProperty("debug")?.toBooleanStrictOrNull() ?: true
 

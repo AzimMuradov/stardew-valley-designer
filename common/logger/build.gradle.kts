@@ -6,9 +6,6 @@ plugins {
 
 dependencies {
     implementation("io.github.microutils:kotlin-logging-jvm:${V.KOTLIN_LOGGING}")
-    implementation("org.slf4j:slf4j-api:${V.SLFJ}")
-    implementation("org.apache.logging.log4j:log4j-api:${V.LOG4J}")
-    implementation("org.apache.logging.log4j:log4j-core:${V.LOG4J}")
     implementation("org.apache.logging.log4j:log4j-slf4j2-impl:${V.LOG4J}")
 
     implementation("com.arkivanov.mvikotlin:mvikotlin:${V.MVI_KOTLIN}")
