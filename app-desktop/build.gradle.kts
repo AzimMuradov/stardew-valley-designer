@@ -80,10 +80,10 @@ compose.desktop {
             )
 
             linux {
-                iconFile.set(project.file("icon.png"))
+                iconFile.set(sourceSets.main.get().output.resourcesDir!!.resolve("icon.png"))
             }
             windows {
-                iconFile.set(project.file("icon.ico"))
+                iconFile.set(sourceSets.main.get().output.resourcesDir!!.resolve("icon.ico"))
             }
         }
     }
