@@ -22,8 +22,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -89,14 +88,14 @@ fun RowScope.SideMenu() {
             SideMenuButton(
                 text = wordList.buttonStardewValleyText,
                 tooltip = wordList.buttonStardewValleyTooltip,
-                icon = painterResource(resourcePath = "main-menu/captive_portal_FILL1_wght400_GRAD0_opsz48.svg"),
+                icon = Icons.Filled.OpenInBrowser,
                 onClick = { BrowserUtils.open(URI.create("https://www.stardewvalley.net/")) },
                 enabled = true
             )
             SideMenuButton(
                 text = wordList.buttonSwitchThemeText,
                 tooltip = wordList.buttonSwitchThemeTooltip,
-                icon = painterResource(resourcePath = "main-menu/light_mode_FILL1_wght400_GRAD0_opsz48.svg")
+                icon = Icons.Filled.LightMode
             )
             SideMenuButton(
                 text = wordList.buttonSettingsText,
@@ -106,7 +105,7 @@ fun RowScope.SideMenu() {
             SideMenuButton(
                 text = wordList.buttonDonateText,
                 tooltip = wordList.buttonDonateTooltip,
-                icon = painterResource(resourcePath = "main-menu/emoji_food_beverage_FILL1_wght400_GRAD0_opsz48.svg")
+                icon = Icons.Filled.EmojiFoodBeverage
             )
             SideMenuButton(
                 text = wordList.buttonHelpText,

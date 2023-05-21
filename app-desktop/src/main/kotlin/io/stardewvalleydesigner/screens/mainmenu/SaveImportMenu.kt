@@ -33,7 +33,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
@@ -66,7 +65,7 @@ fun RowScope.SaveImportMenu(
 
     PlanMenuButton(
         text = wordList.buttonSaveImportText,
-        icon = painterResource(resourcePath = "main-menu/save_FILL1_wght400_GRAD0_opsz48.svg"),
+        icon = Icons.Filled.Save,
         onClick = { intentConsumer(MainMenuIntent.SaveLoaderMenu.OpenMenu) }
     )
 

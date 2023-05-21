@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -35,55 +34,16 @@ fun RowScope.PlanMenuButton(
     onClick: () -> Unit = {},
     enabled: Boolean = true,
 ) {
-    PlanMenuButton(
-        text,
-        icon = {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                modifier = Modifier.size(24.dp)
-            )
-        },
-        onClick,
-        enabled
-    )
-}
-
-@Composable
-fun RowScope.PlanMenuButton(
-    text: String,
-    icon: Painter,
-    onClick: () -> Unit = {},
-    enabled: Boolean = true,
-) {
-    PlanMenuButton(
-        text,
-        icon = {
-            Icon(
-                painter = icon,
-                contentDescription = null,
-                modifier = Modifier.size(24.dp)
-            )
-        },
-        onClick,
-        enabled
-    )
-}
-
-
-@Composable
-private fun RowScope.PlanMenuButton(
-    text: String,
-    icon: @Composable () -> Unit,
-    onClick: () -> Unit,
-    enabled: Boolean,
-) {
     Button(
         onClick = onClick,
         modifier = Modifier.fillMaxHeight().weight(1f),
         enabled = enabled
     ) {
-        icon()
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier.size(24.dp)
+        )
         Spacer(Modifier.width(12.dp))
         Text(
             text,

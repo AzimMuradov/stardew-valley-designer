@@ -24,13 +24,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SideMenuButton(
     text: String,
@@ -39,65 +39,19 @@ fun SideMenuButton(
     onClick: () -> Unit = {},
     enabled: Boolean = false,
 ) {
-    SideMenuButton(
-        text,
-        tooltip,
-        icon = {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                modifier = Modifier.size(24.dp)
-            )
-        },
-        onClick,
-        enabled
-    )
-}
-
-@Composable
-fun SideMenuButton(
-    text: String,
-    tooltip: String,
-    icon: Painter,
-    onClick: () -> Unit = {},
-    enabled: Boolean = false,
-) {
-    SideMenuButton(
-        text,
-        tooltip,
-        icon = {
-            Icon(
-                painter = icon,
-                contentDescription = null,
-                modifier = Modifier.size(24.dp)
-            )
-        },
-        onClick,
-        enabled
-    )
-}
-
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun SideMenuButton(
-    text: String,
-    tooltip: String,
-    icon: @Composable () -> Unit,
-    onClick: () -> Unit = {},
-    enabled: Boolean = false,
-) {
     TooltipArea(
         tooltip = {
-            Surface(
-                modifier = Modifier.shadow(4.dp),
-                color = Color(red = 255, green = 255, blue = 210),
-                shape = MaterialTheme.shapes.small
-            ) {
-                Text(
-                    text = tooltip,
-                    modifier = Modifier.padding(10.dp)
-                )
+            if (enabled) {
+                Surface(
+                    modifier = Modifier.shadow(4.dp),
+                    color = Color(red = 255, green = 255, blue = 210),
+                    shape = MaterialTheme.shapes.small
+                ) {
+                    Text(
+                        text = tooltip,
+                        modifier = Modifier.padding(10.dp)
+                    )
+                }
             }
         },
         tooltipPlacement = TooltipPlacement.ComponentRect(
@@ -121,7 +75,11 @@ private fun SideMenuButton(
                 bottom = 8.dp
             )
         ) {
-            icon()
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                modifier = Modifier.size(24.dp)
+            )
             Spacer(Modifier.width(12.dp))
             Text(
                 text,

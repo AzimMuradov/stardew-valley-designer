@@ -21,12 +21,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FileOpen
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.mainmenu.MainMenuIntent
 import io.stardewvalleydesigner.mainmenu.MainMenuState
@@ -61,7 +61,7 @@ fun RowScope.RightSideMenu(
 
             PlanMenuButton(
                 text = wordList.buttonOpenPlanText,
-                icon = painterResource(resourcePath = "main-menu/file_open_FILL1_wght400_GRAD0_opsz48.svg"),
+                icon = Icons.Filled.FileOpen,
                 enabled = false
             )
 
