@@ -1,4 +1,4 @@
-rootProject.name = "stardew-valley-cartographer"
+rootProject.name = "stardew-valley-designer"
 
 
 // Applications
@@ -6,9 +6,9 @@ rootProject.name = "stardew-valley-cartographer"
 include(":app-desktop")
 // TODO : include(":app-web")
 
-// SVC Engine
+// Editor Engine
 
-include(":common:svc-engine")
+include(":common:editor-engine")
 
 // Entities metadata
 
@@ -25,7 +25,7 @@ include(":common:components:root")
 include(
     ":common:components:screen-splash",
     ":common:components:screen-main-menu",
-    ":common:components:screen-cartographer",
+    ":common:components:screen-editor",
     ":common:components:screen-settings",
 )
 
@@ -36,7 +36,6 @@ include(
     ":common:ui-utils:dropdown-menu",
     ":common:ui-utils:dropdown-menu-ui",
 )
-
 
 // Logger
 

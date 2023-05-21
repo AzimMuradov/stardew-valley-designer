@@ -6,7 +6,7 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.common.svcEngine)
+    implementation(projects.common.editorEngine)
     implementation(projects.common.entitiesMetadata)
 
     implementation("io.github.pdvrieze.xmlutil:core-jvm:${V.XML_UTIL}")

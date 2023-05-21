@@ -5,11 +5,11 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.common.svcEngine)
+    implementation(projects.common.editorEngine)
 
     implementation(projects.common.components.screenSplash)
     implementation(projects.common.components.screenMainMenu)
-    implementation(projects.common.components.screenCartographer)
+    implementation(projects.common.components.screenEditor)
     implementation(projects.common.components.screenSettings)
 
     implementation("com.arkivanov.decompose:decompose:${V.DECOMPOSE}")

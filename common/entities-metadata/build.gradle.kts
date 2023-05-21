@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.common.svcEngine)
+    implementation(projects.common.editorEngine)
 
 
     // Meta-code

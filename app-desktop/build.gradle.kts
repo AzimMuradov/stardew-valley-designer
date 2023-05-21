@@ -8,17 +8,17 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
 }
 
-group = SVC.GROUP
-version = SVC.VERSION
+group = App.GROUP
+version = App.VERSION
 
 dependencies {
-    implementation(projects.common.svcEngine)
+    implementation(projects.common.editorEngine)
     implementation(projects.common.entitiesMetadata)
 
     implementation(projects.common.components.root)
     implementation(projects.common.components.screenSplash)
     implementation(projects.common.components.screenMainMenu)
-    implementation(projects.common.components.screenCartographer)
+    implementation(projects.common.components.screenEditor)
     implementation(projects.common.components.screenSettings)
 
     implementation(projects.common.uiUtils.buttonsGroupUi)
@@ -52,7 +52,7 @@ dependencies {
 
 compose.desktop {
     application {
-        mainClass = "me.azimmuradov.svc.MainKt"
+        mainClass = "io.stardewvalleydesigner.MainKt"
 
         System.getProperty("debug")?.let { value ->
             jvmArgs += "-Ddebug=$value"
@@ -64,10 +64,10 @@ compose.desktop {
         }
 
         nativeDistributions {
-            packageName = SVC.NAME
-            packageVersion = SVC.VERSION
-            description = SVC.DESCRIPTION
-            copyright = SVC.COPYRIGHT
+            packageName = App.NAME
+            packageVersion = App.VERSION
+            description = App.DESCRIPTION
+            copyright = App.COPYRIGHT
             licenseFile.set(rootProject.file("LICENSE"))
 
             outputBaseDir.set(rootProject.buildDir.resolve(relative = "bin"))
