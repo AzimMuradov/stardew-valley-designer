@@ -33,6 +33,8 @@ object V {
 
     const val BONSAI: String = "1.2.0"
 
+    const val RICH_EDITOR: String = "0.2.0"
+
     const val XML_UTIL: String = "0.85.0"
 
 
