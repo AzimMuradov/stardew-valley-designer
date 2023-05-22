@@ -75,6 +75,22 @@ sealed interface WordList {
 
     val buttonInfoTooltip: String
 
+    val infoApplicationDescription: String
+
+    val infoApplicationAuthor: String
+
+    val infoApplicationSource: String
+
+    val infoConcernedApeTwitter: String
+
+    val infoSVText1: String
+
+    val infoSVText2: String
+
+    val infoSVText3: String
+
+    val infoBugs: String
+
 
     val buttonNewPlanText: String
 

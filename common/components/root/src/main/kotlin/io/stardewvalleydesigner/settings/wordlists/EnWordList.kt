@@ -70,6 +70,23 @@ data object EnWordList : WordList {
 
     override val buttonInfoTooltip: String = "Show information about this project"
 
+    override val infoApplicationDescription: String =
+        "The goal of this project is to provide a finely tuned editor for designing your farm and the interior of all its buildings."
+
+    override val infoApplicationAuthor: String = "Application author"
+
+    override val infoApplicationSource: String = "Application source"
+
+    override val infoConcernedApeTwitter: String = "ConcernedApe twitter"
+
+    override val infoSVText1: String = "Stardew Valley is developed by "
+
+    override val infoSVText2: String = " and self-published on most platforms."
+
+    override val infoSVText3: String =
+        "Most of the sprites and icons used in this app, including the app icon, are from the original game."
+
+    override val infoBugs: String = "If you encounter a bug or have any questions, please let me know."
 
     override val buttonNewPlanText: String = "New plan"
 

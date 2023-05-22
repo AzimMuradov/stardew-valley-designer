@@ -46,7 +46,6 @@ import androidx.compose.ui.window.rememberDialogState
 import com.mohamedrejeb.richeditor.annotation.ExperimentalRichTextApi
 import com.mohamedrejeb.richeditor.model.RichTextValue
 import com.mohamedrejeb.richeditor.ui.material.RichText
-import io.stardewvalleydesigner.settings.wordlists.WordList
 import io.stardewvalleydesigner.utils.BrowserUtils
 import io.stardewvalleydesigner.utils.GlobalSettings
 import java.net.URI
@@ -110,9 +109,9 @@ private fun Info() {
                 item {
                     SelectionContainer {
                         Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
-                            DescriptionSection()
+                            Text(wordList.infoApplicationDescription)
                             Divider(modifier = Modifier.fillMaxWidth())
-                            ApplicationAuthorsSection(heading, wordList)
+                            ApplicationAuthorsSection(heading)
                             Divider(modifier = Modifier.fillMaxWidth())
                             StardewValleySection(heading)
                             Divider(modifier = Modifier.fillMaxWidth())
@@ -130,22 +129,14 @@ private fun Info() {
 }
 
 @Composable
-private fun DescriptionSection() {
-    RichText(
-        buildAnnotatedString {
-            append("The goal of this project is to provide a finely tuned editor for designing your farm and the interior of all its buildings.")
-        }.toRichTextValue()
-    )
-}
+private fun ApplicationAuthorsSection(heading: SpanStyle) {
+    val wordList = GlobalSettings.strings
 
-@Composable
-private fun ApplicationAuthorsSection(heading: SpanStyle, wordList: WordList) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         RichText(
             buildAnnotatedString {
-                withStyle(style = heading) { append("Application author") }
-                append(": ")
-                append(wordList.author)
+                withStyle(style = heading) { append(wordList.infoApplicationAuthor) }
+                append(": ${wordList.author}")
             }.toRichTextValue()
         )
 
@@ -155,7 +146,7 @@ private fun ApplicationAuthorsSection(heading: SpanStyle, wordList: WordList) {
         ) {
             RichText(
                 buildAnnotatedString {
-                    withStyle(style = heading) { append("Application source") }
+                    withStyle(style = heading) { append(wordList.infoApplicationSource) }
                 }.toRichTextValue(),
                 modifier = Modifier.weight(1f),
             )
@@ -187,15 +178,17 @@ private fun ApplicationAuthorsSection(heading: SpanStyle, wordList: WordList) {
 
 @Composable
 private fun StardewValleySection(heading: SpanStyle) {
+    val wordList = GlobalSettings.strings
+
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         RichText(
             buildAnnotatedString {
-                append("Stardew Valley is developed by ")
+                append(wordList.infoSVText1)
                 withStyle(style = heading) { append("ConcernedApe") }
-                append(" and self-published on most platforms.")
+                append(wordList.infoSVText2)
                 appendLine()
                 appendLine()
-                append("Most of the sprites and icons used in this app, including the app icon, are from the original game.")
+                append(wordList.infoSVText3)
             }.toRichTextValue(),
             modifier = Modifier.fillMaxWidth(),
         )
@@ -238,7 +231,7 @@ private fun BugTrackerSection() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "If you encounter a bug or have any questions, please let me know.",
+            text = GlobalSettings.strings.infoBugs,
             modifier = Modifier.weight(1f),
             softWrap = true
         )
