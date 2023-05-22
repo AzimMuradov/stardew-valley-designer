@@ -26,7 +26,7 @@ import mu.KotlinLogging
 
 object LoggerUtils {
 
-    val isDebug get() = System.getProperty("debug")?.toBooleanStrictOrNull() ?: true
+    private val isDebug get() = System.getProperty("debug")?.toBooleanStrictOrNull() ?: true
 
     val logger = KotlinLogging.logger {}
 

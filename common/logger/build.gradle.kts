@@ -1,7 +1,5 @@
 plugins {
     kotlin("jvm")
-
-    id("io.gitlab.arturbosch.detekt")
 }
 
 dependencies {
@@ -11,10 +9,4 @@ dependencies {
     implementation("com.arkivanov.mvikotlin:mvikotlin:${V.MVI_KOTLIN}")
     implementation("com.arkivanov.mvikotlin:mvikotlin-main:${V.MVI_KOTLIN}")
     implementation("com.arkivanov.mvikotlin:mvikotlin-logging:${V.MVI_KOTLIN}")
-}
-
-detekt {
-    toolVersion = V.DETEKT
-    config = files("../config/detekt/detekt.yml")
-    buildUponDefaultConfig = true
 }
