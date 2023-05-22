@@ -89,29 +89,27 @@ fun RowScope.SideMenu() {
                 text = wordList.buttonStardewValleyText,
                 tooltip = wordList.buttonStardewValleyTooltip,
                 icon = Icons.Filled.OpenInBrowser,
-                onClick = { BrowserUtils.open(URI.create("https://www.stardewvalley.net/")) },
-                enabled = true
+                onClick = { BrowserUtils.open(URI.create("https://www.stardewvalley.net/")) }
             )
             SideMenuButton(
                 text = wordList.buttonSwitchThemeText,
                 tooltip = wordList.buttonSwitchThemeTooltip,
-                icon = Icons.Filled.LightMode
+                icon = Icons.Filled.LightMode,
+                enabled = false
             )
             SideMenuButton(
                 text = wordList.buttonSettingsText,
                 tooltip = wordList.buttonSettingsTooltip,
-                icon = Icons.Filled.Settings
+                icon = Icons.Filled.Settings,
+                enabled = false
             )
             SideMenuButton(
                 text = wordList.buttonDonateText,
                 tooltip = wordList.buttonDonateTooltip,
-                icon = Icons.Filled.EmojiFoodBeverage
+                icon = Icons.Filled.EmojiFoodBeverage,
+                enabled = false
             )
-            SideMenuButton(
-                text = wordList.buttonHelpText,
-                tooltip = wordList.buttonHelpTooltip,
-                icon = Icons.Filled.Info
-            )
+            InfoWindow()
         }
     }
 }

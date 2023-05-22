@@ -40,6 +40,8 @@ dependencies {
     implementation("cafe.adriel.bonsai:bonsai-core:${V.BONSAI}")
     implementation("cafe.adriel.bonsai:bonsai-file-system:${V.BONSAI}")
 
+    implementation("com.mohamedrejeb.richeditor:richeditor-compose:${V.RICH_EDITOR}")
+
 
     // Meta-code
 

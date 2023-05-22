@@ -37,7 +37,7 @@ fun SideMenuButton(
     tooltip: String,
     icon: ImageVector,
     onClick: () -> Unit = {},
-    enabled: Boolean = false,
+    enabled: Boolean = true,
 ) {
     TooltipArea(
         tooltip = {

@@ -71,9 +71,9 @@ sealed interface WordList {
 
     val buttonDonateTooltip: String
 
-    val buttonHelpText: String
+    val buttonInfoText: String
 
-    val buttonHelpTooltip: String
+    val buttonInfoTooltip: String
 
 
     val buttonNewPlanText: String

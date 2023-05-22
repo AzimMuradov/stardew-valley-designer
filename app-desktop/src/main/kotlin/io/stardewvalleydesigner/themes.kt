@@ -19,10 +19,10 @@ package io.stardewvalleydesigner
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.platform.Font
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.*
 
 
 @Composable
@@ -66,9 +66,17 @@ private fun AppLightTheme(content: @Composable () -> Unit) {
             // h1 = ,
             // h2 = ,
             // h3 = ,
-            // h4 = ,
+            h4 = TextStyle(
+                fontWeight = FontWeight.Normal,
+                fontSize = 32.sp,
+                letterSpacing = 0.25.sp
+            ),
             // h5 = ,
-            // h6 = ,
+            h6 = TextStyle(
+                fontWeight = FontWeight.Medium,
+                fontSize = 18.sp,
+                letterSpacing = 0.15.sp
+            ),
             // subtitle1 = ,
             // subtitle2 = ,
             // body1 = ,

@@ -52,7 +52,7 @@ data object EnWordList : WordList {
 
     override val buttonStardewValleyText: String = "Stardew Valley"
 
-    override val buttonStardewValleyTooltip: String = "Official Stardew Valley Site"
+    override val buttonStardewValleyTooltip: String = "Open official Stardew Valley site"
 
     override val buttonSwitchThemeText: String = "Switch theme"
 
@@ -66,9 +66,9 @@ data object EnWordList : WordList {
 
     override val buttonDonateTooltip: String = "WIP"
 
-    override val buttonHelpText: String = "Help"
+    override val buttonInfoText: String = "Info"
 
-    override val buttonHelpTooltip: String = "WIP"
+    override val buttonInfoTooltip: String = "Show information about this project"
 
 
     override val buttonNewPlanText: String = "New plan"
