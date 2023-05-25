@@ -12,6 +12,8 @@ buildings.
 
 Latest release - https://github.com/AzimMuradov/stardew-valley-designer/releases/latest.
 
+Currently no shortcut will be created after installation, but this is planned for the next release.
+
 ### Windows
 
 Windows (exe file, 64-bit)
