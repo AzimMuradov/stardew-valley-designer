@@ -43,7 +43,16 @@
 - Toggle preview
 - Save plan as an image
 
-## 1.0.0 -- ??? (unmapped territory)
+### 0.8.0
+
+- Show various info (current coordinates, chosen elements, shape size, etc)
+- New toggleables - show various functional areas (Scarecrows, Sprinklers, Bee Houses)
+
+## 1.0.0
+
+- Plan saves
+
+## Backlog
 
 - New tool (eye dropper)
 - Palette
@@ -58,14 +67,11 @@
 - New shapes (ellipse, ellipse outline, heart, heart outline), change shapes menu, `shift` for NxN
 - Search fields for various types of items
 - Clipboard
-- Show various info (current coordinates, chosen elements, shape size, etc)
 - Define theme for Compose
-- New toggleables - show various functional areas (Scarecrows, Sprinklers, Bee Houses)
 - Render (in every season)
 - Settings menu (with ability to store and restore settings)
 - Add rules to the menu
-- New languages (Azeri, Türkçe, Русский, Українська)
-- Plan saves
+- Add new languages
 - Tappers, crab pots and modified sprinklers
 - Building paintings
 - Tooltips, Hotkeys, Cursors (Pointers) & Other PC Features
