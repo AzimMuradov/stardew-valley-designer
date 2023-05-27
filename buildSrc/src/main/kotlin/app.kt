@@ -2,7 +2,7 @@ object App {
 
     const val GROUP: String = "io.stardewvalleydesigner"
 
-    const val NAME: String = "Stardew Valley Designer"
+    const val NAME: String = "stardew-valley-designer"
 
     const val VERSION: String = "0.7.1"
 

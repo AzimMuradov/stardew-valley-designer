@@ -5,7 +5,16 @@ plugins {
     kotlin("jvm")
     id("org.jetbrains.compose") version V.P_COMPOSE
 
+    id("dev.hydraulic.conveyor") version "1.6"
+
     id("io.gitlab.arturbosch.detekt")
+}
+
+repositories {
+    mavenCentral()
+    google()
+    maven { url = uri("https://jitpack.io") }
+    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
 }
 
 group = App.GROUP
@@ -41,6 +50,11 @@ dependencies {
     implementation("cafe.adriel.bonsai:bonsai-file-system:${V.BONSAI}")
 
     implementation("com.mohamedrejeb.richeditor:richeditor-compose:${V.RICH_EDITOR}")
+
+    linuxAmd64(compose.desktop.linux_x64)
+    // macAmd64(compose.desktop.macos_x64)
+    // macAarch64(compose.desktop.macos_arm64)
+    windowsAmd64(compose.desktop.windows_x64)
 
 
     // Meta-code
@@ -91,6 +105,10 @@ compose.desktop {
     }
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 tasks.clean {
     delete(rootProject.buildDir)
 }
@@ -100,3 +118,12 @@ detekt {
     config = files("../config/detekt/detekt.yml")
     buildUponDefaultConfig = true
 }
+
+// region Work around temporary Compose bugs.
+configurations.all {
+    attributes {
+        // https://github.com/JetBrains/compose-jb/issues/1404#issuecomment-1146894731
+        attribute(Attribute.of("ui", String::class.java), "awt")
+    }
+}
+// endregion
