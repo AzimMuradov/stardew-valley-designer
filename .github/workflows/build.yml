@@ -14,7 +14,7 @@ jobs:
             gradle-task: packageReleaseDeb
           - os: windows-latest
             os-name: windows
-            gradle-task: packageReleaseDistributionForCurrentOS
+            gradle-task: packageReleaseExe
     runs-on: ${{ matrix.os }}
     steps:
       - name: "Checkout"

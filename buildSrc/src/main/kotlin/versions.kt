@@ -6,9 +6,11 @@ object V {
 
     const val P_KOTLINX_SERIALIZATION: String = "1.8.10"
 
-    const val P_DETEKT: String = "1.22.0"
-
     const val P_COMPOSE: String = "1.4.0"
+
+    const val P_CONVEYOR: String = "1.6"
+
+    const val P_DETEKT: String = "1.22.0"
 
 
     // Kotlin Compile

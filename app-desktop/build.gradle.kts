@@ -5,16 +5,9 @@ plugins {
     kotlin("jvm")
     id("org.jetbrains.compose") version V.P_COMPOSE
 
-    id("dev.hydraulic.conveyor") version "1.6"
+    id("dev.hydraulic.conveyor") version V.P_CONVEYOR
 
     id("io.gitlab.arturbosch.detekt")
-}
-
-repositories {
-    mavenCentral()
-    google()
-    maven { url = uri("https://jitpack.io") }
-    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
 }
 
 group = App.GROUP
@@ -51,10 +44,13 @@ dependencies {
 
     implementation("com.mohamedrejeb.richeditor:richeditor-compose:${V.RICH_EDITOR}")
 
+
+    // Conveyor
+
     linuxAmd64(compose.desktop.linux_x64)
+    windowsAmd64(compose.desktop.windows_x64)
     // macAmd64(compose.desktop.macos_x64)
     // macAarch64(compose.desktop.macos_arm64)
-    windowsAmd64(compose.desktop.windows_x64)
 
 
     // Meta-code
@@ -91,16 +87,9 @@ compose.desktop {
             targetFormats(
                 TargetFormat.Deb,
                 // TargetFormat.Rpm,
-                TargetFormat.Exe, TargetFormat.Msi,
+                TargetFormat.Exe,
                 // TargetFormat.Pkg, // TODO : Signing
             )
-
-            linux {
-                iconFile.set(sourceSets.main.get().output.resourcesDir!!.resolve("icon.png"))
-            }
-            windows {
-                iconFile.set(sourceSets.main.get().output.resourcesDir!!.resolve("icon.ico"))
-            }
         }
     }
 }
