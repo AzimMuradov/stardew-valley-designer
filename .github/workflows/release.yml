@@ -23,13 +23,11 @@ jobs:
         run: ./gradlew proguardReleaseJars --stacktrace
       - name: "Print conveyor config"
         run: ./gradlew printConveyorConfig --stacktrace
-      - name: "Download Conveyor"
-        run: |
-          wget https://downloads.hydraulic.dev/conveyor/conveyor-9.1-linux-amd64.tar.gz
-          mkdir -p conveyor/install
-          tar xzvf conveyor-9.1-linux-amd64.tar.gz -C conveyor/install
       - name: "Package and publish release"
-        run: conveyor/install/conveyor-9.1/bin/conveyor make copied-site
+        uses: hydraulic-software/conveyor/actions/build@48c67c36c6cdf6a887135b984b00ca323f65fce4
+        with:
+          command: "make copied-site"
+          agree_to_license: 1
+          signing_key: "keyring"
         env:
-          CONVEYOR_AGREE_TO_LICENSE: 1
           GH_CONVEYOR: ${{ secrets.GH_CONVEYOR }}
