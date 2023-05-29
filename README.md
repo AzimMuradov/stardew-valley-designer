@@ -1,6 +1,6 @@
 # Stardew Valley Designer
 
-[![Latest release](https://img.shields.io/github/v/release/AzimMuradov/stardew-valley-designer)](https://github.com/AzimMuradov/stardew-valley-designer/releases/latest)
+[![Latest release](https://img.shields.io/github/v/release/AzimMuradov/stardew-valley-designer)](https://azimmuradov.github.io/stardew-valley-designer/download.html)
 [![Build project](https://img.shields.io/github/actions/workflow/status/AzimMuradov/stardew-valley-designer/build.yml?branch=master)](https://github.com/AzimMuradov/stardew-valley-designer/actions/workflows/build.yml)
 [![Test project](https://img.shields.io/github/actions/workflow/status/AzimMuradov/stardew-valley-designer/test.yml?branch=master&label=test)](https://github.com/AzimMuradov/stardew-valley-designer/actions/workflows/test.yml)
 [![Apache-2.0](https://img.shields.io/github/license/AzimMuradov/stardew-valley-designer)](https://www.apache.org/licenses/LICENSE-2.0)
@@ -10,21 +10,14 @@ buildings.
 
 ## Installation
 
-Latest release - https://github.com/AzimMuradov/stardew-valley-designer/releases/latest.
+Latest release - https://azimmuradov.github.io/stardew-valley-designer/download.html.
 
-Currently no shortcut will be created after installation, but this is planned for the next release.
+Currently supported platforms:
 
-### Windows
+- Windows (x86-64)
+- Linux (x86-64)
+  - Debian family
 
-Windows (exe file, 64-bit)
-
-### Linux
-
-Ubuntu/Debian (deb file, 64-bit)
-
-### MacOS
-
-Currently not supported
 
 ## Features
 
