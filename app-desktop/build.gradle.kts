@@ -5,6 +5,8 @@ plugins {
     kotlin("jvm")
     id("org.jetbrains.compose") version V.P_COMPOSE
 
+    id("dev.hydraulic.conveyor") version V.P_CONVEYOR
+
     id("io.gitlab.arturbosch.detekt")
 }
 
@@ -43,6 +45,14 @@ dependencies {
     implementation("com.mohamedrejeb.richeditor:richeditor-compose:${V.RICH_EDITOR}")
 
 
+    // Conveyor
+
+    linuxAmd64(compose.desktop.linux_x64)
+    windowsAmd64(compose.desktop.windows_x64)
+    // macAmd64(compose.desktop.macos_x64)
+    // macAarch64(compose.desktop.macos_arm64)
+
+
     // Meta-code
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${V.DETEKT}")
@@ -77,18 +87,15 @@ compose.desktop {
             targetFormats(
                 TargetFormat.Deb,
                 // TargetFormat.Rpm,
-                TargetFormat.Exe, TargetFormat.Msi,
+                TargetFormat.Exe,
                 // TargetFormat.Pkg, // TODO : Signing
             )
-
-            linux {
-                iconFile.set(sourceSets.main.get().output.resourcesDir!!.resolve("icon.png"))
-            }
-            windows {
-                iconFile.set(sourceSets.main.get().output.resourcesDir!!.resolve("icon.ico"))
-            }
         }
     }
+}
+
+kotlin {
+    jvmToolchain(17)
 }
 
 tasks.clean {
@@ -100,3 +107,12 @@ detekt {
     config = files("../config/detekt/detekt.yml")
     buildUponDefaultConfig = true
 }
+
+// region Work around temporary Compose bugs.
+configurations.all {
+    attributes {
+        // https://github.com/JetBrains/compose-jb/issues/1404#issuecomment-1146894731
+        attribute(Attribute.of("ui", String::class.java), "awt")
+    }
+}
+// endregion
