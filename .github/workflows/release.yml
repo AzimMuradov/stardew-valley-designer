@@ -30,4 +30,4 @@ jobs:
           agree_to_license: 1
           signing_key: "keyring"
         env:
-          GH_CONVEYOR: ${{ secrets.CONVEYOR }}
+          GH_CONVEYOR: ${{ secrets.GH_CONVEYOR }}
