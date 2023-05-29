@@ -28,4 +28,4 @@ jobs:
         with:
           command: "make copied-site"
           agree_to_license: 1
-          signing_key: ""
+          signing_key: "keyring"
