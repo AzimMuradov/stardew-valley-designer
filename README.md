@@ -16,8 +16,7 @@ Currently supported platforms:
 
 - Windows (x86-64)
 - Linux (x86-64)
-  - Debian family
-
+    - Debian family
 
 ## Features
 
