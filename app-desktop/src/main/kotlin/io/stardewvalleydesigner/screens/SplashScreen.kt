@@ -76,4 +76,4 @@ private const val ICON_MIN_TRANSPARENCY = 0.0f
 private const val ICON_MAX_TRANSPARENCY = 1.0f
 private const val ICON_ANIMATION_STIFFNESS = 3f
 
-private const val ICON_RES_PATH = "icon.png"
+private const val ICON_RES_PATH = "icons/icon-1024.png"
