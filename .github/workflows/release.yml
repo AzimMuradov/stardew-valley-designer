@@ -29,3 +29,5 @@ jobs:
           command: "make copied-site"
           agree_to_license: 1
           signing_key: "keyring"
+        env:
+          GH_CONVEYOR: ${{ secrets.CONVEYOR }}
