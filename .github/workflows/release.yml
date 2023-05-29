@@ -24,7 +24,7 @@ jobs:
       - name: "Print conveyor config"
         run: ./gradlew printConveyorConfig --stacktrace
       - name: "Package and publish release"
-        uses: hydraulic-software/conveyor/actions/build@v1
+        uses: hydraulic-software/conveyor/actions/build@48c67c36c6cdf6a887135b984b00ca323f65fce4
         with:
           command: "make copied-site"
           agree_to_license: 1
