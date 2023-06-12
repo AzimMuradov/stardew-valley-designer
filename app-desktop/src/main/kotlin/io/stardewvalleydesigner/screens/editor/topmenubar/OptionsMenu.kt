@@ -31,7 +31,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.menus.OptionsItemValue
 import io.stardewvalleydesigner.editor.menus.OptionsMenu
@@ -54,11 +53,10 @@ fun RowScope.OptionsMenu(
 
             shape = RectangleShape,
 
-            menuRootModifierProvider = {
-                Modifier
-                    .background(
-                        color = if (it) Color(0xFF629749) else Color.Transparent
-                    )
+            menuRootModifierProvider = { hovered ->
+                Modifier.background(
+                    color = if (hovered) Color.White.copy(alpha = 0.15f) else Color.Transparent
+                )
             },
             menuRootContent = { _, hovered ->
                 val rotation by animateFloatAsState(if (hovered) 180f else 0f)
@@ -82,10 +80,10 @@ fun RowScope.OptionsMenu(
             submenuRootContent = { _, _ -> },
             submenuModifierProvider = { DROPDOWN_MENU_MODIFIER },
 
-            itemModifierProvider = { _, hoverable ->
+            itemModifierProvider = { _, hovered ->
                 Modifier
                     .fillMaxSize()
-                    .background(color = if (hoverable) Color.Black.copy(alpha = 0.1f) else Color.Transparent)
+                    .background(color = if (hovered) Color.Black.copy(alpha = 0.15f) else Color.Transparent)
             },
             itemValueContent = { value, _ ->
                 when (value) {
@@ -121,7 +119,7 @@ private fun RowScope.Option(name: String, checked: Boolean, onCheckedChange: (Bo
     Text(
         text = name,
         modifier = Modifier.weight(1f),
-        fontSize = 13.sp,
+        style = MaterialTheme.typography.subtitle2
     )
 }
 

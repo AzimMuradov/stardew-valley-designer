@@ -30,7 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.editor.menus.EntitySelectionMenu
 import io.stardewvalleydesigner.editor.menus.filterElements
 import io.stardewvalleydesigner.engine.entity.Entity
@@ -55,11 +56,10 @@ fun EntitySelectionMenu(
 
             shape = RectangleShape,
 
-            menuRootModifierProvider = {
-                Modifier
-                    .background(
-                        color = if (it) Color(0xFF629749) else Color.Transparent
-                    )
+            menuRootModifierProvider = { hovered ->
+                Modifier.background(
+                    color = if (hovered) Color.White.copy(alpha = 0.15f) else Color.Transparent
+                )
             },
             menuRootContent = { root, _ ->
                 Row(
@@ -70,16 +70,16 @@ fun EntitySelectionMenu(
                     Text(
                         text = wordList.menuTitle(root),
                         color = MaterialTheme.colors.onPrimary.copy(alpha = LocalContentAlpha.current),
-                        fontSize = 16.sp,
+                        style = MaterialTheme.typography.subtitle1
                     )
                 }
             },
             menuModifierProvider = { DROPDOWN_MENU_MODIFIER },
 
-            submenuRootModifierProvider = {
+            submenuRootModifierProvider = { hovered ->
                 Modifier
                     .fillMaxSize()
-                    .background(color = if (it) Color.Black.copy(alpha = 0.2f) else Color.Transparent)
+                    .background(color = if (hovered) Color.Black.copy(alpha = 0.2f) else Color.Transparent)
             },
             submenuRootContent = { root, hovered ->
                 val rotation by animateFloatAsState(if (hovered) 180f else 0f)
@@ -87,7 +87,7 @@ fun EntitySelectionMenu(
                 Text(
                     text = wordList.menuTitle(root),
                     modifier = Modifier.weight(1f),
-                    fontSize = 15.sp,
+                    style = MaterialTheme.typography.subtitle1
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Icon(
@@ -103,7 +103,7 @@ fun EntitySelectionMenu(
                 Modifier
                     .fillMaxSize()
                     .align(Alignment.Center)
-                    .background(color = if (hovered) Color.Black.copy(alpha = 0.1f) else Color.Transparent)
+                    .background(color = if (hovered) Color.Black.copy(alpha = 0.15f) else Color.Transparent)
                     .clickable { onEntitySelection(root) }
             },
             itemValueContent = { value, _ ->
@@ -120,7 +120,7 @@ fun EntitySelectionMenu(
                 Text(
                     text = wordList.entity(value),
                     modifier = Modifier.weight(1f),
-                    fontSize = 13.sp,
+                    style = MaterialTheme.typography.subtitle2
                 )
             },
         )

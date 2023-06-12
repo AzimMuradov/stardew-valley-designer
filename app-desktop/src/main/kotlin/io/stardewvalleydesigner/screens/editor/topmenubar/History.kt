@@ -17,15 +17,11 @@
 package io.stardewvalleydesigner.screens.editor.topmenubar
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ArrowForward
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.modules.history.HistoryState
 
@@ -36,31 +32,15 @@ fun History(
     intentConsumer: (EditorIntent) -> Unit,
 ) {
     Row(modifier = Modifier.wrapContentWidth().fillMaxHeight()) {
-        IconButton(
-            onClick = { intentConsumer(EditorIntent.History.GoBack) },
+        TopMenuIconButton(
+            icon = Icons.Rounded.ArrowBack,
             enabled = history.canGoBack,
-            modifier = Modifier.fillMaxHeight(),
-        ) {
-            val contentAlpha = if (history.canGoBack) ContentAlpha.high else ContentAlpha.disabled
-            Icon(
-                imageVector = Icons.Rounded.ArrowBack,
-                contentDescription = null,
-                modifier = Modifier.padding(8.dp).align(Alignment.CenterVertically),
-                tint = Color.White.copy(alpha = contentAlpha),
-            )
-        }
-        IconButton(
-            onClick = { intentConsumer(EditorIntent.History.GoForward) },
+            onClick = { intentConsumer(EditorIntent.History.GoBack) }
+        )
+        TopMenuIconButton(
+            icon = Icons.Rounded.ArrowForward,
             enabled = history.canGoForward,
-            modifier = Modifier.fillMaxHeight(),
-        ) {
-            val contentAlpha = if (history.canGoForward) ContentAlpha.high else ContentAlpha.disabled
-            Icon(
-                imageVector = Icons.Rounded.ArrowForward,
-                contentDescription = null,
-                modifier = Modifier.padding(8.dp).align(Alignment.CenterVertically),
-                tint = Color.White.copy(alpha = contentAlpha),
-            )
-        }
+            onClick = { intentConsumer(EditorIntent.History.GoForward) }
+        )
     }
 }

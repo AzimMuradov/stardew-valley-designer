@@ -27,9 +27,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.modules.toolkit.*
+import io.stardewvalleydesigner.ternaryColor
 import io.stardewvalleydesigner.utils.GlobalSettings
 import io.stardewvalleydesigner.utils.group.GroupOption
 import io.stardewvalleydesigner.utils.group.ToggleButtonsGroup
@@ -65,7 +67,7 @@ fun Toolbar(
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = wordList.tool(toolkit.tool),
-                fontSize = 14.sp
+                style = MaterialTheme.typography.subtitle1
             )
             Spacer(modifier = Modifier.width(8.dp))
             Divider(modifier = Modifier.weight(1f))
@@ -136,13 +138,14 @@ private fun ButtonContent(tooltip: String, resourcePath: String) {
         tooltip = {
             Surface(
                 modifier = Modifier.shadow(4.dp),
-                color = Color(red = 255, green = 255, blue = 210),
+                color = ternaryColor,
                 shape = MaterialTheme.shapes.small
             ) {
                 Text(
                     text = tooltip,
                     modifier = Modifier.padding(10.dp),
-                    color = Color.Black
+                    color = Color.Black,
+                    style = MaterialTheme.typography.body2
                 )
             }
         },

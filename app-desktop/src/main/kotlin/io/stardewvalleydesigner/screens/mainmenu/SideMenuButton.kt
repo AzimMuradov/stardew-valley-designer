@@ -23,11 +23,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.dp
+import io.stardewvalleydesigner.ternaryColor
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -44,7 +43,7 @@ fun SideMenuButton(
             if (enabled) {
                 Surface(
                     modifier = Modifier.shadow(4.dp),
-                    color = Color(red = 255, green = 255, blue = 210),
+                    color = ternaryColor,
                     shape = MaterialTheme.shapes.small
                 ) {
                     Text(
@@ -81,13 +80,7 @@ fun SideMenuButton(
                 modifier = Modifier.size(24.dp)
             )
             Spacer(Modifier.width(12.dp))
-            Text(
-                text,
-                style = TextStyle(
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 14.sp
-                )
-            )
+            Text(text)
             Spacer(Modifier.weight(1f))
         }
     }

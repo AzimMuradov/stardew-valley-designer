@@ -52,14 +52,14 @@ fun <L> ToggleButtonsGroup(
                 when (item) {
                     is GroupOption.Some -> ToggleButtonsGroupItem(
                         onClick = { onButtonClick(item.value) },
-                        background = if (item == chosenLabel) Color.LightGray else MaterialTheme.colors.surface,
+                        background = if (item == chosenLabel) Color.Black.copy(alpha = 0.15f) else MaterialTheme.colors.surface,
                         content = { buttonContent(item.value) },
                     )
 
                     is GroupOption.Disabled -> ToggleButtonsGroupItem(
                         onClick = { onButtonClick(item.value) },
                         enabled = false,
-                        background = if (item == chosenLabel) Color.LightGray else MaterialTheme.colors.surface,
+                        background = if (item == chosenLabel) Color.Black.copy(alpha = 0.15f) else MaterialTheme.colors.surface,
                         content = { buttonContent(item.value) },
                     )
 

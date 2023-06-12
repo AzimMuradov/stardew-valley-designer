@@ -23,7 +23,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Image
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.*
@@ -36,6 +35,7 @@ import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.metadata.EntityPage.Companion.UNIT
+import io.stardewvalleydesigner.ternaryColor
 import io.stardewvalleydesigner.utils.DrawerUtils.placedEntityComparator
 import io.stardewvalleydesigner.utils.GlobalSettings
 import io.stardewvalleydesigner.utils.toRect
@@ -59,7 +59,7 @@ fun ScreenshotButton(map: MapState, visibleLayers: Set<LayerType<*>>) {
             tooltip = {
                 Surface(
                     modifier = Modifier.shadow(4.dp),
-                    color = Color(red = 255, green = 255, blue = 210),
+                    color = ternaryColor,
                     shape = MaterialTheme.shapes.small
                 ) {
                     Text(
@@ -69,17 +69,10 @@ fun ScreenshotButton(map: MapState, visibleLayers: Set<LayerType<*>>) {
                 }
             }
         ) {
-            IconButton(
-                onClick = { makeScreenshot(map, visibleLayers) },
-                modifier = Modifier.fillMaxHeight(),
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Image,
-                    contentDescription = null,
-                    modifier = Modifier.padding(8.dp).align(Alignment.Center),
-                    tint = Color.White,
-                )
-            }
+            TopMenuIconButton(
+                icon = Icons.Rounded.Image,
+                onClick = { makeScreenshot(map, visibleLayers) }
+            )
         }
     }
 }
@@ -156,6 +149,7 @@ private fun makeScreenshot(map: MapState, visibleLayers: Set<LayerType<*>>) {
 
         drawImageRect(image = layoutSprite.fgImage, paint = Paint())
     }
+
 
     val formatted = DateTimeFormatter
         .ofPattern("yyyy-MM-dd-HH-mm-ss")

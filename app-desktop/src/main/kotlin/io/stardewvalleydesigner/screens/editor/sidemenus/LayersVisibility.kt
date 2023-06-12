@@ -25,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.utils.GlobalSettings
 
@@ -74,6 +73,9 @@ private fun LayerVisibility(
             }
         }
         Spacer(Modifier.width(8.dp))
-        Text(text = wordList.layer(layerType), fontSize = 14.sp)
+        Text(
+            text = wordList.layer(layerType),
+            style = MaterialTheme.typography.subtitle1
+        )
     }
 }
