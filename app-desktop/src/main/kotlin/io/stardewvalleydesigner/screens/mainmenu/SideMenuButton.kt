@@ -16,17 +16,17 @@
 
 package io.stardewvalleydesigner.screens.mainmenu
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.TooltipPlacement
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import io.stardewvalleydesigner.ternaryColor
+import io.stardewvalleydesigner.utils.TooltipArea
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -39,24 +39,12 @@ fun SideMenuButton(
     enabled: Boolean = true,
 ) {
     TooltipArea(
-        tooltip = {
-            if (enabled) {
-                Surface(
-                    modifier = Modifier.shadow(4.dp),
-                    color = ternaryColor,
-                    shape = MaterialTheme.shapes.small
-                ) {
-                    Text(
-                        text = tooltip,
-                        modifier = Modifier.padding(10.dp)
-                    )
-                }
-            }
-        },
+        tooltip,
+        enabled,
         tooltipPlacement = TooltipPlacement.ComponentRect(
             anchor = Alignment.TopEnd,
             alignment = Alignment.TopEnd,
-            offset = DpOffset((-16).dp, 16.dp)
+            offset = DpOffset((-8).dp, 8.dp)
         )
     ) {
         Button(

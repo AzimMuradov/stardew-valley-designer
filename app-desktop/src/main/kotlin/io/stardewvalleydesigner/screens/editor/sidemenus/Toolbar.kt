@@ -16,7 +16,8 @@
 
 package io.stardewvalleydesigner.screens.editor.sidemenus
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.TooltipPlacement
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -24,15 +25,13 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.modules.toolkit.*
-import io.stardewvalleydesigner.ternaryColor
 import io.stardewvalleydesigner.utils.GlobalSettings
+import io.stardewvalleydesigner.utils.TooltipArea
 import io.stardewvalleydesigner.utils.group.GroupOption
 import io.stardewvalleydesigner.utils.group.ToggleButtonsGroup
 
@@ -135,20 +134,7 @@ fun Toolbar(
 @Composable
 private fun ButtonContent(tooltip: String, resourcePath: String) {
     TooltipArea(
-        tooltip = {
-            Surface(
-                modifier = Modifier.shadow(4.dp),
-                color = ternaryColor,
-                shape = MaterialTheme.shapes.small
-            ) {
-                Text(
-                    text = tooltip,
-                    modifier = Modifier.padding(10.dp),
-                    color = Color.Black,
-                    style = MaterialTheme.typography.body2
-                )
-            }
-        },
+        tooltip,
         delayMillis = 1000,
         tooltipPlacement = TooltipPlacement.ComponentRect(
             anchor = Alignment.TopEnd,
