@@ -133,12 +133,15 @@ private fun ApplicationAuthorsSection(heading: SpanStyle) {
     val wordList = GlobalSettings.strings
 
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        RichText(
-            buildAnnotatedString {
-                withStyle(style = heading) { append(wordList.infoApplicationAuthor) }
-                append(": ${wordList.author}")
-            }.toRichTextValue()
-        )
+        Row(horizontalArrangement = Arrangement.SpaceBetween) {
+            RichText(
+                buildAnnotatedString {
+                    withStyle(style = heading) { append(wordList.infoApplicationAuthor) }
+                }.toRichTextValue(),
+                modifier = Modifier.weight(1f)
+            )
+            Text(wordList.author)
+        }
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
