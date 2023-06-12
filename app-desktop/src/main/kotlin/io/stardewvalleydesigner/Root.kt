@@ -23,24 +23,18 @@ import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import io.stardewvalleydesigner.components.RootComponent
 import io.stardewvalleydesigner.screens.*
-import io.stardewvalleydesigner.settings.Lang
-import io.stardewvalleydesigner.utils.WithSettings
 
 
 @Composable
 fun Root(component: RootComponent) {
     // val rootModel by root.model.subscribeAsState()
 
-    AppTheme(themeVariant = ThemeVariant.LIGHT) {
-        WithSettings(lang = Lang.EN) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Children(stack = component.childStack) { (_, child) ->
-                    when (child) {
-                        is RootComponent.Child.SplashChild -> SplashScreen(child.component)
-                        is RootComponent.Child.MainMenuChild -> MainMenuScreen(child.component)
-                        is RootComponent.Child.EditorChild -> EditorScreen(child.component)
-                    }
-                }
+    Box(modifier = Modifier.fillMaxSize()) {
+        Children(stack = component.childStack) { (_, child) ->
+            when (child) {
+                is RootComponent.Child.SplashChild -> SplashScreen(child.component)
+                is RootComponent.Child.MainMenuChild -> MainMenuScreen(child.component)
+                is RootComponent.Child.EditorChild -> EditorScreen(child.component)
             }
         }
     }

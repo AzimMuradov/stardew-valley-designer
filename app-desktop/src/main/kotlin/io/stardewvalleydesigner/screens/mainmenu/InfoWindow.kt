@@ -32,7 +32,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.res.painterResource
@@ -46,6 +45,7 @@ import androidx.compose.ui.window.rememberDialogState
 import com.mohamedrejeb.richeditor.annotation.ExperimentalRichTextApi
 import com.mohamedrejeb.richeditor.model.RichTextValue
 import com.mohamedrejeb.richeditor.ui.material.RichText
+import io.stardewvalleydesigner.ternaryColor
 import io.stardewvalleydesigner.utils.BrowserUtils
 import io.stardewvalleydesigner.utils.GlobalSettings
 import java.net.URI
@@ -89,7 +89,7 @@ private fun Info() {
     Column(
         Modifier
             .fillMaxSize()
-            .background(Color.Yellow.copy(alpha = 0.1f).compositeOver(Color.White))
+            .background(ternaryColor)
             .padding(vertical = 24.dp)
     ) {
         val state = rememberLazyListState()
@@ -133,12 +133,15 @@ private fun ApplicationAuthorsSection(heading: SpanStyle) {
     val wordList = GlobalSettings.strings
 
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        RichText(
-            buildAnnotatedString {
-                withStyle(style = heading) { append(wordList.infoApplicationAuthor) }
-                append(": ${wordList.author}")
-            }.toRichTextValue()
-        )
+        Row(horizontalArrangement = Arrangement.SpaceBetween) {
+            RichText(
+                buildAnnotatedString {
+                    withStyle(style = heading) { append(wordList.infoApplicationAuthor) }
+                }.toRichTextValue(),
+                modifier = Modifier.weight(1f)
+            )
+            Text(wordList.author)
+        }
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,

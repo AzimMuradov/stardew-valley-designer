@@ -16,6 +16,7 @@
 
 package io.stardewvalleydesigner.screens.mainmenu
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -24,19 +25,20 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.stardewvalleydesigner.ICON_RES_PATH
-import io.stardewvalleydesigner.utils.BrowserUtils
-import io.stardewvalleydesigner.utils.GlobalSettings
+import io.stardewvalleydesigner.ternaryColor
+import io.stardewvalleydesigner.utils.*
 import java.net.URI
 
 
@@ -44,10 +46,36 @@ import java.net.URI
 fun RowScope.SideMenu() {
     val wordList = GlobalSettings.strings
 
+    val menuWidth by animateDpAsState(
+        when (LocalWindowSize.current) {
+            WindowSize.SMALL -> 240.dp
+            WindowSize.MEDIUM -> 300.dp
+        }
+    )
+
+    val appNameTextStyle by animateValueAsState(
+        targetValue = when (LocalWindowSize.current) {
+            WindowSize.SMALL -> MaterialTheme.typography.h5
+            WindowSize.MEDIUM -> MaterialTheme.typography.h4
+        },
+        typeConverter = TwoWayConverter(
+            convertToVector = {
+                AnimationVector2D(it.fontSize.value, it.letterSpacing.value)
+            },
+            convertFromVector = {
+                TextStyle(
+                    fontWeight = FontWeight.Normal,
+                    fontSize = it.v1.sp,
+                    letterSpacing = it.v2.sp
+                )
+            }
+        )
+    )
+
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .width(300.dp)
+            .width(menuWidth)
             .shadow(
                 elevation = 4.dp,
                 shape = MaterialTheme.shapes.large
@@ -61,7 +89,7 @@ fun RowScope.SideMenu() {
                 .fillMaxWidth()
                 .aspectRatio(ratio = 9f / 5f)
                 .clip(shape = MaterialTheme.shapes.medium)
-                .background(Color.Yellow.copy(alpha = 0.1f).compositeOver(Color.White))
+                .background(ternaryColor)
                 .padding(12.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -76,8 +104,7 @@ fun RowScope.SideMenu() {
                 text = GlobalSettings.strings.application,
                 modifier = Modifier.weight(3f),
                 textAlign = TextAlign.Center,
-                lineHeight = 32.sp,
-                style = MaterialTheme.typography.h5
+                style = appNameTextStyle
             )
         }
 

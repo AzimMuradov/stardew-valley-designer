@@ -17,17 +17,14 @@
 package io.stardewvalleydesigner.screens.editor.topmenubar
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.TooltipArea
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Image
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import dev.dirs.UserDirectories
 import io.stardewvalleydesigner.editor.modules.map.MapState
 import io.stardewvalleydesigner.editor.res.*
@@ -36,9 +33,8 @@ import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.metadata.EntityPage.Companion.UNIT
+import io.stardewvalleydesigner.utils.*
 import io.stardewvalleydesigner.utils.DrawerUtils.placedEntityComparator
-import io.stardewvalleydesigner.utils.GlobalSettings
-import io.stardewvalleydesigner.utils.toRect
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -55,31 +51,11 @@ fun ScreenshotButton(map: MapState, visibleLayers: Set<LayerType<*>>) {
     val wordList = GlobalSettings.strings
 
     Box(modifier = Modifier.aspectRatio(1f).fillMaxHeight()) {
-        TooltipArea(
-            tooltip = {
-                Surface(
-                    modifier = Modifier.shadow(4.dp),
-                    color = Color(red = 255, green = 255, blue = 210),
-                    shape = MaterialTheme.shapes.small
-                ) {
-                    Text(
-                        text = wordList.buttonMakeScreenshotTooltip,
-                        modifier = Modifier.padding(10.dp)
-                    )
-                }
-            }
-        ) {
-            IconButton(
-                onClick = { makeScreenshot(map, visibleLayers) },
-                modifier = Modifier.fillMaxHeight(),
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Image,
-                    contentDescription = null,
-                    modifier = Modifier.padding(8.dp).align(Alignment.Center),
-                    tint = Color.White,
-                )
-            }
+        TooltipArea(wordList.buttonMakeScreenshotTooltip) {
+            TopMenuIconButton(
+                icon = Icons.Rounded.Image,
+                onClick = { makeScreenshot(map, visibleLayers) }
+            )
         }
     }
 }
@@ -156,6 +132,7 @@ private fun makeScreenshot(map: MapState, visibleLayers: Set<LayerType<*>>) {
 
         drawImageRect(image = layoutSprite.fgImage, paint = Paint())
     }
+
 
     val formatted = DateTimeFormatter
         .ofPattern("yyyy-MM-dd-HH-mm-ss")

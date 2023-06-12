@@ -31,7 +31,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.menus.OptionsItemValue
 import io.stardewvalleydesigner.editor.menus.OptionsMenu
@@ -54,24 +53,22 @@ fun RowScope.OptionsMenu(
 
             shape = RectangleShape,
 
-            menuRootModifierProvider = {
-                Modifier
-                    .background(
-                        color = if (it) Color(0xFF629749) else Color.Transparent
-                    )
+            menuRootModifierProvider = { hovered ->
+                Modifier.background(
+                    color = if (hovered) Color.White.copy(alpha = 0.15f) else Color.Transparent
+                )
             },
             menuRootContent = { _, hovered ->
                 val rotation by animateFloatAsState(if (hovered) 180f else 0f)
 
-                Row(
-                    modifier = Modifier.fillMaxSize().align(Alignment.Center),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Settings,
                         contentDescription = null,
-                        modifier = Modifier.padding(8.dp).rotate(rotation).fillMaxSize().weight(1f),
+                        modifier = Modifier.size(32.dp).rotate(rotation).fillMaxSize(),
                         tint = MaterialTheme.colors.onPrimary,
                     )
                 }
@@ -82,10 +79,10 @@ fun RowScope.OptionsMenu(
             submenuRootContent = { _, _ -> },
             submenuModifierProvider = { DROPDOWN_MENU_MODIFIER },
 
-            itemModifierProvider = { _, hoverable ->
+            itemModifierProvider = { _, hovered ->
                 Modifier
                     .fillMaxSize()
-                    .background(color = if (hoverable) Color.Black.copy(alpha = 0.1f) else Color.Transparent)
+                    .background(color = if (hovered) Color.Black.copy(alpha = 0.15f) else Color.Transparent)
             },
             itemValueContent = { value, _ ->
                 when (value) {
@@ -115,18 +112,17 @@ fun RowScope.OptionsMenu(
 
 @Composable
 private fun RowScope.Option(name: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
-    Spacer(modifier = Modifier.width(8.dp))
     Checkbox(checked, onCheckedChange)
-    Spacer(modifier = Modifier.width(20.dp))
+    Spacer(modifier = Modifier.width(8.dp))
     Text(
         text = name,
         modifier = Modifier.weight(1f),
-        fontSize = 13.sp,
+        style = MaterialTheme.typography.subtitle2
     )
 }
 
 
-private val REQUIRED_DROPDOWN_MENU_WIDTH: Dp = 224.dp
+private val REQUIRED_DROPDOWN_MENU_WIDTH: Dp = 200.dp
 private val REQUIRED_MAX_DROPDOWN_MENU_HEIGHT: Dp = 304.dp
 
 private val DROPDOWN_MENU_MODIFIER: Modifier =

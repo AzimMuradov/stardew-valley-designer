@@ -29,7 +29,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.stardewvalleydesigner.editor.res.flooring
 import io.stardewvalleydesigner.editor.res.wallpaper
 import io.stardewvalleydesigner.engine.Flooring
@@ -80,14 +79,20 @@ fun WallpaperAndFlooringSelection(
                 onClick = { chosenTab = Tab.Wallpaper },
                 modifier = Modifier.weight(1f).fillMaxHeight().background(wallpaperTabBg)
             ) {
-                Text(wordList.wallpapersTabTitle, fontSize = 14.sp)
+                Text(
+                    wordList.wallpapersTabTitle,
+                    style = MaterialTheme.typography.subtitle1
+                )
             }
             Tab(
                 selected = chosenTab == Tab.Flooring,
                 onClick = { chosenTab = Tab.Flooring },
                 modifier = Modifier.weight(1f).fillMaxHeight().background(flooringTabBg)
             ) {
-                Text(wordList.flooringTabTitle, fontSize = 14.sp)
+                Text(
+                    wordList.flooringTabTitle,
+                    style = MaterialTheme.typography.subtitle1
+                )
             }
         }
 

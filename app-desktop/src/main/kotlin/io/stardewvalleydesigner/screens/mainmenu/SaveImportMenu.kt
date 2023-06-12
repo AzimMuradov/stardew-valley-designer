@@ -63,7 +63,7 @@ fun RowScope.SaveImportMenu(
 ) {
     val wordList = GlobalSettings.strings
 
-    PlanMenuButton(
+    TopMenuButton(
         text = wordList.buttonSaveImportText,
         icon = Icons.Filled.Save,
         onClick = { intentConsumer(MainMenuIntent.SaveLoaderMenu.OpenMenu) }

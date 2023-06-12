@@ -16,13 +16,15 @@
 
 package io.stardewvalleydesigner
 
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.platform.Font
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 
 @Composable
@@ -39,6 +41,11 @@ enum class ThemeVariant {
 }
 
 
+// Temporary solution
+
+val ternaryColor = Color(0xFFFFFFD2)
+
+
 @Composable
 private fun AppLightTheme(content: @Composable () -> Unit) {
     MaterialTheme(
@@ -47,49 +54,17 @@ private fun AppLightTheme(content: @Composable () -> Unit) {
             primaryVariant = Color(0xFF003D00),
             secondary = Color(0xFF00695C),
             secondaryVariant = Color(0xFF003D33),
-            // background =,
-            // surface =,
-            // error =,
-            // onPrimary =,
-            // onSecondary =,
-            // onBackground =,
-            // onSurface =,
-            // onError =,
+            background = Color.White,
+            surface = Color.White,
+            error = Color(0xFFB00020),
+            onPrimary = Color.White,
+            onSecondary = Color.Black,
+            onBackground = Color.Black,
+            onSurface = Color.Black,
+            onError = Color.White,
         ),
-        typography = Typography(
-            defaultFontFamily = FontFamily(
-                Font(
-                    family = "Roboto",
-                    name = "Roboto-Regular",
-                )
-            ),
-            // h1 = ,
-            // h2 = ,
-            // h3 = ,
-            h4 = TextStyle(
-                fontWeight = FontWeight.Normal,
-                fontSize = 32.sp,
-                letterSpacing = 0.25.sp
-            ),
-            // h5 = ,
-            h6 = TextStyle(
-                fontWeight = FontWeight.Medium,
-                fontSize = 18.sp,
-                letterSpacing = 0.15.sp
-            ),
-            // subtitle1 = ,
-            // subtitle2 = ,
-            // body1 = ,
-            // body2 = ,
-            // button = ,
-            // caption = ,
-            // overline = ,
-        ),
-        shapes = Shapes(
-            // small = ,
-            // medium = ,
-            // large = ,
-        ),
+        typography = typography,
+        shapes = shapes,
         content = content,
     )
 }
@@ -111,47 +86,115 @@ private fun AppDarkTheme(content: @Composable () -> Unit) {
             // onSurface =,
             // onError =,
         ),
-        typography = Typography(
-            // h1 = ,
-            // h2 = ,
-            // h3 = ,
-            // h4 = ,
-            // h5 = ,
-            // h6 = ,
-            // subtitle1 = ,
-            // subtitle2 = ,
-            // body1 = ,
-            // body2 = ,
-            // button = ,
-            // caption = ,
-            // overline = ,
-        ),
-        shapes = Shapes(
-            // small = ,
-            // medium = ,
-            // large = ,
-        ),
+        typography = typography,
+        shapes = shapes,
         content = content,
     )
 }
 
 
-val MENU_ELEVATION: Dp = 4.dp
+private val typography = Typography(
+    defaultFontFamily = FontFamily(
+        buildList {
+            for ((weight, weightName) in listOf(
+                FontWeight.Thin to "Thin",
+                FontWeight.Light to "Light",
+                FontWeight.Normal to "Regular",
+                FontWeight.Medium to "Medium",
+                FontWeight.Bold to "Bold",
+                FontWeight.Black to "Black",
+            )) {
+                for ((style, styleName) in listOf(
+                    FontStyle.Normal to "",
+                    FontStyle.Italic to "Italic"
+                )) {
+                    this += Font(
+                        family = "Roboto",
+                        name = "Roboto-$weightName$styleName",
+                        weight = weight,
+                        style = style,
+                    )
+                }
+            }
+        }
+    ),
+    h1 = TextStyle(
+        fontWeight = FontWeight.Light,
+        fontSize = 60.sp,
+        letterSpacing = (-1.5).sp
+    ),
+    h2 = TextStyle(
+        fontWeight = FontWeight.Light,
+        fontSize = 48.sp,
+        letterSpacing = (-0.5).sp
+    ),
+    h3 = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 32.sp,
+        letterSpacing = 0.sp
+    ),
+    h4 = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 24.sp,
+        letterSpacing = 0.25.sp
+    ),
+    h5 = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 18.sp,
+        letterSpacing = 0.sp
+    ),
+    h6 = TextStyle(
+        fontWeight = FontWeight.Medium,
+        fontSize = 16.sp,
+        letterSpacing = 0.15.sp
+    ),
+    subtitle1 = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        letterSpacing = 0.15.sp
+    ),
+    subtitle2 = TextStyle(
+        fontWeight = FontWeight.Medium,
+        fontSize = 12.sp,
+        letterSpacing = 0.1.sp
+    ),
+    body1 = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        letterSpacing = 0.5.sp
+    ),
+    body2 = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        letterSpacing = 0.25.sp
+    ),
+    button = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp,
+        letterSpacing = 0.5.sp
+    ),
+    caption = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 10.sp,
+        letterSpacing = 0.4.sp
+    ),
+    overline = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 8.sp,
+        letterSpacing = 1.5.sp
+    )
+)
+
+private val shapes = Shapes(
+    small = RoundedCornerShape(4.dp),
+    medium = RoundedCornerShape(4.dp),
+    large = RoundedCornerShape(0.dp),
+)
 
 
-// @Composable
-// private fun FontFamily(
-//     name: String,
-//     weight: FontWeight = FontWeight.Normal,
-//     style: FontStyle = FontStyle.Normal,
-// ): FontFamily = FontFamily(
-//     Font("fonts/Roboto/Roboto-Regular.ttf", weight, style),
-// )
-
-@Composable
 private fun Font(
     family: String,
     name: String,
     weight: FontWeight = FontWeight.Normal,
     style: FontStyle = FontStyle.Normal,
-): Font = Font("fonts/$family/$name.ttf", weight, style)
+) = Font(resource = "fonts/$family/$name.ttf", weight, style)

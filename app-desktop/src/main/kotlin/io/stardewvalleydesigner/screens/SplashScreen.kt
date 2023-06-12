@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import io.stardewvalleydesigner.ICON_RES_PATH
 import io.stardewvalleydesigner.components.screens.SplashComponent
 import io.stardewvalleydesigner.screens.IconAnimationState.APPEARING
 import io.stardewvalleydesigner.screens.IconAnimationState.DISAPPEARING
@@ -75,5 +76,3 @@ private enum class IconAnimationState { APPEARING, DISAPPEARING }
 private const val ICON_MIN_TRANSPARENCY = 0.0f
 private const val ICON_MAX_TRANSPARENCY = 1.0f
 private const val ICON_ANIMATION_STIFFNESS = 3f
-
-private const val ICON_RES_PATH = "icons/icon-1024.png"

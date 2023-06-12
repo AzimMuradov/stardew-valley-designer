@@ -124,7 +124,7 @@ private fun InUseCard(
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = with(inUse.size) { "$w x $h" },
-                        style = MaterialTheme.typography.body2,
+                        style = MaterialTheme.typography.subtitle2,
                     )
                 }
             }

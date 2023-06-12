@@ -59,7 +59,7 @@ fun RowScope.RightSideMenu(
         ) {
             NewPlanMenu(state, intentConsumer)
 
-            PlanMenuButton(
+            TopMenuButton(
                 text = wordList.buttonOpenPlanText,
                 icon = Icons.Filled.FileOpen,
                 enabled = false
@@ -67,7 +67,7 @@ fun RowScope.RightSideMenu(
 
             SaveImportMenu(state, intentConsumer)
 
-            PlanMenuButton(
+            TopMenuButton(
                 text = wordList.buttonSearchForAPlanText,
                 icon = Icons.Filled.Search,
                 enabled = false
