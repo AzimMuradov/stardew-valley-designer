@@ -42,7 +42,6 @@ fun main() {
         )
 
         val childStack by root.childStack.subscribeAsState()
-        val currentChild = childStack.active.instance
 
         Window(
             onCloseRequest = ::exitApplication,
@@ -59,8 +58,8 @@ fun main() {
                 }
             }
 
-            LaunchedEffect(currentChild) {
-                window.minimumSize = when (currentChild) {
+            LaunchedEffect(childStack.active.instance) {
+                window.minimumSize = when (childStack.active.instance) {
                     is RootComponent.Child.SplashChild -> Dimension(800, 600)
                     is RootComponent.Child.MainMenuChild -> Dimension(1000, 700)
                     is RootComponent.Child.EditorChild -> Dimension(1280, 720)
