@@ -70,4 +70,5 @@ fun main() {
     }
 }
 
+
 const val ICON_RES_PATH: String = "icons/icon-1024.png"
