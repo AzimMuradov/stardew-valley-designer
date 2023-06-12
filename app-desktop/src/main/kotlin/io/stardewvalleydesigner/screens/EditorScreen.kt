@@ -16,12 +16,12 @@
 
 package io.stardewvalleydesigner.screens
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.*
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import io.stardewvalleydesigner.editor.EditorComponent
@@ -29,7 +29,9 @@ import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.screens.editor.main.MainPart
 import io.stardewvalleydesigner.screens.editor.sidemenus.LeftSideMenus
 import io.stardewvalleydesigner.screens.editor.sidemenus.RightSideMenus
-import io.stardewvalleydesigner.screens.editor.topmenubar.TopMenuBar
+import io.stardewvalleydesigner.screens.editor.topmenubar.TopMenu
+import io.stardewvalleydesigner.utils.LocalWindowSize
+import io.stardewvalleydesigner.utils.WindowSize
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -56,7 +58,7 @@ fun EditorScreen(component: EditorComponent) {
             }
         }
     ) {
-        TopMenuBar(
+        TopMenu(
             map = map,
             visibleLayers = visLayers.visibleLayers,
             history = history,
@@ -66,11 +68,18 @@ fun EditorScreen(component: EditorComponent) {
             intentConsumer = store::accept
         )
 
+        val menuWidth by animateDpAsState(
+            when (LocalWindowSize.current) {
+                WindowSize.SMALL -> 300.dp
+                WindowSize.MEDIUM -> 350.dp
+            }
+        )
+
         Row(Modifier.fillMaxWidth().weight(1f)) {
             LeftSideMenus(
                 toolkit = toolkit,
                 palette = palette,
-                width = SIDE_MENUS_WIDTH,
+                width = menuWidth,
                 intentConsumer = store::accept
             )
             MainPart(
@@ -86,12 +95,9 @@ fun EditorScreen(component: EditorComponent) {
                     store.accept(EditorIntent.VisLayers.ChangeVisibility(layerType, visible))
                 },
                 layout = map.layout,
-                width = SIDE_MENUS_WIDTH,
+                width = menuWidth,
                 intentConsumer = store::accept
             )
         }
     }
 }
-
-
-private val SIDE_MENUS_WIDTH: Dp = 350.dp

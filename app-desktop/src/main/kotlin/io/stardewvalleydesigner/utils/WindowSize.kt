@@ -17,31 +17,34 @@
 package io.stardewvalleydesigner.utils
 
 import androidx.compose.runtime.*
-import io.stardewvalleydesigner.settings.Lang
-import io.stardewvalleydesigner.settings.SettingsInterpreter
-import io.stardewvalleydesigner.settings.wordlists.WordList
 
 
-object GlobalSettings {
+enum class WindowSize {
 
-    val strings: WordList @Composable get() = SettingsInterpreter.wordList(lang)
+    SMALL,
+    MEDIUM;
 
+    companion object {
 
-    private val lang: Lang @Composable get() = LocalLang.current
+        fun fromWindowWidth(width: Int): WindowSize = when {
+            width < 1400 -> SMALL
+            else -> MEDIUM
+        }
+    }
 }
 
 @Composable
-fun WithSettings(
-    lang: Lang = Lang.EN,
+fun WithMeasuredWindow(
+    windowWidth: Int,
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
-        LocalLang provides lang,
+        LocalWindowSize provides WindowSize.fromWindowWidth(windowWidth),
         content = content
     )
 }
 
 
-val LocalLang = staticCompositionLocalOf<Lang> {
-    error("No language provided")
+val LocalWindowSize = staticCompositionLocalOf<WindowSize> {
+    error("No window size provided")
 }

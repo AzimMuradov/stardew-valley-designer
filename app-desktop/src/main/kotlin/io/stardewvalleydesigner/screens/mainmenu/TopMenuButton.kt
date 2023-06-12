@@ -21,14 +21,11 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun RowScope.PlanMenuButton(
+fun RowScope.TopMenuButton(
     text: String,
     icon: ImageVector,
     onClick: () -> Unit = {},
@@ -45,12 +42,6 @@ fun RowScope.PlanMenuButton(
             modifier = Modifier.size(24.dp)
         )
         Spacer(Modifier.width(12.dp))
-        Text(
-            text,
-            style = TextStyle(
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 14.sp
-            )
-        )
+        Text(text)
     }
 }

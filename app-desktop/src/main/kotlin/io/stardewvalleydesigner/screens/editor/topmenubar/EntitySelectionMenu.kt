@@ -128,7 +128,7 @@ fun EntitySelectionMenu(
 }
 
 
-private val REQUIRED_DROPDOWN_MENU_WIDTH: Dp = 224.dp
+private val REQUIRED_DROPDOWN_MENU_WIDTH: Dp = 200.dp
 private val REQUIRED_MAX_DROPDOWN_MENU_HEIGHT: Dp = 304.dp
 
 private val DROPDOWN_MENU_MODIFIER: Modifier =

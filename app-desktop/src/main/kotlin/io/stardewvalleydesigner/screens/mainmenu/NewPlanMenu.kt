@@ -37,7 +37,7 @@ fun RowScope.NewPlanMenu(
 ) {
     val wordList = GlobalSettings.strings
 
-    PlanMenuButton(
+    TopMenuButton(
         text = wordList.buttonNewPlanText,
         icon = Icons.Filled.Add,
         onClick = { intentConsumer(MainMenuIntent.NewPlanMenu.OpenMenu) }

@@ -16,10 +16,13 @@
 
 package io.stardewvalleydesigner.screens.editor.topmenubar
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.menus.MainOptionsMenu
 import io.stardewvalleydesigner.editor.menus.entityselection.*
@@ -39,19 +42,17 @@ fun TopMenu(
     disallowedTypes: Set<EntityType>,
     onEntitySelection: (Entity<*>) -> Unit,
     options: OptionsState,
-    modifier: Modifier = Modifier,
     intentConsumer: (EditorIntent) -> Unit,
 ) {
     Row(
-        modifier = modifier,
+        modifier = Modifier
+            .shadow(elevation = 4.dp)
+            .fillMaxWidth().height(56.dp)
+            .background(color = MaterialTheme.colors.primary)
+            .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        // TODO : File Menu
-
-        History(
-            history = history,
-            intentConsumer = intentConsumer
-        )
+        History(history, intentConsumer)
 
         EntitySelectionMenu(
             menu = BuildingsMenu,
@@ -85,12 +86,14 @@ fun TopMenu(
 
         // TODO : Entity Search
 
-        ScreenshotButton(map, visibleLayers)
-
-        OptionsMenu(
-            options = options,
-            menu = MainOptionsMenu,
-            intentConsumer = intentConsumer
-        )
+        Row {
+            ScreenshotButton(map, visibleLayers)
+            Spacer(Modifier.size(8.dp))
+            OptionsMenu(
+                options = options,
+                menu = MainOptionsMenu,
+                intentConsumer = intentConsumer
+            )
+        }
     }
 }
