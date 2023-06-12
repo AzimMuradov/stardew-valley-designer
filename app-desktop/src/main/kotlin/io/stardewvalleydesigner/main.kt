@@ -60,7 +60,7 @@ fun main() {
 
             val density = LocalDensity.current
 
-            LaunchedEffect(childStack.active.instance) {
+            LaunchedEffect(childStack.active.instance, density) {
                 window.minimumSize = when (childStack.active.instance) {
                     is RootComponent.Child.SplashChild -> dimension(800.dp, 600.dp, density)
                     is RootComponent.Child.MainMenuChild -> dimension(1000.dp, 700.dp, density)
