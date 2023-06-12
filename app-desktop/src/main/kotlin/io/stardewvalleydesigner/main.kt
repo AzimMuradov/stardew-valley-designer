@@ -21,7 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.*
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import io.stardewvalleydesigner.components.RootComponent
@@ -38,7 +38,7 @@ fun main() {
     application {
         val state = rememberWindowState(
             position = WindowPosition(Alignment.Center),
-            size = with(LocalDensity.current) { DpSize(width = 800.toDp(), height = 600.toDp()) },
+            size = DpSize(width = 800.dp, height = 600.dp)
         )
 
         val childStack by root.childStack.subscribeAsState()
@@ -58,16 +58,22 @@ fun main() {
                 }
             }
 
+            val density = LocalDensity.current
+
             LaunchedEffect(childStack.active.instance) {
                 window.minimumSize = when (childStack.active.instance) {
-                    is RootComponent.Child.SplashChild -> Dimension(800, 600)
-                    is RootComponent.Child.MainMenuChild -> Dimension(1000, 700)
-                    is RootComponent.Child.EditorChild -> Dimension(1280, 720)
+                    is RootComponent.Child.SplashChild -> dimension(800.dp, 600.dp, density)
+                    is RootComponent.Child.MainMenuChild -> dimension(1000.dp, 700.dp, density)
+                    is RootComponent.Child.EditorChild -> dimension(1280.dp, 720.dp, density)
                 }
                 state.position = WindowPosition(Alignment.Center)
             }
         }
     }
+}
+
+private fun dimension(w: Dp, h: Dp, density: Density) = with(density) {
+    Dimension(w.roundToPx(), h.roundToPx())
 }
 
 
