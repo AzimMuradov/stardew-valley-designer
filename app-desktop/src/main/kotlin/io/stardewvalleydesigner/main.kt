@@ -19,6 +19,8 @@ package io.stardewvalleydesigner
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.*
@@ -26,12 +28,14 @@ import androidx.compose.ui.window.*
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import io.stardewvalleydesigner.components.RootComponent
 import io.stardewvalleydesigner.components.rootComponent
+import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.settings.Lang
 import io.stardewvalleydesigner.utils.WithMeasuredWindow
 import io.stardewvalleydesigner.utils.WithSettings
 import java.awt.Dimension
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     val root = rootComponent()
 
@@ -48,6 +52,27 @@ fun main() {
             state = state,
             title = "",
             icon = painterResource(ICON_RES_PATH),
+            onKeyEvent = {
+                when (val currentChild = childStack.active.instance) {
+                    is RootComponent.Child.EditorChild -> {
+                        when {
+                            it.isCtrlPressed && it.key == Key.Z && it.type == KeyEventType.KeyUp -> {
+                                currentChild.component.store.accept(EditorIntent.History.GoBack)
+                                true
+                            }
+
+                            it.isCtrlPressed && it.key == Key.Y && it.type == KeyEventType.KeyUp -> {
+                                currentChild.component.store.accept(EditorIntent.History.GoForward)
+                                true
+                            }
+
+                            else -> false
+                        }
+                    }
+
+                    else -> false
+                }
+            },
             resizable = true,
         ) {
             WithMeasuredWindow(windowWidth = with(LocalDensity.current) { state.size.width.roundToPx() }) {

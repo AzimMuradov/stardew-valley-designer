@@ -19,9 +19,7 @@ package io.stardewvalleydesigner.screens
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.*
 import androidx.compose.ui.unit.dp
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import io.stardewvalleydesigner.editor.EditorComponent
@@ -34,30 +32,13 @@ import io.stardewvalleydesigner.utils.LocalWindowSize
 import io.stardewvalleydesigner.utils.WindowSize
 
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun EditorScreen(component: EditorComponent) {
     val store = component.store
     val state by store.states.collectAsState(component.store.state)
     val (history, map, toolkit, palette, /* flavors, */ visLayers, /* clipboard, */ options) = state
 
-    Column(
-        modifier = Modifier.fillMaxSize().onKeyEvent {
-            when {
-                it.isCtrlPressed && it.key == Key.Z && it.type == KeyEventType.KeyUp -> {
-                    store.accept(EditorIntent.History.GoBack)
-                    true
-                }
-
-                it.isCtrlPressed && it.key == Key.Y && it.type == KeyEventType.KeyUp -> {
-                    store.accept(EditorIntent.History.GoForward)
-                    true
-                }
-
-                else -> false
-            }
-        }
-    ) {
+    Column(modifier = Modifier.fillMaxSize()) {
         TopMenu(
             map = map,
             visibleLayers = visLayers.visibleLayers,

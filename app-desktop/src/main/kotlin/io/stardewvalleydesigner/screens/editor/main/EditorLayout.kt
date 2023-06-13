@@ -19,10 +19,12 @@ package io.stardewvalleydesigner.screens.editor.main
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -53,7 +55,7 @@ import kotlin.math.floor
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun BoxScope.EditorLayout(
+fun EditorLayout(
     map: MapState,
     visibleLayers: Set<LayerType<*>>,
     toolkit: ToolkitState,
@@ -86,17 +88,17 @@ fun BoxScope.EditorLayout(
     Canvas(
         modifier = Modifier
             .aspectRatio(layoutSprite.size.toRect().aspectRatio)
-            // .size(layoutSprite.size.width.dp * 2, layoutSprite.size.height.dp * 2)
             .fillMaxSize()
-            .align(Alignment.Center)
             .clipToBounds()
-            .background(color = Color.White)
-            .onPointerEvent(PointerEventType.Move) {
-                hoveredCoordinate = it.changes.first().position.toCoordinateStrict()
+            .background(color = MaterialTheme.colors.surface)
+            // Hovered cell
+            .onPointerEvent(PointerEventType.Move) { event ->
+                hoveredCoordinate = event.changes.first().position.toCoordinateStrict()
             }
             .onPointerEvent(PointerEventType.Exit) { hoveredCoordinate = UNDEFINED }
-            .onPointerEvent(eventType = PointerEventType.Press) {
-                val current = it.changes.first().position.toCoordinateStrict()
+            // Tools logic
+            .onPointerEvent(eventType = PointerEventType.Press) { event ->
+                val current = event.changes.first().position.toCoordinateStrict()
                     .takeUnless { it == UNDEFINED } ?: return@onPointerEvent
                 prevDragCoordinate = current
                 intentConsumer(EditorIntent.Engine.Start(current))
@@ -127,7 +129,7 @@ fun BoxScope.EditorLayout(
 
         val cellSize = Size(stepSize, stepSize)
         val offsetsW = List(size = nW + 1) { it * stepSize }
-        val offsetsH = List(size = nH + 1) { it * stepSize }
+        val offsetsH = (-nH..nH).associateWith { it * stepSize }
 
 
         // Background
@@ -162,7 +164,7 @@ fun BoxScope.EditorLayout(
         for (e in map.selectedEntities.flatten().coordinates) {
             drawRect(
                 color = Color.Blue,
-                topLeft = Offset(x = offsetsW[e.x], y = offsetsH[e.y]),
+                topLeft = Offset(x = offsetsW[e.x], y = offsetsH.getValue(e.y)),
                 size = cellSize,
                 alpha = 0.3f
             )
@@ -187,7 +189,7 @@ fun BoxScope.EditorLayout(
                         sprite = sprite,
                         offset = IntOffset(
                             x = offsetsW[place.x].toInt() + 2,
-                            y = offsetsH[place.y - (rect.h - e.size.h)].toInt() + 2
+                            y = offsetsH.getValue(place.y - (rect.h - e.size.h)).toInt() + 2
                         ),
                         layoutSize = Size(
                             width = (cellSize.width * rect.w - 4).coerceAtLeast(1f),
@@ -202,7 +204,7 @@ fun BoxScope.EditorLayout(
                 for (c in toolkit.placedShape.coordinates) {
                     drawRect(
                         color = Color.Black,
-                        topLeft = Offset(offsetsW[c.x], offsetsH[c.y]),
+                        topLeft = Offset(offsetsW[c.x], offsetsH.getValue(c.y)),
                         size = cellSize,
                         alpha = 0.1f,
                     )
@@ -210,7 +212,7 @@ fun BoxScope.EditorLayout(
                 for (c in toolkit.entitiesToDelete) {
                     drawRect(
                         color = Color.Red,
-                        topLeft = Offset(offsetsW[c.x], offsetsH[c.y]),
+                        topLeft = Offset(offsetsW[c.x], offsetsH.getValue(c.y)),
                         size = cellSize,
                         alpha = 0.5f,
                     )
@@ -231,7 +233,7 @@ fun BoxScope.EditorLayout(
                         sprite = sprite,
                         offset = IntOffset(
                             x = offsetsW[place.x].toInt(),
-                            y = offsetsH[place.y - (rect.h - e.size.h)].toInt()
+                            y = offsetsH.getValue(place.y - (rect.h - e.size.h)).toInt()
                         ),
                         layoutSize = Size(
                             width = (cellSize.width * rect.w).coerceAtLeast(1f),
@@ -246,7 +248,7 @@ fun BoxScope.EditorLayout(
                 for (c in toolkit.placedShape.coordinates) {
                     drawRect(
                         color = Color.Black,
-                        topLeft = Offset(offsetsW[c.x], offsetsH[c.y]),
+                        topLeft = Offset(offsetsW[c.x], offsetsH.getValue(c.y)),
                         size = cellSize,
                         alpha = 0.1f,
                     )
@@ -254,7 +256,7 @@ fun BoxScope.EditorLayout(
                 for (c in toolkit.entitiesToDelete) {
                     drawRect(
                         color = Color.Red,
-                        topLeft = Offset(offsetsW[c.x], offsetsH[c.y]),
+                        topLeft = Offset(offsetsW[c.x], offsetsH.getValue(c.y)),
                         size = cellSize,
                         alpha = 0.5f,
                     )
@@ -266,7 +268,7 @@ fun BoxScope.EditorLayout(
                     for (c in toolkit.placedShape.coordinates) {
                         drawRect(
                             color = Color.Black,
-                            topLeft = Offset(offsetsW[c.x], offsetsH[c.y]),
+                            topLeft = Offset(offsetsW[c.x], offsetsH.getValue(c.y)),
                             size = cellSize,
                             alpha = 0.1f,
                         )
@@ -299,7 +301,7 @@ fun BoxScope.EditorLayout(
                     pathEffect = PathEffect.dashPathEffect(intervals = floatArrayOf(2f, 2f)),
                 )
             }
-            for (y in (0..nH).map(offsetsH::get)) {
+            for (y in (0..nH).map(offsetsH::getValue)) {
                 drawLine(
                     color = Color.LightGray,
                     start = Offset(x = 0f, y),
@@ -316,7 +318,7 @@ fun BoxScope.EditorLayout(
 
             drawRect(
                 color = hoveredColor,
-                topLeft = Offset(offsetsW[hoveredX], offsetsH[hoveredY]),
+                topLeft = Offset(offsetsW[hoveredX], offsetsH.getValue(hoveredY)),
                 size = cellSize,
                 alpha = 0.3f,
             )
@@ -331,7 +333,7 @@ fun BoxScope.EditorLayout(
                     style = Stroke(width = 2f)
                 )
                 drawRect(
-                    topLeft = Offset(x = 0f, y = offsetsH[hoveredY]),
+                    topLeft = Offset(x = 0f, y = offsetsH.getValue(hoveredY)),
                     size = Size(size.width, cellSize.height),
                     color = Color.DarkGray,
                     style = Stroke(width = 2f)
@@ -342,4 +344,4 @@ fun BoxScope.EditorLayout(
 }
 
 
-private val UNDEFINED: Coordinate = xy(-1, -1)
+private val UNDEFINED: Coordinate = xy(Int.MAX_VALUE, Int.MAX_VALUE)

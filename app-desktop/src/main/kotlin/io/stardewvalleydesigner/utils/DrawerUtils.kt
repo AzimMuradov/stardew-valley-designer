@@ -93,7 +93,7 @@ object DrawerUtils {
         visibleLayers: Set<LayerType<*>>,
         renderSpritesFully: Boolean,
         offsetsW: List<Float>,
-        offsetsH: List<Float>,
+        offsetsH: Map<Int, Float>,
         cellSize: Size,
     ) {
         val sorted = visibleLayers.flatMap(entities::entitiesBy).sortedWith(placedEntityComparator)
@@ -114,7 +114,7 @@ object DrawerUtils {
                 sprite = sprite,
                 offset = IntOffset(
                     x = offsetsW[place.x].toInt(),
-                    y = offsetsH[place.y - (rect.h - e.size.h)].toInt()
+                    y = offsetsH.getValue(place.y - (rect.h - e.size.h)).toInt()
                 ),
                 layoutSize = Size(
                     width = (cellSize.width * rect.w).coerceAtLeast(1f),
@@ -127,23 +127,22 @@ object DrawerUtils {
 
     fun DrawScope.drawFlooring(
         flooring: Flooring?,
-        nW: Int,
-        nH: Int,
+        nW: Int, nH: Int,
         stepSize: Float,
     ) {
-        val off1 = List(nW) { -stepSize + stepSize * 2 * it }.map { it.roundToInt() }
-        val off2 = List(nH) { stepSize * 2 * (it + 1) }.map { it.roundToInt() }
+        val xs = List(size = (nW + 1) / 2 + 1) { -stepSize + stepSize * 2 * it }.map { it.roundToInt() }
+        val ys = List(size = (nH + 1) / 2) { stepSize * 2 * (it + 1) }.map { it.roundToInt() }
 
-        off1.zipWithNext().forEach { (st1, en1) ->
-            off2.zipWithNext().forEach { (st2, en2) ->
+        for ((left, right) in xs.zipWithNext()) {
+            for ((top, bottom) in ys.zipWithNext()) {
                 val sprite = flooring(flooring ?: Flooring.all().first())
 
                 drawImage(
                     image = sprite.image,
                     srcOffset = sprite.offset,
                     srcSize = sprite.size,
-                    dstOffset = IntOffset(x = st1, y = st2),
-                    dstSize = IntSize(width = (en1 - st1), height = (en2 - st2)),
+                    dstOffset = IntOffset(x = left, y = top),
+                    dstSize = IntSize(width = right - left, height = bottom - top),
                     filterQuality = FilterQuality.None,
                 )
             }
@@ -155,17 +154,20 @@ object DrawerUtils {
         nW: Int,
         stepSize: Float,
     ) {
-        val off = (List(nW) { stepSize * it } + size.width).map { it.roundToInt() }
+        val xs = List(size = nW + 1) { stepSize * it }.map { it.roundToInt() }
+        val top = stepSize.roundToInt()
+        val bottom = (stepSize * 4).roundToInt()
+        val height = bottom - top
 
-        off.zipWithNext().forEach { (st, en) ->
+        for ((left, right) in xs.zipWithNext()) {
             val sprite = wallpaper(wallpaper ?: Wallpaper.all().first())
 
             drawImage(
                 image = sprite.image,
                 srcOffset = sprite.offset,
                 srcSize = sprite.size,
-                dstOffset = IntOffset(x = st, y = stepSize.roundToInt()),
-                dstSize = IntSize(width = (en - st), height = (stepSize * 3).roundToInt()),
+                dstOffset = IntOffset(x = left, y = top),
+                dstSize = IntSize(width = right - left, height = height),
                 filterQuality = FilterQuality.None,
             )
         }
