@@ -65,7 +65,7 @@ fun BoxScope.LayoutPreview(
 
         val cellSize = Size(stepSize, stepSize)
         val offsetsW = List(size = nW + 1) { it * stepSize }
-        val offsetsH = List(size = nH + 1) { it * stepSize }
+        val offsetsH = (-nH..nH).associateWith { it * stepSize }
 
 
         // Background
