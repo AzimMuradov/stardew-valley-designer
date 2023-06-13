@@ -18,6 +18,7 @@ package io.stardewvalleydesigner.screens.editor.main
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.editor.EditorIntent
@@ -35,13 +36,7 @@ fun RowScope.MainPart(
     options: OptionsState,
     intentConsumer: (EditorIntent) -> Unit,
 ) {
-    Box(modifier = Modifier.fillMaxHeight().weight(1f).padding(30.dp)) {
-        EditorLayout(
-            map = map,
-            visibleLayers = visibleLayers,
-            toolkit = toolkit,
-            options = options,
-            intentConsumer = intentConsumer
-        )
+    Box(Modifier.fillMaxHeight().weight(1f).padding(30.dp), Alignment.Center) {
+        EditorLayout(map, visibleLayers, toolkit, options, intentConsumer)
     }
 }

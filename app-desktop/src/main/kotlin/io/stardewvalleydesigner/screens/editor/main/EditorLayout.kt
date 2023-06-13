@@ -19,10 +19,12 @@ package io.stardewvalleydesigner.screens.editor.main
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -53,7 +55,7 @@ import kotlin.math.floor
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun BoxScope.EditorLayout(
+fun EditorLayout(
     map: MapState,
     visibleLayers: Set<LayerType<*>>,
     toolkit: ToolkitState,
@@ -86,17 +88,17 @@ fun BoxScope.EditorLayout(
     Canvas(
         modifier = Modifier
             .aspectRatio(layoutSprite.size.toRect().aspectRatio)
-            // .size(layoutSprite.size.width.dp * 2, layoutSprite.size.height.dp * 2)
             .fillMaxSize()
-            .align(Alignment.Center)
             .clipToBounds()
-            .background(color = Color.White)
-            .onPointerEvent(PointerEventType.Move) {
-                hoveredCoordinate = it.changes.first().position.toCoordinateStrict()
+            .background(color = MaterialTheme.colors.surface)
+            // Hovered cell
+            .onPointerEvent(PointerEventType.Move) { event ->
+                hoveredCoordinate = event.changes.first().position.toCoordinateStrict()
             }
             .onPointerEvent(PointerEventType.Exit) { hoveredCoordinate = UNDEFINED }
-            .onPointerEvent(eventType = PointerEventType.Press) {
-                val current = it.changes.first().position.toCoordinateStrict()
+            // Tools logic
+            .onPointerEvent(eventType = PointerEventType.Press) { event ->
+                val current = event.changes.first().position.toCoordinateStrict()
                     .takeUnless { it == UNDEFINED } ?: return@onPointerEvent
                 prevDragCoordinate = current
                 intentConsumer(EditorIntent.Engine.Start(current))
