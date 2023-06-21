@@ -22,73 +22,13 @@ import io.stardewvalleydesigner.engine.layout.Layout
 import io.stardewvalleydesigner.engine.layout.LayoutType
 
 
-internal val StandardFarmLayout = Layout(
-    type = LayoutType.StandardFarm,
-    size = rectOf(w = 80, h = 65),
-    disallowedTypes = setOf(
-        FloorFurnitureType,
-        ObjectType.FurnitureType.HouseFurnitureType,
-        ObjectType.FurnitureType.IndoorFurnitureType,
-    ),
-    disallowedTypesMap = buildMap {
-        val standard = setOf(EntityWithoutFloorType.BuildingType, EntityWithoutFloorType.CropType)
-        val buildable = standard - setOf(EntityWithoutFloorType.BuildingType)
-        val noPlaceable = standard + ObjectType.all
-
-        // Pet area
-        this += listOf(xy(53, 7), xy(53, 8), xy(54, 8)) withData noPlaceable
-
-        this += xy(54, 9) to standard
-
-        // Farm house area
+internal val StandardFarmLayout = run {
+    val disallowedCoordinates: Set<Coordinate> = buildSet {
+        // Farmhouse
         this += buildList {
-            addAll(row(54..77, 10))
-            addAll(row(55..77, 11))
-            addAll(row(56..77, 12))
-            addAll(row(57..77, 13))
-            addAll(row(58..77, 14))
-            addAll(rect(58..79, 15..17))
-            removeAll(listOf(xy(71, 16), xy(70, 17), xy(71, 17)))
-        } withData buildable
-
-        // Shade line
-        this += col(76, 19..55) withData buildable
-
-        this += rect(69..72, 8..9) withData noPlaceable
-        this += rect(69..72, 10..13) withData standard
-
-        this += row(4..39, 8) withData buildable
-        this += row(7..9, 8) withData standard
-        this += xy(34, 7) to standard
-        this += listOf(xy(3, 9), xy(4, 9), xy(3, 10)) withData buildable
-
-        this += xy(40, 0) to buildable
-        this += xy(40, 1) to standard
-        this += col(41, 0..8) withData buildable
-        this += row(42..45, 8) withData buildable
-        this += xy(46, 7) to buildable
-        this += xy(48, 7) to standard
-
-        // Rock shade
-        this += listOf(xy(5, 34), xy(4, 35), xy(3, 36)) withData buildable
-
-        // Path to shipment chest
-        this += buildList {
-            addAll(listOf(xy(71, 15), xy(72, 15), xy(72, 16)))
-            addAll(row(72..79, 17))
-        } withData standard
-
-        this += xy(78, 18) to buildable
-
-        // Mailbox
-        this += xy(68, 14) to noPlaceable
-
-        this += row(60..62, 15) withData standard
-        this += xy(64, 17) to noPlaceable
-    },
-    disallowedCoordinates = buildSet {
-        this += rect(59..67, 11..16) // TODO : TEMP
-        this -= row(60..62, 15).toSet()
+            addAll(rect(59..67, 11..16))
+            removeAll(row(60..62, 15))
+        }
 
         // Borders
         this += buildList {
@@ -135,7 +75,74 @@ internal val StandardFarmLayout = Layout(
             addAll(row(37..41, 58))
         }
     }
-)
+
+    Layout(
+        type = LayoutType.StandardFarm,
+        size = rectOf(w = 80, h = 65),
+        disallowedTypes = setOf(
+            FloorFurnitureType,
+            ObjectType.FurnitureType.HouseFurnitureType,
+            ObjectType.FurnitureType.IndoorFurnitureType,
+        ),
+        disallowedTypesMap = buildMap {
+            val standard = setOf(EntityWithoutFloorType.BuildingType, EntityWithoutFloorType.CropType)
+            val buildable = standard - setOf(EntityWithoutFloorType.BuildingType)
+            val noPlaceable = standard + ObjectType.all
+
+            // Top-left area
+            this += row(4..39, 8) withData buildable
+            this += row(7..9, 8) withData standard
+            this += xy(34, 7) to standard
+            this += listOf(xy(3, 9), xy(4, 9), xy(3, 10)) withData buildable
+
+            // Rock shade on the left
+            this += listOf(xy(5, 34), xy(4, 35), xy(3, 36)) withData buildable
+
+            // Top area
+            this += xy(40, 0) to buildable
+            this += xy(40, 1) to standard
+            this += col(41, 0..8) withData buildable
+            this += row(42..45, 8) withData buildable
+            this += xy(46, 7) to buildable
+            this += xy(48, 7) to standard
+
+            // Pet area
+            this += listOf(xy(53, 7), xy(53, 8), xy(54, 8)) withData noPlaceable
+
+            // Weird shade tile
+            this += xy(54, 9) to standard
+
+            // Farmhouse area
+            this += buildList {
+                addAll(row(54..77, 10))
+                addAll(row(55..77, 11))
+                addAll(row(56..77, 12))
+                addAll(row(57..77, 13))
+                addAll(row(58..77, 14))
+                addAll(rect(58..79, 15..17))
+                removeAll(listOf(xy(71, 16), xy(70, 17), xy(71, 17)))
+            } withData buildable
+            this += row(60..62, 15) withData standard // Farmhouse
+            this += xy(64, 17) to noPlaceable // Farmhouse
+            this += rect(69..72, 8..9) withData noPlaceable // Spouse patio
+            this += rect(69..72, 10..13) withData standard // Under the spouse patio
+            this += xy(68, 14) to noPlaceable // Above the mailbox
+            // Path to shipment chest
+            this += buildList {
+                addAll(listOf(xy(71, 15), xy(72, 15), xy(72, 16)))
+                addAll(row(72..79, 17))
+            } withData standard
+            this += xy(78, 18) to buildable // Weird grass tile
+
+            // Shade line on the right
+            this += col(76, 19..55) withData buildable
+
+            // Remove disallowed coordinates
+            this -= disallowedCoordinates
+        },
+        disallowedCoordinates = disallowedCoordinates
+    )
+}
 
 
 private infix fun Collection<Coordinate>.withData(noPlaceable: Set<EntityType>) = associateWith {
