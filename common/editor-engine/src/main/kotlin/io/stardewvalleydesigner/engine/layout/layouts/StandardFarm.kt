@@ -22,7 +22,7 @@ import io.stardewvalleydesigner.engine.layout.Layout
 import io.stardewvalleydesigner.engine.layout.LayoutType
 
 
-internal val StandardFarmLayout = run {
+internal val StandardFarmLayout: Layout = run {
     val disallowedCoordinates: Set<Coordinate> = buildSet {
         // Farmhouse
         this += buildList {
@@ -76,7 +76,8 @@ internal val StandardFarmLayout = run {
         }
     }
 
-    Layout(
+
+    return@run Layout(
         type = LayoutType.StandardFarm,
         size = rectOf(w = 80, h = 65),
         disallowedTypes = setOf(
