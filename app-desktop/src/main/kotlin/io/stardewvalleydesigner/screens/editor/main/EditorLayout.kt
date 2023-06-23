@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.unit.IntOffset
 import io.stardewvalleydesigner.editor.EditorIntent
+import io.stardewvalleydesigner.editor.menus.OptionsItemValue.Toggleable
 import io.stardewvalleydesigner.editor.modules.map.MapState
 import io.stardewvalleydesigner.editor.modules.options.OptionsState
 import io.stardewvalleydesigner.editor.modules.toolkit.ToolkitState
@@ -152,7 +153,7 @@ fun EditorLayout(
         drawVisibleEntities(
             entities = map.entities,
             visibleLayers = visibleLayers,
-            renderSpritesFully = options.showSpritesFully,
+            renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
             offsetsW = offsetsW,
             offsetsH = offsetsH,
             cellSize = cellSize
@@ -175,7 +176,7 @@ fun EditorLayout(
                 val sorted = toolkit.heldEntities.flatten().sortedWith(placedEntityComparator)
                 for ((e, place) in sorted) {
                     val sprite = EntitySpritesProvider.spriteBy(e).run {
-                        if (options.showSpritesFully) {
+                        if (options.toggleables.getValue(Toggleable.ShowSpritesFully)) {
                             this
                         } else {
                             copy(
@@ -219,7 +220,7 @@ fun EditorLayout(
                 }
                 for ((e, place) in toolkit.entitiesToDraw) {
                     val sprite = EntitySpritesProvider.spriteBy(e).run {
-                        if (options.showSpritesFully) {
+                        if (options.toggleables.getValue(Toggleable.ShowSpritesFully)) {
                             this
                         } else {
                             copy(
@@ -292,7 +293,7 @@ fun EditorLayout(
 
         // Grid
 
-        if (options.showGrid) {
+        if (options.toggleables.getValue(Toggleable.ShowGrid)) {
             for (x in offsetsW) {
                 drawLine(
                     color = Color.LightGray,
@@ -325,7 +326,7 @@ fun EditorLayout(
 
             // Axis
 
-            if (options.showAxis) {
+            if (options.toggleables.getValue(Toggleable.ShowAxis)) {
                 drawRect(
                     topLeft = Offset(x = offsetsW[hoveredX], y = 0f),
                     size = Size(cellSize.width, size.height),

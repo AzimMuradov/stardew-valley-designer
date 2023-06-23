@@ -16,7 +16,7 @@
 
 package io.stardewvalleydesigner.settings.wordlists
 
-import io.stardewvalleydesigner.editor.menus.EntitySelectionRoot
+import io.stardewvalleydesigner.editor.menus.*
 import io.stardewvalleydesigner.editor.modules.toolkit.ShapeType
 import io.stardewvalleydesigner.editor.modules.toolkit.ToolType
 import io.stardewvalleydesigner.engine.entity.*
@@ -111,12 +111,6 @@ data object EnWordList : WordList {
 
     // Editor Screen
 
-    override val optionShowAxis: String = "Show axis"
-
-    override val optionShowGrid: String = "Show grid"
-
-    override val optionSpritesFully: String = "Show sprites fully"
-
     override fun menuTitle(root: EntitySelectionRoot): String = menuTitles[root] ?: when (root) {
 
         // Buildings Menu
@@ -181,6 +175,16 @@ data object EnWordList : WordList {
         EntitySelectionRoot.TerrainElementsSigns -> "Signs"
         EntitySelectionRoot.TerrainElementsLighting -> "Lighting"
     }.also { menuTitles[root] = it }
+
+    override fun optionsSubmenuTitle(root: OptionsSubmenuRoot): String = when (root) {
+        OptionsSubmenuRoot.OptionsGeneral -> "Visual options"
+    }
+
+    override fun optionTitle(option: OptionsItemValue): String = when (option) {
+        OptionsItemValue.Toggleable.ShowAxis -> "Show axis"
+        OptionsItemValue.Toggleable.ShowGrid -> "Show grid"
+        OptionsItemValue.Toggleable.ShowSpritesFully -> "Show sprites fully"
+    }
 
     override fun entity(e: Entity<*>): String = entities[e] ?: when (e) {
 

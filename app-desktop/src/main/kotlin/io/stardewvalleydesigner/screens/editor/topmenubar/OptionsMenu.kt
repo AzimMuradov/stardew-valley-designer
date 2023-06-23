@@ -21,6 +21,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -75,8 +76,27 @@ fun RowScope.OptionsMenu(
             },
             menuModifierProvider = { DROPDOWN_MENU_MODIFIER },
 
-            submenuRootModifierProvider = { Modifier },
-            submenuRootContent = { _, _ -> },
+            submenuRootModifierProvider = { hovered ->
+                Modifier
+                    .fillMaxSize()
+                    .background(color = if (hovered) Color.Black.copy(alpha = 0.2f) else Color.Transparent)
+            },
+            submenuRootContent = { root, hovered ->
+                val rotation by animateFloatAsState(if (hovered) 180f else 0f)
+
+                Text(
+                    text = wordList.optionsSubmenuTitle(root),
+                    modifier = Modifier.weight(1f),
+                    style = MaterialTheme.typography.subtitle1
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(
+                    imageVector = Icons.Filled.ArrowDropDown,
+                    contentDescription = null,
+                    modifier = Modifier.rotate(rotation)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+            },
             submenuModifierProvider = { DROPDOWN_MENU_MODIFIER },
 
             itemModifierProvider = { _, hovered ->
@@ -86,22 +106,10 @@ fun RowScope.OptionsMenu(
             },
             itemValueContent = { value, _ ->
                 when (value) {
-                    OptionsItemValue.ShowAxis -> Option(
-                        name = wordList.optionShowAxis,
-                        checked = options.showAxis,
-                        onCheckedChange = { intentConsumer(EditorIntent.Options.ChangeAxisVisibility(it)) }
-                    )
-
-                    OptionsItemValue.ShowGrid -> Option(
-                        name = wordList.optionShowGrid,
-                        checked = options.showGrid,
-                        onCheckedChange = { intentConsumer(EditorIntent.Options.ChangeGridVisibility(it)) }
-                    )
-
-                    OptionsItemValue.ShowSpritesFully -> Option(
-                        name = wordList.optionSpritesFully,
-                        checked = options.showSpritesFully,
-                        onCheckedChange = { intentConsumer(EditorIntent.Options.ChangeSpritesRender(it)) }
+                    is OptionsItemValue.Toggleable -> ToggleableOption(
+                        name = wordList.optionTitle(value),
+                        checked = options.toggleables.getValue(value),
+                        onCheckedChange = { intentConsumer(EditorIntent.Options.Toggle(value, it)) }
                     )
                 }
             },
@@ -111,7 +119,7 @@ fun RowScope.OptionsMenu(
 
 
 @Composable
-private fun RowScope.Option(name: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+private fun RowScope.ToggleableOption(name: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     Checkbox(checked, onCheckedChange)
     Spacer(modifier = Modifier.width(8.dp))
     Text(

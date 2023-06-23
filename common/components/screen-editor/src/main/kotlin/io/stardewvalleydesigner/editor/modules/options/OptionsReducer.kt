@@ -22,8 +22,10 @@ import io.stardewvalleydesigner.editor.EditorIntent.Options as OptionsIntent
 
 val reduce: Reduce<OptionsState, OptionsIntent> = { intent ->
     when (intent) {
-        is OptionsIntent.ChangeAxisVisibility -> copy(showAxis = intent.isVisible)
-        is OptionsIntent.ChangeGridVisibility -> copy(showGrid = intent.isVisible)
-        is OptionsIntent.ChangeSpritesRender -> copy(showSpritesFully = intent.isRenderedFully)
+        is OptionsIntent.Toggle -> copy(
+            toggleables = toggleables.toMutableMap().apply {
+                put(intent.toggleable, intent.value)
+            }
+        )
     }
 }

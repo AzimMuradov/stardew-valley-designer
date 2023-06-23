@@ -16,19 +16,17 @@
 
 package io.stardewvalleydesigner.editor.modules.options
 
+import io.stardewvalleydesigner.editor.menus.OptionsItemValue
+
 
 data class OptionsState(
-    val showAxis: Boolean,
-    val showGrid: Boolean,
-    val showSpritesFully: Boolean,
+    val toggleables: Map<OptionsItemValue.Toggleable, Boolean>,
 ) {
 
     companion object {
 
         fun default() = OptionsState(
-            showAxis = true,
-            showGrid = true,
-            showSpritesFully = true,
+            toggleables = OptionsItemValue.Toggleable.values().associateWith { true }
         )
     }
 }

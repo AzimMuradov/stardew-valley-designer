@@ -20,27 +20,33 @@ import io.stardewvalleydesigner.utils.menu.Menu
 import io.stardewvalleydesigner.utils.menu.menu
 
 
-typealias OptionsMenu = Menu<OptionsRoot, OptionsRoot, OptionsItemValue>
+typealias OptionsMenu = Menu<OptionsRoot, OptionsSubmenuRoot, OptionsItemValue>
 
 
 enum class OptionsRoot {
     Options,
 }
 
+enum class OptionsSubmenuRoot {
+    OptionsGeneral,
+}
+
 sealed interface OptionsItemValue {
 
-    sealed interface Toggleable : OptionsItemValue
-
-    data object ShowAxis : Toggleable
-    data object ShowGrid : Toggleable
-    data object ShowSpritesFully : Toggleable
+    enum class Toggleable : OptionsItemValue {
+        ShowAxis,
+        ShowGrid,
+        ShowSpritesFully,
+    }
 }
 
 
 val MainOptionsMenu: OptionsMenu = menu(root = OptionsRoot.Options) {
-    items(
-        OptionsItemValue.ShowAxis,
-        OptionsItemValue.ShowGrid,
-        OptionsItemValue.ShowSpritesFully,
-    )
+    submenu(OptionsSubmenuRoot.OptionsGeneral) {
+        items(
+            OptionsItemValue.Toggleable.ShowAxis,
+            OptionsItemValue.Toggleable.ShowGrid,
+            OptionsItemValue.Toggleable.ShowSpritesFully,
+        )
+    }
 }
