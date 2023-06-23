@@ -16,10 +16,9 @@
 
 package io.stardewvalleydesigner.save
 
+import io.stardewvalleydesigner.LoggerUtils.logger
 import io.stardewvalleydesigner.engine.*
-import io.stardewvalleydesigner.engine.layers.layered
-import io.stardewvalleydesigner.engine.layout.LayoutType
-import io.stardewvalleydesigner.engine.layout.LayoutsProvider
+import io.stardewvalleydesigner.engine.layout.*
 import io.stardewvalleydesigner.save.mappers.toPlacedEntityOrNull
 import io.stardewvalleydesigner.save.models.SaveGame
 import kotlinx.serialization.decodeFromString
@@ -46,36 +45,43 @@ object SaveDataSerializers {
         val buildings = farm.buildings.filter { it.buildingType in buildingsByType }
 
         return buildList {
-            this += editorEngineOf(LayoutsProvider.layoutOf(LayoutType.StandardFarm)).apply {
-                putAll(
-                    run {
-                        val furniture = farm.furniture.mapNotNull { it.toPlacedEntityOrNull() }
-                        val objects = farm.objects.mapNotNull { it.value.obj.toPlacedEntityOrNull() }
-                        val flooring = farm.terrainFeatures.mapNotNull { it.toPlacedEntityOrNull() }
+            this += run {
+                val layout = LayoutsProvider.layoutOf(LayoutType.StandardFarm)
 
-                        (furniture + objects + flooring).filter { it.place.y >= 0 }.layered()
+                editorEngineOf(layout).apply {
+                    val (es, failedEs) = buildList {
+                        addAll(farm.furniture.mapNotNull { it.toPlacedEntityOrNull() })
+                        addAll(farm.objects.mapNotNull { it.value.obj.toPlacedEntityOrNull() })
+                        addAll(farm.terrainFeatures.mapNotNull { it.toPlacedEntityOrNull() })
+                        addAll(farm.buildings.mapNotNull { it.toPlacedEntityOrNull() })
+                    }.partition { it respectsLayout layout }
+
+                    if (failedEs.isNotEmpty()) {
+                        logger.warn { failedEs }
                     }
-                )
-                putAll(
-                    farm.buildings.mapNotNull { it.toPlacedEntityOrNull() }.layered()
-                )
+
+                    for (e in es) put(e)
+                }
             }
 
             this += buildings.map { building ->
                 val layout = LayoutsProvider.layoutOf(buildingsByType.getValue(building.buildingType))
 
                 editorEngineOf(layout).apply {
-                    putAll(
+                    val (es, failedEs) = buildList {
                         if (building.indoors != null) {
-                            val furniture = building.indoors.furniture.mapNotNull { it.toPlacedEntityOrNull() }
-                            val objects = building.indoors.objects.mapNotNull { it.value.obj.toPlacedEntityOrNull() }
-                            val flooring = building.indoors.terrainFeatures.mapNotNull { it.toPlacedEntityOrNull() }
+                            addAll(building.indoors.furniture.mapNotNull { it.toPlacedEntityOrNull() })
+                            addAll(building.indoors.objects.mapNotNull { it.value.obj.toPlacedEntityOrNull() })
+                            addAll(building.indoors.terrainFeatures.mapNotNull { it.toPlacedEntityOrNull() })
+                        }
+                    }.partition { it respectsLayout layout }
 
-                            (furniture + objects + flooring).filter { it.place.y >= 0 }
-                        } else {
-                            emptyList()
-                        }.layered()
-                    )
+                    if (failedEs.isNotEmpty()) {
+                        logger.warn { failedEs }
+                    }
+
+                    for (e in es) put(e)
+
                     wallpaper = building.indoors?.wallPaper?.int?.toUByte()?.run(::Wallpaper)
                     flooring = building.indoors?.floor?.int?.toUByte()?.run(::Flooring)
                 }
