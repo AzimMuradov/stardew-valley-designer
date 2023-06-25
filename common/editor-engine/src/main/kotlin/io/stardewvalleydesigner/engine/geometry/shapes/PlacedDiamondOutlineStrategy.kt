@@ -19,22 +19,16 @@ package io.stardewvalleydesigner.engine.geometry.shapes
 import io.stardewvalleydesigner.engine.geometry.*
 
 
-interface PlacedShapeStrategy {
+object PlacedDiamondOutlineStrategy : PlacedShapeStrategy {
 
-    fun coordinates(corners: CanonicalCorners): Set<Coordinate>
+    override fun coordinates(corners: CanonicalCorners): Set<Coordinate> {
+        val (bl, tr) = corners
+
+        return buildSet {
+            addAll(Bresenham.line(xy(bl.x, (bl.y + tr.y) / 2), xy((bl.x + tr.x) / 2, bl.y)))
+            addAll(Bresenham.line(xy(bl.x, (bl.y + tr.y + 1) / 2), xy((bl.x + tr.x) / 2, tr.y)))
+            addAll(Bresenham.line(xy(tr.x, (bl.y + tr.y) / 2), xy((bl.x + tr.x + 1) / 2, bl.y)))
+            addAll(Bresenham.line(xy(tr.x, (bl.y + tr.y + 1) / 2), xy((bl.x + tr.x + 1) / 2, tr.y)))
+        }
+    }
 }
-
-fun PlacedShapeStrategy.coordinates(
-    a: Coordinate,
-    b: Coordinate,
-): Set<Coordinate> = coordinates(corners = CanonicalCorners.fromTwoCoordinates(a, b))
-
-fun PlacedShapeStrategy.from(
-    center: Coordinate,
-    radius: UInt,
-): Set<Coordinate> = coordinates(
-    corners = CanonicalCorners(
-        bottomLeft = center - vec(radius.toInt(), radius.toInt()),
-        topRight = center + vec(radius.toInt(), radius.toInt())
-    )
-)
