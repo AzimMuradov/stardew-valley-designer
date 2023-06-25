@@ -21,7 +21,10 @@ import io.stardewvalleydesigner.engine.geometry.xy
 import kotlin.math.abs
 
 
-internal object Bresenham {
+// Port of C code by Alois Zingl
+// See http://members.chello.at/~easyfilter/bresenham.html
+
+internal object BresenhamAlgorithms {
 
     fun line(a: Coordinate, b: Coordinate): Set<Coordinate> {
         val (xA, yA) = a

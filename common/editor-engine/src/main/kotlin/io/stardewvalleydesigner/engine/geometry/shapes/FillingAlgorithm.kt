@@ -17,12 +17,14 @@
 package io.stardewvalleydesigner.engine.geometry.shapes
 
 import io.stardewvalleydesigner.engine.geometry.Coordinate
+import io.stardewvalleydesigner.engine.geometry.xy
 
 
-data class PlacedShape(
-    val a: Coordinate, val b: Coordinate,
-    val strategy: PlacedShapeStrategy,
-) {
+internal object FillingAlgorithm {
 
-    val coordinates: Set<Coordinate> by lazy { strategy.coordinates(a, b) }
+    fun fill(outline: Set<Coordinate>): Set<Coordinate> = outline
+        .groupBy { it.y }
+        .flatMapTo(mutableSetOf()) { (y, xs) ->
+            (xs.minBy { it.x }.x..xs.maxBy { it.x }.x).map { x -> xy(x, y) }
+        }
 }

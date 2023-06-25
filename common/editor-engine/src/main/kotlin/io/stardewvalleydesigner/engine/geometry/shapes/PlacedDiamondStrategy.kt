@@ -16,33 +16,13 @@
 
 package io.stardewvalleydesigner.engine.geometry.shapes
 
-import io.stardewvalleydesigner.engine.geometry.*
+import io.stardewvalleydesigner.engine.geometry.Coordinate
 
-
-object PlacedDiamondStrategy : PlacedShapeStrategy {
-
-    override fun coordinates(corners: CanonicalCorners): Set<Coordinate> {
-        val (bl, tr) = corners
-
-        return buildSet {
-            val leftBorder = buildList {
-                addAll(Bresenham.line(xy(bl.x, (bl.y + tr.y) / 2), xy((bl.x + tr.x) / 2, bl.y)))
-                addAll(Bresenham.line(xy(bl.x, (bl.y + tr.y + 1) / 2), xy((bl.x + tr.x) / 2, tr.y)))
-            }
-            val rightBorder = buildList {
-                addAll(Bresenham.line(xy(tr.x, (bl.y + tr.y) / 2), xy((bl.x + tr.x + 1) / 2, bl.y)))
-                addAll(Bresenham.line(xy(tr.x, (bl.y + tr.y + 1) / 2), xy((bl.x + tr.x + 1) / 2, tr.y)))
-            }
 
             addAll(leftBorder)
             addAll(rightBorder)
 
-            val leftBorderByY = leftBorder.associate { it.y to it.x }
-            val rightBorderByY = rightBorder.associate { it.y to it.x }
-
-            for ((y, leftX) in leftBorderByY) {
-                addAll((leftX..rightBorderByY[y]!!).map { x -> xy(x, y) })
-            }
-        }
-    }
+    override fun coordinates(a: Coordinate, b: Coordinate): Set<Coordinate> = FillingAlgorithm.fill(
+        outline = PlacedDiamondOutlineStrategy.coordinates(a, b)
+    )
 }

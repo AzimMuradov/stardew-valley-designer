@@ -21,20 +21,10 @@ import io.stardewvalleydesigner.engine.geometry.*
 
 interface PlacedShapeStrategy {
 
-    fun coordinates(corners: CanonicalCorners): Set<Coordinate>
+    fun coordinates(a: Coordinate, b: Coordinate): Set<Coordinate>
 }
 
-fun PlacedShapeStrategy.coordinates(
-    a: Coordinate,
-    b: Coordinate,
-): Set<Coordinate> = coordinates(corners = CanonicalCorners.fromTwoCoordinates(a, b))
-
-fun PlacedShapeStrategy.from(
-    center: Coordinate,
-    radius: UInt,
-): Set<Coordinate> = coordinates(
-    corners = CanonicalCorners(
-        bottomLeft = center - vec(radius.toInt(), radius.toInt()),
-        topRight = center + vec(radius.toInt(), radius.toInt())
-    )
+fun PlacedShapeStrategy.from(center: Coordinate, radius: UInt): Set<Coordinate> = coordinates(
+    a = center - vec(radius.toInt(), radius.toInt()),
+    b = center + vec(radius.toInt(), radius.toInt())
 )

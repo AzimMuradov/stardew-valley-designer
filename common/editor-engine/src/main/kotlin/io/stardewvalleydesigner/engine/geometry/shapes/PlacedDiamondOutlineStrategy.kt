@@ -21,14 +21,14 @@ import io.stardewvalleydesigner.engine.geometry.*
 
 object PlacedDiamondOutlineStrategy : PlacedShapeStrategy {
 
-    override fun coordinates(corners: CanonicalCorners): Set<Coordinate> {
-        val (bl, tr) = corners
+    override fun coordinates(a: Coordinate, b: Coordinate): Set<Coordinate> {
+        val (bl, tr) = CanonicalCorners.fromTwoCoordinates(a, b)
 
         return buildSet {
-            addAll(Bresenham.line(xy(bl.x, (bl.y + tr.y) / 2), xy((bl.x + tr.x) / 2, bl.y)))
-            addAll(Bresenham.line(xy(bl.x, (bl.y + tr.y + 1) / 2), xy((bl.x + tr.x) / 2, tr.y)))
-            addAll(Bresenham.line(xy(tr.x, (bl.y + tr.y) / 2), xy((bl.x + tr.x + 1) / 2, bl.y)))
-            addAll(Bresenham.line(xy(tr.x, (bl.y + tr.y + 1) / 2), xy((bl.x + tr.x + 1) / 2, tr.y)))
+            addAll(BresenhamAlgorithms.line(xy(bl.x, (bl.y + tr.y) / 2), xy((bl.x + tr.x) / 2, bl.y)))
+            addAll(BresenhamAlgorithms.line(xy(bl.x, (bl.y + tr.y + 1) / 2), xy((bl.x + tr.x) / 2, tr.y)))
+            addAll(BresenhamAlgorithms.line(xy(tr.x, (bl.y + tr.y) / 2), xy((bl.x + tr.x + 1) / 2, bl.y)))
+            addAll(BresenhamAlgorithms.line(xy(tr.x, (bl.y + tr.y + 1) / 2), xy((bl.x + tr.x + 1) / 2, tr.y)))
         }
     }
 }

@@ -21,23 +21,15 @@ import io.stardewvalleydesigner.engine.geometry.*
 
 object PlacedRectStrategy : PlacedShapeStrategy {
 
-    override fun coordinates(corners: CanonicalCorners): Set<Coordinate> {
-        val (bl, tr) = corners
+    override fun coordinates(a: Coordinate, b: Coordinate): Set<Coordinate> {
+        val (bl, tr) = CanonicalCorners.fromTwoCoordinates(a, b)
 
-        val xs = bl.x..tr.x
-        val ys = bl.y..tr.y
-
-        return (xs * ys).mapTo(
-            destination = mutableSetOf(),
-            transform = Pair<Int, Int>::toCoordinate
-        )
+        return buildSet {
+            for (x in bl.x..tr.x) {
+                for (y in bl.y..tr.y) {
+                    add(xy(x, y))
+                }
+            }
+        }
     }
 }
-
-
-// Private utils
-
-// Cartesian product
-
-private operator fun <A, B> Iterable<A>.times(other: Iterable<B>): List<Pair<A, B>> =
-    flatMap { a -> other.map { b -> a to b } }
