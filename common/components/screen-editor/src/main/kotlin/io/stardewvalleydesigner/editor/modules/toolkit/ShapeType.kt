@@ -16,7 +16,7 @@
 
 package io.stardewvalleydesigner.editor.modules.toolkit
 
-import io.stardewvalleydesigner.engine.geometry.CanonicalCorners
+import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.geometry.shapes.*
 
 
@@ -24,17 +24,13 @@ enum class ShapeType {
     Rect,
     RectOutline;
 
-    fun projectTo(corners: CanonicalCorners): PlacedShape = when (this) {
-        Rect -> PlacedShape(
-            corners = corners,
-            strategy = PlacedRectStrategy
-        )
-
-        RectOutline -> PlacedShape(
-            corners = corners,
-            strategy = PlacedRectOutlineStrategy
-        )
-    }
+    fun projectTo(a: Coordinate, b: Coordinate): PlacedShape = PlacedShape(
+        a, b,
+        strategy = when (this) {
+            Rect -> PlacedRectStrategy
+            RectOutline -> PlacedRectOutlineStrategy
+        }
+    )
 }
 
 fun PlacedShape.type(): ShapeType? = when (strategy) {
