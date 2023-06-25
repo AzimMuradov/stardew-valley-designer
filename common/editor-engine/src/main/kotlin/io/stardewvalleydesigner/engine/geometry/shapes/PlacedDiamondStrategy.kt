@@ -19,8 +19,7 @@ package io.stardewvalleydesigner.engine.geometry.shapes
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 
 
-            addAll(leftBorder)
-            addAll(rightBorder)
+object PlacedDiamondStrategy : PlacedShapeStrategy {
 
     override fun coordinates(a: Coordinate, b: Coordinate): Set<Coordinate> = FillingAlgorithm.fill(
         outline = PlacedDiamondOutlineStrategy.coordinates(a, b)
