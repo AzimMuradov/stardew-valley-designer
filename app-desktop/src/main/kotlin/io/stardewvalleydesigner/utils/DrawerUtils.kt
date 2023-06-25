@@ -92,8 +92,7 @@ object DrawerUtils {
         entities: LayeredEntitiesData,
         visibleLayers: Set<LayerType<*>>,
         renderSpritesFully: Boolean,
-        offsetsW: List<Float>,
-        offsetsH: Map<Int, Float>,
+        grid: CoordinateGrid,
         cellSize: Size,
     ) {
         val sorted = visibleLayers.flatMap(entities::entitiesBy).sortedWith(placedEntityComparator)
@@ -113,8 +112,8 @@ object DrawerUtils {
             drawSprite(
                 sprite = sprite,
                 offset = IntOffset(
-                    x = offsetsW[place.x].toInt(),
-                    y = offsetsH.getValue(place.y - (rect.h - e.size.h)).toInt()
+                    x = grid.getX(place.x).toInt(),
+                    y = grid.getY(y = place.y - (rect.h - e.size.h)).toInt()
                 ),
                 layoutSize = Size(
                     width = (cellSize.width * rect.w).coerceAtLeast(1f),
