@@ -16,7 +16,8 @@
 
 package io.stardewvalleydesigner.settings.wordlists
 
-import io.stardewvalleydesigner.editor.menus.*
+import io.stardewvalleydesigner.editor.menus.EntitySelectionRoot
+import io.stardewvalleydesigner.editor.menus.OptionsItemValue
 import io.stardewvalleydesigner.editor.modules.toolkit.ShapeType
 import io.stardewvalleydesigner.editor.modules.toolkit.ToolType
 import io.stardewvalleydesigner.engine.entity.*
@@ -176,14 +177,15 @@ data object EnWordList : WordList {
         EntitySelectionRoot.TerrainElementsLighting -> "Lighting"
     }.also { menuTitles[root] = it }
 
-    override fun optionsSubmenuTitle(root: OptionsSubmenuRoot): String = when (root) {
-        OptionsSubmenuRoot.OptionsGeneral -> "Visual options"
-    }
-
     override fun optionTitle(option: OptionsItemValue): String = when (option) {
         OptionsItemValue.Toggleable.ShowAxis -> "Show axis"
         OptionsItemValue.Toggleable.ShowGrid -> "Show grid"
         OptionsItemValue.Toggleable.ShowSpritesFully -> "Show sprites fully"
+
+        OptionsItemValue.Toggleable.ShowScarecrowsAreaOfEffect -> "Show scarecrows area of effect"
+        OptionsItemValue.Toggleable.ShowSprinklersAreaOfEffect -> "Show sprinklers area of effect"
+        OptionsItemValue.Toggleable.ShowBeeHousesAreaOfEffect -> "Show bee houses area of effect"
+        OptionsItemValue.Toggleable.ShowJunimoHutsAreaOfEffect -> "Show junimo huts area of effect"
     }
 
     override fun entity(e: Entity<*>): String = entities[e] ?: when (e) {

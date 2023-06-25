@@ -21,7 +21,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -76,28 +75,9 @@ fun RowScope.OptionsMenu(
             },
             menuModifierProvider = { DROPDOWN_MENU_MODIFIER },
 
-            submenuRootModifierProvider = { hovered ->
-                Modifier
-                    .fillMaxSize()
-                    .background(color = if (hovered) Color.Black.copy(alpha = 0.2f) else Color.Transparent)
-            },
-            submenuRootContent = { root, hovered ->
-                val rotation by animateFloatAsState(if (hovered) 180f else 0f)
-
-                Text(
-                    text = wordList.optionsSubmenuTitle(root),
-                    modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.subtitle1
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Icon(
-                    imageVector = Icons.Filled.ArrowDropDown,
-                    contentDescription = null,
-                    modifier = Modifier.rotate(rotation)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-            },
-            submenuModifierProvider = { DROPDOWN_MENU_MODIFIER },
+            submenuRootModifierProvider = { Modifier },
+            submenuRootContent = { _, _ -> },
+            submenuModifierProvider = { Modifier },
 
             itemModifierProvider = { _, hovered ->
                 Modifier

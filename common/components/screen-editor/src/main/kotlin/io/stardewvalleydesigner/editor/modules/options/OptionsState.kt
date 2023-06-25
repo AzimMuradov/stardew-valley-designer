@@ -26,7 +26,17 @@ data class OptionsState(
     companion object {
 
         fun default() = OptionsState(
-            toggleables = OptionsItemValue.Toggleable.values().associateWith { true }
+            toggleables = buildMap {
+                putAll(OptionsItemValue.Toggleable.values().associateWith { true })
+                putAll(
+                    listOf(
+                        OptionsItemValue.Toggleable.ShowScarecrowsAreaOfEffect,
+                        OptionsItemValue.Toggleable.ShowSprinklersAreaOfEffect,
+                        OptionsItemValue.Toggleable.ShowBeeHousesAreaOfEffect,
+                        OptionsItemValue.Toggleable.ShowJunimoHutsAreaOfEffect,
+                    ).associateWith { false }
+                )
+            }
         )
     }
 }

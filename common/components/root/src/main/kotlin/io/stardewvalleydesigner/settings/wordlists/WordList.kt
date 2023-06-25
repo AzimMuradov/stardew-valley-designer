@@ -16,7 +16,8 @@
 
 package io.stardewvalleydesigner.settings.wordlists
 
-import io.stardewvalleydesigner.editor.menus.*
+import io.stardewvalleydesigner.editor.menus.EntitySelectionRoot
+import io.stardewvalleydesigner.editor.menus.OptionsItemValue
 import io.stardewvalleydesigner.editor.modules.toolkit.ShapeType
 import io.stardewvalleydesigner.editor.modules.toolkit.ToolType
 import io.stardewvalleydesigner.engine.entity.Entity
@@ -119,8 +120,6 @@ sealed interface WordList {
      * Get menu title by its root.
      */
     fun menuTitle(root: EntitySelectionRoot): String
-
-    fun optionsSubmenuTitle(root: OptionsSubmenuRoot): String
 
     fun optionTitle(option: OptionsItemValue): String
 

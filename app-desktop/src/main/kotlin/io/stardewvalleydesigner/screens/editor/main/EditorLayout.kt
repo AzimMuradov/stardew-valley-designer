@@ -29,6 +29,8 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.unit.IntOffset
@@ -39,7 +41,9 @@ import io.stardewvalleydesigner.editor.modules.options.OptionsState
 import io.stardewvalleydesigner.editor.modules.toolkit.ToolkitState
 import io.stardewvalleydesigner.editor.res.EntitySpritesProvider
 import io.stardewvalleydesigner.editor.res.LayoutSpritesProvider.layoutSpriteBy
+import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.geometry.*
+import io.stardewvalleydesigner.engine.geometry.shapes.*
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.coordinates
 import io.stardewvalleydesigner.engine.layers.flatten
@@ -288,6 +292,10 @@ fun EditorLayout(
         )
 
 
+        // Hints and visual guides
+
+        drawAreasOfEffects(map, options, grid, cellSize)
+
         // Grid
 
         if (options.toggleables.getValue(Toggleable.ShowGrid)) {
@@ -339,6 +347,113 @@ fun EditorLayout(
                 )
             }
         }
+    }
+}
+
+
+private fun DrawScope.drawAreasOfEffects(
+    map: MapState,
+    options: OptionsState,
+    grid: CoordinateGrid,
+    cellSize: Size,
+) {
+    val es = map.entities.flatten().asSequence() + map.selectedEntities.flatten().asSequence()
+
+    fun drawAreaOfEffect(
+        allowedEs: Set<Entity<*>>,
+        getAreaOfEffect: (PlacedEntity<*>) -> Set<Coordinate>,
+        color: Color,
+    ) {
+        for (c in es.filter { (e, _) -> e in allowedEs }.flatMapTo(mutableSetOf(), getAreaOfEffect)) {
+            drawRect(
+                color = color,
+                topLeft = grid[c],
+                size = cellSize,
+                alpha = 0.3f,
+            )
+        }
+    }
+
+    if (options.toggleables.getValue(Toggleable.ShowScarecrowsAreaOfEffect)) {
+        drawAreaOfEffect(
+            allowedEs = setOf(
+                Equipment.SimpleEquipment.Scarecrow,
+                Equipment.SimpleEquipment.DeluxeScarecrow,
+                Equipment.SimpleEquipment.Rarecrow1,
+                Equipment.SimpleEquipment.Rarecrow2,
+                Equipment.SimpleEquipment.Rarecrow3,
+                Equipment.SimpleEquipment.Rarecrow4,
+                Equipment.SimpleEquipment.Rarecrow5,
+                Equipment.SimpleEquipment.Rarecrow6,
+                Equipment.SimpleEquipment.Rarecrow7,
+                Equipment.SimpleEquipment.Rarecrow8,
+            ),
+            getAreaOfEffect = { (e, place) ->
+                PlacedRectStrategy.from(
+                    place,
+                    radius = if (e == Equipment.SimpleEquipment.DeluxeScarecrow) 16u else 8u
+                )
+            },
+            color = Color.Green,
+        )
+    }
+
+    if (options.toggleables.getValue(Toggleable.ShowSprinklersAreaOfEffect)) {
+        drawAreaOfEffect(
+            allowedEs = setOf(
+                Equipment.SimpleEquipment.Sprinkler,
+                Equipment.SimpleEquipment.QualitySprinkler,
+                Equipment.SimpleEquipment.IridiumSprinkler,
+                // Equipment.SimpleEquipment.IridiumSprinklerWithPressureNozzle,
+            ),
+            getAreaOfEffect = { (e, place) ->
+                when (e) {
+                    Equipment.SimpleEquipment.Sprinkler -> setOf(
+                        place - vec(1, 0),
+                        place - vec(0, 1),
+                        place,
+                        place + vec(1, 0),
+                        place + vec(0, 1),
+                    )
+
+                    Equipment.SimpleEquipment.QualitySprinkler -> PlacedRectStrategy.from(
+                        place,
+                        radius = 1u
+                    )
+
+                    Equipment.SimpleEquipment.IridiumSprinkler -> PlacedRectStrategy.from(
+                        place,
+                        radius = 2u
+                    )
+
+                    else -> PlacedRectStrategy.from(
+                        place,
+                        radius = 3u
+                    )
+                }
+            },
+            color = Color.Blue,
+        )
+    }
+
+    if (options.toggleables.getValue(Toggleable.ShowBeeHousesAreaOfEffect)) {
+        drawAreaOfEffect(
+            allowedEs = setOf(Equipment.SimpleEquipment.BeeHouse),
+            getAreaOfEffect = { (_, place) ->
+                PlacedDiamondStrategy.from(place, radius = 5u)
+            },
+            color = Color.Yellow,
+        )
+    }
+
+    if (options.toggleables.getValue(Toggleable.ShowJunimoHutsAreaOfEffect)) {
+        drawAreaOfEffect(
+            allowedEs = setOf(Building.SimpleBuilding.JunimoHut),
+            getAreaOfEffect = { (_, place) ->
+                PlacedRectStrategy.from(center = place + vec(x = 1, y = 1), radius = 8u)
+            },
+            color = Color(0xFF8000FF),
+        )
     }
 }
 
