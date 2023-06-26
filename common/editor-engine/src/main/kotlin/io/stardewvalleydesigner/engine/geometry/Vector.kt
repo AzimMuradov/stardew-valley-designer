@@ -17,6 +17,7 @@
 package io.stardewvalleydesigner.engine.geometry
 
 import io.stardewvalleydesigner.engine.*
+import kotlin.math.hypot
 
 
 /**
@@ -52,6 +53,12 @@ value class Vector internal constructor(@PublishedApi internal val packedValue: 
  * Creates a 2D vector.
  */
 fun vec(x: Int, y: Int): Vector = Vector(packInts(x, y))
+
+
+/**
+ * Length of the vector.
+ */
+val Vector.length get() = hypot(x.toFloat(), y.toFloat())
 
 
 // Pair interop

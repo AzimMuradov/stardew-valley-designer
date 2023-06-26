@@ -361,7 +361,7 @@ private fun DrawScope.drawAreasOfEffects(
 
     fun drawAreaOfEffect(
         allowedEs: Set<Entity<*>>,
-        getAreaOfEffect: (PlacedEntity<*>) -> Set<Coordinate>,
+        getAreaOfEffect: (PlacedEntity<*>) -> Iterable<Coordinate>,
         color: Color,
     ) {
         for (c in es.filter { (e, _) -> e in allowedEs }.flatMapTo(mutableSetOf(), getAreaOfEffect)) {
@@ -389,10 +389,12 @@ private fun DrawScope.drawAreasOfEffects(
                 Equipment.SimpleEquipment.Rarecrow8,
             ),
             getAreaOfEffect = { (e, place) ->
+                val r = if (e == Equipment.SimpleEquipment.DeluxeScarecrow) 17 else 9
+
                 PlacedRectStrategy.from(
                     place,
                     radius = if (e == Equipment.SimpleEquipment.DeluxeScarecrow) 16u else 8u
-                )
+                ).filter { (it - place).length < r }
             },
             color = Color.Green,
         )
