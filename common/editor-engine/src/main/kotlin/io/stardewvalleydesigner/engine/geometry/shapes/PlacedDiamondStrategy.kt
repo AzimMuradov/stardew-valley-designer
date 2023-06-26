@@ -19,10 +19,9 @@ package io.stardewvalleydesigner.engine.geometry.shapes
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 
 
-data class PlacedShape(
-    val a: Coordinate, val b: Coordinate,
-    val strategy: PlacedShapeStrategy,
-) {
+object PlacedDiamondStrategy : PlacedShapeStrategy {
 
-    val coordinates: Set<Coordinate> by lazy { strategy.coordinates(a, b) }
+    override fun coordinates(a: Coordinate, b: Coordinate): Set<Coordinate> = FillingAlgorithm.fill(
+        outline = PlacedDiamondOutlineStrategy.coordinates(a, b)
+    )
 }

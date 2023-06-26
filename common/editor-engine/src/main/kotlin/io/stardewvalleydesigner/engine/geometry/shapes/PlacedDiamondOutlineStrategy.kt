@@ -19,17 +19,16 @@ package io.stardewvalleydesigner.engine.geometry.shapes
 import io.stardewvalleydesigner.engine.geometry.*
 
 
-object PlacedRectStrategy : PlacedShapeStrategy {
+object PlacedDiamondOutlineStrategy : PlacedShapeStrategy {
 
     override fun coordinates(a: Coordinate, b: Coordinate): Set<Coordinate> {
         val (bl, tr) = CanonicalCorners.fromTwoCoordinates(a, b)
 
         return buildSet {
-            for (x in bl.x..tr.x) {
-                for (y in bl.y..tr.y) {
-                    add(xy(x, y))
-                }
-            }
+            addAll(BresenhamAlgorithms.line(xy(bl.x, (bl.y + tr.y) / 2), xy((bl.x + tr.x) / 2, bl.y)))
+            addAll(BresenhamAlgorithms.line(xy(bl.x, (bl.y + tr.y + 1) / 2), xy((bl.x + tr.x) / 2, tr.y)))
+            addAll(BresenhamAlgorithms.line(xy(tr.x, (bl.y + tr.y) / 2), xy((bl.x + tr.x + 1) / 2, bl.y)))
+            addAll(BresenhamAlgorithms.line(xy(tr.x, (bl.y + tr.y + 1) / 2), xy((bl.x + tr.x + 1) / 2, tr.y)))
         }
     }
 }

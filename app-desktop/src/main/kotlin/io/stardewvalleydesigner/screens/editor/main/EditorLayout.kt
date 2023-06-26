@@ -29,27 +29,31 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.unit.IntOffset
 import io.stardewvalleydesigner.editor.EditorIntent
+import io.stardewvalleydesigner.editor.menus.OptionsItemValue.Toggleable
 import io.stardewvalleydesigner.editor.modules.map.MapState
 import io.stardewvalleydesigner.editor.modules.options.OptionsState
 import io.stardewvalleydesigner.editor.modules.toolkit.ToolkitState
 import io.stardewvalleydesigner.editor.res.EntitySpritesProvider
 import io.stardewvalleydesigner.editor.res.LayoutSpritesProvider.layoutSpriteBy
+import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.geometry.*
+import io.stardewvalleydesigner.engine.geometry.shapes.*
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.coordinates
 import io.stardewvalleydesigner.engine.layers.flatten
 import io.stardewvalleydesigner.metadata.EntityPage.Companion.UNIT
+import io.stardewvalleydesigner.utils.*
 import io.stardewvalleydesigner.utils.DrawerUtils.drawFlooring
 import io.stardewvalleydesigner.utils.DrawerUtils.drawSprite
 import io.stardewvalleydesigner.utils.DrawerUtils.drawVisibleEntities
 import io.stardewvalleydesigner.utils.DrawerUtils.drawWallpaper
 import io.stardewvalleydesigner.utils.DrawerUtils.placedEntityComparator
-import io.stardewvalleydesigner.utils.toIntSize
-import io.stardewvalleydesigner.utils.toRect
 import kotlin.math.floor
 
 
@@ -68,17 +72,17 @@ fun EditorLayout(
 
     val hoveredColor = MaterialTheme.colors.secondary
 
-    var stepSize by remember { mutableStateOf(-1f) }
+    var cellSide by remember { mutableStateOf(-1f) }
     var hoveredCoordinate by remember { mutableStateOf(UNDEFINED) }
     var prevDragCoordinate by remember { mutableStateOf(UNDEFINED) }
 
 
     fun Offset.toCoordinate() = xy(
-        x = floor(x / stepSize).toInt().coerceIn(0 until nW),
-        y = floor(y / stepSize).toInt().coerceIn(0 until nH),
+        x = floor(x / cellSide).toInt().coerceIn(0 until nW),
+        y = floor(y / cellSide).toInt().coerceIn(0 until nH),
     )
 
-    fun Offset.toCoordinateStrict() = if (x in 0f..stepSize * nW && y in 0f..stepSize * nH) {
+    fun Offset.toCoordinateStrict() = if (x in 0f..cellSide * nW && y in 0f..cellSide * nH) {
         toCoordinate()
     } else {
         UNDEFINED
@@ -123,13 +127,12 @@ fun EditorLayout(
                 )
             }
     ) {
-        stepSize = size.height / nH
+        cellSide = size.height / nH
 
         val hoveredId = hoveredCoordinate
 
-        val cellSize = Size(stepSize, stepSize)
-        val offsetsW = List(size = nW + 1) { it * stepSize }
-        val offsetsH = (-nH..nH).associateWith { it * stepSize }
+        val cellSize = Size(cellSide, cellSide)
+        val grid = CoordinateGrid(cellSide)
 
 
         // Background
@@ -145,26 +148,25 @@ fun EditorLayout(
         // Main content
 
         if (layout.type.isShed()) {
-            drawFlooring(map.flooring, nW, nH, stepSize)
-            drawWallpaper(map.wallpaper, nW, stepSize)
+            drawFlooring(map.flooring, nW, nH, cellSide)
+            drawWallpaper(map.wallpaper, nW, cellSide)
         }
 
         drawVisibleEntities(
             entities = map.entities,
             visibleLayers = visibleLayers,
-            renderSpritesFully = options.showSpritesFully,
-            offsetsW = offsetsW,
-            offsetsH = offsetsH,
+            renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
+            grid = grid,
             cellSize = cellSize
         )
 
 
         // Beeps and Bops
 
-        for (e in map.selectedEntities.flatten().coordinates) {
+        for (c in map.selectedEntities.flatten().coordinates) {
             drawRect(
                 color = Color.Blue,
-                topLeft = Offset(x = offsetsW[e.x], y = offsetsH.getValue(e.y)),
+                topLeft = grid[c],
                 size = cellSize,
                 alpha = 0.3f
             )
@@ -175,7 +177,7 @@ fun EditorLayout(
                 val sorted = toolkit.heldEntities.flatten().sortedWith(placedEntityComparator)
                 for ((e, place) in sorted) {
                     val sprite = EntitySpritesProvider.spriteBy(e).run {
-                        if (options.showSpritesFully) {
+                        if (options.toggleables.getValue(Toggleable.ShowSpritesFully)) {
                             this
                         } else {
                             copy(
@@ -188,8 +190,8 @@ fun EditorLayout(
                     drawSprite(
                         sprite = sprite,
                         offset = IntOffset(
-                            x = offsetsW[place.x].toInt() + 2,
-                            y = offsetsH.getValue(place.y - (rect.h - e.size.h)).toInt() + 2
+                            x = grid.getX(place.x).toInt() + 2,
+                            y = grid.getY(place.y - (rect.h - e.size.h)).toInt() + 2
                         ),
                         layoutSize = Size(
                             width = (cellSize.width * rect.w - 4).coerceAtLeast(1f),
@@ -204,7 +206,7 @@ fun EditorLayout(
                 for (c in toolkit.placedShape.coordinates) {
                     drawRect(
                         color = Color.Black,
-                        topLeft = Offset(offsetsW[c.x], offsetsH.getValue(c.y)),
+                        topLeft = grid[c],
                         size = cellSize,
                         alpha = 0.1f,
                     )
@@ -212,14 +214,14 @@ fun EditorLayout(
                 for (c in toolkit.entitiesToDelete) {
                     drawRect(
                         color = Color.Red,
-                        topLeft = Offset(offsetsW[c.x], offsetsH.getValue(c.y)),
+                        topLeft = grid[c],
                         size = cellSize,
                         alpha = 0.5f,
                     )
                 }
                 for ((e, place) in toolkit.entitiesToDraw) {
                     val sprite = EntitySpritesProvider.spriteBy(e).run {
-                        if (options.showSpritesFully) {
+                        if (options.toggleables.getValue(Toggleable.ShowSpritesFully)) {
                             this
                         } else {
                             copy(
@@ -232,8 +234,8 @@ fun EditorLayout(
                     drawSprite(
                         sprite = sprite,
                         offset = IntOffset(
-                            x = offsetsW[place.x].toInt(),
-                            y = offsetsH.getValue(place.y - (rect.h - e.size.h)).toInt()
+                            x = grid.getX(place.x).toInt(),
+                            y = grid.getY(place.y - (rect.h - e.size.h)).toInt()
                         ),
                         layoutSize = Size(
                             width = (cellSize.width * rect.w).coerceAtLeast(1f),
@@ -248,7 +250,7 @@ fun EditorLayout(
                 for (c in toolkit.placedShape.coordinates) {
                     drawRect(
                         color = Color.Black,
-                        topLeft = Offset(offsetsW[c.x], offsetsH.getValue(c.y)),
+                        topLeft = grid[c],
                         size = cellSize,
                         alpha = 0.1f,
                     )
@@ -256,7 +258,7 @@ fun EditorLayout(
                 for (c in toolkit.entitiesToDelete) {
                     drawRect(
                         color = Color.Red,
-                        topLeft = Offset(offsetsW[c.x], offsetsH.getValue(c.y)),
+                        topLeft = grid[c],
                         size = cellSize,
                         alpha = 0.5f,
                     )
@@ -268,7 +270,7 @@ fun EditorLayout(
                     for (c in toolkit.placedShape.coordinates) {
                         drawRect(
                             color = Color.Black,
-                            topLeft = Offset(offsetsW[c.x], offsetsH.getValue(c.y)),
+                            topLeft = grid[c],
                             size = cellSize,
                             alpha = 0.1f,
                         )
@@ -290,10 +292,14 @@ fun EditorLayout(
         )
 
 
+        // Hints and visual guides
+
+        drawAreasOfEffects(map, options, grid, cellSize)
+
         // Grid
 
-        if (options.showGrid) {
-            for (x in offsetsW) {
+        if (options.toggleables.getValue(Toggleable.ShowGrid)) {
+            for (x in (0..nW).map(grid::getX)) {
                 drawLine(
                     color = Color.LightGray,
                     start = Offset(x, y = 0f),
@@ -301,7 +307,7 @@ fun EditorLayout(
                     pathEffect = PathEffect.dashPathEffect(intervals = floatArrayOf(2f, 2f)),
                 )
             }
-            for (y in (0..nH).map(offsetsH::getValue)) {
+            for (y in (0..nH).map(grid::getY)) {
                 drawLine(
                     color = Color.LightGray,
                     start = Offset(x = 0f, y),
@@ -314,32 +320,142 @@ fun EditorLayout(
         // Hovered cell & Axis
 
         if (hoveredId != UNDEFINED) {
-            val (hoveredX, hoveredY) = hoveredId
+            val offset = grid[hoveredId]
+            val (offsetX, offsetY) = offset
 
             drawRect(
                 color = hoveredColor,
-                topLeft = Offset(offsetsW[hoveredX], offsetsH.getValue(hoveredY)),
+                topLeft = offset,
                 size = cellSize,
                 alpha = 0.3f,
             )
 
             // Axis
 
-            if (options.showAxis) {
+            if (options.toggleables.getValue(Toggleable.ShowAxis)) {
                 drawRect(
-                    topLeft = Offset(x = offsetsW[hoveredX], y = 0f),
+                    topLeft = Offset(x = offsetX, y = 0f),
                     size = Size(cellSize.width, size.height),
                     color = Color.DarkGray,
                     style = Stroke(width = 2f)
                 )
                 drawRect(
-                    topLeft = Offset(x = 0f, y = offsetsH.getValue(hoveredY)),
+                    topLeft = Offset(x = 0f, y = offsetY),
                     size = Size(size.width, cellSize.height),
                     color = Color.DarkGray,
                     style = Stroke(width = 2f)
                 )
             }
         }
+    }
+}
+
+
+private fun DrawScope.drawAreasOfEffects(
+    map: MapState,
+    options: OptionsState,
+    grid: CoordinateGrid,
+    cellSize: Size,
+) {
+    val es = map.entities.flatten().asSequence() + map.selectedEntities.flatten().asSequence()
+
+    fun drawAreaOfEffect(
+        allowedEs: Set<Entity<*>>,
+        getAreaOfEffect: (PlacedEntity<*>) -> Iterable<Coordinate>,
+        color: Color,
+    ) {
+        for (c in es.filter { (e, _) -> e in allowedEs }.flatMapTo(mutableSetOf(), getAreaOfEffect)) {
+            drawRect(
+                color = color,
+                topLeft = grid[c],
+                size = cellSize,
+                alpha = 0.3f,
+            )
+        }
+    }
+
+    if (options.toggleables.getValue(Toggleable.ShowScarecrowsAreaOfEffect)) {
+        drawAreaOfEffect(
+            allowedEs = setOf(
+                Equipment.SimpleEquipment.Scarecrow,
+                Equipment.SimpleEquipment.DeluxeScarecrow,
+                Equipment.SimpleEquipment.Rarecrow1,
+                Equipment.SimpleEquipment.Rarecrow2,
+                Equipment.SimpleEquipment.Rarecrow3,
+                Equipment.SimpleEquipment.Rarecrow4,
+                Equipment.SimpleEquipment.Rarecrow5,
+                Equipment.SimpleEquipment.Rarecrow6,
+                Equipment.SimpleEquipment.Rarecrow7,
+                Equipment.SimpleEquipment.Rarecrow8,
+            ),
+            getAreaOfEffect = { (e, place) ->
+                val r = if (e == Equipment.SimpleEquipment.DeluxeScarecrow) 17 else 9
+
+                PlacedRectStrategy.from(
+                    place,
+                    radius = if (e == Equipment.SimpleEquipment.DeluxeScarecrow) 16u else 8u
+                ).filter { (it - place).length < r }
+            },
+            color = Color.Green,
+        )
+    }
+
+    if (options.toggleables.getValue(Toggleable.ShowSprinklersAreaOfEffect)) {
+        drawAreaOfEffect(
+            allowedEs = setOf(
+                Equipment.SimpleEquipment.Sprinkler,
+                Equipment.SimpleEquipment.QualitySprinkler,
+                Equipment.SimpleEquipment.IridiumSprinkler,
+                // Equipment.SimpleEquipment.IridiumSprinklerWithPressureNozzle,
+            ),
+            getAreaOfEffect = { (e, place) ->
+                when (e) {
+                    Equipment.SimpleEquipment.Sprinkler -> setOf(
+                        place - vec(1, 0),
+                        place - vec(0, 1),
+                        place,
+                        place + vec(1, 0),
+                        place + vec(0, 1),
+                    )
+
+                    Equipment.SimpleEquipment.QualitySprinkler -> PlacedRectStrategy.from(
+                        place,
+                        radius = 1u
+                    )
+
+                    Equipment.SimpleEquipment.IridiumSprinkler -> PlacedRectStrategy.from(
+                        place,
+                        radius = 2u
+                    )
+
+                    else -> PlacedRectStrategy.from(
+                        place,
+                        radius = 3u
+                    )
+                }
+            },
+            color = Color.Blue,
+        )
+    }
+
+    if (options.toggleables.getValue(Toggleable.ShowBeeHousesAreaOfEffect)) {
+        drawAreaOfEffect(
+            allowedEs = setOf(Equipment.SimpleEquipment.BeeHouse),
+            getAreaOfEffect = { (_, place) ->
+                PlacedDiamondStrategy.from(place, radius = 5u)
+            },
+            color = Color.Yellow,
+        )
+    }
+
+    if (options.toggleables.getValue(Toggleable.ShowJunimoHutsAreaOfEffect)) {
+        drawAreaOfEffect(
+            allowedEs = setOf(Building.SimpleBuilding.JunimoHut),
+            getAreaOfEffect = { (_, place) ->
+                PlacedRectStrategy.from(center = place + vec(x = 1, y = 1), radius = 8u)
+            },
+            color = Color(0xFF8000FF),
+        )
     }
 }
 

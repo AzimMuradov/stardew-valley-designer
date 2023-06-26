@@ -14,15 +14,27 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.engine.geometry.shapes
+package io.stardewvalleydesigner.utils
 
+import androidx.compose.ui.geometry.Offset
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 
 
-data class PlacedShape(
-    val a: Coordinate, val b: Coordinate,
-    val strategy: PlacedShapeStrategy,
-) {
+@JvmInline
+value class CoordinateGrid(private val cellSide: Float) {
 
-    val coordinates: Set<Coordinate> by lazy { strategy.coordinates(a, b) }
+    operator fun get(x: Int, y: Int): Offset = Offset(
+        x = x * cellSide,
+        y = y * cellSide
+    )
+
+    operator fun get(coordinate: Coordinate): Offset = Offset(
+        x = coordinate.x * cellSide,
+        y = coordinate.y * cellSide
+    )
+
+
+    fun getX(x: Int): Float = x * cellSide
+
+    fun getY(y: Int): Float = y * cellSide
 }

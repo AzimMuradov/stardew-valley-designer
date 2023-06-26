@@ -19,7 +19,6 @@ package io.stardewvalleydesigner.editor.modules.toolkit.tools
 import io.stardewvalleydesigner.editor.modules.toolkit.*
 import io.stardewvalleydesigner.engine.EditorEngine
 import io.stardewvalleydesigner.engine.entity.Entity
-import io.stardewvalleydesigner.engine.geometry.CanonicalCorners
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.getAll
 import io.stardewvalleydesigner.engine.layer.LayerType
@@ -42,7 +41,7 @@ class Select(private val engine: EditorEngine, private val shape: ShapeType) : T
     ): ActionReturn {
         start = coordinate
 
-        val placedShape = shape.projectTo(CanonicalCorners(coordinate, coordinate))
+        val placedShape = shape.projectTo(start, coordinate)
 
         return ActionReturn(
             toolkit = ToolkitState.Select.Shape.Acting(placedShape),
@@ -57,7 +56,7 @@ class Select(private val engine: EditorEngine, private val shape: ShapeType) : T
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
-        val placedShape = shape.projectTo(CanonicalCorners.fromTwoCoordinates(start, coordinate))
+        val placedShape = shape.projectTo(start, coordinate)
 
         return ActionReturn(
             toolkit = ToolkitState.Select.Shape.Acting(placedShape),

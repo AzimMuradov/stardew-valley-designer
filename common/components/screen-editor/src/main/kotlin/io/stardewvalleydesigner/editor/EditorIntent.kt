@@ -16,6 +16,7 @@
 
 package io.stardewvalleydesigner.editor
 
+import io.stardewvalleydesigner.editor.menus.OptionsItemValue
 import io.stardewvalleydesigner.editor.modules.toolkit.ShapeType
 import io.stardewvalleydesigner.editor.modules.toolkit.ToolType
 import io.stardewvalleydesigner.engine.Flooring
@@ -64,8 +65,9 @@ sealed interface EditorIntent {
     }
 
     sealed interface Options : EditorIntent {
-        data class ChangeAxisVisibility(val isVisible: Boolean) : Options
-        data class ChangeGridVisibility(val isVisible: Boolean) : Options
-        data class ChangeSpritesRender(val isRenderedFully: Boolean) : Options
+        data class Toggle(
+            val toggleable: OptionsItemValue.Toggleable,
+            val value: Boolean,
+        ) : Options
     }
 }

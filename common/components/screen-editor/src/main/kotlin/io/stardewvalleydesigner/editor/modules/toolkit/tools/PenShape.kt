@@ -20,7 +20,6 @@ import io.stardewvalleydesigner.editor.modules.toolkit.*
 import io.stardewvalleydesigner.engine.EditorEngine
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.PlacedEntity
-import io.stardewvalleydesigner.engine.geometry.CanonicalCorners
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.getReplacedBy
 import io.stardewvalleydesigner.engine.layer.*
@@ -48,7 +47,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
         start = coordinate
 
         if (currentEntity != null) {
-            val placedShape = shape.projectTo(CanonicalCorners(start, coordinate))
+            val placedShape = shape.projectTo(start, coordinate)
 
             entitiesToDraw = placedShape
                 .coordinates
@@ -80,7 +79,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
-        val placedShape = shape.projectTo(CanonicalCorners.fromTwoCoordinates(start, coordinate))
+        val placedShape = shape.projectTo(start, coordinate)
 
         val cs = mutableSetOf<Coordinate>()
 

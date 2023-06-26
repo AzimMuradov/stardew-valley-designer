@@ -16,19 +16,27 @@
 
 package io.stardewvalleydesigner.editor.modules.options
 
+import io.stardewvalleydesigner.editor.menus.OptionsItemValue
+
 
 data class OptionsState(
-    val showAxis: Boolean,
-    val showGrid: Boolean,
-    val showSpritesFully: Boolean,
+    val toggleables: Map<OptionsItemValue.Toggleable, Boolean>,
 ) {
 
     companion object {
 
         fun default() = OptionsState(
-            showAxis = true,
-            showGrid = true,
-            showSpritesFully = true,
+            toggleables = buildMap {
+                putAll(OptionsItemValue.Toggleable.values().associateWith { true })
+                putAll(
+                    listOf(
+                        OptionsItemValue.Toggleable.ShowScarecrowsAreaOfEffect,
+                        OptionsItemValue.Toggleable.ShowSprinklersAreaOfEffect,
+                        OptionsItemValue.Toggleable.ShowBeeHousesAreaOfEffect,
+                        OptionsItemValue.Toggleable.ShowJunimoHutsAreaOfEffect,
+                    ).associateWith { false }
+                )
+            }
         )
     }
 }

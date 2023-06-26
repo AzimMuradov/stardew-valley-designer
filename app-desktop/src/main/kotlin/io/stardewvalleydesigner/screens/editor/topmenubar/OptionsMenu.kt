@@ -77,7 +77,7 @@ fun RowScope.OptionsMenu(
 
             submenuRootModifierProvider = { Modifier },
             submenuRootContent = { _, _ -> },
-            submenuModifierProvider = { DROPDOWN_MENU_MODIFIER },
+            submenuModifierProvider = { Modifier },
 
             itemModifierProvider = { _, hovered ->
                 Modifier
@@ -86,22 +86,10 @@ fun RowScope.OptionsMenu(
             },
             itemValueContent = { value, _ ->
                 when (value) {
-                    OptionsItemValue.ShowAxis -> Option(
-                        name = wordList.optionShowAxis,
-                        checked = options.showAxis,
-                        onCheckedChange = { intentConsumer(EditorIntent.Options.ChangeAxisVisibility(it)) }
-                    )
-
-                    OptionsItemValue.ShowGrid -> Option(
-                        name = wordList.optionShowGrid,
-                        checked = options.showGrid,
-                        onCheckedChange = { intentConsumer(EditorIntent.Options.ChangeGridVisibility(it)) }
-                    )
-
-                    OptionsItemValue.ShowSpritesFully -> Option(
-                        name = wordList.optionSpritesFully,
-                        checked = options.showSpritesFully,
-                        onCheckedChange = { intentConsumer(EditorIntent.Options.ChangeSpritesRender(it)) }
+                    is OptionsItemValue.Toggleable -> ToggleableOption(
+                        name = wordList.optionTitle(value),
+                        checked = options.toggleables.getValue(value),
+                        onCheckedChange = { intentConsumer(EditorIntent.Options.Toggle(value, it)) }
                     )
                 }
             },
@@ -111,7 +99,7 @@ fun RowScope.OptionsMenu(
 
 
 @Composable
-private fun RowScope.Option(name: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+private fun RowScope.ToggleableOption(name: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     Checkbox(checked, onCheckedChange)
     Spacer(modifier = Modifier.width(8.dp))
     Text(

@@ -20,7 +20,7 @@ import io.stardewvalleydesigner.utils.menu.Menu
 import io.stardewvalleydesigner.utils.menu.menu
 
 
-typealias OptionsMenu = Menu<OptionsRoot, OptionsRoot, OptionsItemValue>
+typealias OptionsMenu = Menu<OptionsRoot, Nothing, OptionsItemValue>
 
 
 enum class OptionsRoot {
@@ -29,18 +29,29 @@ enum class OptionsRoot {
 
 sealed interface OptionsItemValue {
 
-    sealed interface Toggleable : OptionsItemValue
+    enum class Toggleable : OptionsItemValue {
+        ShowAxis,
+        ShowGrid,
+        ShowSpritesFully,
 
-    data object ShowAxis : Toggleable
-    data object ShowGrid : Toggleable
-    data object ShowSpritesFully : Toggleable
+        ShowScarecrowsAreaOfEffect,
+        ShowSprinklersAreaOfEffect,
+        ShowBeeHousesAreaOfEffect,
+        ShowJunimoHutsAreaOfEffect,
+    }
 }
 
 
 val MainOptionsMenu: OptionsMenu = menu(root = OptionsRoot.Options) {
     items(
-        OptionsItemValue.ShowAxis,
-        OptionsItemValue.ShowGrid,
-        OptionsItemValue.ShowSpritesFully,
+        OptionsItemValue.Toggleable.ShowAxis,
+        OptionsItemValue.Toggleable.ShowGrid,
+        OptionsItemValue.Toggleable.ShowSpritesFully,
+    )
+    items(
+        OptionsItemValue.Toggleable.ShowScarecrowsAreaOfEffect,
+        OptionsItemValue.Toggleable.ShowSprinklersAreaOfEffect,
+        OptionsItemValue.Toggleable.ShowBeeHousesAreaOfEffect,
+        OptionsItemValue.Toggleable.ShowJunimoHutsAreaOfEffect,
     )
 }

@@ -33,11 +33,10 @@ import io.stardewvalleydesigner.engine.geometry.aspectRatio
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layout.Layout
+import io.stardewvalleydesigner.utils.*
 import io.stardewvalleydesigner.utils.DrawerUtils.drawFlooring
 import io.stardewvalleydesigner.utils.DrawerUtils.drawVisibleEntities
 import io.stardewvalleydesigner.utils.DrawerUtils.drawWallpaper
-import io.stardewvalleydesigner.utils.toIntSize
-import io.stardewvalleydesigner.utils.toRect
 
 
 @Composable
@@ -50,7 +49,7 @@ fun BoxScope.LayoutPreview(
     val (nW, nH) = layout.size
     val layoutSprite = layoutSpriteBy(layout.type)
 
-    var stepSize by remember { mutableStateOf(-1f) }
+    var cellSide by remember { mutableStateOf(-1f) }
 
 
     Canvas(
@@ -61,11 +60,10 @@ fun BoxScope.LayoutPreview(
             .clipToBounds()
             .background(color = Color.White)
     ) {
-        stepSize = size.height / nH
+        cellSide = size.height / nH
 
-        val cellSize = Size(stepSize, stepSize)
-        val offsetsW = List(size = nW + 1) { it * stepSize }
-        val offsetsH = (-nH..nH).associateWith { it * stepSize }
+        val cellSize = Size(cellSide, cellSide)
+        val grid = CoordinateGrid(cellSide)
 
 
         // Background
@@ -81,16 +79,15 @@ fun BoxScope.LayoutPreview(
         // Main content
 
         if (layout.type.isShed()) {
-            drawFlooring(flooring, nW, nH, stepSize)
-            drawWallpaper(wallpaper, nW, stepSize)
+            drawFlooring(flooring, nW, nH, cellSide)
+            drawWallpaper(wallpaper, nW, cellSide)
         }
 
         drawVisibleEntities(
             entities = entities,
             visibleLayers = LayerType.all,
             renderSpritesFully = true,
-            offsetsW = offsetsW,
-            offsetsH = offsetsH,
+            grid = grid,
             cellSize = cellSize
         )
 

@@ -21,8 +21,8 @@ import io.stardewvalleydesigner.engine.geometry.*
 
 object PlacedRectOutlineStrategy : PlacedShapeStrategy {
 
-    override fun coordinates(corners: CanonicalCorners): Set<Coordinate> {
-        val (bl, tr) = corners
+    override fun coordinates(a: Coordinate, b: Coordinate): Set<Coordinate> {
+        val (bl, tr) = CanonicalCorners.fromTwoCoordinates(a, b)
 
         val xs = bl.x..tr.x
         val ys = bl.y..tr.y
