@@ -27,31 +27,88 @@ import kotlin.math.abs
 internal object BresenhamAlgorithms {
 
     fun line(a: Coordinate, b: Coordinate): Set<Coordinate> {
-        val (xA, yA) = a
-        val (xB, yB) = b
+        val (x0, y0) = a
+        val (x1, y1) = b
 
-        val dx = abs(xB - xA)
-        val dy = abs(yB - yA)
-        val sx = if (xA < xB) 1 else -1
-        val sy = if (yA < yB) 1 else -1
-        var err = dx - dy
-        var currentX = xA
-        var currentY = yA
+        val dx = abs(x1 - x0)
+        val sx = if (x0 < x1) 1 else -1
+        val dy = -abs(y1 - y0)
+        val sy = if (y0 < y1) 1 else -1
 
         return buildSet {
-            this += a
-            while (!(currentX == xB && currentY == yB)) {
+            add(a)
+
+            var (x, y) = a
+            var err = dx + dy /* error value e_xy */
+
+            while (!(x == x1 && y == y1)) {
                 val err2 = 2 * err
-                if (err2 > -dy) {
-                    err -= dy
-                    currentX += sx
+                if (err2 >= dy) { /* e_xy + e_x > 0 */
+                    err += dy
+                    x += sx
                 }
-                if (err2 < dx) {
+                if (err2 <= dx) { /* e_xy + e_y < 0 */
                     err += dx
-                    currentY += sy
+                    y += sy
                 }
-                this += xy(currentX, currentY)
+
+                add(xy(x, y))
             }
         }
+    }
+
+    fun ellipse(a: Coordinate, b: Coordinate): Set<Coordinate> {
+        val set = mutableSetOf<Coordinate>()
+
+        var (x0, y0) = a
+        var (x1, y1) = b
+
+        var rA = abs(x1 - x0)
+        val rB = abs(y1 - y0)
+        var rB1 = rB and 1 /* values of diameter */
+
+        var dx = (4 * (1 - rA) * rB * rB).toLong()
+        var dy = (4 * (rB1 + 1) * rA * rA).toLong() /* error increment */
+        var err = dx + dy + rB1 * rA * rA
+
+        if (x0 > x1) { /* if called with swapped points */
+            x0 = x1
+            x1 += rA
+        }
+        if (y0 > y1) y0 = y1 /* .. exchange them */
+        y0 += (rB + 1) / 2
+        y1 = y0 - rB1 /* starting pixel */
+        rA *= 8 * rA
+        rB1 = 8 * rB * rB
+
+        do {
+            set += xy(x1, y0) /*   I. Quadrant */
+            set += xy(x0, y0) /*  II. Quadrant */
+            set += xy(x0, y1) /* III. Quadrant */
+            set += xy(x1, y1) /*  IV. Quadrant */
+
+            val err2: Long = 2 * err
+            if (err2 <= dy) { /* y step */
+                y0++
+                y1--
+                dy += rA.toLong()
+                err += dy
+            }
+            if (err2 >= dx || 2 * err > dy) { /* x step */
+                x0++
+                x1--
+                dx += rB1.toLong()
+                err += dx
+            }
+        } while (x0 <= x1)
+
+        while (y0 - y1 < rB) { /* too early stop of flat ellipses a=1 */
+            set += xy(x0 - 1, y0) /* -> finish tip of ellipse */
+            set += xy(x1 + 1, y0++)
+            set += xy(x0 - 1, y1)
+            set += xy(x1 + 1, y1--)
+        }
+
+        return set
     }
 }

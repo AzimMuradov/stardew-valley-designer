@@ -22,19 +22,33 @@ import io.stardewvalleydesigner.engine.geometry.shapes.*
 
 enum class ShapeType {
     Rect,
-    RectOutline;
+    RectOutline,
+    Ellipse,
+    EllipseOutline,
+    Diamond,
+    DiamondOutline,
+    Line;
 
     fun projectTo(a: Coordinate, b: Coordinate): PlacedShape = PlacedShape(
         a, b,
         strategy = when (this) {
             Rect -> PlacedRectStrategy
             RectOutline -> PlacedRectOutlineStrategy
+            Ellipse -> PlacedEllipseStrategy
+            EllipseOutline -> PlacedEllipseOutlineStrategy
+            Diamond -> PlacedDiamondStrategy
+            DiamondOutline -> PlacedDiamondOutlineStrategy
+            Line -> PlacedLineStrategy
         }
     )
 }
 
-fun PlacedShape.type(): ShapeType? = when (strategy) {
+fun PlacedShape.type(): ShapeType = when (strategy) {
     PlacedRectStrategy -> ShapeType.Rect
     PlacedRectOutlineStrategy -> ShapeType.RectOutline
-    else -> null
+    PlacedEllipseStrategy -> ShapeType.Ellipse
+    PlacedEllipseOutlineStrategy -> ShapeType.EllipseOutline
+    PlacedDiamondStrategy -> ShapeType.Diamond
+    PlacedDiamondOutlineStrategy -> ShapeType.DiamondOutline
+    PlacedLineStrategy -> ShapeType.Line
 }

@@ -38,7 +38,7 @@ sealed class ToolkitState(val tool: ToolType) {
 
         sealed class Point(final override val isIdle: Boolean) : Hand() {
 
-            object Idle : Point(isIdle = true)
+            data object Idle : Point(isIdle = true)
 
             data class Acting(val heldEntities: LayeredEntitiesData) : Point(isIdle = false)
 
@@ -50,9 +50,9 @@ sealed class ToolkitState(val tool: ToolType) {
 
         sealed class Point(final override val isIdle: Boolean) : Pen() {
 
-            object Idle : Point(isIdle = true)
+            data object Idle : Point(isIdle = true)
 
-            object Acting : Point(isIdle = false)
+            data object Acting : Point(isIdle = false)
 
             final override val shape: ShapeType? = null
         }
@@ -67,7 +67,7 @@ sealed class ToolkitState(val tool: ToolType) {
                 val entitiesToDelete: Set<Coordinate>,
             ) : Shape(isIdle = false) {
 
-                override val shape: ShapeType? = placedShape.type()
+                override val shape: ShapeType = placedShape.type()
             }
         }
     }
@@ -76,9 +76,9 @@ sealed class ToolkitState(val tool: ToolType) {
 
         sealed class Point(final override val isIdle: Boolean) : Eraser() {
 
-            object Idle : Point(isIdle = true)
+            data object Idle : Point(isIdle = true)
 
-            object Acting : Point(isIdle = false)
+            data object Acting : Point(isIdle = false)
 
             final override val shape: ShapeType? = null
         }
@@ -92,7 +92,7 @@ sealed class ToolkitState(val tool: ToolType) {
                 val entitiesToDelete: Set<Coordinate>,
             ) : Shape(isIdle = false) {
 
-                override val shape: ShapeType? = placedShape.type()
+                override val shape: ShapeType = placedShape.type()
             }
         }
     }
@@ -105,7 +105,7 @@ sealed class ToolkitState(val tool: ToolType) {
 
             data class Acting(val placedShape: PlacedShape) : Shape(isIdle = false) {
 
-                override val shape: ShapeType? = placedShape.type()
+                override val shape: ShapeType = placedShape.type()
             }
         }
     }

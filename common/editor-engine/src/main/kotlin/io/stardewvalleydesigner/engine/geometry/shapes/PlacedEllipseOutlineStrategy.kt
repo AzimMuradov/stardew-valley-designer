@@ -16,22 +16,11 @@
 
 package io.stardewvalleydesigner.engine.geometry.shapes
 
-import io.stardewvalleydesigner.engine.geometry.*
+import io.stardewvalleydesigner.engine.geometry.Coordinate
 
 
-data object PlacedRectOutlineStrategy : PlacedShapeStrategy {
+data object PlacedEllipseOutlineStrategy : PlacedShapeStrategy {
 
-    override fun coordinates(a: Coordinate, b: Coordinate): Set<Coordinate> {
-        val (bl, tr) = CanonicalCorners.fromTwoCoordinates(a, b)
-
-        val xs = bl.x..tr.x
-        val ys = bl.y..tr.y
-
-        return buildSet {
-            addAll(xs.map { xy(it, bl.y) })
-            addAll(xs.map { xy(it, tr.y) })
-            addAll(ys.map { xy(bl.x, it) })
-            addAll(ys.map { xy(tr.x, it) })
-        }
-    }
+    override fun coordinates(a: Coordinate, b: Coordinate): Set<Coordinate> =
+        BresenhamAlgorithms.ellipse(a, b)
 }
