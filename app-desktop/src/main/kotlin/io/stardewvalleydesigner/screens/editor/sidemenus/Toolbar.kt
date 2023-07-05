@@ -122,6 +122,11 @@ fun Toolbar(
                         null -> "shapes/point.png"
                         ShapeType.Rect -> "shapes/rect.png"
                         ShapeType.RectOutline -> "shapes/rect-outline.png"
+                        ShapeType.Ellipse -> "shapes/ellipse.png"
+                        ShapeType.EllipseOutline -> "shapes/ellipse-outline.png"
+                        ShapeType.Diamond -> "shapes/diamond.png"
+                        ShapeType.DiamondOutline -> "shapes/diamond-outline.png"
+                        ShapeType.Line -> "shapes/line.png"
                     }
                 )
             }

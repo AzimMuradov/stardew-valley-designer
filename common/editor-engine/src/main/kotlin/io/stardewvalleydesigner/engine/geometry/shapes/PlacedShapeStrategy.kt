@@ -19,7 +19,7 @@ package io.stardewvalleydesigner.engine.geometry.shapes
 import io.stardewvalleydesigner.engine.geometry.*
 
 
-interface PlacedShapeStrategy {
+sealed interface PlacedShapeStrategy {
 
     fun coordinates(a: Coordinate, b: Coordinate): Set<Coordinate>
 }

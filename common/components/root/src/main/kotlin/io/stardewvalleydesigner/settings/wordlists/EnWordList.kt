@@ -722,6 +722,11 @@ data object EnWordList : WordList {
         null -> "Point"
         ShapeType.Rect -> "Rect"
         ShapeType.RectOutline -> "Rect outline"
+        ShapeType.Ellipse -> "Ellipse"
+        ShapeType.EllipseOutline -> "Ellipse outline"
+        ShapeType.Diamond -> "Diamond"
+        ShapeType.DiamondOutline -> "Diamond outline"
+        ShapeType.Line -> "Line"
     }
 
     override val notAvailableForThisTool: String = "not available for this tool"

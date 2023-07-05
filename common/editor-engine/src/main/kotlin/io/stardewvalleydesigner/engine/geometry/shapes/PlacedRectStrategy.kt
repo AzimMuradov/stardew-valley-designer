@@ -19,7 +19,7 @@ package io.stardewvalleydesigner.engine.geometry.shapes
 import io.stardewvalleydesigner.engine.geometry.*
 
 
-object PlacedRectStrategy : PlacedShapeStrategy {
+data object PlacedRectStrategy : PlacedShapeStrategy {
 
     override fun coordinates(a: Coordinate, b: Coordinate): Set<Coordinate> {
         val (bl, tr) = CanonicalCorners.fromTwoCoordinates(a, b)
