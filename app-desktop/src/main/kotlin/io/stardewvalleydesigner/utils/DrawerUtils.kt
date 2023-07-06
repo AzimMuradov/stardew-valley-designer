@@ -16,6 +16,7 @@
 
 package io.stardewvalleydesigner.utils
 
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -48,15 +49,15 @@ object DrawerUtils {
         val layoutRatio = layoutSize.ratio
 
         val dstSize = if (spriteRatio > layoutRatio) {
-            IntSize(width = layoutW.roundToInt(), height = (spriteH * layoutW / spriteW).roundToInt())
+            Size(width = layoutW, height = spriteH * layoutW / spriteW)
         } else {
-            IntSize(width = (spriteW * layoutH / spriteH).roundToInt(), height = layoutH.roundToInt())
-        }
+            Size(width = spriteW * layoutH / spriteH, height = layoutH)
+        }.toIntSize()
 
-        val dstOffset = offset + IntOffset(
-            x = ((layoutW - dstSize.width) / 2).roundToInt(),
-            y = ((layoutH - dstSize.height) / 2).roundToInt(),
-        )
+        val dstOffset = offset + Offset(
+            x = (layoutW - dstSize.width) / 2,
+            y = (layoutH - dstSize.height) / 2,
+        ).toIntOffset()
 
         drawImage(
             image = sprite.image,
@@ -110,17 +111,13 @@ object DrawerUtils {
                 )
             }
         }
+
         val rect = (sprite.size / UNIT).toRect()
 
-        val offsetTopLeft = IntOffset(
-            x = grid.getX(place.x).roundToInt() + paddingInPx.toInt(),
-            y = grid.getY(y = place.y - (rect.h - e.size.h)).roundToInt() + paddingInPx.toInt()
-        )
+        val padding = IntOffset(paddingInPx.toInt(), paddingInPx.toInt())
 
-        val offsetBottomRight = IntOffset(
-            x = grid.getX(x = place.x + rect.w).roundToInt() - paddingInPx.toInt(),
-            y = grid.getY(y = place.y + e.size.h).roundToInt() - paddingInPx.toInt()
-        )
+        val offsetTopLeft = grid[place.x, place.y - (rect.h - e.size.h)].toIntOffset() + padding
+        val offsetBottomRight = grid[place.x + rect.w, place.y + e.size.h].toIntOffset() - padding
 
         drawSpriteStretched(
             sprite = sprite,
@@ -153,10 +150,10 @@ object DrawerUtils {
         val xs = List(size = (nW + 1) / 2 + 1) { -stepSize + stepSize * 2 * it }.map { it.roundToInt() }
         val ys = List(size = (nH + 1) / 2) { stepSize * 2 * (it + 1) }.map { it.roundToInt() }
 
+        val sprite = flooring(flooring ?: Flooring.all().first())
+
         for ((left, right) in xs.zipWithNext()) {
             for ((top, bottom) in ys.zipWithNext()) {
-                val sprite = flooring(flooring ?: Flooring.all().first())
-
                 drawImage(
                     image = sprite.image,
                     srcOffset = sprite.offset,
@@ -179,15 +176,15 @@ object DrawerUtils {
         val bottom = (stepSize * 4).roundToInt()
         val height = bottom - top
 
-        for ((left, right) in xs.zipWithNext()) {
-            val sprite = wallpaper(wallpaper ?: Wallpaper.all().first())
+        val sprite = wallpaper(wallpaper ?: Wallpaper.all().first())
 
+        for ((left, right) in xs.zipWithNext()) {
             drawImage(
                 image = sprite.image,
                 srcOffset = sprite.offset,
                 srcSize = sprite.size,
                 dstOffset = IntOffset(x = left, y = top),
-                dstSize = IntSize(width = right - left, height = height),
+                dstSize = IntSize(width = right - left, height),
                 filterQuality = FilterQuality.None,
             )
         }

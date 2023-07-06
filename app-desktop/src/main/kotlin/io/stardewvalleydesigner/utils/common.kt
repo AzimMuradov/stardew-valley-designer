@@ -16,6 +16,7 @@
 
 package io.stardewvalleydesigner.utils
 
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
@@ -36,7 +37,11 @@ fun Rect.toIntSize(): IntSize = IntSize(w, h)
 
 fun Size.toIntSize(): IntSize = IntSize(width.roundToInt(), height.roundToInt())
 
+fun Offset.toIntOffset(): IntOffset = IntOffset(x.roundToInt(), y.roundToInt())
+
 fun IntSize.toRect(): Rect = rectOf(width, height)
+
+operator fun Int.times(size: IntOffset) = IntOffset(x = this * size.x, y = this * size.y)
 
 
 fun IntSize(topLeft: IntOffset, bottomRight: IntOffset): IntSize = IntSize(
