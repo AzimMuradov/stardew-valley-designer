@@ -42,7 +42,7 @@ sealed class ToolkitState(val tool: ToolType) {
 
             data class Acting(val heldEntities: LayeredEntitiesData) : Point(isIdle = false)
 
-            override val shape: ShapeType? = null
+            final override val shape: ShapeType? = null
         }
     }
 
