@@ -17,14 +17,13 @@
 package io.stardewvalleydesigner.editor.modules.toolkit.tools
 
 import io.stardewvalleydesigner.editor.modules.toolkit.*
-import io.stardewvalleydesigner.engine.EditorEngine
+import io.stardewvalleydesigner.engine.*
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.placeIt
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layout.respectsLayout
-import io.stardewvalleydesigner.engine.notOverlapsWith
 
 
 class PenPoint(private val engine: EditorEngine) : Tool {
@@ -39,7 +38,7 @@ class PenPoint(private val engine: EditorEngine) : Tool {
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
         val entity = currentEntity?.placeIt(there = coordinate)
-        if (entity != null && entity respectsLayout engine.layers.layout) {
+        if (entity != null && entity respectsLayout engine.layout) {
             engine.put(entity)
             placedCoordinates += entity.coordinates
         }
@@ -58,7 +57,7 @@ class PenPoint(private val engine: EditorEngine) : Tool {
         val entity = currentEntity?.placeIt(there = coordinate)
         if (
             entity != null &&
-            entity respectsLayout engine.layers.layout &&
+            entity respectsLayout engine.layout &&
             entity.coordinates notOverlapsWith placedCoordinates
         ) {
             engine.put(entity)

@@ -73,7 +73,7 @@ class Hand(private val engine: EditorEngine) : Tool {
         heldEntities = initMovedEntities
             .flatten()
             .map { it.copy(place = it.place + (coordinate - start)) }
-            .filter { it respectsLayout engine.layers.layout }
+            .filter { it respectsLayout engine.layout }
             .layeredData()
 
         return ActionReturn(
