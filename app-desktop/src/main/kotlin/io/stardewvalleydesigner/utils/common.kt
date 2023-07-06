@@ -42,7 +42,7 @@ fun Offset.toIntOffset(): IntOffset = IntOffset(x.roundToInt(), y.roundToInt())
 fun IntSize.toRect(): Rect = rectOf(width, height)
 
 
-operator fun Int.times(size: IntOffset) = IntOffset(x = this * size.x, y = this * size.y)
+operator fun Int.times(size: IntOffset): IntOffset = IntOffset(x = this * size.x, y = this * size.y)
 
 fun IntSize(topLeft: IntOffset, bottomRight: IntOffset): IntSize = IntSize(
     width = bottomRight.x - topLeft.x,
