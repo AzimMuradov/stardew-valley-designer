@@ -29,7 +29,6 @@ import io.stardewvalleydesigner.editor.modules.palette.reduce
 import io.stardewvalleydesigner.editor.modules.toolkit.*
 import io.stardewvalleydesigner.editor.modules.vislayers.VisLayersState
 import io.stardewvalleydesigner.editor.modules.vislayers.reduce
-import io.stardewvalleydesigner.editor.utils.UNREACHABLE
 import io.stardewvalleydesigner.engine.EditorEngine
 import io.stardewvalleydesigner.editor.EditorIntent as Intent
 import io.stardewvalleydesigner.editor.EditorLabel as Label
@@ -78,69 +77,77 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
 
 
         override fun executeIntent(intent: Intent, getState: () -> State) {
-            if (intent is Intent.History) {
-                when (intent) {
-                    Intent.History.GoBack -> history.goBackIfCan()
-                    Intent.History.GoForward -> history.goForwardIfCan()
-                }
-                val snapshot = history.currentMapState
-                engine.pushState(snapshot)
-                dispatch(Msg.UpdateMap(snapshot))
-                dispatch(Msg.UpdateHistory(history.state))
-            } else {
-                when (intent) {
-                    is Intent.Engine -> {
-                        val actionReturn = getState().let { (_, map, _, palette, visLayers) ->
-                            toolkit.runAction(
-                                action = intent,
-                                currentEntity = palette.inUse,
-                                selectedEntities = map.selectedEntities,
-                                visLayers = visLayers.visibleLayers,
-                            )
+            when (intent) {
+                is Intent.History -> {
+                    var isSnapshotChanged = false
+                    when (intent) {
+                        Intent.History.GoBack -> {
+                            if (history.canGoBack) isSnapshotChanged = true
+                            history.goBackIfCan()
                         }
-                        if (actionReturn != null) {
-                            dispatch(Msg.UpdateToolkit(actionReturn.toolkit))
-                            dispatch(Msg.UpdateMap(engine.pullState(actionReturn.selectedEntities)))
 
-                            if (intent == Intent.Engine.End) {
-                                history.register(getState().map)
-                                dispatch(Msg.UpdateHistory(history.state))
-                            }
+                        Intent.History.GoForward -> {
+                            if (history.canGoForward) isSnapshotChanged = true
+                            history.goForwardIfCan()
                         }
                     }
-
-                    is Intent.Toolkit -> {
-                        dispatch(Msg.UpdateToolkit(getState().toolkit.reduce(intent)))
-                        getState().toolkit.run { toolkit.setTool(tool, shape) }
-                    }
-
-                    is Intent.Palette -> dispatch(Msg.UpdatePalette(getState().palette.reduce(intent)))
-
-                    is Intent.VisLayers -> dispatch(Msg.UpdateVisLayers(getState().visLayers.reduce(intent)))
-
-                    is Intent.WallpaperAndFlooring -> {
-                        dispatch(
-                            when (intent) {
-                                is Intent.WallpaperAndFlooring.ChooseWallpaper -> {
-                                    engine.wallpaper = intent.wallpaper
-                                    Msg.UpdateMap(getState().map.copy(wallpaper = intent.wallpaper))
-                                }
-
-                                is Intent.WallpaperAndFlooring.ChooseFlooring -> {
-                                    engine.flooring = intent.flooring
-                                    Msg.UpdateMap(getState().map.copy(flooring = intent.flooring))
-                                }
-                            }
-                        )
-
-                        history.register(getState().map)
+                    if (isSnapshotChanged) {
+                        val snapshot = history.currentMapState
+                        engine.pushState(snapshot)
+                        dispatch(Msg.UpdateMap(snapshot))
                         dispatch(Msg.UpdateHistory(history.state))
                     }
-
-                    is Intent.Options -> dispatch(Msg.UpdateOptions(getState().options.reduce(intent)))
-
-                    else -> UNREACHABLE()
                 }
+
+                is Intent.Engine -> {
+                    val actionReturn = getState().let { (_, map, _, palette, visLayers) ->
+                        toolkit.runAction(
+                            action = intent,
+                            currentEntity = palette.inUse,
+                            selectedEntities = map.selectedEntities,
+                            visLayers = visLayers.visibleLayers,
+                        )
+                    }
+                    if (actionReturn != null) {
+                        dispatch(Msg.UpdateToolkit(actionReturn.toolkit))
+                        dispatch(Msg.UpdateMap(engine.pullState(actionReturn.selectedEntities)))
+
+                        if (intent == Intent.Engine.End) {
+                            history.register(getState().map)
+                            dispatch(Msg.UpdateHistory(history.state))
+                        }
+                    }
+                }
+
+                is Intent.Toolkit -> {
+                    dispatch(Msg.UpdateToolkit(getState().toolkit.reduce(intent)))
+                    getState().toolkit.run { toolkit.setTool(tool, shape) }
+                }
+
+                is Intent.Palette -> dispatch(Msg.UpdatePalette(getState().palette.reduce(intent)))
+
+                is Intent.VisLayers -> dispatch(Msg.UpdateVisLayers(getState().visLayers.reduce(intent)))
+
+                is Intent.WallpaperAndFlooring -> {
+                    dispatch(
+                        when (intent) {
+                            is Intent.WallpaperAndFlooring.ChooseWallpaper -> {
+                                engine.wallpaper = intent.wallpaper
+                                Msg.UpdateMap(getState().map.copy(wallpaper = intent.wallpaper))
+                            }
+
+                            is Intent.WallpaperAndFlooring.ChooseFlooring -> {
+                                engine.flooring = intent.flooring
+                                Msg.UpdateMap(getState().map.copy(flooring = intent.flooring))
+                            }
+                        }
+                    )
+
+                    history.register(getState().map)
+                    dispatch(Msg.UpdateHistory(history.state))
+                }
+
+                is Intent.Options -> dispatch(Msg.UpdateOptions(getState().options.reduce(intent)))
             }
         }
 
