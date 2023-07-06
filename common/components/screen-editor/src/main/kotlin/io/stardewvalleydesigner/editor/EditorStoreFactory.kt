@@ -74,9 +74,9 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
 
         private val engine = EditorEngineImpl(engine)
 
-        private val toolkit = ToolkitImpl(engine, engine.layers.layout)
+        private val toolkit = ToolkitImpl(engine, ToolkitState.default())
 
-        @Suppress("LongMethod", "CyclomaticComplexMethod", "NestedBlockDepth")
+
         override fun executeIntent(intent: Intent, getState: () -> State) {
             if (intent is Intent.History) {
                 when (intent) {
@@ -90,43 +90,19 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
             } else {
                 when (intent) {
                     is Intent.Engine -> {
-                        when (intent) {
-                            is Intent.Engine.Start -> {
-                                val actionReturn = getState().let { (_, snapshot, _, palette, visLayers) ->
-                                    toolkit.start(
-                                        coordinate = intent.coordinate,
-                                        currentEntity = palette.inUse,
-                                        selectedEntities = snapshot.selectedEntities,
-                                        visLayers = visLayers.visibleLayers,
-                                    )
-                                }
-                                actionReturn?.toolkit?.let { dispatch(Msg.UpdateToolkit(it)) }
-                                dispatch(Msg.UpdateMap(engine.pullState(actionReturn?.selectedEntities)))
-                            }
+                        val actionReturn = getState().let { (_, map, _, palette, visLayers) ->
+                            toolkit.runAction(
+                                action = intent,
+                                currentEntity = palette.inUse,
+                                selectedEntities = map.selectedEntities,
+                                visLayers = visLayers.visibleLayers,
+                            )
+                        }
+                        if (actionReturn != null) {
+                            dispatch(Msg.UpdateToolkit(actionReturn.toolkit))
+                            dispatch(Msg.UpdateMap(engine.pullState(actionReturn.selectedEntities)))
 
-                            is Intent.Engine.Continue -> {
-                                val actionReturn = getState().let { (_, snapshot, _, palette, visLayers) ->
-                                    toolkit.keep(
-                                        coordinate = intent.coordinate,
-                                        currentEntity = palette.inUse,
-                                        selectedEntities = snapshot.selectedEntities,
-                                        visLayers = visLayers.visibleLayers,
-                                    )
-                                }
-                                actionReturn?.toolkit?.let { dispatch(Msg.UpdateToolkit(it)) }
-                                dispatch(Msg.UpdateMap(engine.pullState(actionReturn?.selectedEntities)))
-                            }
-
-                            Intent.Engine.End -> {
-                                val actionReturn = getState().let { (_, snapshot, _, palette, visLayers) ->
-                                    toolkit.end(
-                                        currentEntity = palette.inUse,
-                                        selectedEntities = snapshot.selectedEntities,
-                                        visLayers = visLayers.visibleLayers,
-                                    )
-                                }
-                                actionReturn?.toolkit?.let { dispatch(Msg.UpdateToolkit(it)) }
-                                dispatch(Msg.UpdateMap(engine.pullState(actionReturn?.selectedEntities)))
+                            if (intent == Intent.Engine.End) {
                                 history.register(getState().map)
                                 dispatch(Msg.UpdateHistory(history.state))
                             }

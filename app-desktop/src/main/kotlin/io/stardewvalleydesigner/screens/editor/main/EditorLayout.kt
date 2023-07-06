@@ -117,7 +117,7 @@ fun EditorLayout(
                         val current = change.position.toCoordinate()
                         if (current != prevDragCoordinate) {
                             prevDragCoordinate = current
-                            intentConsumer(EditorIntent.Engine.Continue(current))
+                            intentConsumer(EditorIntent.Engine.Keep(current))
                         }
                     },
                     onDragCancel = {

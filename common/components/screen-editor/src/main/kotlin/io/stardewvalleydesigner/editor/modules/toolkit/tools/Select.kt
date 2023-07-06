@@ -23,7 +23,6 @@ import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.getAll
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
-import io.stardewvalleydesigner.engine.layout.Layout
 import kotlin.properties.Delegates
 
 
@@ -34,7 +33,6 @@ class Select(private val engine: EditorEngine, private val shape: ShapeType) : T
 
     override fun start(
         coordinate: Coordinate,
-        layout: Layout,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
@@ -51,7 +49,6 @@ class Select(private val engine: EditorEngine, private val shape: ShapeType) : T
 
     override fun keep(
         coordinate: Coordinate,
-        layout: Layout,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
@@ -65,7 +62,6 @@ class Select(private val engine: EditorEngine, private val shape: ShapeType) : T
     }
 
     override fun end(
-        layout: Layout,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,

@@ -22,19 +22,18 @@ import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
-import io.stardewvalleydesigner.engine.layout.Layout
 
 
 class ToolkitImpl(
     private val engine: EditorEngine,
-    private val layout: Layout,
+    initialState: ToolkitState,
 ) : Toolkit {
 
     private var tool: Tool? = null
 
-    override var toolType: ToolType = ToolType.Hand
+    override var toolType: ToolType = initialState.tool
 
-    override var shapeType: ShapeType? = null
+    override var shapeType: ShapeType? = initialState.shape
 
 
     override fun setTool(toolType: ToolType, shapeType: ShapeType?) {
@@ -56,7 +55,7 @@ class ToolkitImpl(
             ToolType.Eraser -> if (shapeType == null) EraserPoint(engine) else EraserShape(engine, shapeType)
             ToolType.Select -> if (shapeType == null) undefinedTool() else Select(engine, shapeType)
         }
-        val result = tool.start(coordinate, layout, currentEntity, selectedEntities, visLayers)
+        val result = tool.start(coordinate, currentEntity, selectedEntities, visLayers)
 
         if (result != null) {
             this.tool = tool
@@ -74,7 +73,7 @@ class ToolkitImpl(
         visLayers: Set<LayerType<*>>,
     ): ActionReturn? {
         val tool = this.tool
-        val result = tool?.keep(coordinate, layout, currentEntity, selectedEntities, visLayers)
+        val result = tool?.keep(coordinate, currentEntity, selectedEntities, visLayers)
 
         if (tool != null && result == null) {
             tool.dispose()
@@ -89,7 +88,7 @@ class ToolkitImpl(
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn? {
-        val result = tool?.end(layout, currentEntity, selectedEntities, visLayers)
+        val result = tool?.end(currentEntity, selectedEntities, visLayers)
 
         tool?.run {
             dispose()

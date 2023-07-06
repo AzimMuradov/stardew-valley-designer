@@ -25,7 +25,6 @@ import io.stardewvalleydesigner.engine.getReplacedBy
 import io.stardewvalleydesigner.engine.layer.*
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layers.flatten
-import io.stardewvalleydesigner.engine.layout.Layout
 import io.stardewvalleydesigner.engine.layout.respectsLayout
 import kotlin.properties.Delegates
 
@@ -39,7 +38,6 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
 
     override fun start(
         coordinate: Coordinate,
-        layout: Layout,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
@@ -53,7 +51,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
                 .coordinates
                 .asSequence()
                 .map(currentEntity::placeIt)
-                .filter { it respectsLayout layout }
+                .filter { it respectsLayout engine.layers.layout }
                 .toMutableSet()
 
             return ActionReturn(
@@ -74,7 +72,6 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
 
     override fun keep(
         coordinate: Coordinate,
-        layout: Layout,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
@@ -88,7 +85,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
             .asSequence()
             .sortedWith(Comparator.comparingInt(Coordinate::x).thenComparingInt(Coordinate::y))
             .map(currentEntity!!::placeIt)
-            .filter { it respectsLayout layout }
+            .filter { it respectsLayout engine.layers.layout }
             .filter {
                 if (it.coordinates.any(cs::contains)) {
                     false
@@ -113,7 +110,6 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
     }
 
     override fun end(
-        layout: Layout,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,

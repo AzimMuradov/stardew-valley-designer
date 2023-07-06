@@ -35,7 +35,7 @@ sealed interface EditorIntent {
 
     sealed interface Engine : EditorIntent {
         data class Start(val coordinate: Coordinate) : Engine
-        data class Continue(val coordinate: Coordinate) : Engine
+        data class Keep(val coordinate: Coordinate) : Engine
         data object End : Engine
     }
 

@@ -23,7 +23,6 @@ import io.stardewvalleydesigner.engine.geometry.*
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.coordinates
 import io.stardewvalleydesigner.engine.layers.*
-import io.stardewvalleydesigner.engine.layout.Layout
 import io.stardewvalleydesigner.engine.layout.respectsLayout
 import kotlin.properties.Delegates
 
@@ -41,7 +40,6 @@ class Hand(private val engine: EditorEngine) : Tool {
 
     override fun start(
         coordinate: Coordinate,
-        layout: Layout,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
@@ -68,7 +66,6 @@ class Hand(private val engine: EditorEngine) : Tool {
 
     override fun keep(
         coordinate: Coordinate,
-        layout: Layout,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
@@ -76,7 +73,7 @@ class Hand(private val engine: EditorEngine) : Tool {
         heldEntities = initMovedEntities
             .flatten()
             .map { it.copy(place = it.place + (coordinate - start)) }
-            .filter { it respectsLayout layout }
+            .filter { it respectsLayout engine.layers.layout }
             .layeredData()
 
         return ActionReturn(
@@ -86,7 +83,6 @@ class Hand(private val engine: EditorEngine) : Tool {
     }
 
     override fun end(
-        layout: Layout,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,

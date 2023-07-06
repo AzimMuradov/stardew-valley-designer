@@ -25,7 +25,6 @@ import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.coordinates
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layers.flatten
-import io.stardewvalleydesigner.engine.layout.Layout
 import kotlin.properties.Delegates
 
 
@@ -38,7 +37,6 @@ class EraserShape(private val engine: EditorEngine, private val shape: ShapeType
 
     override fun start(
         coordinate: Coordinate,
-        layout: Layout,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
@@ -60,7 +58,6 @@ class EraserShape(private val engine: EditorEngine, private val shape: ShapeType
 
     override fun keep(
         coordinate: Coordinate,
-        layout: Layout,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
@@ -79,7 +76,6 @@ class EraserShape(private val engine: EditorEngine, private val shape: ShapeType
     }
 
     override fun end(
-        layout: Layout,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
