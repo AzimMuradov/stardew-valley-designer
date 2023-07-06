@@ -20,7 +20,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.stardewvalleydesigner.engine.entity.Entity
-import io.stardewvalleydesigner.utils.DrawerUtils.drawSpriteBy
+import io.stardewvalleydesigner.utils.DrawerUtils.drawEntityContained
 
 
 @Composable
@@ -29,6 +29,6 @@ fun Sprite(
     modifier: Modifier = Modifier,
 ) {
     Canvas(modifier) {
-        drawSpriteBy(entity = entity, layoutSize = this.size)
+        drawEntityContained(entity, layoutSize = size)
     }
 }

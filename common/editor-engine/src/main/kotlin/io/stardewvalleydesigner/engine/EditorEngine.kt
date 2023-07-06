@@ -20,6 +20,7 @@ import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layer.*
 import io.stardewvalleydesigner.engine.layers.*
+import io.stardewvalleydesigner.engine.layout.Layout
 
 
 /**
@@ -53,6 +54,11 @@ interface EditorEngine {
 
     fun clear(type: LayerType<*>)
 }
+
+
+// Properties
+
+val EditorEngine.layout: Layout get() = layers.layout
 
 
 // Operations

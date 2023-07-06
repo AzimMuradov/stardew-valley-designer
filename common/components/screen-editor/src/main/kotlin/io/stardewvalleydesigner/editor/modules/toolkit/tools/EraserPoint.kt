@@ -22,7 +22,6 @@ import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
-import io.stardewvalleydesigner.engine.layout.Layout
 import io.stardewvalleydesigner.engine.remove
 
 
@@ -30,7 +29,6 @@ class EraserPoint(private val engine: EditorEngine) : Tool {
 
     override fun start(
         coordinate: Coordinate,
-        layout: Layout,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
@@ -44,7 +42,6 @@ class EraserPoint(private val engine: EditorEngine) : Tool {
 
     override fun keep(
         coordinate: Coordinate,
-        layout: Layout,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
@@ -57,7 +54,6 @@ class EraserPoint(private val engine: EditorEngine) : Tool {
     }
 
     override fun end(
-        layout: Layout,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,

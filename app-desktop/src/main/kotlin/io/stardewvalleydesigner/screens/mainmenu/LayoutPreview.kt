@@ -23,7 +23,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
 import io.stardewvalleydesigner.editor.res.LayoutSpritesProvider.layoutSpriteBy
@@ -62,7 +61,6 @@ fun BoxScope.LayoutPreview(
     ) {
         cellSide = size.height / nH
 
-        val cellSize = Size(cellSide, cellSide)
         val grid = CoordinateGrid(cellSide)
 
 
@@ -87,8 +85,7 @@ fun BoxScope.LayoutPreview(
             entities = entities,
             visibleLayers = LayerType.all,
             renderSpritesFully = true,
-            grid = grid,
-            cellSize = cellSize
+            grid = grid
         )
 
 

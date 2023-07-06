@@ -33,9 +33,8 @@ import io.stardewvalleydesigner.editor.res.flooring
 import io.stardewvalleydesigner.editor.res.wallpaper
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
-import io.stardewvalleydesigner.utils.DrawerUtils.drawSprite
-import io.stardewvalleydesigner.utils.GlobalSettings
-import io.stardewvalleydesigner.utils.bounceClickable
+import io.stardewvalleydesigner.utils.*
+import io.stardewvalleydesigner.utils.DrawerUtils.drawSpriteStretched
 
 
 @Composable
@@ -118,7 +117,12 @@ fun WallpaperAndFlooringSelection(
                                     .bounceClickable { onWallpaperSelection(w) }
                                     .aspectRatio(ratio = 1f / 3f)
                                     .fillMaxSize()
-                                    .drawBehind { drawSprite(sprite = wallpaper(w), layoutSize = size) }
+                                    .drawBehind {
+                                        drawSpriteStretched(
+                                            sprite = wallpaper(w),
+                                            layoutSize = size.toIntSize()
+                                        )
+                                    }
                             )
                         }
                     }
@@ -144,9 +148,9 @@ fun WallpaperAndFlooringSelection(
                                     .aspectRatio(ratio = 1f)
                                     .fillMaxSize()
                                     .drawBehind {
-                                        drawSprite(
+                                        drawSpriteStretched(
                                             sprite = flooring(f),
-                                            layoutSize = size
+                                            layoutSize = size.toIntSize()
                                         )
                                     }
                             )

@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
 import dev.dirs.UserDirectories
 import io.stardewvalleydesigner.editor.modules.map.MapState
 import io.stardewvalleydesigner.editor.res.*
@@ -69,43 +68,29 @@ private fun makeScreenshot(map: MapState, visibleLayers: Set<LayerType<*>>) {
     val imageBitmap = ImageBitmap(layoutSprite.size.width, layoutSprite.size.height)
 
     Canvas(imageBitmap).run {
-        val offsetsW = List(size = nW + 1) { it * UNIT }
-        val offsetsH = List(size = nH + 1) { it * UNIT }
-
         drawImageRect(image = layoutSprite.bgImage, paint = Paint())
 
         if (layout.type.isShed()) {
-            val off1 = List(nW) { -UNIT + UNIT * 2 * it }
-            val off2 = List(nH) { UNIT * 2 * (it + 1) }
+            val fl = flooring(map.flooring ?: Flooring.all().first())
+            val wp = wallpaper(map.wallpaper ?: Wallpaper.all().first())
 
-            off1.zipWithNext().forEach { (st1, en1) ->
-                off2.zipWithNext().forEach { (st2, en2) ->
-                    val sprite = flooring(map.flooring ?: Flooring.all().first())
-
+            for (x in List(size = (nW + 1) / 2 + 1) { -1 + 2 * it }) {
+                for (y in List(size = (nH + 1) / 2) { 2 * (it + 1) }) {
                     drawImageRect(
-                        image = sprite.image,
-                        srcOffset = sprite.offset,
-                        srcSize = sprite.size,
-                        dstOffset = IntOffset(x = st1, y = st2),
-                        dstSize = IntSize(width = (en1 - st1), height = (en2 - st2)),
+                        image = fl.image,
+                        srcOffset = fl.offset,
+                        srcSize = fl.size,
+                        dstOffset = UNIT * IntOffset(x, y),
                         paint = Paint()
                     )
                 }
             }
-        }
-
-        if (layout.type.isShed()) {
-            val off = List(size = nW + 1) { UNIT * it }
-
-            off.zipWithNext().forEach { (st, en) ->
-                val sprite = wallpaper(map.wallpaper ?: Wallpaper.all().first())
-
+            for (x in 0..nW) {
                 drawImageRect(
-                    image = sprite.image,
-                    srcOffset = sprite.offset,
-                    srcSize = sprite.size,
-                    dstOffset = IntOffset(x = st, y = UNIT),
-                    dstSize = IntSize(width = (en - st), height = UNIT * 3),
+                    image = wp.image,
+                    srcOffset = wp.offset,
+                    srcSize = wp.size,
+                    dstOffset = UNIT * IntOffset(x, y = 1),
                     paint = Paint()
                 )
             }
@@ -115,17 +100,13 @@ private fun makeScreenshot(map: MapState, visibleLayers: Set<LayerType<*>>) {
 
         for ((e, place) in sorted) {
             val sprite = EntitySpritesProvider.spriteBy(e)
-            val rect = (sprite.size / UNIT).toRect()
+            val rectH = sprite.size.height / UNIT
 
             drawImageRect(
                 image = sprite.image,
                 srcOffset = sprite.offset,
                 srcSize = sprite.size,
-                dstOffset = IntOffset(
-                    x = offsetsW[place.x],
-                    y = offsetsH[place.y - (rect.h - e.size.h)]
-                ),
-                dstSize = sprite.size,
+                dstOffset = UNIT * IntOffset(x = place.x, y = place.y - (rectH - e.size.h)),
                 paint = Paint()
             )
         }

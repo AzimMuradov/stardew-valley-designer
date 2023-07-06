@@ -28,18 +28,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.*
-import androidx.compose.ui.unit.IntOffset
 import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.menus.OptionsItemValue.Toggleable
 import io.stardewvalleydesigner.editor.modules.map.MapState
 import io.stardewvalleydesigner.editor.modules.options.OptionsState
 import io.stardewvalleydesigner.editor.modules.toolkit.ToolkitState
-import io.stardewvalleydesigner.editor.res.EntitySpritesProvider
 import io.stardewvalleydesigner.editor.res.LayoutSpritesProvider.layoutSpriteBy
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.geometry.*
@@ -47,10 +44,9 @@ import io.stardewvalleydesigner.engine.geometry.shapes.*
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.coordinates
 import io.stardewvalleydesigner.engine.layers.flatten
-import io.stardewvalleydesigner.metadata.EntityPage.Companion.UNIT
 import io.stardewvalleydesigner.utils.*
+import io.stardewvalleydesigner.utils.DrawerUtils.drawEntityStretched
 import io.stardewvalleydesigner.utils.DrawerUtils.drawFlooring
-import io.stardewvalleydesigner.utils.DrawerUtils.drawSprite
 import io.stardewvalleydesigner.utils.DrawerUtils.drawVisibleEntities
 import io.stardewvalleydesigner.utils.DrawerUtils.drawWallpaper
 import io.stardewvalleydesigner.utils.DrawerUtils.placedEntityComparator
@@ -73,7 +69,7 @@ fun EditorLayout(
     val hoveredColor = MaterialTheme.colors.secondary
 
     var cellSide by remember { mutableStateOf(-1f) }
-    var hoveredCoordinate by remember { mutableStateOf(UNDEFINED) }
+    var currCoordinate by remember { mutableStateOf(UNDEFINED) }
     var prevDragCoordinate by remember { mutableStateOf(UNDEFINED) }
 
 
@@ -97,9 +93,9 @@ fun EditorLayout(
             .background(color = MaterialTheme.colors.surface)
             // Hovered cell
             .onPointerEvent(PointerEventType.Move) { event ->
-                hoveredCoordinate = event.changes.first().position.toCoordinateStrict()
+                currCoordinate = event.changes.first().position.toCoordinateStrict()
             }
-            .onPointerEvent(PointerEventType.Exit) { hoveredCoordinate = UNDEFINED }
+            .onPointerEvent(PointerEventType.Exit) { currCoordinate = UNDEFINED }
             // Tools logic
             .onPointerEvent(eventType = PointerEventType.Press) { event ->
                 val current = event.changes.first().position.toCoordinateStrict()
@@ -117,7 +113,7 @@ fun EditorLayout(
                         val current = change.position.toCoordinate()
                         if (current != prevDragCoordinate) {
                             prevDragCoordinate = current
-                            intentConsumer(EditorIntent.Engine.Continue(current))
+                            intentConsumer(EditorIntent.Engine.Keep(current))
                         }
                     },
                     onDragCancel = {
@@ -128,8 +124,6 @@ fun EditorLayout(
             }
     ) {
         cellSide = size.height / nH
-
-        val hoveredId = hoveredCoordinate
 
         val cellSize = Size(cellSide, cellSide)
         val grid = CoordinateGrid(cellSide)
@@ -156,130 +150,10 @@ fun EditorLayout(
             entities = map.entities,
             visibleLayers = visibleLayers,
             renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
-            grid = grid,
-            cellSize = cellSize
+            grid = grid
         )
 
-
-        // Beeps and Bops
-
-        for (c in map.selectedEntities.flatten().coordinates) {
-            drawRect(
-                color = Color.Blue,
-                topLeft = grid[c],
-                size = cellSize,
-                alpha = 0.3f
-            )
-        }
-
-        when (toolkit) {
-            is ToolkitState.Hand.Point.Acting -> {
-                val sorted = toolkit.heldEntities.flatten().sortedWith(placedEntityComparator)
-                for ((e, place) in sorted) {
-                    val sprite = EntitySpritesProvider.spriteBy(e).run {
-                        if (options.toggleables.getValue(Toggleable.ShowSpritesFully)) {
-                            this
-                        } else {
-                            copy(
-                                offset = offset.copy(y = offset.y + (size.height - e.size.h * UNIT)),
-                                size = e.size.toIntSize() * UNIT
-                            )
-                        }
-                    }
-                    val rect = (sprite.size / UNIT).toRect()
-                    drawSprite(
-                        sprite = sprite,
-                        offset = IntOffset(
-                            x = grid.getX(place.x).toInt() + 2,
-                            y = grid.getY(place.y - (rect.h - e.size.h)).toInt() + 2
-                        ),
-                        layoutSize = Size(
-                            width = (cellSize.width * rect.w - 4).coerceAtLeast(1f),
-                            height = (cellSize.height * rect.h - 4).coerceAtLeast(1f)
-                        ),
-                        alpha = 0.7f,
-                    )
-                }
-            }
-
-            is ToolkitState.Pen.Shape.Acting -> {
-                for (c in toolkit.placedShape.coordinates) {
-                    drawRect(
-                        color = Color.Black,
-                        topLeft = grid[c],
-                        size = cellSize,
-                        alpha = 0.1f,
-                    )
-                }
-                for (c in toolkit.entitiesToDelete) {
-                    drawRect(
-                        color = Color.Red,
-                        topLeft = grid[c],
-                        size = cellSize,
-                        alpha = 0.5f,
-                    )
-                }
-                for ((e, place) in toolkit.entitiesToDraw) {
-                    val sprite = EntitySpritesProvider.spriteBy(e).run {
-                        if (options.toggleables.getValue(Toggleable.ShowSpritesFully)) {
-                            this
-                        } else {
-                            copy(
-                                offset = offset.copy(y = offset.y + (size.height - e.size.h * UNIT)),
-                                size = e.size.toIntSize() * UNIT
-                            )
-                        }
-                    }
-                    val rect = (sprite.size / UNIT).toRect()
-                    drawSprite(
-                        sprite = sprite,
-                        offset = IntOffset(
-                            x = grid.getX(place.x).toInt(),
-                            y = grid.getY(place.y - (rect.h - e.size.h)).toInt()
-                        ),
-                        layoutSize = Size(
-                            width = (cellSize.width * rect.w).coerceAtLeast(1f),
-                            height = (cellSize.height * rect.h).coerceAtLeast(1f)
-                        ),
-                        alpha = 0.7f,
-                    )
-                }
-            }
-
-            is ToolkitState.Eraser.Shape.Acting -> {
-                for (c in toolkit.placedShape.coordinates) {
-                    drawRect(
-                        color = Color.Black,
-                        topLeft = grid[c],
-                        size = cellSize,
-                        alpha = 0.1f,
-                    )
-                }
-                for (c in toolkit.entitiesToDelete) {
-                    drawRect(
-                        color = Color.Red,
-                        topLeft = grid[c],
-                        size = cellSize,
-                        alpha = 0.5f,
-                    )
-                }
-            }
-
-            is ToolkitState.Select.Shape -> {
-                if (toolkit is ToolkitState.Select.Shape.Acting) {
-                    for (c in toolkit.placedShape.coordinates) {
-                        drawRect(
-                            color = Color.Black,
-                            topLeft = grid[c],
-                            size = cellSize,
-                            alpha = 0.1f,
-                        )
-                    }
-                }
-            }
-
-            else -> Unit
-        }
+        drawSpecificSpritesAndEffects(map, toolkit, options, grid, cellSize)
 
 
         // Foreground
@@ -296,60 +170,104 @@ fun EditorLayout(
 
         drawAreasOfEffects(map, options, grid, cellSize)
 
-        // Grid
+        drawGrid(options, grid, nW, nH)
 
-        if (options.toggleables.getValue(Toggleable.ShowGrid)) {
-            for (x in (0..nW).map(grid::getX)) {
-                drawLine(
-                    color = Color.LightGray,
-                    start = Offset(x, y = 0f),
-                    end = Offset(x, y = size.height),
-                    pathEffect = PathEffect.dashPathEffect(intervals = floatArrayOf(2f, 2f)),
-                )
-            }
-            for (y in (0..nH).map(grid::getY)) {
-                drawLine(
-                    color = Color.LightGray,
-                    start = Offset(x = 0f, y),
-                    end = Offset(x = size.width, y),
-                    pathEffect = PathEffect.dashPathEffect(intervals = floatArrayOf(2f, 2f)),
-                )
-            }
-        }
-
-        // Hovered cell & Axis
-
-        if (hoveredId != UNDEFINED) {
-            val offset = grid[hoveredId]
-            val (offsetX, offsetY) = offset
-
-            drawRect(
-                color = hoveredColor,
-                topLeft = offset,
-                size = cellSize,
-                alpha = 0.3f,
-            )
-
-            // Axis
-
-            if (options.toggleables.getValue(Toggleable.ShowAxis)) {
-                drawRect(
-                    topLeft = Offset(x = offsetX, y = 0f),
-                    size = Size(cellSize.width, size.height),
-                    color = Color.DarkGray,
-                    style = Stroke(width = 2f)
-                )
-                drawRect(
-                    topLeft = Offset(x = 0f, y = offsetY),
-                    size = Size(size.width, cellSize.height),
-                    color = Color.DarkGray,
-                    style = Stroke(width = 2f)
-                )
-            }
-        }
+        drawHoveredCellAndAxis(options, grid, cellSize, currCoordinate, hoveredColor)
     }
 }
 
+
+private fun DrawScope.drawSpecificSpritesAndEffects(
+    map: MapState,
+    toolkit: ToolkitState,
+    options: OptionsState,
+    grid: CoordinateGrid,
+    cellSize: Size,
+) {
+    for (c in map.selectedEntities.flatten().coordinates) {
+        drawRect(
+            color = Color.Blue,
+            topLeft = grid[c],
+            size = cellSize,
+            alpha = 0.3f
+        )
+    }
+
+    when (toolkit) {
+        is ToolkitState.Hand.Point.Acting -> {
+            val sorted = toolkit.heldEntities.flatten().sortedWith(placedEntityComparator)
+
+            for (entity in sorted) {
+                drawEntityStretched(
+                    entity = entity,
+                    renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
+                    grid = grid,
+                    paddingInPx = 2u,
+                    alpha = 0.7f
+                )
+            }
+        }
+
+        is ToolkitState.Pen.Shape.Acting -> {
+            for (c in toolkit.placedShape.coordinates) {
+                drawRect(
+                    color = Color.Black,
+                    topLeft = grid[c],
+                    size = cellSize,
+                    alpha = 0.1f,
+                )
+            }
+            for (c in toolkit.entitiesToDelete) {
+                drawRect(
+                    color = Color.Red,
+                    topLeft = grid[c],
+                    size = cellSize,
+                    alpha = 0.5f,
+                )
+            }
+            for (entity in toolkit.entitiesToDraw) {
+                drawEntityStretched(
+                    entity = entity,
+                    renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
+                    grid = grid,
+                    alpha = 0.7f
+                )
+            }
+        }
+
+        is ToolkitState.Eraser.Shape.Acting -> {
+            for (c in toolkit.placedShape.coordinates) {
+                drawRect(
+                    color = Color.Black,
+                    topLeft = grid[c],
+                    size = cellSize,
+                    alpha = 0.1f,
+                )
+            }
+            for (c in toolkit.entitiesToDelete) {
+                drawRect(
+                    color = Color.Red,
+                    topLeft = grid[c],
+                    size = cellSize,
+                    alpha = 0.5f,
+                )
+            }
+        }
+
+        is ToolkitState.Select.Shape.Acting -> {
+            for (c in toolkit.placedShape.coordinates) {
+                drawRect(
+                    color = Color.Black,
+                    topLeft = grid[c],
+                    size = cellSize,
+                    alpha = 0.1f,
+                )
+            }
+        }
+
+        else -> Unit
+    }
+}
 
 private fun DrawScope.drawAreasOfEffects(
     map: MapState,
@@ -459,5 +377,66 @@ private fun DrawScope.drawAreasOfEffects(
     }
 }
 
+private fun DrawScope.drawGrid(
+    options: OptionsState,
+    grid: CoordinateGrid,
+    nW: Int, nH: Int,
+) {
+    if (options.toggleables.getValue(Toggleable.ShowGrid)) {
+        for (x in (0..nW).map(grid::getX)) {
+            drawLine(
+                color = Color.Gray,
+                alpha = 0.6f,
+                start = Offset(x, y = 0f),
+                end = Offset(x, y = size.height),
+            )
+        }
+        for (y in (0..nH).map(grid::getY)) {
+            drawLine(
+                color = Color.Gray,
+                alpha = 0.6f,
+                start = Offset(x = 0f, y),
+                end = Offset(x = size.width, y),
+            )
+        }
+    }
+}
+
+private fun DrawScope.drawHoveredCellAndAxis(
+    options: OptionsState,
+    grid: CoordinateGrid,
+    cellSize: Size,
+    currCoordinate: Coordinate,
+    hoveredColor: Color,
+) {
+    if (currCoordinate != UNDEFINED) {
+        val offset = grid[currCoordinate]
+        val (offsetX, offsetY) = offset
+
+        drawRect(
+            color = hoveredColor,
+            topLeft = offset,
+            size = cellSize,
+            alpha = 0.3f,
+        )
+
+        // Axis
+
+        if (options.toggleables.getValue(Toggleable.ShowAxis)) {
+            drawRect(
+                topLeft = Offset(x = offsetX, y = 0f),
+                size = Size(cellSize.width, size.height),
+                color = Color.DarkGray,
+                alpha = 0.3f
+            )
+            drawRect(
+                topLeft = Offset(x = 0f, y = offsetY),
+                size = Size(size.width, cellSize.height),
+                color = Color.DarkGray,
+                alpha = 0.3f
+            )
+        }
+    }
+}
 
 private val UNDEFINED: Coordinate = xy(Int.MAX_VALUE, Int.MAX_VALUE)

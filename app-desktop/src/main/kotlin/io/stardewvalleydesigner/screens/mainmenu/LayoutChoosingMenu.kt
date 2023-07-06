@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.stardewvalleydesigner.engine.EditorEngine
 import io.stardewvalleydesigner.engine.layers.entities
+import io.stardewvalleydesigner.engine.layout
 import io.stardewvalleydesigner.utils.GlobalSettings
 
 
@@ -93,7 +94,7 @@ fun LayoutChoosingMenu(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    items(layouts) { layout ->
+                    items(layouts) { engine ->
                         val chosenColor = MaterialTheme.colors.primary.copy(alpha = 0.3f)
 
                         Column(
@@ -101,25 +102,25 @@ fun LayoutChoosingMenu(
                                 .clip(MaterialTheme.shapes.medium)
                                 .drawWithContent {
                                     drawContent()
-                                    if (chosenLayout == layout) {
+                                    if (chosenLayout == engine) {
                                         drawRect(chosenColor)
                                     }
                                 }
-                                .clickable(onClick = { onLayoutChosen(layout) })
+                                .clickable(onClick = { onLayoutChosen(engine) })
                                 .padding(8.dp),
                             verticalArrangement = Arrangement.spacedBy(4.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Box {
                                 LayoutPreview(
-                                    layout = layout.layers.layout,
-                                    entities = layout.layers.entities,
-                                    wallpaper = layout.wallpaper,
-                                    flooring = layout.flooring,
+                                    layout = engine.layout,
+                                    entities = engine.layers.entities,
+                                    wallpaper = engine.wallpaper,
+                                    flooring = engine.flooring,
                                 )
                             }
                             Text(
-                                text = wordList.layout(layout.layers.layout.type),
+                                text = wordList.layout(engine.layout.type),
                                 style = MaterialTheme.typography.subtitle2
                             )
                         }

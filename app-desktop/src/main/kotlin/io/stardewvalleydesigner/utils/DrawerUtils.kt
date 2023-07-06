@@ -16,10 +16,10 @@
 
 package io.stardewvalleydesigner.utils
 
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import io.stardewvalleydesigner.editor.res.*
@@ -36,26 +36,12 @@ import kotlin.math.roundToInt
 
 object DrawerUtils {
 
-    fun DrawScope.drawSpriteBy(
+    fun DrawScope.drawEntityContained(
         entity: Entity<*>,
         offset: IntOffset = IntOffset.Zero,
         layoutSize: Size,
-        alpha: Float = 1.0f,
     ) {
-        drawSprite(
-            sprite = EntitySpritesProvider.spriteBy(entity),
-            offset = offset,
-            layoutSize = layoutSize,
-            alpha = alpha,
-        )
-    }
-
-    fun DrawScope.drawSprite(
-        sprite: Sprite,
-        offset: IntOffset = IntOffset.Zero,
-        layoutSize: Size,
-        alpha: Float = 1.0f,
-    ) {
+        val sprite = EntitySpritesProvider.spriteBy(entity)
         val (spriteW, spriteH) = sprite.size
         val (layoutW, layoutH) = layoutSize
 
@@ -63,15 +49,15 @@ object DrawerUtils {
         val layoutRatio = layoutSize.ratio
 
         val dstSize = if (spriteRatio > layoutRatio) {
-            IntSize(width = layoutW.roundToInt(), height = (spriteH * layoutW / spriteW).roundToInt())
+            Size(width = layoutW, height = spriteH * layoutW / spriteW)
         } else {
-            IntSize(width = (spriteW * layoutH / spriteH).roundToInt(), height = layoutH.roundToInt())
-        }
+            Size(width = spriteW * layoutH / spriteH, height = layoutH)
+        }.toIntSize()
 
-        val dstOffset = offset + IntOffset(
-            x = ((layoutW - dstSize.width) / 2).roundToInt(),
-            y = ((layoutH - dstSize.height) / 2).roundToInt(),
-        )
+        val dstOffset = offset + Offset(
+            x = (layoutW - dstSize.width) / 2,
+            y = (layoutH - dstSize.height) / 2,
+        ).toIntOffset()
 
         drawImage(
             image = sprite.image,
@@ -79,11 +65,65 @@ object DrawerUtils {
             srcSize = sprite.size,
             dstOffset = dstOffset,
             dstSize = dstSize,
+            filterQuality = if (spriteW * 1.5 < dstSize.width) {
+                FilterQuality.None
+            } else {
+                FilterQuality.Medium
+            }
+        )
+    }
+
+    fun DrawScope.drawSpriteStretched(
+        sprite: Sprite,
+        offset: IntOffset = IntOffset.Zero,
+        layoutSize: IntSize,
+        alpha: Float = 1.0f,
+    ) = drawImage(
+        image = sprite.image,
+        srcOffset = sprite.offset,
+        srcSize = sprite.size,
+        dstOffset = offset,
+        dstSize = layoutSize,
+        alpha = alpha,
+        filterQuality = if (sprite.size.width * 1.5 < layoutSize.width) {
+            FilterQuality.None
+        } else {
+            FilterQuality.Medium
+        }
+    )
+
+    fun DrawScope.drawEntityStretched(
+        entity: PlacedEntity<*>,
+        renderSpritesFully: Boolean,
+        grid: CoordinateGrid,
+        paddingInPx: UInt = 0u,
+        alpha: Float = 1.0f,
+    ) {
+        val (e, place) = entity
+
+        val sprite = EntitySpritesProvider.spriteBy(e).run {
+            if (renderSpritesFully) {
+                this
+            } else {
+                copy(
+                    offset = offset.copy(y = offset.y + (size.height - e.size.h * UNIT)),
+                    size = e.size.toIntSize() * UNIT
+                )
+            }
+        }
+
+        val rect = (sprite.size / UNIT).toRect()
+
+        val padding = IntOffset(paddingInPx.toInt(), paddingInPx.toInt())
+
+        val offsetTopLeft = grid[place.x, place.y - (rect.h - e.size.h)].toIntOffset() + padding
+        val offsetBottomRight = grid[place.x + rect.w, place.y + e.size.h].toIntOffset() - padding
+
+        drawSpriteStretched(
+            sprite = sprite,
+            offset = offsetTopLeft,
+            layoutSize = IntSize(offsetTopLeft, offsetBottomRight),
             alpha = alpha,
-            style = Fill,
-            colorFilter = null,
-            blendMode = DrawScope.DefaultBlendMode,
-            filterQuality = if (spriteW * 1.5 < dstSize.width) FilterQuality.None else FilterQuality.Medium,
         )
     }
 
@@ -93,33 +133,11 @@ object DrawerUtils {
         visibleLayers: Set<LayerType<*>>,
         renderSpritesFully: Boolean,
         grid: CoordinateGrid,
-        cellSize: Size,
     ) {
         val sorted = visibleLayers.flatMap(entities::entitiesBy).sortedWith(placedEntityComparator)
 
-        for ((e, place) in sorted) {
-            val sprite = EntitySpritesProvider.spriteBy(e).run {
-                if (renderSpritesFully) {
-                    this
-                } else {
-                    copy(
-                        offset = offset.copy(y = offset.y + (size.height - e.size.h * UNIT)),
-                        size = e.size.toIntSize() * UNIT
-                    )
-                }
-            }
-            val rect = (sprite.size / UNIT).toRect()
-            drawSprite(
-                sprite = sprite,
-                offset = IntOffset(
-                    x = grid.getX(place.x).toInt(),
-                    y = grid.getY(y = place.y - (rect.h - e.size.h)).toInt()
-                ),
-                layoutSize = Size(
-                    width = (cellSize.width * rect.w).coerceAtLeast(1f),
-                    height = (cellSize.height * rect.h).coerceAtLeast(1f)
-                ),
-            )
+        for (entity in sorted) {
+            drawEntityStretched(entity, renderSpritesFully, grid)
         }
     }
 
@@ -132,10 +150,10 @@ object DrawerUtils {
         val xs = List(size = (nW + 1) / 2 + 1) { -stepSize + stepSize * 2 * it }.map { it.roundToInt() }
         val ys = List(size = (nH + 1) / 2) { stepSize * 2 * (it + 1) }.map { it.roundToInt() }
 
+        val sprite = flooring(flooring ?: Flooring.all().first())
+
         for ((left, right) in xs.zipWithNext()) {
             for ((top, bottom) in ys.zipWithNext()) {
-                val sprite = flooring(flooring ?: Flooring.all().first())
-
                 drawImage(
                     image = sprite.image,
                     srcOffset = sprite.offset,
@@ -158,15 +176,15 @@ object DrawerUtils {
         val bottom = (stepSize * 4).roundToInt()
         val height = bottom - top
 
-        for ((left, right) in xs.zipWithNext()) {
-            val sprite = wallpaper(wallpaper ?: Wallpaper.all().first())
+        val sprite = wallpaper(wallpaper ?: Wallpaper.all().first())
 
+        for ((left, right) in xs.zipWithNext()) {
             drawImage(
                 image = sprite.image,
                 srcOffset = sprite.offset,
                 srcSize = sprite.size,
                 dstOffset = IntOffset(x = left, y = top),
-                dstSize = IntSize(width = right - left, height = height),
+                dstSize = IntSize(width = right - left, height),
                 filterQuality = FilterQuality.None,
             )
         }

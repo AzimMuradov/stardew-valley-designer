@@ -46,7 +46,7 @@ data class MapState(
             selectedEntities = LayeredEntitiesData(),
             wallpaper = engine.wallpaper,
             flooring = engine.flooring,
-            layout = engine.layers.layout.toState(),
+            layout = engine.layout.toState(),
         )
     }
 }

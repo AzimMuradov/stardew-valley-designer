@@ -20,14 +20,12 @@ import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
-import io.stardewvalleydesigner.engine.layout.Layout
 
 
 interface Tool {
 
     fun start(
         coordinate: Coordinate,
-        layout: Layout,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
@@ -35,14 +33,12 @@ interface Tool {
 
     fun keep(
         coordinate: Coordinate,
-        layout: Layout,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn?
 
     fun end(
-        layout: Layout,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
