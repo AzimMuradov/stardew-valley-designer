@@ -31,7 +31,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.input.pointer.*
 import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.menus.OptionsItemValue.Toggleable
@@ -428,15 +427,13 @@ private fun DrawScope.drawHoveredCellAndAxis(
                 topLeft = Offset(x = offsetX, y = 0f),
                 size = Size(cellSize.width, size.height),
                 color = Color.DarkGray,
-                alpha = 0.3f,
-                style = Fill
+                alpha = 0.3f
             )
             drawRect(
                 topLeft = Offset(x = 0f, y = offsetY),
                 size = Size(size.width, cellSize.height),
                 color = Color.DarkGray,
-                alpha = 0.3f,
-                style = Fill
+                alpha = 0.3f
             )
         }
     }
