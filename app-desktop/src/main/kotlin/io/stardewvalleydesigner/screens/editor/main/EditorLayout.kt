@@ -33,13 +33,11 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.input.pointer.*
-import androidx.compose.ui.unit.IntOffset
 import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.menus.OptionsItemValue.Toggleable
 import io.stardewvalleydesigner.editor.modules.map.MapState
 import io.stardewvalleydesigner.editor.modules.options.OptionsState
 import io.stardewvalleydesigner.editor.modules.toolkit.ToolkitState
-import io.stardewvalleydesigner.editor.res.EntitySpritesProvider
 import io.stardewvalleydesigner.editor.res.LayoutSpritesProvider.layoutSpriteBy
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.geometry.*
@@ -47,10 +45,9 @@ import io.stardewvalleydesigner.engine.geometry.shapes.*
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.coordinates
 import io.stardewvalleydesigner.engine.layers.flatten
-import io.stardewvalleydesigner.metadata.EntityPage.Companion.UNIT
 import io.stardewvalleydesigner.utils.*
+import io.stardewvalleydesigner.utils.DrawerUtils.drawEntityStretched
 import io.stardewvalleydesigner.utils.DrawerUtils.drawFlooring
-import io.stardewvalleydesigner.utils.DrawerUtils.drawSprite
 import io.stardewvalleydesigner.utils.DrawerUtils.drawVisibleEntities
 import io.stardewvalleydesigner.utils.DrawerUtils.drawWallpaper
 import io.stardewvalleydesigner.utils.DrawerUtils.placedEntityComparator
@@ -154,8 +151,7 @@ fun EditorLayout(
             entities = map.entities,
             visibleLayers = visibleLayers,
             renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
-            grid = grid,
-            cellSize = cellSize
+            grid = grid
         )
 
         drawSpecificSpritesAndEffects(map, toolkit, options, grid, cellSize)
@@ -201,29 +197,14 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
     when (toolkit) {
         is ToolkitState.Hand.Point.Acting -> {
             val sorted = toolkit.heldEntities.flatten().sortedWith(placedEntityComparator)
-            for ((e, place) in sorted) {
-                val sprite = EntitySpritesProvider.spriteBy(e).run {
-                    if (options.toggleables.getValue(Toggleable.ShowSpritesFully)) {
-                        this
-                    } else {
-                        copy(
-                            offset = offset.copy(y = offset.y + (size.height - e.size.h * UNIT)),
-                            size = e.size.toIntSize() * UNIT
-                        )
-                    }
-                }
-                val rect = (sprite.size / UNIT).toRect()
-                drawSprite(
-                    sprite = sprite,
-                    offset = IntOffset(
-                        x = grid.getX(place.x).toInt() + 2,
-                        y = grid.getY(place.y - (rect.h - e.size.h)).toInt() + 2
-                    ),
-                    layoutSize = Size(
-                        width = (cellSize.width * rect.w - 4).coerceAtLeast(1f),
-                        height = (cellSize.height * rect.h - 4).coerceAtLeast(1f)
-                    ),
-                    alpha = 0.7f,
+
+            for (entity in sorted) {
+                drawEntityStretched(
+                    entity = entity,
+                    renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
+                    grid = grid,
+                    paddingInPx = 2u,
+                    alpha = 0.7f
                 )
             }
         }
@@ -245,29 +226,12 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
                     alpha = 0.5f,
                 )
             }
-            for ((e, place) in toolkit.entitiesToDraw) {
-                val sprite = EntitySpritesProvider.spriteBy(e).run {
-                    if (options.toggleables.getValue(Toggleable.ShowSpritesFully)) {
-                        this
-                    } else {
-                        copy(
-                            offset = offset.copy(y = offset.y + (size.height - e.size.h * UNIT)),
-                            size = e.size.toIntSize() * UNIT
-                        )
-                    }
-                }
-                val rect = (sprite.size / UNIT).toRect()
-                drawSprite(
-                    sprite = sprite,
-                    offset = IntOffset(
-                        x = grid.getX(place.x).toInt(),
-                        y = grid.getY(place.y - (rect.h - e.size.h)).toInt()
-                    ),
-                    layoutSize = Size(
-                        width = (cellSize.width * rect.w).coerceAtLeast(1f),
-                        height = (cellSize.height * rect.h).coerceAtLeast(1f)
-                    ),
-                    alpha = 0.7f,
+            for (entity in toolkit.entitiesToDraw) {
+                drawEntityStretched(
+                    entity = entity,
+                    renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
+                    grid = grid,
+                    alpha = 0.7f
                 )
             }
         }

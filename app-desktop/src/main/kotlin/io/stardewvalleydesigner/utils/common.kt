@@ -20,6 +20,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import io.stardewvalleydesigner.engine.geometry.*
+import kotlin.math.roundToInt
 
 
 val Size.ratio: Float get() = width / height
@@ -31,9 +32,14 @@ fun Coordinate.toIntOffset(): IntOffset = IntOffset(x, y)
 
 fun IntOffset.toCoordinate(): Coordinate = xy(x, y)
 
-
 fun Rect.toIntSize(): IntSize = IntSize(w, h)
 
-fun Size.toIntSize(): IntSize = IntSize(width.toInt(), height.toInt())
+fun Size.toIntSize(): IntSize = IntSize(width.roundToInt(), height.roundToInt())
 
 fun IntSize.toRect(): Rect = rectOf(width, height)
+
+
+fun IntSize(topLeft: IntOffset, bottomRight: IntOffset): IntSize = IntSize(
+    width = bottomRight.x - topLeft.x,
+    height = bottomRight.y - topLeft.y,
+)
