@@ -113,7 +113,7 @@ sealed class ToolkitState(val tool: ToolType) {
 
     companion object {
 
-        fun default() = Hand.Point.Idle
+        fun default() = Pen.Point.Idle
 
 
         fun idle(tool: ToolType, shape: ShapeType?): ToolkitState {
