@@ -44,35 +44,30 @@ fun Palette(
     // TODO : hotbar feature (val hotbar = palette.hotbar)
     val wordList = GlobalSettings.strings
 
-    Column(
-        modifier = Modifier.padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        InUseCard(palette.inUse, wordList)
+    InUseCard(palette.inUse, wordList)
 
-        // TODO : hotbar feature
-        //
-        // Spacer(modifier = Modifier.height(8.dp))
-        //
-        // ButtonsGroup(
-        //     buttonLabels = hotbar,
-        //     rowSize = 5u,
-        //     onButtonClick = { },
-        //     spaceContent = { Icon(Icons.Default.Clear, null, Modifier.fillMaxSize()) },
-        //     buttonContent = { entity -> Sprite(entity = entity, modifier = Modifier.fillMaxSize()) },
-        // )
+    // TODO : hotbar feature
+    //
+    // Spacer(modifier = Modifier.height(8.dp))
+    //
+    // ButtonsGroup(
+    //     buttonLabels = hotbar,
+    //     rowSize = 5u,
+    //     onButtonClick = { },
+    //     spaceContent = { Icon(Icons.Default.Clear, null, Modifier.fillMaxSize()) },
+    //     buttonContent = { entity -> Sprite(entity = entity, modifier = Modifier.fillMaxSize()) },
+    // )
 
-        // Flavors
-        // if (inUse is EntityFlavor) {
-        //     val a = when (inUse) {
-        //         is RotatableFlavor.RotatableFlavor2 -> TODO()
-        //         is RotatableFlavor.RotatableFlavor4 -> TODO()
-        //         is ColoredFlavor.ColoredFishPondFlavor -> TODO()
-        //         is ColoredFlavor.ColoredChestFlavor -> TODO()
-        //         is ColoredFarmBuildingFlavor -> TODO()
-        //     }
-        // }
-    }
+    // Flavors
+    // if (inUse is EntityFlavor) {
+    //     val a = when (inUse) {
+    //         is RotatableFlavor.RotatableFlavor2 -> TODO()
+    //         is RotatableFlavor.RotatableFlavor4 -> TODO()
+    //         is ColoredFlavor.ColoredFishPondFlavor -> TODO()
+    //         is ColoredFlavor.ColoredChestFlavor -> TODO()
+    //         is ColoredFarmBuildingFlavor -> TODO()
+    //     }
+    // }
 }
 
 

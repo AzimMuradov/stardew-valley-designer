@@ -16,11 +16,11 @@
 
 package io.stardewvalleydesigner.screens.editor.sidemenus
 
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.editor.modules.map.LayoutState
 import io.stardewvalleydesigner.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.editor.modules.toolkit.ToolkitState
@@ -51,7 +51,7 @@ fun RightSideMenus(
     intentConsumer: (Intent) -> Unit,
 ) {
     FixedSideMenus(width) {
-        menu {
+        menu(padding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)) {
             LayersVisibility(
                 allowedLayers = LayerType.all.filterTo(mutableSetOf()) { lType ->
                     lType.allEntityTypes().any { eType -> eType !in layout.disallowedTypes }
@@ -61,7 +61,7 @@ fun RightSideMenus(
             )
         }
         if (layout.type.isShed()) {
-            menu {
+            menu(modifier = Modifier.height(300.dp)) {
                 WallpaperAndFlooringSelection(
                     onWallpaperSelection = { intentConsumer(Intent.WallpaperAndFlooring.ChooseWallpaper(it)) },
                     onFlooringSelection = { intentConsumer(Intent.WallpaperAndFlooring.ChooseFlooring(it)) },

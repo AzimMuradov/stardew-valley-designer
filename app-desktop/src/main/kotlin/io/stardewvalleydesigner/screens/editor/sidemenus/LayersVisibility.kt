@@ -35,14 +35,12 @@ fun LayersVisibility(
     visibleLayers: Set<LayerType<*>>,
     onVisibilityChange: (LayerType<*>, Boolean) -> Unit,
 ) {
-    Column(modifier = Modifier.padding(vertical = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        for (lType in allowedLayers) {
-            LayerVisibility(
-                layerType = lType,
-                visible = lType in visibleLayers,
-                onVisibleChange = { vis -> onVisibilityChange(lType, vis) },
-            )
-        }
+    for (lType in allowedLayers) {
+        LayerVisibility(
+            layerType = lType,
+            visible = lType in visibleLayers,
+            onVisibleChange = { vis -> onVisibilityChange(lType, vis) },
+        )
     }
 }
 
@@ -56,7 +54,7 @@ private fun LayerVisibility(
     val wordList = GlobalSettings.strings
 
     Row(
-        modifier = Modifier.fillMaxWidth().height(48.dp).padding(horizontal = 16.dp),
+        modifier = Modifier.fillMaxWidth().height(48.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconToggleButton(
