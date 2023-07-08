@@ -44,7 +44,7 @@ fun Modifier.bounceClickable(pressedScale: Float = 0.8f, onClick: () -> Unit) = 
             scaleY = scale
         }
         .clickable(
-            interactionSource = remember { MutableInteractionSource() },
+            interactionSource = remember(::MutableInteractionSource),
             indication = null,
             onClick = onClick
         )
