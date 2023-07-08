@@ -743,6 +743,16 @@ data object EnWordList : WordList {
 
     override val flooringTabTitle: String = "Flooring"
 
+    override val objectCounterTitle: String = "Object count"
+
+    override val width: String = "Width"
+
+    override val height: String = "Height"
+
+    override val start: String = "Start"
+
+    override val end: String = "End"
+
 
     // Private
 

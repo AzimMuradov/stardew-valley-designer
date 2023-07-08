@@ -150,4 +150,14 @@ sealed interface WordList {
     val wallpapersTabTitle: String
 
     val flooringTabTitle: String
+
+    val objectCounterTitle: String
+
+    val width: String
+
+    val height: String
+
+    val start: String
+
+    val end: String
 }

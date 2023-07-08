@@ -85,7 +85,7 @@ fun ObjectCounter(entities: LayeredEntitiesData) {
         Divider(Modifier.weight(1f))
         Spacer(Modifier.width(8.dp))
         Text(
-            text = "Object count",
+            text = wordlist.objectCounterTitle,
             style = MaterialTheme.typography.subtitle1
         )
         Spacer(Modifier.width(8.dp))
@@ -103,7 +103,7 @@ fun ObjectCounter(entities: LayeredEntitiesData) {
                     onClick = {
                         copyToClipboard(
                             text = buildString {
-                                appendLine("# Object count")
+                                appendLine("# ${wordlist.objectCounterTitle}")
                                 appendLine()
                                 for ((eId, cnt) in countedEntities) {
                                     val entity = EntityDataProvider.entityById.getValue(eId)
