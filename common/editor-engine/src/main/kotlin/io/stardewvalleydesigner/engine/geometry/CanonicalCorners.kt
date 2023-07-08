@@ -40,3 +40,5 @@ data class CanonicalCorners(
         )
     }
 }
+
+val CanonicalCorners.rect: Rect get() = (topRight - bottomLeft + vec(x = 1, y = 1)).toRect()

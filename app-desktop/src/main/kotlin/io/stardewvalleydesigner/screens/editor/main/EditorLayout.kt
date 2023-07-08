@@ -19,12 +19,10 @@ package io.stardewvalleydesigner.screens.editor.main
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.*
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -32,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.pointer.*
+import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.menus.OptionsItemValue.Toggleable
 import io.stardewvalleydesigner.editor.modules.map.MapState
@@ -44,6 +43,7 @@ import io.stardewvalleydesigner.engine.geometry.shapes.*
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.coordinates
 import io.stardewvalleydesigner.engine.layers.flatten
+import io.stardewvalleydesigner.engine.layers.flattenSequence
 import io.stardewvalleydesigner.utils.*
 import io.stardewvalleydesigner.utils.DrawerUtils.drawEntityStretched
 import io.stardewvalleydesigner.utils.DrawerUtils.drawFlooring
@@ -85,94 +85,133 @@ fun EditorLayout(
     }
 
 
-    Canvas(
-        modifier = Modifier
-            .aspectRatio(layoutSprite.size.toRect().aspectRatio)
-            .fillMaxSize()
-            .clipToBounds()
-            .background(color = MaterialTheme.colors.surface)
-            // Hovered cell
-            .onPointerEvent(PointerEventType.Move) { event ->
-                currCoordinate = event.changes.first().position.toCoordinateStrict()
-            }
-            .onPointerEvent(PointerEventType.Exit) { currCoordinate = UNDEFINED }
-            // Tools logic
-            .onPointerEvent(eventType = PointerEventType.Press) { event ->
-                val current = event.changes.first().position.toCoordinateStrict()
-                    .takeUnless { it == UNDEFINED } ?: return@onPointerEvent
-                prevDragCoordinate = current
-                intentConsumer(EditorIntent.Engine.Start(current))
-            }
-            .onPointerEvent(eventType = PointerEventType.Release) {
-                prevDragCoordinate = UNDEFINED
-                intentConsumer(EditorIntent.Engine.End)
-            }
-            .pointerInput(toolkit.tool) {
-                detectDragGestures(
-                    onDrag = { change, _ ->
-                        val current = change.position.toCoordinate()
-                        if (current != prevDragCoordinate) {
-                            prevDragCoordinate = current
-                            intentConsumer(EditorIntent.Engine.Keep(current))
-                        }
-                    },
-                    onDragCancel = {
-                        prevDragCoordinate = UNDEFINED
-                        intentConsumer(EditorIntent.Engine.End)
-                    }
-                )
-            }
+    Column(
+        verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        cellSide = size.height / nH
+        Canvas(
+            modifier = Modifier
+                .aspectRatio(layoutSprite.size.toRect().aspectRatio)
+                .weight(1f)
+                .clipToBounds()
+                .background(color = MaterialTheme.colors.surface)
+                // Hovered cell
+                .onPointerEvent(PointerEventType.Move) { event ->
+                    currCoordinate = event.changes.first().position.toCoordinateStrict()
+                }
+                .onPointerEvent(PointerEventType.Exit) { currCoordinate = UNDEFINED }
+                // Tools logic
+                .onPointerEvent(eventType = PointerEventType.Press) { event ->
+                    val current = event.changes.first().position.toCoordinateStrict()
+                        .takeUnless { it == UNDEFINED } ?: return@onPointerEvent
+                    prevDragCoordinate = current
+                    intentConsumer(EditorIntent.Engine.Start(current))
+                }
+                .onPointerEvent(eventType = PointerEventType.Release) {
+                    prevDragCoordinate = UNDEFINED
+                    intentConsumer(EditorIntent.Engine.End)
+                }
+                .pointerInput(toolkit.tool) {
+                    detectDragGestures(
+                        onDrag = { change, _ ->
+                            val current = change.position.toCoordinate()
+                            if (current != prevDragCoordinate) {
+                                prevDragCoordinate = current
+                                intentConsumer(EditorIntent.Engine.Keep(current))
+                            }
+                        },
+                        onDragCancel = {
+                            prevDragCoordinate = UNDEFINED
+                            intentConsumer(EditorIntent.Engine.End)
+                        }
+                    )
+                }
+        ) {
+            cellSide = size.height / nH
 
-        val cellSize = Size(cellSide, cellSide)
-        val grid = CoordinateGrid(cellSide)
+            val cellSize = Size(cellSide, cellSide)
+            val grid = CoordinateGrid(cellSide)
 
 
-        // Background
+            // Background
 
-        drawImage(
-            image = layoutSprite.bgImage,
-            srcSize = layoutSprite.size,
-            dstSize = size.toIntSize(),
-            filterQuality = FilterQuality.None,
-        )
+            drawImage(
+                image = layoutSprite.bgImage,
+                srcSize = layoutSprite.size,
+                dstSize = size.toIntSize(),
+                filterQuality = FilterQuality.None,
+            )
 
 
-        // Main content
+            // Main content
 
-        if (layout.type.isShed()) {
-            drawFlooring(map.flooring, nW, nH, cellSide)
-            drawWallpaper(map.wallpaper, nW, cellSide)
+            if (layout.type.isShed()) {
+                drawFlooring(map.flooring, nW, nH, cellSide)
+                drawWallpaper(map.wallpaper, nW, cellSide)
+            }
+
+            drawVisibleEntities(
+                entities = map.entities,
+                visibleLayers = visibleLayers,
+                renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
+                grid = grid
+            )
+
+            drawSpecificSpritesAndEffects(map, toolkit, options, grid, cellSize)
+
+
+            // Foreground
+
+            drawImage(
+                image = layoutSprite.fgImage,
+                srcSize = layoutSprite.size,
+                dstSize = size.toIntSize(),
+                filterQuality = FilterQuality.None,
+            )
+
+
+            // Hints and visual guides
+
+            drawAreasOfEffects(map, options, grid, cellSize)
+
+            drawGrid(options, grid, nW, nH)
+
+            drawHoveredCellAndAxis(options, grid, cellSize, currCoordinate, hoveredColor)
         }
 
-        drawVisibleEntities(
-            entities = map.entities,
-            visibleLayers = visibleLayers,
-            renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
-            grid = grid
-        )
+        Spacer(Modifier.size(32.dp))
 
-        drawSpecificSpritesAndEffects(map, toolkit, options, grid, cellSize)
+        Divider(thickness = 2.dp)
 
+        Spacer(Modifier.size(12.dp))
 
-        // Foreground
+        Row(
+            modifier = Modifier.fillMaxWidth().height(24.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(Modifier.weight(1f), Arrangement.Center) {
+                if (currCoordinate != UNDEFINED) {
+                    Text("X: ${currCoordinate.x}, Y: ${currCoordinate.y}")
+                }
+            }
 
-        drawImage(
-            image = layoutSprite.fgImage,
-            srcSize = layoutSprite.size,
-            dstSize = size.toIntSize(),
-            filterQuality = FilterQuality.None,
-        )
+            Text("|")
 
+            Row(Modifier.weight(2f), Arrangement.Center) {
+                toolkit.actionVector?.let { (start, end) ->
+                    Text("start: $start, end: $end")
+                }
+            }
 
-        // Hints and visual guides
+            Text("|")
 
-        drawAreasOfEffects(map, options, grid, cellSize)
-
-        drawGrid(options, grid, nW, nH)
-
-        drawHoveredCellAndAxis(options, grid, cellSize, currCoordinate, hoveredColor)
+            Row(Modifier.weight(1f), Arrangement.Center) {
+                toolkit.actionVector?.let { (start, end) ->
+                    val (w, h) = CanonicalCorners.fromTwoCoordinates(start, end).rect
+                    Text("width: $w, height: $h")
+                }
+            }
+        }
     }
 }
 
@@ -209,22 +248,9 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
         }
 
         is ToolkitState.Pen.Shape.Acting -> {
-            for (c in toolkit.placedShape.coordinates) {
-                drawRect(
-                    color = Color.Black,
-                    topLeft = grid[c],
-                    size = cellSize,
-                    alpha = 0.1f,
-                )
-            }
-            for (c in toolkit.entitiesToDelete) {
-                drawRect(
-                    color = Color.Red,
-                    topLeft = grid[c],
-                    size = cellSize,
-                    alpha = 0.5f,
-                )
-            }
+            drawNeutralArea(toolkit.placedShape.coordinates, grid, cellSize)
+            drawConflictArea(toolkit.entitiesToDelete, grid, cellSize)
+
             for (entity in toolkit.entitiesToDraw) {
                 drawEntityStretched(
                     entity = entity,
@@ -236,33 +262,12 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
         }
 
         is ToolkitState.Eraser.Shape.Acting -> {
-            for (c in toolkit.placedShape.coordinates) {
-                drawRect(
-                    color = Color.Black,
-                    topLeft = grid[c],
-                    size = cellSize,
-                    alpha = 0.1f,
-                )
-            }
-            for (c in toolkit.entitiesToDelete) {
-                drawRect(
-                    color = Color.Red,
-                    topLeft = grid[c],
-                    size = cellSize,
-                    alpha = 0.5f,
-                )
-            }
+            drawNeutralArea(toolkit.placedShape.coordinates, grid, cellSize)
+            drawConflictArea(toolkit.entitiesToDelete, grid, cellSize)
         }
 
         is ToolkitState.Select.Shape.Acting -> {
-            for (c in toolkit.placedShape.coordinates) {
-                drawRect(
-                    color = Color.Black,
-                    topLeft = grid[c],
-                    size = cellSize,
-                    alpha = 0.1f,
-                )
-            }
+            drawNeutralArea(toolkit.placedShape.coordinates, grid, cellSize)
         }
 
         else -> Unit
@@ -275,7 +280,9 @@ private fun DrawScope.drawAreasOfEffects(
     grid: CoordinateGrid,
     cellSize: Size,
 ) {
-    val es = map.entities.flatten().asSequence() + map.selectedEntities.flatten().asSequence()
+    val es = (map.entities.flattenSequence() + map.selectedEntities.flattenSequence())
+        .toList()
+        .asSequence()
 
     fun drawAreaOfEffect(
         allowedEs: Set<Entity<*>>,
@@ -324,7 +331,7 @@ private fun DrawScope.drawAreasOfEffects(
                 Equipment.SimpleEquipment.Sprinkler,
                 Equipment.SimpleEquipment.QualitySprinkler,
                 Equipment.SimpleEquipment.IridiumSprinkler,
-                // Equipment.SimpleEquipment.IridiumSprinklerWithPressureNozzle,
+                // TODO : Equipment.SimpleEquipment.IridiumSprinklerWithPressureNozzle,
             ),
             getAreaOfEffect = { (e, place) ->
                 when (e) {
@@ -427,16 +434,48 @@ private fun DrawScope.drawHoveredCellAndAxis(
                 topLeft = Offset(x = offsetX, y = 0f),
                 size = Size(cellSize.width, size.height),
                 color = Color.DarkGray,
-                alpha = 0.3f
+                alpha = 0.4f
             )
             drawRect(
                 topLeft = Offset(x = 0f, y = offsetY),
                 size = Size(size.width, cellSize.height),
                 color = Color.DarkGray,
-                alpha = 0.3f
+                alpha = 0.4f
             )
         }
     }
 }
+
+
+private fun DrawScope.drawNeutralArea(
+    coordinates: Set<Coordinate>,
+    grid: CoordinateGrid,
+    cellSize: Size,
+) {
+    for (c in coordinates) {
+        drawRect(
+            color = Color.Black,
+            topLeft = grid[c],
+            size = cellSize,
+            alpha = 0.2f,
+        )
+    }
+}
+
+private fun DrawScope.drawConflictArea(
+    coordinates: Set<Coordinate>,
+    grid: CoordinateGrid,
+    cellSize: Size,
+) {
+    for (c in coordinates) {
+        drawRect(
+            color = Color.Red,
+            topLeft = grid[c],
+            size = cellSize,
+            alpha = 0.5f,
+        )
+    }
+}
+
 
 private val UNDEFINED: Coordinate = xy(Int.MAX_VALUE, Int.MAX_VALUE)

@@ -17,6 +17,7 @@
 package io.stardewvalleydesigner.editor.modules.toolkit
 
 import io.stardewvalleydesigner.engine.entity.PlacedEntity
+import io.stardewvalleydesigner.engine.geometry.BoundVector
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.geometry.shapes.PlacedShape
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
@@ -31,6 +32,8 @@ sealed class ToolkitState(val tool: ToolType) {
 
     abstract val shape: ShapeType?
 
+    abstract val actionVector: BoundVector?
+
     val allowedShapes: List<ShapeType?> = tool.allowedShapes
 
 
@@ -43,6 +46,8 @@ sealed class ToolkitState(val tool: ToolType) {
             data class Acting(val heldEntities: LayeredEntitiesData) : Point(isIdle = false)
 
             final override val shape: ShapeType? = null
+
+            final override val actionVector: BoundVector? = null
         }
     }
 
@@ -55,11 +60,16 @@ sealed class ToolkitState(val tool: ToolType) {
             data object Acting : Point(isIdle = false)
 
             final override val shape: ShapeType? = null
+
+            final override val actionVector: BoundVector? = null
         }
 
         sealed class Shape(final override val isIdle: Boolean) : Pen() {
 
-            data class Idle(override val shape: ShapeType) : Shape(isIdle = true)
+            data class Idle(override val shape: ShapeType) : Shape(isIdle = true) {
+
+                override val actionVector: BoundVector? = null
+            }
 
             data class Acting(
                 val placedShape: PlacedShape,
@@ -68,6 +78,8 @@ sealed class ToolkitState(val tool: ToolType) {
             ) : Shape(isIdle = false) {
 
                 override val shape: ShapeType = placedShape.type()
+
+                override val actionVector: BoundVector = BoundVector(placedShape.a, placedShape.b)
             }
         }
     }
@@ -81,11 +93,16 @@ sealed class ToolkitState(val tool: ToolType) {
             data object Acting : Point(isIdle = false)
 
             final override val shape: ShapeType? = null
+
+            final override val actionVector: BoundVector? = null
         }
 
         sealed class Shape(final override val isIdle: Boolean) : Eraser() {
 
-            data class Idle(override val shape: ShapeType) : Shape(isIdle = true)
+            data class Idle(override val shape: ShapeType) : Shape(isIdle = true) {
+
+                override val actionVector: BoundVector? = null
+            }
 
             data class Acting(
                 val placedShape: PlacedShape,
@@ -93,6 +110,8 @@ sealed class ToolkitState(val tool: ToolType) {
             ) : Shape(isIdle = false) {
 
                 override val shape: ShapeType = placedShape.type()
+
+                override val actionVector: BoundVector = BoundVector(placedShape.a, placedShape.b)
             }
         }
     }
@@ -101,11 +120,16 @@ sealed class ToolkitState(val tool: ToolType) {
 
         sealed class Shape(final override val isIdle: Boolean) : Select() {
 
-            data class Idle(override val shape: ShapeType) : Shape(isIdle = true)
+            data class Idle(override val shape: ShapeType) : Shape(isIdle = true) {
+
+                override val actionVector: BoundVector? = null
+            }
 
             data class Acting(val placedShape: PlacedShape) : Shape(isIdle = false) {
 
                 override val shape: ShapeType = placedShape.type()
+
+                override val actionVector: BoundVector = BoundVector(placedShape.a, placedShape.b)
             }
         }
     }
