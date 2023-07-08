@@ -26,6 +26,8 @@ import io.stardewvalleydesigner.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.editor.modules.toolkit.ToolkitState
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.allEntityTypes
+import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
+import io.stardewvalleydesigner.engine.layers.isEmpty
 import io.stardewvalleydesigner.editor.EditorIntent as Intent
 
 
@@ -33,12 +35,18 @@ import io.stardewvalleydesigner.editor.EditorIntent as Intent
 fun LeftSideMenus(
     toolkit: ToolkitState,
     palette: PaletteState,
+    entities: LayeredEntitiesData,
     width: Dp,
     intentConsumer: (Intent) -> Unit,
 ) {
     FixedSideMenus(width) {
         menu { Toolbar(toolkit, intentConsumer) }
         menu { Palette(palette, intentConsumer) }
+        if (!entities.isEmpty()) {
+            menu(modifier = Modifier.heightIn(max = 300.dp)) {
+                ObjectCounter(entities)
+            }
+        }
     }
 }
 

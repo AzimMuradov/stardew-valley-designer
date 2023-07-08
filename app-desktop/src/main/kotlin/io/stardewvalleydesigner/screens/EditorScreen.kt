@@ -60,6 +60,7 @@ fun EditorScreen(component: EditorComponent) {
             LeftSideMenus(
                 toolkit = toolkit,
                 palette = palette,
+                entities = map.entities,
                 width = menuWidth,
                 intentConsumer = store::accept
             )

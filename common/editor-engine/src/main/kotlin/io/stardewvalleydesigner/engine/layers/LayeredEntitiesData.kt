@@ -62,6 +62,11 @@ fun LayeredEntitiesData.toLayeredEntities(): LayeredEntities = LayeredEntities(
 )
 
 
+// Utils
+
+fun LayeredEntitiesData.isEmpty() = all.sumOf { it.second.size } == 0
+
+
 // Private utils
 
 private fun Map<LayerType<*>, Set<PlacedEntity<*>>>.asLayeredEntitiesData() = LayeredEntitiesData(

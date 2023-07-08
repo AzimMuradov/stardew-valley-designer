@@ -24,3 +24,10 @@ data class EntityId(
     val localId: Int,
     val flavor: EntityFlavor? = null,
 )
+
+val EntityId.default
+    get() = EntityId(
+        page = page,
+        localId = localId,
+        flavor = flavor?.default()
+    )
