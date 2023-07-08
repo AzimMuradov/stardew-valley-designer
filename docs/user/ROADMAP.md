@@ -45,8 +45,21 @@
 
 ### 0.8.0
 
-- Show various info (current coordinates, chosen elements, shape size, etc)
-- New toggleables - show various functional areas (Scarecrows, Sprinklers, Bee Houses)
+- Layout Rules for standard farm
+- New toggleable hints - show various areas of effect (scarecrows, sprinklers, bee houses, junimo huts)
+- New shapes (ellipse, ellipse outline, diamond, diamond outline, line)
+- New toggleable hints - show various functional info (current coordinates, shape size, object count, etc.)
+
+### 0.9.0
+
+- Support greenhouse and farmhouse
+- Better "toggle preview"
+- New tool (eye dropper)
+- Palette
+- Rotation menu
+- Chest color menu
+- Tooltips for paths (in import from save menu)
+- More layout flexibility
 
 ## 1.0.0
 
@@ -54,27 +67,21 @@
 
 ## Backlog
 
-- New tool (eye dropper)
-- Palette
-- Rotation menu
-- Chest color menu
 - Map resize
 - New layouts (riverland farm, forest farm, hill-top farm, wilderness farm, four corners farm, beach farm, barns, coops,
   farmhouses, slime hutch)
 - Wall furniture
-- Support for different window sizes
 - Expandable tool windows
-- New shapes (ellipse, ellipse outline, heart, heart outline), change shapes menu, `shift` for NxN
+- New shapes (star, star outline, heart, heart outline), `shift` for NxN
 - Search fields for various types of items
 - Clipboard
-- Define theme for Compose
 - Render (in every season)
 - Settings menu (with ability to store and restore settings)
-- Add rules to the menu
 - Add new languages
 - Tappers, crab pots and modified sprinklers
 - Building paintings
 - Tooltips, Hotkeys, Cursors (Pointers) & Other PC Features
 - Web version
 - Dark theme, OS theme
+- Support for different window sizes
 - Stardew Valley mods support

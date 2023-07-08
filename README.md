@@ -5,8 +5,8 @@
 [![Test project](https://img.shields.io/github/actions/workflow/status/AzimMuradov/stardew-valley-designer/test.yml?branch=master&label=test)](https://github.com/AzimMuradov/stardew-valley-designer/actions/workflows/test.yml)
 [![Apache-2.0](https://img.shields.io/github/license/AzimMuradov/stardew-valley-designer)](https://www.apache.org/licenses/LICENSE-2.0)
 
-The goal of this project is to provide a finely tuned editor for designing your farm and the interior of all its
-buildings.
+The goal of this project is to provide a finely tuned editor for designing your farm and
+the interior of all its buildings.
 
 ## Installation
 
@@ -27,11 +27,14 @@ Currently supported platforms:
 - Savedata import
 - Ability to save plan as an image
 
-There are currently no way to save the plan for later modifications. It's currently the #1 priority.
+There are currently no way to save the plan for later modifications.
+It's currently the #1 priority.
 
-![1.jpeg](docs/user/imgs/1.jpeg)
+![1.png](docs/user/imgs/1.png)
 
-![2.jpeg](docs/user/imgs/2.jpeg)
+![2.png](docs/user/imgs/2.png)
+
+![3.png](docs/user/imgs/3.png)
 
 ## Roadmap
 
@@ -39,8 +42,8 @@ There are currently no way to save the plan for later modifications. It's curren
 
 ## Support
 
-If you encounter a bug or have any questions, please let me
-know - https://github.com/AzimMuradov/stardew-valley-designer/issues.
+If you encounter a bug or have any questions,
+please let me know - https://github.com/AzimMuradov/stardew-valley-designer/issues.
 
 ## Acknowledgements
 
