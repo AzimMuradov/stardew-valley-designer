@@ -50,8 +50,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
                 .coordinates
                 .asSequence()
                 .map(currentEntity::placeIt)
-                .filter { it respectsLayout engine.layout }
-                .toMutableSet()
+                .filterTo(mutableSetOf()) { it respectsLayout engine.layout }
 
             return ActionReturn(
                 toolkit = ToolkitState.Pen.Shape.Acting(
@@ -85,7 +84,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
             .sortedWith(Comparator.comparingInt(Coordinate::x).thenComparingInt(Coordinate::y))
             .map(currentEntity!!::placeIt)
             .filter { it respectsLayout engine.layout }
-            .filter {
+            .filterTo(mutableSetOf()) {
                 if (it.coordinates.any(cs::contains)) {
                     false
                 } else {
@@ -93,7 +92,6 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
                     true
                 }
             }
-            .toMutableSet()
 
         return ActionReturn(
             toolkit = ToolkitState.Pen.Shape.Acting(

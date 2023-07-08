@@ -18,6 +18,7 @@
 
 package io.stardewvalleydesigner.engine.layers
 
+import io.stardewvalleydesigner.engine.customGroupByTo
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.layer.*
 
@@ -51,8 +52,19 @@ fun layeredEntitiesData(entitiesSelector: (LayerType<*>) -> Set<PlacedEntity<*>>
 
 fun LayeredEntitiesData.flatten(): List<PlacedEntity<*>> = all.flatMap { (_, es) -> es }
 
-fun Iterable<PlacedEntity<*>>.layeredData(): LayeredEntitiesData =
-    groupBy(PlacedEntity<*>::layerType).mapValues { (_, es) -> es.toSet() }.asLayeredEntitiesData()
+fun LayeredEntitiesData.flattenSequence(): Sequence<PlacedEntity<*>> = all.asSequence().flatMap { (_, es) -> es }
+
+fun Iterable<PlacedEntity<*>>.layeredData(): LayeredEntitiesData = customGroupByTo(
+    destination = mutableMapOf(),
+    keySelector = PlacedEntity<*>::layerType,
+    valuesCollectionGenerator = ::mutableSetOf
+).asLayeredEntitiesData()
+
+fun Sequence<PlacedEntity<*>>.layeredData(): LayeredEntitiesData = customGroupByTo(
+    destination = mutableMapOf(),
+    keySelector = PlacedEntity<*>::layerType,
+    valuesCollectionGenerator = ::mutableSetOf
+).asLayeredEntitiesData()
 
 fun LayeredEntitiesData.toLayeredEntities(): LayeredEntities = LayeredEntities(
     floorEntities.toList().asDisjointUnsafe(),

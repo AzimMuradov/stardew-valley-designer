@@ -47,5 +47,35 @@ internal operator fun Rect.contains(coordinate: Coordinate) = with(coordinate) {
     x in 0 until w && y in 0 until h
 }
 
+internal inline fun <T, K, V : MutableCollection<T>, M : MutableMap<in K, V>> Iterable<T>.customGroupByTo(
+    destination: M,
+    keySelector: (T) -> K,
+    valuesCollectionGenerator: () -> V,
+): M {
+    for (element in this) {
+        val values = destination.getOrPut(
+            key = keySelector(element),
+            defaultValue = valuesCollectionGenerator
+        )
+        values.add(element)
+    }
+    return destination
+}
+
+internal inline fun <T, K, V : MutableCollection<T>, M : MutableMap<in K, V>> Sequence<T>.customGroupByTo(
+    destination: M,
+    keySelector: (T) -> K,
+    valuesCollectionGenerator: () -> V,
+): M {
+    for (element in this) {
+        val values = destination.getOrPut(
+            key = keySelector(element),
+            defaultValue = valuesCollectionGenerator
+        )
+        values.add(element)
+    }
+    return destination
+}
+
 
 internal fun impossible(): Nothing = error("Impossible state.")
