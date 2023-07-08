@@ -181,36 +181,38 @@ fun EditorLayout(
             drawHoveredCellAndAxis(options, grid, cellSize, currCoordinate, hoveredColor)
         }
 
-        Spacer(Modifier.size(32.dp))
+        if (options.toggleables.getValue(Toggleable.ShowCurrentCoordinatesAnsShapeSize)) {
+            Spacer(Modifier.size(32.dp))
 
-        Divider(thickness = 2.dp)
+            Divider(thickness = 2.dp)
 
-        Spacer(Modifier.size(12.dp))
+            Spacer(Modifier.size(12.dp))
 
-        Row(
-            modifier = Modifier.fillMaxWidth().height(24.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(Modifier.weight(1f), Arrangement.Center) {
-                if (currCoordinate != UNDEFINED) {
-                    Text("X: ${currCoordinate.x}, Y: ${currCoordinate.y}")
+            Row(
+                modifier = Modifier.fillMaxWidth().height(24.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(Modifier.weight(1f), Arrangement.Center) {
+                    if (currCoordinate != UNDEFINED) {
+                        Text("X: ${currCoordinate.x}, Y: ${currCoordinate.y}")
+                    }
                 }
-            }
 
-            Text("|")
+                Text("|")
 
-            Row(Modifier.weight(2f), Arrangement.Center) {
-                toolkit.actionVector?.let { (start, end) ->
-                    Text("${wordlist.start}: $start, ${wordlist.end}: $end")
+                Row(Modifier.weight(2f), Arrangement.Center) {
+                    toolkit.actionVector?.let { (start, end) ->
+                        Text("${wordlist.start}: $start, ${wordlist.end}: $end")
+                    }
                 }
-            }
 
-            Text("|")
+                Text("|")
 
-            Row(Modifier.weight(1f), Arrangement.Center) {
-                toolkit.actionVector?.let { (start, end) ->
-                    val (w, h) = CanonicalCorners.fromTwoCoordinates(start, end).rect
-                    Text("${wordlist.width}: $w, ${wordlist.height}: $h")
+                Row(Modifier.weight(1f), Arrangement.Center) {
+                    toolkit.actionVector?.let { (start, end) ->
+                        val (w, h) = CanonicalCorners.fromTwoCoordinates(start, end).rect
+                        Text("${wordlist.width}: $w, ${wordlist.height}: $h")
+                    }
                 }
             }
         }

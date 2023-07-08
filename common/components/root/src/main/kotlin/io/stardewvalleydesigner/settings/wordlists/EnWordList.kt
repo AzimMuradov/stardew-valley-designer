@@ -181,6 +181,7 @@ data object EnWordList : WordList {
         OptionsItemValue.Toggleable.ShowAxis -> "Show axis"
         OptionsItemValue.Toggleable.ShowGrid -> "Show grid"
         OptionsItemValue.Toggleable.ShowObjectCounter -> "Show object counter"
+        OptionsItemValue.Toggleable.ShowCurrentCoordinatesAnsShapeSize -> "Show current coordinates and shape size"
         OptionsItemValue.Toggleable.ShowSpritesFully -> "Show sprites fully"
 
         OptionsItemValue.Toggleable.ShowScarecrowsAreaOfEffect -> "Show scarecrows area of effect"
