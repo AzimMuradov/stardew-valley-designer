@@ -67,7 +67,7 @@ private class EditorEngineImpl(layout: Layout) : EditorEngine {
         layers.layerBy(type).getAll(cs)
 
     override fun <EType : EntityType> putAll(objs: DisjointEntities<EType>) =
-        objs.flatMap { put(it).flatten() }.layeredData()
+        objs.asSequence().flatMap { put(it).flattenSequence() }.layeredData()
 
     override fun <EType : EntityType> removeAll(type: LayerType<EType>, cs: Iterable<Coordinate>) =
         layers.layerBy(type).removeAll(cs)

@@ -79,7 +79,7 @@ fun EditorEngine.getAll(cs: Iterable<Coordinate>, layers: Set<LayerType<*>> = La
     layeredEntitiesData { if (it in layers) getAll(it, cs) else emptySet() }
 
 fun EditorEngine.putAll(objs: LayeredEntities): LayeredEntitiesData =
-    objs.flatten().flatMap { put(it).flatten() }.layeredData()
+    objs.flattenSequence().flatMap { put(it).flattenSequence() }.layeredData()
 
 fun EditorEngine.removeAll(cs: Iterable<Coordinate>, layers: Set<LayerType<*>> = LayerType.all): LayeredEntitiesData =
     layeredEntitiesData { if (it in layers) removeAll(it, cs) else emptySet() }
@@ -98,4 +98,4 @@ fun EditorEngine.getReplacedBy(obj: PlacedEntity<*>): LayeredEntitiesData {
 }
 
 fun <EType : EntityType> EditorEngine.getReplacedBy(objs: DisjointEntities<EType>): LayeredEntitiesData =
-    objs.flatMapTo(mutableSetOf()) { getReplacedBy(it).flatten() }.layeredData()
+    objs.asSequence().flatMap { getReplacedBy(it).flattenSequence() }.layeredData()

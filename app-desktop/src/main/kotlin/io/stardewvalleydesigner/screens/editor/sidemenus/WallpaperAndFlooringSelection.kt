@@ -38,129 +38,122 @@ import io.stardewvalleydesigner.utils.DrawerUtils.drawSpriteStretched
 
 
 @Composable
-fun WallpaperAndFlooringSelection(
+fun ColumnScope.WallpaperAndFlooringSelection(
     onWallpaperSelection: (Wallpaper) -> Unit,
     onFlooringSelection: (Flooring) -> Unit,
 ) {
     val wordList = GlobalSettings.strings
 
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-            .height(300.dp),
-    ) {
-        var chosenTab by remember { mutableStateOf(Tab.Wallpaper) }
+    var chosenTab by remember { mutableStateOf(Tab.Wallpaper) }
 
-        val wallpaperTabBg by animateColorAsState(
-            if (chosenTab == Tab.Wallpaper) {
-                MaterialTheme.colors.primarySurface.copy(alpha = 0.15f)
-            } else {
-                Color.Transparent
-            }
-        )
-
-        val flooringTabBg by animateColorAsState(
-            if (chosenTab == Tab.Flooring) {
-                MaterialTheme.colors.primarySurface.copy(alpha = 0.15f)
-            } else {
-                Color.Transparent
-            }
-        )
-
-        TabRow(
-            selectedTabIndex = chosenTab.ordinal,
-            modifier = Modifier.fillMaxWidth().height(36.dp),
-            backgroundColor = MaterialTheme.colors.surface
-        ) {
-            Tab(
-                selected = chosenTab == Tab.Wallpaper,
-                onClick = { chosenTab = Tab.Wallpaper },
-                modifier = Modifier.weight(1f).fillMaxHeight().background(wallpaperTabBg)
-            ) {
-                Text(
-                    wordList.wallpapersTabTitle,
-                    style = MaterialTheme.typography.subtitle1
-                )
-            }
-            Tab(
-                selected = chosenTab == Tab.Flooring,
-                onClick = { chosenTab = Tab.Flooring },
-                modifier = Modifier.weight(1f).fillMaxHeight().background(flooringTabBg)
-            ) {
-                Text(
-                    wordList.flooringTabTitle,
-                    style = MaterialTheme.typography.subtitle1
-                )
-            }
+    val wallpaperTabBg by animateColorAsState(
+        if (chosenTab == Tab.Wallpaper) {
+            MaterialTheme.colors.primarySurface.copy(alpha = 0.15f)
+        } else {
+            Color.Transparent
         }
+    )
 
-        Spacer(modifier = Modifier.height(8.dp))
+    val flooringTabBg by animateColorAsState(
+        if (chosenTab == Tab.Flooring) {
+            MaterialTheme.colors.primarySurface.copy(alpha = 0.15f)
+        } else {
+            Color.Transparent
+        }
+    )
 
-        Box(Modifier.fillMaxSize()) {
-            val wallpaperState = rememberLazyGridState()
-            val flooringState = rememberLazyGridState()
+    TabRow(
+        selectedTabIndex = chosenTab.ordinal,
+        modifier = Modifier.fillMaxWidth().height(36.dp),
+        backgroundColor = MaterialTheme.colors.surface
+    ) {
+        Tab(
+            selected = chosenTab == Tab.Wallpaper,
+            onClick = { chosenTab = Tab.Wallpaper },
+            modifier = Modifier.weight(1f).fillMaxHeight().background(wallpaperTabBg)
+        ) {
+            Text(
+                wordList.wallpapersTabTitle,
+                style = MaterialTheme.typography.subtitle1
+            )
+        }
+        Tab(
+            selected = chosenTab == Tab.Flooring,
+            onClick = { chosenTab = Tab.Flooring },
+            modifier = Modifier.weight(1f).fillMaxHeight().background(flooringTabBg)
+        ) {
+            Text(
+                wordList.flooringTabTitle,
+                style = MaterialTheme.typography.subtitle1
+            )
+        }
+    }
 
-            when (chosenTab) {
-                Tab.Wallpaper -> {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(count = 8),
-                        modifier = Modifier.fillMaxSize().padding(end = 12.dp),
-                        state = wallpaperState,
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    ) {
-                        items(items = Wallpaper.all()) { w ->
-                            Box(
-                                modifier = Modifier
-                                    .pointerHoverIcon(PointerIcon.Hand)
-                                    .bounceClickable { onWallpaperSelection(w) }
-                                    .aspectRatio(ratio = 1f / 3f)
-                                    .fillMaxSize()
-                                    .drawBehind {
-                                        drawSpriteStretched(
-                                            sprite = wallpaper(w),
-                                            layoutSize = size.toIntSize()
-                                        )
-                                    }
-                            )
-                        }
+    Spacer(modifier = Modifier.height(8.dp))
+
+    Box(Modifier.fillMaxSize()) {
+        val wallpaperState = rememberLazyGridState()
+        val flooringState = rememberLazyGridState()
+
+        when (chosenTab) {
+            Tab.Wallpaper -> {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(count = 8),
+                    modifier = Modifier.fillMaxSize().padding(end = 12.dp),
+                    state = wallpaperState,
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    items(items = Wallpaper.all()) { w ->
+                        Box(
+                            modifier = Modifier
+                                .pointerHoverIcon(PointerIcon.Hand)
+                                .bounceClickable { onWallpaperSelection(w) }
+                                .aspectRatio(ratio = 1f / 3f)
+                                .fillMaxSize()
+                                .drawBehind {
+                                    drawSpriteStretched(
+                                        sprite = wallpaper(w),
+                                        layoutSize = size.toIntSize()
+                                    )
+                                }
+                        )
                     }
-                    VerticalScrollbar(
-                        adapter = rememberScrollbarAdapter(scrollState = wallpaperState),
-                        modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight()
-                    )
                 }
+                VerticalScrollbar(
+                    adapter = rememberScrollbarAdapter(scrollState = wallpaperState),
+                    modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight()
+                )
+            }
 
-                Tab.Flooring -> {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(count = 4),
-                        modifier = Modifier.fillMaxSize().padding(end = 12.dp),
-                        state = flooringState,
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    ) {
-                        items(items = Flooring.all()) { f ->
-                            Box(
-                                modifier = Modifier
-                                    .pointerHoverIcon(PointerIcon.Hand)
-                                    .bounceClickable { onFlooringSelection(f) }
-                                    .aspectRatio(ratio = 1f)
-                                    .fillMaxSize()
-                                    .drawBehind {
-                                        drawSpriteStretched(
-                                            sprite = flooring(f),
-                                            layoutSize = size.toIntSize()
-                                        )
-                                    }
-                            )
-                        }
+            Tab.Flooring -> {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(count = 4),
+                    modifier = Modifier.fillMaxSize().padding(end = 12.dp),
+                    state = flooringState,
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    items(items = Flooring.all()) { f ->
+                        Box(
+                            modifier = Modifier
+                                .pointerHoverIcon(PointerIcon.Hand)
+                                .bounceClickable { onFlooringSelection(f) }
+                                .aspectRatio(ratio = 1f)
+                                .fillMaxSize()
+                                .drawBehind {
+                                    drawSpriteStretched(
+                                        sprite = flooring(f),
+                                        layoutSize = size.toIntSize()
+                                    )
+                                }
+                        )
                     }
-                    VerticalScrollbar(
-                        adapter = rememberScrollbarAdapter(scrollState = flooringState),
-                        modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight()
-                    )
                 }
+                VerticalScrollbar(
+                    adapter = rememberScrollbarAdapter(scrollState = flooringState),
+                    modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight()
+                )
             }
         }
     }

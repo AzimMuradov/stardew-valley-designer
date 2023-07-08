@@ -17,7 +17,10 @@
 package io.stardewvalleydesigner.engine.entity
 
 
-sealed interface EntityFlavor
+sealed interface EntityFlavor {
+
+    fun default(): EntityFlavor
+}
 
 
 sealed interface Rotations : EntityFlavor {
@@ -25,9 +28,17 @@ sealed interface Rotations : EntityFlavor {
     val ordinal: Int
 
 
-    enum class Rotations2 : Rotations { R1, R2 }
+    enum class Rotations2 : Rotations {
+        R1, R2;
 
-    enum class Rotations4 : Rotations { R1, R2, R3, R4 }
+        override fun default(): Rotations2 = R1
+    }
+
+    enum class Rotations4 : Rotations {
+        R1, R2, R3, R4;
+
+        override fun default(): Rotations4 = R1
+    }
 }
 
 
@@ -35,7 +46,10 @@ data class FarmBuildingColors(
     val building: Color? = null,
     val roof: Color? = null,
     val trim: Color? = null,
-) : EntityFlavor
+) : EntityFlavor {
+
+    override fun default(): FarmBuildingColors = FarmBuildingColors()
+}
 
 data class Color(val r: UByte, val g: UByte, val b: UByte)
 
@@ -47,7 +61,9 @@ sealed interface Colors : EntityFlavor {
         LavaEel,
         SuperCucumber,
         Slimejack,
-        VoidSalmon,
+        VoidSalmon;
+
+        override fun default(): FishPondColors = Default
     }
 
     enum class ChestColors : Colors {
@@ -71,6 +87,62 @@ sealed interface Colors : EntityFlavor {
         DarkGrey,
         MediumGrey,
         LightGrey,
-        White,
+        White;
+
+        override fun default(): ChestColors = White
+    }
+
+    sealed interface FlowerColors : Colors {
+
+        enum class TulipColors : FlowerColors {
+            Color1,
+            Color2,
+            Color3,
+            Color4,
+            Color5;
+
+            override fun default(): TulipColors = Color1
+        }
+
+        enum class SummerSpangleColors : FlowerColors {
+            Color1,
+            Color2,
+            Color3,
+            Color4,
+            Color5,
+            Color6;
+
+            override fun default(): SummerSpangleColors = Color1
+        }
+
+        enum class FairyRoseColors : FlowerColors {
+            Color1,
+            Color2,
+            Color3,
+            Color4,
+            Color5,
+            Color6;
+
+            override fun default(): FairyRoseColors = Color1
+        }
+
+        enum class BlueJazzColors : FlowerColors {
+            Color1,
+            Color2,
+            Color3,
+            Color4,
+            Color5,
+            Color6;
+
+            override fun default(): BlueJazzColors = Color1
+        }
+
+        enum class PoppyColors : FlowerColors {
+            Color1,
+            Color2,
+            Color3;
+
+            override fun default(): PoppyColors = Color1
+        }
     }
 }

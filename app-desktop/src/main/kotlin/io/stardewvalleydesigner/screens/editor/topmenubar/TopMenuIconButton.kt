@@ -24,6 +24,7 @@ import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,7 +53,7 @@ fun TopMenuIconButton(
                 .clip(CircleShape)
                 .then(if (enabled) Modifier.pointerHoverIcon(PointerIcon.Hand) else Modifier)
                 .clickable(
-                    interactionSource = MutableInteractionSource(),
+                    interactionSource = remember(::MutableInteractionSource),
                     indication = rememberRipple(color = Color.White),
                     enabled = enabled,
                     onClick = onClick

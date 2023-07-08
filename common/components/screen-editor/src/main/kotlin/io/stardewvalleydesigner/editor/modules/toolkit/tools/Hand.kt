@@ -54,7 +54,7 @@ class Hand(private val engine: EditorEngine) : Tool {
         }
         heldEntities = initMovedEntities
 
-        return if (heldEntities.flatten().isNotEmpty()) {
+        return if (heldEntities.flattenSequence().any()) {
             ActionReturn(
                 toolkit = ToolkitState.Hand.Point.Acting(heldEntities),
                 selectedEntities = heldEntities
@@ -71,7 +71,7 @@ class Hand(private val engine: EditorEngine) : Tool {
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
         heldEntities = initMovedEntities
-            .flatten()
+            .flattenSequence()
             .map { it.copy(place = it.place + (coordinate - start)) }
             .filter { it respectsLayout engine.layout }
             .layeredData()

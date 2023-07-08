@@ -164,7 +164,7 @@ private fun ApplicationAuthorsSection(heading: SpanStyle) {
                     )
                     .pointerHoverIcon(PointerIcon.Hand)
                     .clickable(
-                        interactionSource = MutableInteractionSource(),
+                        interactionSource = remember(::MutableInteractionSource),
                         indication = rememberRipple(color = Color.White)
                     ) {
                         BrowserUtils.open(
@@ -213,7 +213,7 @@ private fun StardewValleySection(heading: SpanStyle) {
                 modifier = Modifier
                     .pointerHoverIcon(PointerIcon.Hand)
                     .clickable(
-                        interactionSource = MutableInteractionSource(),
+                        interactionSource = remember(::MutableInteractionSource),
                         indication = rememberRipple(color = Color.White)
                     ) {
                         BrowserUtils.open(
@@ -249,7 +249,7 @@ private fun BugTrackerSection() {
                 )
                 .pointerHoverIcon(PointerIcon.Hand)
                 .clickable(
-                    interactionSource = MutableInteractionSource(),
+                    interactionSource = remember(::MutableInteractionSource),
                     indication = rememberRipple(color = Color.White)
                 ) {
                     BrowserUtils.open(

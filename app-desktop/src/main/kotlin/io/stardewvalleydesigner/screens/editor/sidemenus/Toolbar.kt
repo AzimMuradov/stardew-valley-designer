@@ -54,51 +54,48 @@ fun Toolbar(
 
     val wordList = GlobalSettings.strings
 
-    Column(
-        modifier = Modifier.padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Divider(modifier = Modifier.weight(1f))
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = wordList.tool(toolkit.tool),
-                style = MaterialTheme.typography.subtitle1
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Divider(modifier = Modifier.weight(1f))
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        ToggleButtonsGroup(
-            buttonLabels = tools,
-            rowSize = size,
-            chosenLabel = GroupOption.Some(toolkit.tool),
-            onButtonClick = { intentConsumer(EditorIntent.Toolkit.ChooseTool(it)) },
-            spaceContent = {
-                Icon(
-                    imageVector = Icons.Default.Clear,
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize().padding(8.dp),
-                )
-            },
-            buttonContent = { toolType ->
-                ButtonContent(
-                    tooltip = wordList.tool(toolType),
-                    resourcePath = when (toolType) {
-                        ToolType.Hand -> "tools/hand.png"
-                        ToolType.Pen -> "tools/pen.png"
-                        ToolType.Eraser -> "tools/eraser.png"
-                        ToolType.Select -> "tools/select.png"
-                    }
-                )
-            }
+        Divider(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = wordList.tool(toolkit.tool),
+            style = MaterialTheme.typography.subtitle1
         )
+        Spacer(modifier = Modifier.width(8.dp))
+        Divider(modifier = Modifier.weight(1f))
+    }
 
+    Spacer(modifier = Modifier.height(16.dp))
+
+    ToggleButtonsGroup(
+        buttonLabels = tools,
+        rowSize = size,
+        chosenLabel = GroupOption.Some(toolkit.tool),
+        onButtonClick = { intentConsumer(EditorIntent.Toolkit.ChooseTool(it)) },
+        spaceContent = {
+            Icon(
+                imageVector = Icons.Default.Clear,
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize().padding(8.dp),
+            )
+        },
+        buttonContent = { toolType ->
+            ButtonContent(
+                tooltip = wordList.tool(toolType),
+                resourcePath = when (toolType) {
+                    ToolType.Hand -> "tools/hand.png"
+                    ToolType.Pen -> "tools/pen.png"
+                    ToolType.Eraser -> "tools/eraser.png"
+                    ToolType.Select -> "tools/select.png"
+                }
+            )
+        }
+    )
+
+    if (toolkit.allowedShapes != listOf(null)) {
         Spacer(modifier = Modifier.height(8.dp))
 
         ToggleButtonsGroup(
@@ -115,7 +112,11 @@ fun Toolbar(
             },
             buttonContent = { shapeType ->
                 val shapeName = wordList.shape(shapeType)
-                val postfix = if (shapeType !in toolkit.allowedShapes) " (${wordList.notAvailableForThisTool})" else ""
+                val postfix = if (shapeType !in toolkit.allowedShapes) {
+                    " (${wordList.notAvailableForThisTool})"
+                } else {
+                    ""
+                }
                 ButtonContent(
                     tooltip = "$shapeName$postfix",
                     resourcePath = when (shapeType) {

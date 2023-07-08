@@ -66,10 +66,15 @@ fun layeredEntities(entitiesSelector: (LayerType<*>) -> List<PlacedEntity<*>>): 
 
 fun LayeredEntities.flatten(): List<PlacedEntity<*>> = all.flatMap { (_, es) -> es }
 
+fun LayeredEntities.flattenSequence(): Sequence<PlacedEntity<*>> = all.asSequence().flatMap { (_, es) -> es }
+
 fun <C : MutableCollection<in PlacedEntity<*>>> LayeredEntities.flattenTo(destination: C): C =
     all.flatMapTo(destination) { (_, es) -> es }
 
 fun Iterable<PlacedEntity<*>>.layered(): LayeredEntities =
+    groupBy(PlacedEntity<*>::layerType).mapValues { (_, es) -> es.asDisjointUnsafe() }.asLayeredEntities()
+
+fun Sequence<PlacedEntity<*>>.layered(): LayeredEntities =
     groupBy(PlacedEntity<*>::layerType).mapValues { (_, es) -> es.asDisjointUnsafe() }.asLayeredEntities()
 
 

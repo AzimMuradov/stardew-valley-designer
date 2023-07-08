@@ -14,20 +14,10 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata
-
-import io.stardewvalleydesigner.engine.entity.EntityFlavor
+package io.stardewvalleydesigner.engine.geometry
 
 
-data class EntityId(
-    val page: EntityPage,
-    val localId: Int,
-    val flavor: EntityFlavor? = null,
+data class BoundVector(
+    val start: Coordinate,
+    val end: Coordinate,
 )
-
-val EntityId.default
-    get() = EntityId(
-        page = page,
-        localId = localId,
-        flavor = flavor?.default()
-    )

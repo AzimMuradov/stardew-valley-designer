@@ -180,6 +180,8 @@ data object EnWordList : WordList {
     override fun optionTitle(option: OptionsItemValue): String = when (option) {
         OptionsItemValue.Toggleable.ShowAxis -> "Show axis"
         OptionsItemValue.Toggleable.ShowGrid -> "Show grid"
+        OptionsItemValue.Toggleable.ShowObjectCounter -> "Show object counter"
+        OptionsItemValue.Toggleable.ShowCurrentCoordinatesAnsShapeSize -> "Show current coordinates and shape size"
         OptionsItemValue.Toggleable.ShowSpritesFully -> "Show sprites fully"
 
         OptionsItemValue.Toggleable.ShowScarecrowsAreaOfEffect -> "Show scarecrows area of effect"
@@ -741,6 +743,16 @@ data object EnWordList : WordList {
     override val wallpapersTabTitle: String = "Wallpapers"
 
     override val flooringTabTitle: String = "Flooring"
+
+    override val objectCounterTitle: String = "Object count"
+
+    override val width: String = "Width"
+
+    override val height: String = "Height"
+
+    override val start: String = "Start"
+
+    override val end: String = "End"
 
 
     // Private

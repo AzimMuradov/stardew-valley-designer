@@ -32,6 +32,8 @@ sealed interface OptionsItemValue {
     enum class Toggleable : OptionsItemValue {
         ShowAxis,
         ShowGrid,
+        ShowObjectCounter,
+        ShowCurrentCoordinatesAnsShapeSize,
         ShowSpritesFully,
 
         ShowScarecrowsAreaOfEffect,
@@ -46,6 +48,8 @@ val MainOptionsMenu: OptionsMenu = menu(root = OptionsRoot.Options) {
     items(
         OptionsItemValue.Toggleable.ShowAxis,
         OptionsItemValue.Toggleable.ShowGrid,
+        OptionsItemValue.Toggleable.ShowObjectCounter,
+        OptionsItemValue.Toggleable.ShowCurrentCoordinatesAnsShapeSize,
         OptionsItemValue.Toggleable.ShowSpritesFully,
     )
     items(

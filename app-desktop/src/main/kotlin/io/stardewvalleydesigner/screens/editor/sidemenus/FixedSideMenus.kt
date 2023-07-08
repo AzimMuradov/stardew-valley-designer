@@ -16,16 +16,20 @@
 
 package io.stardewvalleydesigner.screens.editor.sidemenus
 
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import io.stardewvalleydesigner.editor.menus.OptionsItemValue.Toggleable
 import io.stardewvalleydesigner.editor.modules.map.LayoutState
+import io.stardewvalleydesigner.editor.modules.options.OptionsState
 import io.stardewvalleydesigner.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.editor.modules.toolkit.ToolkitState
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.allEntityTypes
+import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
+import io.stardewvalleydesigner.engine.layers.isEmpty
 import io.stardewvalleydesigner.editor.EditorIntent as Intent
 
 
@@ -33,12 +37,19 @@ import io.stardewvalleydesigner.editor.EditorIntent as Intent
 fun LeftSideMenus(
     toolkit: ToolkitState,
     palette: PaletteState,
+    entities: LayeredEntitiesData,
+    options: OptionsState,
     width: Dp,
     intentConsumer: (Intent) -> Unit,
 ) {
     FixedSideMenus(width) {
         menu { Toolbar(toolkit, intentConsumer) }
         menu { Palette(palette, intentConsumer) }
+        if (options.toggleables.getValue(Toggleable.ShowObjectCounter) && !entities.isEmpty()) {
+            menu(modifier = Modifier.heightIn(max = 300.dp)) {
+                ObjectCounter(entities)
+            }
+        }
     }
 }
 
@@ -51,7 +62,7 @@ fun RightSideMenus(
     intentConsumer: (Intent) -> Unit,
 ) {
     FixedSideMenus(width) {
-        menu {
+        menu(padding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)) {
             LayersVisibility(
                 allowedLayers = LayerType.all.filterTo(mutableSetOf()) { lType ->
                     lType.allEntityTypes().any { eType -> eType !in layout.disallowedTypes }
@@ -61,7 +72,7 @@ fun RightSideMenus(
             )
         }
         if (layout.type.isShed()) {
-            menu {
+            menu(modifier = Modifier.height(300.dp)) {
                 WallpaperAndFlooringSelection(
                     onWallpaperSelection = { intentConsumer(Intent.WallpaperAndFlooring.ChooseWallpaper(it)) },
                     onFlooringSelection = { intentConsumer(Intent.WallpaperAndFlooring.ChooseFlooring(it)) },
