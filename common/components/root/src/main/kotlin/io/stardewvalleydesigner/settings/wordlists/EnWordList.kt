@@ -180,6 +180,7 @@ data object EnWordList : WordList {
     override fun optionTitle(option: OptionsItemValue): String = when (option) {
         OptionsItemValue.Toggleable.ShowAxis -> "Show axis"
         OptionsItemValue.Toggleable.ShowGrid -> "Show grid"
+        OptionsItemValue.Toggleable.ShowObjectCounter -> "Show object counter"
         OptionsItemValue.Toggleable.ShowSpritesFully -> "Show sprites fully"
 
         OptionsItemValue.Toggleable.ShowScarecrowsAreaOfEffect -> "Show scarecrows area of effect"

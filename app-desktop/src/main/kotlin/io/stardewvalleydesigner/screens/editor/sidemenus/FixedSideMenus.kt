@@ -21,7 +21,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.stardewvalleydesigner.editor.menus.OptionsItemValue.Toggleable
 import io.stardewvalleydesigner.editor.modules.map.LayoutState
+import io.stardewvalleydesigner.editor.modules.options.OptionsState
 import io.stardewvalleydesigner.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.editor.modules.toolkit.ToolkitState
 import io.stardewvalleydesigner.engine.layer.LayerType
@@ -36,13 +38,14 @@ fun LeftSideMenus(
     toolkit: ToolkitState,
     palette: PaletteState,
     entities: LayeredEntitiesData,
+    options: OptionsState,
     width: Dp,
     intentConsumer: (Intent) -> Unit,
 ) {
     FixedSideMenus(width) {
         menu { Toolbar(toolkit, intentConsumer) }
         menu { Palette(palette, intentConsumer) }
-        if (!entities.isEmpty()) {
+        if (options.toggleables.getValue(Toggleable.ShowObjectCounter) && !entities.isEmpty()) {
             menu(modifier = Modifier.heightIn(max = 300.dp)) {
                 ObjectCounter(entities)
             }

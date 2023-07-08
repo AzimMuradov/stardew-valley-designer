@@ -61,6 +61,7 @@ fun EditorScreen(component: EditorComponent) {
                 toolkit = toolkit,
                 palette = palette,
                 entities = map.entities,
+                options = options,
                 width = menuWidth,
                 intentConsumer = store::accept
             )
