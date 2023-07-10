@@ -42,7 +42,7 @@ sealed interface LayerType<out EType : EntityType> {
 
     data object EntityWithoutFloor : LayerType<EntityWithoutFloorType> {
 
-        override val ordinal: Int = 0
+        override val ordinal: Int = 2
     }
 
 

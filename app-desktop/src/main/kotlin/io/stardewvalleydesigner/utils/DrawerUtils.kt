@@ -192,6 +192,6 @@ object DrawerUtils {
 
 
     val placedEntityComparator: Comparator<PlacedEntity<*>> = Comparator
-        .comparing<PlacedEntity<*>, Int> { (_, p) -> p.y }
-        .thenComparing { (e, _) -> e.type.toLayerType().ordinal }
+        .comparing<PlacedEntity<*>, Int> { (e, _) -> e.type.toLayerType().ordinal }
+        .thenComparingInt { (_, place) -> place.y }
 }
