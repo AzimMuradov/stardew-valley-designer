@@ -4,7 +4,7 @@ object App {
 
     const val NAME: String = "stardew-valley-designer"
 
-    const val VERSION: String = "0.8.0"
+    const val VERSION: String = "0.8.1"
 
     const val DESCRIPTION: String =
         "The goal of this project is to provide a finely tuned editor for designing your farm and the interior of all its buildings."
