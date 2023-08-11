@@ -1,21 +1,21 @@
 [versions]
 
-plugin-kotlin = "1.8.20"
-plugin-kotlinx-serialization = "1.8.10"
+plugin-kotlin = "1.9.0"
+plugin-kotlinx-serialization = "1.9.0"
 
-mvi-kotlin = "3.2.0"
-decompose = "1.0.0"
-kotlinx-coroutines = "1.6.4"
+mvi-kotlin = "3.2.1"
+decompose = "2.0.1"
+kotlinx-coroutines = "1.7.3"
 directories = "26"
 bonsai = "1.2.0"
 rich-editor = "0.2.0"
-xml-util = "0.85.0"
+xml-util = "0.86.1"
 
 # Tools
 
-detekt = "1.22.0"
+detekt = "1.23.1"
 
-kotlin-logging = "3.0.5"
+kotlin-logging = "5.1.0"
 log4j = "2.20.0"
 
 
@@ -43,7 +43,7 @@ xmlutil-serialization-jvm = { module = "io.github.pdvrieze.xmlutil:serialization
 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
-kotlin-logging-jvm = { module = "io.github.microutils:kotlin-logging-jvm", version.ref = "kotlin-logging" }
+kotlin-logging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
 log4j-slf4j2-impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j" }
 
 
@@ -70,6 +70,6 @@ xmlutil = [
 
 #kotlin-jvm = { id = "", version = "1.9.0" }
 #kotlinx-serialization = { id = "", version = "1.9.0" }
-compose = { id = "org.jetbrains.compose", version = "1.4.0" }
+compose = { id = "org.jetbrains.compose", version = "1.4.3" }
 conveyor = { id = "dev.hydraulic.conveyor", version = "1.6" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.22.0" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.1" }
