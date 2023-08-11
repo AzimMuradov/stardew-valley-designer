@@ -5,9 +5,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 
 plugins {
-    kotlin("jvm") version V.P_KOTLIN apply false
+    kotlin("jvm") version libs.versions.plugin.kotlin.get() apply false
 
-    id("io.gitlab.arturbosch.detekt") version V.P_DETEKT apply false
+    alias(libs.plugins.detekt) apply false
 }
 
 subprojects {

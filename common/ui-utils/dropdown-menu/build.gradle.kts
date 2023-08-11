@@ -1,20 +1,20 @@
 plugins {
     kotlin("jvm")
 
-    id("io.gitlab.arturbosch.detekt")
+    alias(libs.plugins.detekt)
 }
 
 dependencies {
     // Meta-code
 
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${V.DETEKT}")
+    detektPlugins(libs.detekt.formatting)
 
     implementation(projects.common.logger)
-    implementation("io.github.microutils:kotlin-logging-jvm:${V.KOTLIN_LOGGING}")
+    implementation(libs.kotlin.logging.jvm)
 }
 
 detekt {
-    toolVersion = V.DETEKT
-    config.from("../../../config/detekt/detekt.yml")
+    toolVersion = libs.versions.detekt.get()
+    config.from(projectDir.resolve("config/detekt/detekt.yml"))
     buildUponDefaultConfig = true
 }

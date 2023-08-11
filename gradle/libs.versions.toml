@@ -1,0 +1,75 @@
+[versions]
+
+plugin-kotlin = "1.8.20"
+plugin-kotlinx-serialization = "1.8.10"
+
+mvi-kotlin = "3.2.0"
+decompose = "1.0.0"
+kotlinx-coroutines = "1.6.4"
+directories = "26"
+bonsai = "1.2.0"
+rich-editor = "0.2.0"
+xml-util = "0.85.0"
+
+# Tools
+
+detekt = "1.22.0"
+
+kotlin-logging = "3.0.5"
+log4j = "2.20.0"
+
+
+[libraries]
+
+mvikotlin = { module = "com.arkivanov.mvikotlin:mvikotlin", version.ref = "mvi-kotlin" }
+mvikotlin-main = { module = "com.arkivanov.mvikotlin:mvikotlin-main", version.ref = "mvi-kotlin" }
+mvikotlin-logging = { module = "com.arkivanov.mvikotlin:mvikotlin-logging", version.ref = "mvi-kotlin" }
+mvikotlin-extensions-coroutines = { module = "com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines", version.ref = "mvi-kotlin" }
+
+decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
+decompose-extensions-composejb = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose" }
+
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+
+bonsai-core = { module = "cafe.adriel.bonsai:bonsai-core", version.ref = "bonsai" }
+bonsai-file-system = { module = "cafe.adriel.bonsai:bonsai-file-system", version.ref = "bonsai" }
+
+directories = { module = "dev.dirs:directories", version.ref = "directories" }
+
+richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "rich-editor" }
+
+xmlutil-core-jvm = { module = "io.github.pdvrieze.xmlutil:core-jvm", version.ref = "xml-util" }
+xmlutil-serialization-jvm = { module = "io.github.pdvrieze.xmlutil:serialization-jvm", version.ref = "xml-util" }
+
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+
+kotlin-logging-jvm = { module = "io.github.microutils:kotlin-logging-jvm", version.ref = "kotlin-logging" }
+log4j-slf4j2-impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j" }
+
+
+[bundles]
+
+mvikotlin = [
+    "mvikotlin",
+    "mvikotlin-extensions-coroutines",
+    "decompose",
+]
+
+bonsai = [
+    "bonsai-core",
+    "bonsai-file-system",
+]
+
+xmlutil = [
+    "xmlutil-core-jvm",
+    "xmlutil-serialization-jvm",
+]
+
+
+[plugins]
+
+#kotlin-jvm = { id = "", version = "1.9.0" }
+#kotlinx-serialization = { id = "", version = "1.9.0" }
+compose = { id = "org.jetbrains.compose", version = "1.4.0" }
+conveyor = { id = "dev.hydraulic.conveyor", version = "1.6" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.22.0" }
