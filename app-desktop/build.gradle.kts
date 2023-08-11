@@ -104,7 +104,7 @@ tasks.clean {
 
 detekt {
     toolVersion = V.DETEKT
-    config = files("../config/detekt/detekt.yml")
+    config.from("../config/detekt/detekt.yml")
     buildUponDefaultConfig = true
 }
 
