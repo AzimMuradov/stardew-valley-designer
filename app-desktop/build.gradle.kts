@@ -39,14 +39,15 @@ dependencies {
     implementation(projects.common.uiUtils.dropdownMenu)
     implementation(projects.common.uiUtils.dropdownMenuUi)
 
-    implementation(libs.bundles.mvikotlin)
-
     implementation(compose.desktop.currentOs)
     implementation(compose.materialIconsExtended)
+
+    implementation(libs.decompose)
     implementation(libs.decompose.extensions.composejb)
 
-    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.bundles.mvikotlin)
 
+    implementation(libs.kotlinx.coroutines.core)
 
     implementation(libs.directories)
 
