@@ -1,7 +1,6 @@
 plugins {
-    kotlin("jvm")
-    kotlin("plugin.serialization") version libs.versions.plugin.kotlinx.serialization.get()
-
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.detekt)
 }
 
@@ -17,7 +16,7 @@ dependencies {
     detektPlugins(libs.detekt.formatting)
 
     implementation(projects.common.logger)
-    implementation(libs.kotlin.logging.jvm)
+    implementation(libs.kotlinlogging.jvm)
 }
 
 detekt {

@@ -1,6 +1,5 @@
 plugins {
-    kotlin("jvm")
-
+    alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.detekt)
 }
 
@@ -19,7 +18,7 @@ dependencies {
     detektPlugins(libs.detekt.formatting)
 
     implementation(projects.common.logger)
-    implementation(libs.kotlin.logging.jvm)
+    implementation(libs.kotlinlogging.jvm)
 }
 
 detekt {

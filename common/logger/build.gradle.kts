@@ -1,12 +1,11 @@
 plugins {
-    kotlin("jvm")
-
+    alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.detekt)
 }
 
 dependencies {
-    implementation(libs.kotlin.logging.jvm)
-    implementation(libs.log4j.slf4j2.impl)
+    implementation(libs.kotlinlogging.jvm)
+    implementation(libs.log4j.slf4j2)
 
     implementation(libs.mvikotlin)
     implementation(libs.mvikotlin.main)

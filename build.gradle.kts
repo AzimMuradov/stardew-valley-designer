@@ -5,8 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 
 plugins {
-    kotlin("jvm") version libs.versions.plugin.kotlin.get() apply false
-
+    alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.detekt) apply false
 }
 

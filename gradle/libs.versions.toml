@@ -1,50 +1,53 @@
 [versions]
 
-plugin-kotlin = "1.9.0"
-plugin-kotlinx-serialization = "1.9.0"
+kotlin = "1.9.0"
 
-mvi-kotlin = "3.2.1"
+compose = "1.4.3"
+mvikotlin = "3.2.1"
 decompose = "2.0.1"
+
 kotlinx-coroutines = "1.7.3"
+richeditor = "0.2.0"
 directories = "26"
 bonsai = "1.2.0"
-rich-editor = "0.2.0"
-xml-util = "0.86.1"
 
-# Tools
+kotlinx-serialization-plugin = "1.9.0"
+xmlutil = "0.86.1"
+
+conveyor = "1.6"
 
 detekt = "1.23.1"
 
-kotlin-logging = "5.1.0"
+kotlinlogging = "5.1.0"
 log4j = "2.20.0"
 
 
 [libraries]
 
-mvikotlin = { module = "com.arkivanov.mvikotlin:mvikotlin", version.ref = "mvi-kotlin" }
-mvikotlin-main = { module = "com.arkivanov.mvikotlin:mvikotlin-main", version.ref = "mvi-kotlin" }
-mvikotlin-logging = { module = "com.arkivanov.mvikotlin:mvikotlin-logging", version.ref = "mvi-kotlin" }
-mvikotlin-extensions-coroutines = { module = "com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines", version.ref = "mvi-kotlin" }
+mvikotlin = { module = "com.arkivanov.mvikotlin:mvikotlin", version.ref = "mvikotlin" }
+mvikotlin-main = { module = "com.arkivanov.mvikotlin:mvikotlin-main", version.ref = "mvikotlin" }
+mvikotlin-logging = { module = "com.arkivanov.mvikotlin:mvikotlin-logging", version.ref = "mvikotlin" }
+mvikotlin-extensions-coroutines = { module = "com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines", version.ref = "mvikotlin" }
 
 decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 decompose-extensions-composejb = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose" }
 
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 
-bonsai-core = { module = "cafe.adriel.bonsai:bonsai-core", version.ref = "bonsai" }
-bonsai-file-system = { module = "cafe.adriel.bonsai:bonsai-file-system", version.ref = "bonsai" }
+richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditor" }
 
 directories = { module = "dev.dirs:directories", version.ref = "directories" }
 
-richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "rich-editor" }
+bonsai-core = { module = "cafe.adriel.bonsai:bonsai-core", version.ref = "bonsai" }
+bonsai-fs = { module = "cafe.adriel.bonsai:bonsai-file-system", version.ref = "bonsai" }
 
-xmlutil-core-jvm = { module = "io.github.pdvrieze.xmlutil:core-jvm", version.ref = "xml-util" }
-xmlutil-serialization-jvm = { module = "io.github.pdvrieze.xmlutil:serialization-jvm", version.ref = "xml-util" }
+xmlutil-core-jvm = { module = "io.github.pdvrieze.xmlutil:core-jvm", version.ref = "xmlutil" }
+xmlutil-serialization-jvm = { module = "io.github.pdvrieze.xmlutil:serialization-jvm", version.ref = "xmlutil" }
 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
-kotlin-logging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging" }
-log4j-slf4j2-impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j" }
+kotlinlogging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlinlogging" }
+log4j-slf4j2 = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j" }
 
 
 [bundles]
@@ -57,7 +60,7 @@ mvikotlin = [
 
 bonsai = [
     "bonsai-core",
-    "bonsai-file-system",
+    "bonsai-fs",
 ]
 
 xmlutil = [
@@ -68,8 +71,8 @@ xmlutil = [
 
 [plugins]
 
-#kotlin-jvm = { id = "", version = "1.9.0" }
-#kotlinx-serialization = { id = "", version = "1.9.0" }
-compose = { id = "org.jetbrains.compose", version = "1.4.3" }
-conveyor = { id = "dev.hydraulic.conveyor", version = "1.6" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.1" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization-plugin" }
+compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+conveyor = { id = "dev.hydraulic.conveyor", version.ref = "conveyor" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
