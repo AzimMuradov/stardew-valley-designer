@@ -21,7 +21,7 @@ import com.arkivanov.mvikotlin.logging.logger.DefaultLogFormatter
 import com.arkivanov.mvikotlin.logging.logger.Logger
 import com.arkivanov.mvikotlin.logging.store.LoggingStoreFactory
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 
 
 object LoggerUtils {

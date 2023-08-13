@@ -1,12 +1,24 @@
 plugins {
-    kotlin("jvm")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.detekt)
 }
 
 dependencies {
-    implementation("io.github.microutils:kotlin-logging-jvm:${V.KOTLIN_LOGGING}")
-    implementation("org.apache.logging.log4j:log4j-slf4j2-impl:${V.LOG4J}")
+    implementation(libs.kotlinlogging.jvm)
+    implementation(libs.log4j.slf4j2)
 
-    implementation("com.arkivanov.mvikotlin:mvikotlin:${V.MVI_KOTLIN}")
-    implementation("com.arkivanov.mvikotlin:mvikotlin-main:${V.MVI_KOTLIN}")
-    implementation("com.arkivanov.mvikotlin:mvikotlin-logging:${V.MVI_KOTLIN}")
+    implementation(libs.mvikotlin)
+    implementation(libs.mvikotlin.main)
+    implementation(libs.mvikotlin.logging)
+
+
+    // Meta-code
+
+    detektPlugins(libs.detekt.formatting)
+}
+
+detekt {
+    toolVersion = libs.versions.detekt.get()
+    config.from(projectDir.resolve("config/detekt/detekt.yml"))
+    buildUponDefaultConfig = true
 }

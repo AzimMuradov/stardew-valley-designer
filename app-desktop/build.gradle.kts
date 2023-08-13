@@ -2,12 +2,24 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 
 plugins {
-    kotlin("jvm")
-    id("org.jetbrains.compose") version V.P_COMPOSE
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.compose)
+    alias(libs.plugins.conveyor)
+    alias(libs.plugins.detekt)
+}
 
-    id("dev.hydraulic.conveyor") version V.P_CONVEYOR
+object App {
 
-    id("io.gitlab.arturbosch.detekt")
+    const val GROUP: String = "io.stardewvalleydesigner"
+
+    const val NAME: String = "stardew-valley-designer"
+
+    const val VERSION: String = "0.8.1"
+
+    const val DESCRIPTION: String =
+        "The goal of this project is to provide a finely tuned editor for designing your farm and the interior of all its buildings."
+
+    const val COPYRIGHT: String = "Copyright (c) 2021-2023 Azim Muradov."
 }
 
 group = App.GROUP
@@ -27,22 +39,21 @@ dependencies {
     implementation(projects.common.uiUtils.dropdownMenu)
     implementation(projects.common.uiUtils.dropdownMenuUi)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${V.KOTLINX_COROUTINES}")
-
     implementation(compose.desktop.currentOs)
     implementation(compose.materialIconsExtended)
 
-    implementation("com.arkivanov.decompose:decompose:${V.DECOMPOSE}")
-    implementation("com.arkivanov.decompose:extensions-compose-jetbrains:${V.DECOMPOSE}")
-    implementation("com.arkivanov.mvikotlin:mvikotlin:${V.MVI_KOTLIN}")
-    implementation("com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines:${V.MVI_KOTLIN}")
+    implementation(libs.decompose)
+    implementation(libs.decompose.extensions.composejb)
 
-    implementation("dev.dirs:directories:${V.DIRECTORIES}")
+    implementation(libs.bundles.mvikotlin)
 
-    implementation("cafe.adriel.bonsai:bonsai-core:${V.BONSAI}")
-    implementation("cafe.adriel.bonsai:bonsai-file-system:${V.BONSAI}")
+    implementation(libs.kotlinx.coroutines.core)
 
-    implementation("com.mohamedrejeb.richeditor:richeditor-compose:${V.RICH_EDITOR}")
+    implementation(libs.directories)
+
+    implementation(libs.bundles.bonsai)
+
+    implementation(libs.richeditor.compose)
 
 
     // Conveyor
@@ -55,10 +66,10 @@ dependencies {
 
     // Meta-code
 
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${V.DETEKT}")
+    detektPlugins(libs.detekt.formatting)
 
     implementation(projects.common.logger)
-    implementation("io.github.microutils:kotlin-logging-jvm:${V.KOTLIN_LOGGING}")
+    implementation(libs.kotlinlogging.jvm)
 }
 
 
@@ -80,9 +91,9 @@ compose.desktop {
             packageVersion = App.VERSION
             description = App.DESCRIPTION
             copyright = App.COPYRIGHT
-            licenseFile.set(rootProject.file("LICENSE"))
+            licenseFile = rootProject.file("LICENSE")
 
-            outputBaseDir.set(rootProject.buildDir.resolve(relative = "bin"))
+            outputBaseDir = rootProject.buildDir.resolve(relative = "bin")
 
             targetFormats(
                 TargetFormat.Deb,
@@ -103,8 +114,8 @@ tasks.clean {
 }
 
 detekt {
-    toolVersion = V.DETEKT
-    config = files("../config/detekt/detekt.yml")
+    toolVersion = libs.versions.detekt.get()
+    config.from(projectDir.resolve("config/detekt/detekt.yml"))
     buildUponDefaultConfig = true
 }
 

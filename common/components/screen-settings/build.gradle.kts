@@ -1,25 +1,22 @@
 plugins {
-    kotlin("jvm")
-
-    id("io.gitlab.arturbosch.detekt")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.detekt)
 }
 
 dependencies {
-    implementation("com.arkivanov.decompose:decompose:${V.DECOMPOSE}")
-    implementation("com.arkivanov.mvikotlin:mvikotlin:${V.MVI_KOTLIN}")
-    implementation("com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines:${V.MVI_KOTLIN}")
+    implementation(libs.bundles.mvikotlin)
 
 
     // Meta-code
 
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${V.DETEKT}")
+    detektPlugins(libs.detekt.formatting)
 
     implementation(projects.common.logger)
-    implementation("io.github.microutils:kotlin-logging-jvm:${V.KOTLIN_LOGGING}")
+    implementation(libs.kotlinlogging.jvm)
 }
 
 detekt {
-    toolVersion = V.DETEKT
-    config = files("../../../config/detekt/detekt.yml")
+    toolVersion = libs.versions.detekt.get()
+    config.from(projectDir.resolve("config/detekt/detekt.yml"))
     buildUponDefaultConfig = true
 }

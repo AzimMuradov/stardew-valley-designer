@@ -1,28 +1,26 @@
 plugins {
-    kotlin("jvm")
-    kotlin("plugin.serialization") version V.P_KOTLINX_SERIALIZATION
-
-    id("io.gitlab.arturbosch.detekt")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.detekt)
 }
 
 dependencies {
     implementation(projects.common.editorEngine)
     implementation(projects.common.entitiesMetadata)
 
-    implementation("io.github.pdvrieze.xmlutil:core-jvm:${V.XML_UTIL}")
-    implementation("io.github.pdvrieze.xmlutil:serialization-jvm:${V.XML_UTIL}")
+    implementation(libs.bundles.xmlutil)
 
 
     // Meta-code
 
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${V.DETEKT}")
+    detektPlugins(libs.detekt.formatting)
 
     implementation(projects.common.logger)
-    implementation("io.github.microutils:kotlin-logging-jvm:${V.KOTLIN_LOGGING}")
+    implementation(libs.kotlinlogging.jvm)
 }
 
 detekt {
-    toolVersion = V.DETEKT
-    config = files("../../config/detekt/detekt.yml")
+    toolVersion = libs.versions.detekt.get()
+    config.from(projectDir.resolve("config/detekt/detekt.yml"))
     buildUponDefaultConfig = true
 }
