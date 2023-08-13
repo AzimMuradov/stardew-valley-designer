@@ -4,7 +4,7 @@ kotlin = "1.9.0"
 
 compose = "1.4.3"
 
-decompose = "2.0.1"
+decompose = "1.0.0"
 mvikotlin = "3.2.1"
 
 kotlinx-coroutines = "1.7.3"
