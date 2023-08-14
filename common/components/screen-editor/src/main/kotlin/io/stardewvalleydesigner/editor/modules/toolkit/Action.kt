@@ -17,6 +17,7 @@
 package io.stardewvalleydesigner.editor.modules.toolkit
 
 import io.stardewvalleydesigner.editor.EditorIntent
+import io.stardewvalleydesigner.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
@@ -26,6 +27,7 @@ typealias Action = EditorIntent.Engine
 
 data class ActionReturn(
     val toolkit: ToolkitState,
+    val palette: PaletteState,
     val selectedEntities: LayeredEntitiesData,
 )
 

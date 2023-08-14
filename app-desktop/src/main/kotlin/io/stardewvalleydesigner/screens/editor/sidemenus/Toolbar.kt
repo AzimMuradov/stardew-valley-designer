@@ -90,6 +90,7 @@ fun Toolbar(
                     ToolType.Pen -> "tools/pen.png"
                     ToolType.Eraser -> "tools/eraser.png"
                     ToolType.Select -> "tools/select.png"
+                    ToolType.EyeDropper -> "tools/hand.png" // TODO : "tools/eye-dropper.png"
                 }
             )
         }

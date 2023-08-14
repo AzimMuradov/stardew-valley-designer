@@ -110,6 +110,7 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
                     }
                     if (actionReturn != null) {
                         dispatch(Msg.UpdateToolkit(actionReturn.toolkit))
+                        dispatch(Msg.UpdatePalette(actionReturn.palette))
                         dispatch(Msg.UpdateMap(engine.pullState(actionReturn.selectedEntities)))
 
                         if (intent == Intent.Engine.End) {

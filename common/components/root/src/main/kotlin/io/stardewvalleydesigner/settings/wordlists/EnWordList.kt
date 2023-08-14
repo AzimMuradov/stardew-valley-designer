@@ -718,6 +718,7 @@ data object EnWordList : WordList {
         ToolType.Pen -> "Pen"
         ToolType.Eraser -> "Eraser"
         ToolType.Select -> "Select"
+        ToolType.EyeDropper -> "Eye dropper"
     }
 
     override fun shape(type: ShapeType?): String = when (type) {
