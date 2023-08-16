@@ -18,25 +18,31 @@ package io.stardewvalleydesigner.utils.menu.impl
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.BottomCenter
+import androidx.compose.ui.Alignment.Companion.BottomEnd
+import androidx.compose.ui.Alignment.Companion.BottomStart
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.CenterEnd
+import androidx.compose.ui.Alignment.Companion.CenterStart
+import androidx.compose.ui.Alignment.Companion.TopCenter
+import androidx.compose.ui.Alignment.Companion.TopEnd
+import androidx.compose.ui.Alignment.Companion.TopStart
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.PopupPositionProvider
-import io.stardewvalleydesigner.utils.menu.*
 import kotlin.math.max
 import kotlin.math.min
 
 
-private val defaultMenuPositioning = MenuPositioning(Alignment.BottomCenter, Alignment.BottomCenter)
+internal data class CustomDropdownMenuPositioning(val anchor: Alignment, val alignment: Alignment)
 
-
-// Menu positioning
 
 @Composable
 internal fun customDropdownMenuPositionProvider(
-    preferredMenuPositioning: List<MenuPositioning>,
+    preferredMenuPositioning: List<CustomDropdownMenuPositioning>,
     offset: DpOffset,
-    onPositionCalculated: (IntRect, IntRect) -> Unit,
+    onPositionCalculated: (parentBounds: IntRect, menuBounds: IntRect) -> Unit,
 ): PopupPositionProvider = with(LocalDensity.current) {
     object : PopupPositionProvider {
         override fun calculatePosition(
@@ -45,20 +51,15 @@ internal fun customDropdownMenuPositionProvider(
             layoutDirection: LayoutDirection,
             popupContentSize: IntSize,
         ): IntOffset {
-            val menuPositioning = preferredMenuPositioning.takeUnless { it.isEmpty() } ?: listOf(defaultMenuPositioning)
+            require(preferredMenuPositioning.isNotEmpty())
 
-            fun posBy(menuPositioning: MenuPositioning): IntOffset {
-                val (anchor, alignment) = menuPositioning
+            fun posBy(positioning: CustomDropdownMenuPositioning): IntOffset {
+                val (anchor, alignment) = positioning
                 val anchorPoint = anchor.align(IntSize.Zero, anchorBounds.size, layoutDirection)
                 val tooltipArea = IntRect(
-                    IntOffset(
-                        anchorBounds.left + anchorPoint.x - popupContentSize.width,
-                        anchorBounds.top + anchorPoint.y - popupContentSize.height,
-                    ),
-                    IntSize(
-                        popupContentSize.width * 2,
-                        popupContentSize.height * 2
-                    )
+                    offset = anchorBounds.topLeft + anchorPoint
+                            - IntOffset(popupContentSize.width, popupContentSize.height),
+                    size = popupContentSize * 2
                 )
                 val position = alignment.align(popupContentSize, tooltipArea.size, layoutDirection)
 
@@ -68,7 +69,7 @@ internal fun customDropdownMenuPositionProvider(
                 )
             }
 
-            val positions = menuPositioning.map(::posBy)
+            val positions = preferredMenuPositioning.map(::posBy)
 
             // The min margin above and below the menu, relative to the screen.
             val verticalMargin = DropdownMenuSpecs.MenuVerticalMargin.roundToPx()
@@ -78,49 +79,16 @@ internal fun customDropdownMenuPositionProvider(
                         y >= 0 + verticalMargin && y + popupContentSize.height <= windowSize.height - verticalMargin
             } ?: positions.last()
 
-
-            // TODO : Took inspiration from the code below
-            // // The min margin above and below the menu, relative to the screen.
-            // val verticalMargin = MenuVerticalMargin.roundToPx()
-            // // The content offset specified using the dropdown offset parameter.
-            // val contentOffsetX = offset.x.roundToPx()
-            // val contentOffsetY = offset.y.roundToPx()
-            //
-            // // Compute horizontal position.
-            // val toRight = anchorBounds.left + contentOffsetX
-            // val toLeft = anchorBounds.right - contentOffsetX - popupContentSize.width
-            // val toDisplayRight = windowSize.width - popupContentSize.width
-            // val toDisplayLeft = 0
-            // val x = if (layoutDirection == LayoutDirection.Ltr) {
-            //     sequenceOf(toRight, toLeft, toDisplayRight)
-            // } else {
-            //     sequenceOf(toLeft, toRight, toDisplayLeft)
-            // }.firstOrNull {
-            //     it >= 0 && it + popupContentSize.width <= windowSize.width
-            // } ?: toLeft
-            //
-            // // Compute vertical position.
-            // val toBottom = maxOf(anchorBounds.bottom + contentOffsetY, verticalMargin)
-            // val toTop = anchorBounds.top - contentOffsetY - popupContentSize.height
-            // val toCenter = anchorBounds.top - popupContentSize.height / 2
-            // val toDisplayBottom = windowSize.height - popupContentSize.height - verticalMargin
-            //
-            // val y = sequenceOf(toBottom, toTop, toCenter, toDisplayBottom).firstOrNull {
-            //     it >= verticalMargin && it + popupContentSize.height <= windowSize.height - verticalMargin
-            // } ?: toTop
-            //
-            // val pos = IntOffset(x, y)
-
-
             onPositionCalculated(
                 anchorBounds,
-                IntRect(pos.x, pos.y, pos.x + popupContentSize.width, pos.y + popupContentSize.height)
+                IntRect(offset = pos, size = popupContentSize)
             )
 
             return pos
         }
     }
 }
+
 
 internal fun calculateTransformOrigin(
     parentBounds: IntRect,
@@ -149,3 +117,18 @@ internal fun calculateTransformOrigin(
         }
     },
 )
+
+
+private fun Alignment.toVertical(): Alignment.Vertical = when (this) {
+    TopStart, TopCenter, TopEnd -> Alignment.Top
+    CenterStart, Center, CenterEnd -> Alignment.CenterVertically
+    BottomStart, BottomCenter, BottomEnd -> Alignment.Bottom
+    else -> error("Not supported")
+}
+
+private fun Alignment.toHorizontal(): Alignment.Horizontal = when (this) {
+    TopStart, CenterStart, BottomStart -> Alignment.Start
+    TopCenter, Center, BottomCenter -> Alignment.CenterHorizontally
+    TopEnd, CenterEnd, BottomEnd -> Alignment.End
+    else -> error("Not supported")
+}

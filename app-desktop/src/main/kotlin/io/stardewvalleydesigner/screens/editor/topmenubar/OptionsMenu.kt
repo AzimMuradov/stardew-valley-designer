@@ -36,7 +36,8 @@ import io.stardewvalleydesigner.editor.menus.OptionsItemValue
 import io.stardewvalleydesigner.editor.menus.OptionsMenu
 import io.stardewvalleydesigner.editor.modules.options.OptionsState
 import io.stardewvalleydesigner.utils.GlobalSettings
-import io.stardewvalleydesigner.utils.menu.HoverableCascadingDropdownMenu
+import io.stardewvalleydesigner.utils.menu.DropdownMenuStyle
+import io.stardewvalleydesigner.utils.menu.HoverableDropdownMenu
 
 
 @Composable
@@ -48,10 +49,10 @@ fun RowScope.OptionsMenu(
     val wordList = GlobalSettings.strings
 
     Box(modifier = Modifier.aspectRatio(1f).fillMaxHeight()) {
-        HoverableCascadingDropdownMenu(
+        HoverableDropdownMenu(
             menu = menu,
 
-            shape = RectangleShape,
+            dropdownMenuStyle = DropdownMenuStyle.of(shape = RectangleShape),
 
             menuRootModifierProvider = { hovered ->
                 Modifier.background(
@@ -75,16 +76,7 @@ fun RowScope.OptionsMenu(
             },
             menuModifierProvider = { DROPDOWN_MENU_MODIFIER },
 
-            submenuRootModifierProvider = { Modifier },
-            submenuRootContent = { _, _ -> },
-            submenuModifierProvider = { Modifier },
-
-            itemModifierProvider = { _, hovered ->
-                Modifier
-                    .fillMaxSize()
-                    .background(color = if (hovered) Color.Black.copy(alpha = 0.15f) else Color.Transparent)
-            },
-            itemValueContent = { value, _ ->
+            itemContent = { value, _ ->
                 when (value) {
                     is OptionsItemValue.Toggleable -> ToggleableOption(
                         name = wordList.optionTitle(value),
@@ -93,6 +85,11 @@ fun RowScope.OptionsMenu(
                     )
                 }
             },
+            itemModifierProvider = { _, hovered ->
+                Modifier
+                    .fillMaxSize()
+                    .background(color = if (hovered) Color.Black.copy(alpha = 0.15f) else Color.Transparent)
+            },
         )
     }
 }
@@ -100,8 +97,8 @@ fun RowScope.OptionsMenu(
 
 @Composable
 private fun RowScope.ToggleableOption(name: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
-    Checkbox(checked, onCheckedChange)
-    Spacer(modifier = Modifier.width(8.dp))
+    Checkbox(checked, onCheckedChange, Modifier.size(32.dp))
+    Spacer(modifier = Modifier.width(12.dp))
     Text(
         text = name,
         modifier = Modifier.weight(1f),
