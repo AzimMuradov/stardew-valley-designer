@@ -52,6 +52,7 @@ class EraserShape(private val engine: EditorEngine, private val shape: ShapeType
                 placedShape = placedShape,
                 entitiesToDelete = entitiesToDelete.coordinates
             ),
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }
@@ -71,6 +72,7 @@ class EraserShape(private val engine: EditorEngine, private val shape: ShapeType
                 placedShape = placedShape,
                 entitiesToDelete = entitiesToDelete.coordinates
             ),
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }
@@ -83,6 +85,7 @@ class EraserShape(private val engine: EditorEngine, private val shape: ShapeType
         engine.removeAll(entitiesToDelete)
         return ActionReturn(
             toolkit = ToolkitState.Eraser.Shape.Idle(shape),
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }

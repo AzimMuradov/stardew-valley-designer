@@ -61,6 +61,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
                         .flatten()
                         .coordinates
                 ),
+                currentEntity = currentEntity,
                 selectedEntities = selectedEntities
             )
         } else {
@@ -102,6 +103,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
                     .flatten()
                     .coordinates
             ),
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }
@@ -114,6 +116,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
         engine.putAll(entitiesToDraw.toList().asDisjointUnsafe())
         return ActionReturn(
             toolkit = ToolkitState.Pen.Shape.Idle(shape),
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }

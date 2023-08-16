@@ -134,6 +134,19 @@ sealed class ToolkitState(val tool: ToolType) {
         }
     }
 
+    sealed class EyeDropper : ToolkitState(tool = ToolType.EyeDropper) {
+
+        sealed class Point(final override val isIdle: Boolean) : EyeDropper() {
+
+            data object Idle : Point(isIdle = true)
+
+            data object Acting : Point(isIdle = false)
+
+            final override val shape: ShapeType? = null
+
+            final override val actionVector: BoundVector? = null
+        }
+    }
 
     companion object {
 
@@ -148,15 +161,17 @@ sealed class ToolkitState(val tool: ToolType) {
                 ToolType.Pen -> compatibleShape?.let(Pen.Shape::Idle) ?: Pen.Point.Idle
                 ToolType.Eraser -> compatibleShape?.let(Eraser.Shape::Idle) ?: Eraser.Point.Idle
                 ToolType.Select -> Select.Shape.Idle(compatibleShape!!)
+                ToolType.EyeDropper -> EyeDropper.Point.Idle
             }
         }
 
         private val ToolType.allowedShapes: List<ShapeType?>
             get() = when (this) {
                 ToolType.Hand -> listOf(null)
-                ToolType.Pen -> listOf(null) + ShapeType.values()
-                ToolType.Eraser -> listOf(null) + ShapeType.values()
-                ToolType.Select -> ShapeType.values().toList()
+                ToolType.Pen -> listOf(null) + ShapeType.entries
+                ToolType.Eraser -> listOf(null) + ShapeType.entries
+                ToolType.Select -> ShapeType.entries
+                ToolType.EyeDropper -> listOf(null)
             }
     }
 }

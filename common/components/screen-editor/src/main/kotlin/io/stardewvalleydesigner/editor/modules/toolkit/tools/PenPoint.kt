@@ -44,6 +44,7 @@ class PenPoint(private val engine: EditorEngine) : Tool {
         }
         return ActionReturn(
             toolkit = ToolkitState.Pen.Point.Acting,
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }
@@ -65,6 +66,7 @@ class PenPoint(private val engine: EditorEngine) : Tool {
         }
         return ActionReturn(
             toolkit = ToolkitState.Pen.Point.Acting,
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }
@@ -76,6 +78,7 @@ class PenPoint(private val engine: EditorEngine) : Tool {
     ): ActionReturn {
         return ActionReturn(
             toolkit = ToolkitState.Pen.Point.Idle,
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }

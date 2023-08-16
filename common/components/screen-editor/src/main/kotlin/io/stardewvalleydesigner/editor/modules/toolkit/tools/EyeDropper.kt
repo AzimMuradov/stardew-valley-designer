@@ -20,63 +20,46 @@ import io.stardewvalleydesigner.editor.modules.toolkit.*
 import io.stardewvalleydesigner.engine.EditorEngine
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.geometry.Coordinate
-import io.stardewvalleydesigner.engine.getAll
+import io.stardewvalleydesigner.engine.get
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
-import kotlin.properties.Delegates
+import io.stardewvalleydesigner.engine.layers.topmost
 
 
-class Select(private val engine: EditorEngine, private val shape: ShapeType) : Tool {
-
-    private var start: Coordinate by Delegates.notNull()
-
+class EyeDropper(private val engine: EditorEngine) : Tool {
 
     override fun start(
         coordinate: Coordinate,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
-    ): ActionReturn {
-        start = coordinate
-
-        val placedShape = shape.projectTo(start, coordinate)
-
-        return ActionReturn(
-            toolkit = ToolkitState.Select.Shape.Acting(placedShape),
-            currentEntity = currentEntity,
-            selectedEntities = engine.getAll(placedShape.coordinates, visLayers)
-        )
-    }
+    ): ActionReturn = ActionReturn(
+        toolkit = ToolkitState.EyeDropper.Point.Acting,
+        currentEntity = engine.get(coordinate, visLayers).topmost()?.rectObject,
+        selectedEntities = selectedEntities
+    )
 
     override fun keep(
         coordinate: Coordinate,
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
-    ): ActionReturn {
-        val placedShape = shape.projectTo(start, coordinate)
-
-        return ActionReturn(
-            toolkit = ToolkitState.Select.Shape.Acting(placedShape),
-            currentEntity = currentEntity,
-            selectedEntities = engine.getAll(placedShape.coordinates, visLayers)
-        )
-    }
+    ): ActionReturn = ActionReturn(
+        toolkit = ToolkitState.EyeDropper.Point.Acting,
+        currentEntity = engine.get(coordinate, visLayers).topmost()?.rectObject,
+        selectedEntities = selectedEntities
+    )
 
     override fun end(
         currentEntity: Entity<*>?,
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
-    ): ActionReturn {
-        return ActionReturn(
-            toolkit = ToolkitState.Select.Shape.Idle(shape),
-            currentEntity = currentEntity,
-            selectedEntities = selectedEntities
-        )
-    }
+    ): ActionReturn = ActionReturn(
+        toolkit = ToolkitState.EyeDropper.Point.Idle,
+        currentEntity = currentEntity,
+        selectedEntities = selectedEntities
+    )
 
 
-    override fun dispose() {
-        start = Coordinate.ZERO
-    }
+    override fun dispose() = Unit
 }

@@ -26,6 +26,7 @@ typealias Action = EditorIntent.Engine
 
 data class ActionReturn(
     val toolkit: ToolkitState,
+    val currentEntity: Entity<*>?,
     val selectedEntities: LayeredEntitiesData,
 )
 

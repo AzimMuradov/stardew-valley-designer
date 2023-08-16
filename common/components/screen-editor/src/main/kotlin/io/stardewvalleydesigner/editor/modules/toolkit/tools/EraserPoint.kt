@@ -36,6 +36,7 @@ class EraserPoint(private val engine: EditorEngine) : Tool {
         engine.remove(coordinate, visLayers)
         return ActionReturn(
             toolkit = ToolkitState.Eraser.Point.Acting,
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }
@@ -49,6 +50,7 @@ class EraserPoint(private val engine: EditorEngine) : Tool {
         engine.remove(coordinate, visLayers)
         return ActionReturn(
             toolkit = ToolkitState.Eraser.Point.Acting,
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }
@@ -60,6 +62,7 @@ class EraserPoint(private val engine: EditorEngine) : Tool {
     ): ActionReturn {
         return ActionReturn(
             toolkit = ToolkitState.Eraser.Point.Idle,
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }
