@@ -73,7 +73,8 @@ fun Toolbar(
     ToggleButtonsGroup(
         buttonLabels = tools,
         rowSize = size,
-        chosenLabel = GroupOption.Some(toolkit.tool),
+        modifier = Modifier.fillMaxWidth(),
+        chosenLabel = toolkit.tool,
         onButtonClick = { intentConsumer(EditorIntent.Toolkit.ChooseTool(it)) },
         spaceContent = {
             Icon(
@@ -101,7 +102,8 @@ fun Toolbar(
         ToggleButtonsGroup(
             buttonLabels = shapes,
             rowSize = size,
-            chosenLabel = GroupOption.Some(toolkit.shape),
+            modifier = Modifier.fillMaxWidth(),
+            chosenLabel = toolkit.shape,
             onButtonClick = { intentConsumer(EditorIntent.Toolkit.ChooseShape(it)) },
             spaceContent = {
                 Icon(

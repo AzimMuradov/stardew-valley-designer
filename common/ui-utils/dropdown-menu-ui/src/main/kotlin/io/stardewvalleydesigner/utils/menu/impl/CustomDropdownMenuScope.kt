@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.utils.group
+package io.stardewvalleydesigner.utils.menu.impl
+
+import androidx.compose.foundation.lazy.LazyListScope
 
 
-sealed interface GroupOption<out T> {
+internal interface CustomDropdownMenuScope : LazyListScope {
 
-    data class Some<T>(val value: T) : GroupOption<T>
+    val hasScrollbar: Boolean
+}
 
-    data class Disabled<T>(val value: T) : GroupOption<T>
+internal class CustomDropdownMenuScopeImpl(
+    lazyListScope: LazyListScope,
+    private val hasScrollbarProvider: () -> Boolean,
+) : CustomDropdownMenuScope, LazyListScope by lazyListScope {
 
-    data object None : GroupOption<Nothing>
+    override val hasScrollbar: Boolean get() = hasScrollbarProvider()
 }
