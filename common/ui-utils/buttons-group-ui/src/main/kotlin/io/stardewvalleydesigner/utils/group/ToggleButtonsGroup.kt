@@ -16,88 +16,85 @@
 
 package io.stardewvalleydesigner.utils.group
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.unit.Constraints
+import kotlin.math.roundToInt
+
 
 @Composable
 fun <L> ToggleButtonsGroup(
     buttonLabels: List<GroupOption<L>>,
     rowSize: UInt,
     modifier: Modifier = Modifier,
-    chosenLabel: GroupOption<L>,
+    chosenLabel: L,
     onButtonClick: (L) -> Unit,
-    spaceContent: @Composable RowScope.() -> Unit = {},
-    buttonContent: @Composable RowScope.(label: L) -> Unit,
+    spaceContent: @Composable BoxScope.() -> Unit = {},
+    buttonContent: @Composable BoxScope.(label: L) -> Unit,
 ) {
-    val items = buttonLabels
-        .chunked(size = rowSize.toInt()) { it.resizedTo(size = rowSize.toInt(), spacer = GroupOption.None) }
-        .flatten()
+    val items = buttonLabels.chunked(size = rowSize.toInt()) {
+        it.resizedTo(
+            size = rowSize.toInt(),
+            spacer = GroupOption.None
+        )
+    }
 
-    Surface(
-        modifier = Modifier.wrapContentSize().then(modifier),
-        shape = MaterialTheme.shapes.medium,
-        elevation = 2.dp,
-    ) {
-        VerticalGroup(
-            rowSize = rowSize,
-            modifier = Modifier.clip(MaterialTheme.shapes.medium),
-        ) {
-            for (item in items) {
+    Layout(
+        content = {
+            for (item in items.flatten()) {
                 when (item) {
                     is GroupOption.Some -> ToggleButtonsGroupItem(
                         onClick = { onButtonClick(item.value) },
-                        background = if (item == chosenLabel) Color.Black.copy(alpha = 0.15f) else MaterialTheme.colors.surface,
+                        background = if (item.value == chosenLabel) {
+                            Color.Black.copy(alpha = 0.15f)
+                        } else {
+                            MaterialTheme.colors.surface
+                        },
                         content = { buttonContent(item.value) },
                     )
 
                     is GroupOption.Disabled -> ToggleButtonsGroupItem(
-                        onClick = { onButtonClick(item.value) },
                         enabled = false,
-                        background = if (item == chosenLabel) Color.Black.copy(alpha = 0.15f) else MaterialTheme.colors.surface,
                         content = { buttonContent(item.value) },
                     )
 
                     GroupOption.None -> ToggleButtonsGroupItem(
-                        onClick = {},
                         enabled = false,
                         content = spaceContent,
                     )
+                }
+            }
+        },
+        modifier = modifier,
+    ) { measurables, constraints ->
+        val itemSize = constraints.maxWidth / rowSize.toFloat()
+
+        val xs = (0..<rowSize.toInt()).map { it * itemSize }.map { it.roundToInt() } + constraints.maxWidth
+        val ys = (0..items.size).map { it * itemSize }.map { it.roundToInt() }
+
+        val placeables = measurables.chunked(size = rowSize.toInt()).mapIndexed { yI, row ->
+            row.mapIndexed { xI, m ->
+                m.measure(Constraints.fixed(xs[xI + 1] - xs[xI], ys[yI + 1] - ys[yI]))
+            }
+        }
+
+        layout(width = xs.last(), height = ys.last()) {
+            placeables.forEachIndexed { yI, row ->
+                row.forEachIndexed { xI, p ->
+                    p.place(x = xs[xI], y = ys[yI])
                 }
             }
         }
     }
 }
 
-private fun <R, T : R> List<T>.resizedTo(size: Int, spacer: R): List<R> =
+
+// Utils
+
+private fun <T : S, S> List<T>.resizedTo(size: Int, spacer: S): List<S> =
     if (this.size >= size) slice(0 until size)
     else this + List(size = size - this.size) { spacer }
-
-private fun <T> List<T>.resizedTo(size: Int): List<T?> =
-    if (this.size >= size) slice(0 until size)
-    else this + List(size = size - this.size) { null }
-
-
-@Composable
-private fun ToggleButtonsGroupItem(
-    onClick: () -> Unit,
-    enabled: Boolean = true,
-    background: Color = MaterialTheme.colors.surface,
-    content: @Composable RowScope.() -> Unit,
-) {
-    OutlinedButton(
-        onClick = onClick,
-        modifier = Modifier.aspectRatio(1f).fillMaxSize(),
-        enabled = enabled,
-        shape = RectangleShape,
-        border = null,
-        colors = ButtonDefaults.outlinedButtonColors(backgroundColor = background),
-        contentPadding = PaddingValues(4.dp),
-        content = content,
-    )
-}

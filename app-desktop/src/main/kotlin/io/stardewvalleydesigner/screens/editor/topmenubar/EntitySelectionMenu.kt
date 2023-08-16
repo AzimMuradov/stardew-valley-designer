@@ -38,7 +38,8 @@ import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.EntityType
 import io.stardewvalleydesigner.utils.GlobalSettings
 import io.stardewvalleydesigner.utils.Sprite
-import io.stardewvalleydesigner.utils.menu.HoverableCascadingDropdownMenu
+import io.stardewvalleydesigner.utils.menu.DropdownMenuStyle
+import io.stardewvalleydesigner.utils.menu.HoverableDropdownMenu
 
 
 @Composable
@@ -51,10 +52,10 @@ fun EntitySelectionMenu(
     val wordList = GlobalSettings.strings
 
     Box(modifier = Modifier.fillMaxHeight().width(REQUIRED_DROPDOWN_MENU_WIDTH)) {
-        HoverableCascadingDropdownMenu(
+        HoverableDropdownMenu(
             menu = filteredMenu,
 
-            shape = RectangleShape,
+            dropdownMenuStyle = DropdownMenuStyle.of(shape = RectangleShape),
 
             menuRootModifierProvider = { hovered ->
                 Modifier.background(
@@ -76,11 +77,6 @@ fun EntitySelectionMenu(
             },
             menuModifierProvider = { DROPDOWN_MENU_MODIFIER },
 
-            submenuRootModifierProvider = { hovered ->
-                Modifier
-                    .fillMaxSize()
-                    .background(color = if (hovered) Color.Black.copy(alpha = 0.2f) else Color.Transparent)
-            },
             submenuRootContent = { root, hovered ->
                 val rotation by animateFloatAsState(if (hovered) 180f else 0f)
 
@@ -95,18 +91,15 @@ fun EntitySelectionMenu(
                     contentDescription = null,
                     modifier = Modifier.rotate(rotation)
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+            },
+            submenuRootModifierProvider = { _, hovered ->
+                Modifier
+                    .fillMaxSize()
+                    .background(color = if (hovered) Color.Black.copy(alpha = 0.2f) else Color.Transparent)
             },
             submenuModifierProvider = { DROPDOWN_MENU_MODIFIER },
 
-            itemModifierProvider = { root, hovered ->
-                Modifier
-                    .fillMaxSize()
-                    .align(Alignment.Center)
-                    .background(color = if (hovered) Color.Black.copy(alpha = 0.15f) else Color.Transparent)
-                    .clickable { onEntitySelection(root) }
-            },
-            itemValueContent = { value, _ ->
+            itemContent = { value, _ ->
                 Spacer(modifier = Modifier.width(8.dp))
                 Surface(
                     modifier = Modifier.wrapContentSize(),
@@ -122,6 +115,13 @@ fun EntitySelectionMenu(
                     modifier = Modifier.weight(1f),
                     style = MaterialTheme.typography.subtitle2
                 )
+            },
+            itemModifierProvider = { root, hovered ->
+                Modifier
+                    .fillMaxSize()
+                    .align(Alignment.Center)
+                    .background(color = if (hovered) Color.Black.copy(alpha = 0.15f) else Color.Transparent)
+                    .clickable { onEntitySelection(root) }
             },
         )
     }
