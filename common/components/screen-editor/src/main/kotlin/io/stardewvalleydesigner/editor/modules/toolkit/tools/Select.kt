@@ -16,7 +16,6 @@
 
 package io.stardewvalleydesigner.editor.modules.toolkit.tools
 
-import io.stardewvalleydesigner.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.editor.modules.toolkit.*
 import io.stardewvalleydesigner.engine.EditorEngine
 import io.stardewvalleydesigner.engine.entity.Entity
@@ -44,7 +43,7 @@ class Select(private val engine: EditorEngine, private val shape: ShapeType) : T
 
         return ActionReturn(
             toolkit = ToolkitState.Select.Shape.Acting(placedShape),
-            palette = PaletteState.default().copy(inUse = currentEntity),
+            currentEntity = currentEntity,
             selectedEntities = engine.getAll(placedShape.coordinates, visLayers)
         )
     }
@@ -59,7 +58,7 @@ class Select(private val engine: EditorEngine, private val shape: ShapeType) : T
 
         return ActionReturn(
             toolkit = ToolkitState.Select.Shape.Acting(placedShape),
-            palette = PaletteState.default().copy(inUse = currentEntity),
+            currentEntity = currentEntity,
             selectedEntities = engine.getAll(placedShape.coordinates, visLayers)
         )
     }
@@ -71,7 +70,7 @@ class Select(private val engine: EditorEngine, private val shape: ShapeType) : T
     ): ActionReturn {
         return ActionReturn(
             toolkit = ToolkitState.Select.Shape.Idle(shape),
-            palette = PaletteState.default().copy(inUse = currentEntity),
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }

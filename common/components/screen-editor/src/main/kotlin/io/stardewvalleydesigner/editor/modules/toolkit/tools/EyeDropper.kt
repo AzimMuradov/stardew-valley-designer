@@ -16,7 +16,6 @@
 
 package io.stardewvalleydesigner.editor.modules.toolkit.tools
 
-import io.stardewvalleydesigner.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.editor.modules.toolkit.*
 import io.stardewvalleydesigner.engine.EditorEngine
 import io.stardewvalleydesigner.engine.entity.Entity
@@ -36,7 +35,7 @@ class EyeDropper(private val engine: EditorEngine) : Tool {
         visLayers: Set<LayerType<*>>,
     ): ActionReturn = ActionReturn(
         toolkit = ToolkitState.EyeDropper.Point.Acting,
-        palette = PaletteState.default().copy(inUse = engine.get(coordinate, visLayers).topmost()?.rectObject),
+        currentEntity = engine.get(coordinate, visLayers).topmost()?.rectObject,
         selectedEntities = selectedEntities
     )
 
@@ -47,7 +46,7 @@ class EyeDropper(private val engine: EditorEngine) : Tool {
         visLayers: Set<LayerType<*>>,
     ): ActionReturn = ActionReturn(
         toolkit = ToolkitState.EyeDropper.Point.Acting,
-        palette = PaletteState.default().copy(inUse = engine.get(coordinate, visLayers).topmost()?.rectObject),
+        currentEntity = engine.get(coordinate, visLayers).topmost()?.rectObject,
         selectedEntities = selectedEntities
     )
 
@@ -57,7 +56,7 @@ class EyeDropper(private val engine: EditorEngine) : Tool {
         visLayers: Set<LayerType<*>>,
     ): ActionReturn = ActionReturn(
         toolkit = ToolkitState.EyeDropper.Point.Idle,
-        palette = PaletteState.default().copy(inUse = currentEntity),
+        currentEntity = currentEntity,
         selectedEntities = selectedEntities
     )
 

@@ -16,7 +16,6 @@
 
 package io.stardewvalleydesigner.editor.modules.toolkit.tools
 
-import io.stardewvalleydesigner.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.editor.modules.toolkit.*
 import io.stardewvalleydesigner.engine.*
 import io.stardewvalleydesigner.engine.entity.Entity
@@ -58,7 +57,7 @@ class Hand(private val engine: EditorEngine) : Tool {
         return if (heldEntities.flattenSequence().any()) {
             ActionReturn(
                 toolkit = ToolkitState.Hand.Point.Acting(heldEntities),
-                palette = PaletteState.default().copy(inUse = currentEntity),
+                currentEntity = currentEntity,
                 selectedEntities = heldEntities
             )
         } else {
@@ -80,7 +79,7 @@ class Hand(private val engine: EditorEngine) : Tool {
 
         return ActionReturn(
             toolkit = ToolkitState.Hand.Point.Acting(heldEntities),
-            palette = PaletteState.default().copy(inUse = currentEntity),
+            currentEntity = currentEntity,
             selectedEntities = heldEntities
         )
     }
@@ -93,7 +92,7 @@ class Hand(private val engine: EditorEngine) : Tool {
         engine.putAll(heldEntities.toLayeredEntities())
         return ActionReturn(
             toolkit = ToolkitState.Hand.Point.Idle,
-            palette = PaletteState.default().copy(inUse = currentEntity),
+            currentEntity = currentEntity,
             selectedEntities = if (isSelected) heldEntities else LayeredEntitiesData()
         )
     }

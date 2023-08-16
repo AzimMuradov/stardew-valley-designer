@@ -16,7 +16,6 @@
 
 package io.stardewvalleydesigner.editor.modules.toolkit.tools
 
-import io.stardewvalleydesigner.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.editor.modules.toolkit.*
 import io.stardewvalleydesigner.engine.*
 import io.stardewvalleydesigner.engine.entity.Entity
@@ -53,7 +52,7 @@ class EraserShape(private val engine: EditorEngine, private val shape: ShapeType
                 placedShape = placedShape,
                 entitiesToDelete = entitiesToDelete.coordinates
             ),
-            palette = PaletteState.default().copy(inUse = currentEntity),
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }
@@ -73,7 +72,7 @@ class EraserShape(private val engine: EditorEngine, private val shape: ShapeType
                 placedShape = placedShape,
                 entitiesToDelete = entitiesToDelete.coordinates
             ),
-            palette = PaletteState.default().copy(inUse = currentEntity),
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }
@@ -86,7 +85,7 @@ class EraserShape(private val engine: EditorEngine, private val shape: ShapeType
         engine.removeAll(entitiesToDelete)
         return ActionReturn(
             toolkit = ToolkitState.Eraser.Shape.Idle(shape),
-            palette = PaletteState.default().copy(inUse = currentEntity),
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }

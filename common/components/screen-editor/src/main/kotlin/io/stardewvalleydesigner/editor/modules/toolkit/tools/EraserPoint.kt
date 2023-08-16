@@ -16,7 +16,6 @@
 
 package io.stardewvalleydesigner.editor.modules.toolkit.tools
 
-import io.stardewvalleydesigner.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.editor.modules.toolkit.*
 import io.stardewvalleydesigner.engine.EditorEngine
 import io.stardewvalleydesigner.engine.entity.Entity
@@ -37,7 +36,7 @@ class EraserPoint(private val engine: EditorEngine) : Tool {
         engine.remove(coordinate, visLayers)
         return ActionReturn(
             toolkit = ToolkitState.Eraser.Point.Acting,
-            palette = PaletteState.default().copy(inUse = currentEntity),
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }
@@ -51,7 +50,7 @@ class EraserPoint(private val engine: EditorEngine) : Tool {
         engine.remove(coordinate, visLayers)
         return ActionReturn(
             toolkit = ToolkitState.Eraser.Point.Acting,
-            palette = PaletteState.default().copy(inUse = currentEntity),
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }
@@ -63,7 +62,7 @@ class EraserPoint(private val engine: EditorEngine) : Tool {
     ): ActionReturn {
         return ActionReturn(
             toolkit = ToolkitState.Eraser.Point.Idle,
-            palette = PaletteState.default().copy(inUse = currentEntity),
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }

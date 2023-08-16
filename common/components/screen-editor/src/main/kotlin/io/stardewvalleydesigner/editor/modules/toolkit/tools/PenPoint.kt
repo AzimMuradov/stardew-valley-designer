@@ -16,7 +16,6 @@
 
 package io.stardewvalleydesigner.editor.modules.toolkit.tools
 
-import io.stardewvalleydesigner.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.editor.modules.toolkit.*
 import io.stardewvalleydesigner.engine.*
 import io.stardewvalleydesigner.engine.entity.Entity
@@ -45,7 +44,7 @@ class PenPoint(private val engine: EditorEngine) : Tool {
         }
         return ActionReturn(
             toolkit = ToolkitState.Pen.Point.Acting,
-            palette = PaletteState.default().copy(inUse = currentEntity),
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }
@@ -67,7 +66,7 @@ class PenPoint(private val engine: EditorEngine) : Tool {
         }
         return ActionReturn(
             toolkit = ToolkitState.Pen.Point.Acting,
-            palette = PaletteState.default().copy(inUse = currentEntity),
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }
@@ -79,7 +78,7 @@ class PenPoint(private val engine: EditorEngine) : Tool {
     ): ActionReturn {
         return ActionReturn(
             toolkit = ToolkitState.Pen.Point.Idle,
-            palette = PaletteState.default().copy(inUse = currentEntity),
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }

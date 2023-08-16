@@ -16,7 +16,6 @@
 
 package io.stardewvalleydesigner.editor.modules.toolkit.tools
 
-import io.stardewvalleydesigner.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.editor.modules.toolkit.*
 import io.stardewvalleydesigner.engine.*
 import io.stardewvalleydesigner.engine.entity.Entity
@@ -62,7 +61,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
                         .flatten()
                         .coordinates
                 ),
-                palette = PaletteState.default().copy(inUse = currentEntity),
+                currentEntity = currentEntity,
                 selectedEntities = selectedEntities
             )
         } else {
@@ -104,7 +103,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
                     .flatten()
                     .coordinates
             ),
-            palette = PaletteState.default().copy(inUse = currentEntity),
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }
@@ -117,7 +116,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
         engine.putAll(entitiesToDraw.toList().asDisjointUnsafe())
         return ActionReturn(
             toolkit = ToolkitState.Pen.Shape.Idle(shape),
-            palette = PaletteState.default().copy(inUse = currentEntity),
+            currentEntity = currentEntity,
             selectedEntities = selectedEntities
         )
     }
