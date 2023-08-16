@@ -34,6 +34,7 @@ import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.metadata.EntityPage.Companion.UNIT
 import io.stardewvalleydesigner.utils.*
 import io.stardewvalleydesigner.utils.DrawerUtils.placedEntityComparator
+import io.stardewvalleydesigner.utils.DrawerUtils.tint
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -102,13 +103,32 @@ private fun makeScreenshot(map: MapState, visibleLayers: Set<LayerType<*>>) {
             val sprite = EntitySpritesProvider.spriteBy(e)
             val rectH = sprite.size.height / UNIT
 
-            drawImageRect(
-                image = sprite.image,
-                srcOffset = sprite.offset,
-                srcSize = sprite.size,
-                dstOffset = UNIT * IntOffset(x = place.x, y = place.y - (rectH - e.size.h)),
-                paint = Paint()
-            )
+            when (sprite) {
+                is Sprite.Image -> drawImageRect(
+                    image = sprite.image,
+                    srcOffset = sprite.offset,
+                    srcSize = sprite.size,
+                    dstOffset = UNIT * IntOffset(x = place.x, y = place.y - (rectH - e.size.h)),
+                    paint = Paint()
+                )
+
+                is Sprite.TintedImage -> {
+                    drawImageRect(
+                        image = sprite.image,
+                        srcOffset = sprite.offset,
+                        srcSize = sprite.size,
+                        dstOffset = UNIT * IntOffset(x = place.x, y = place.y - (rectH - e.size.h)),
+                        paint = Paint().apply { colorFilter = tint(sprite.tint) }
+                    )
+                    drawImageRect(
+                        image = sprite.image,
+                        srcOffset = sprite.coverOffset,
+                        srcSize = sprite.size,
+                        dstOffset = UNIT * IntOffset(x = place.x, y = place.y - (rectH - e.size.h)),
+                        paint = Paint()
+                    )
+                }
+            }
         }
 
         drawImageRect(image = layoutSprite.fgImage, paint = Paint())

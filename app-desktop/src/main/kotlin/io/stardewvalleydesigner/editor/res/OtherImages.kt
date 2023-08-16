@@ -16,30 +16,11 @@
 
 package io.stardewvalleydesigner.editor.res
 
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.res.loadImageBitmap
+import androidx.compose.ui.res.useResource
 
 
-sealed interface Sprite {
+object OtherImages {
 
-    val image: ImageBitmap
-
-    val size: IntSize
-
-
-    data class Image(
-        override val image: ImageBitmap,
-        val offset: IntOffset,
-        override val size: IntSize,
-    ) : Sprite
-
-    data class TintedImage(
-        override val image: ImageBitmap,
-        override val size: IntSize,
-        val tint: Color,
-        val offset: IntOffset,
-        val coverOffset: IntOffset,
-    ) : Sprite
+    val defaultChestMenu = useResource("other/default-chest-menu.png", ::loadImageBitmap)
 }

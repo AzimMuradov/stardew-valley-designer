@@ -187,9 +187,11 @@ sealed interface Equipment : Entity<EquipmentType> {
     companion object {
 
         val all by lazy {
-            SimpleEquipment.values().toSet() + listOf(Chest(), StoneChest())
-            // ChestColors.values().mapTo(mutableSetOf(), Equipment::Chest) +
-            // ChestColors.values().mapTo(mutableSetOf(), Equipment::StoneChest)
+            buildSet {
+                addAll(SimpleEquipment.entries)
+                addAll(ChestColors.entries.map(Equipment::Chest))
+                addAll(ChestColors.entries.map(Equipment::StoneChest))
+            }
         }
     }
 }

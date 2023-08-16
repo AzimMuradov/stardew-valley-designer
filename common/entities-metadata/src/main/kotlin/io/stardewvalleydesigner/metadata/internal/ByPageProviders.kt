@@ -16,8 +16,7 @@
 
 package io.stardewvalleydesigner.metadata.internal
 
-import io.stardewvalleydesigner.engine.entity.EntityFlavor
-import io.stardewvalleydesigner.engine.entity.Rotations
+import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.metadata.*
 import io.stardewvalleydesigner.metadata.EntityPage.*
 import io.stardewvalleydesigner.metadata.EntityPage.Companion.UNIT
@@ -29,11 +28,24 @@ internal fun common(index: Int) = metadata(
     w = 1, h = 1
 )
 
-internal fun craftable(index: Int) = metadata(
+internal fun craftable(index: Int, flavor: EntityFlavor? = null) = metadata(
     page = Craftables,
     localId = index,
-    w = 1, h = 2
+    w = 1, h = 2,
+    flavor = flavor
 )
+
+internal fun chest(index: Int, color: Colors.ChestColors): EntityMetadata {
+    val imgIndex = if (color.value == null) 130 else 168
+    return metadata(
+        page = Craftables,
+        localId = index,
+        x = imgIndex % (Craftables.width / UNIT) * Craftables.grain.w,
+        y = imgIndex / (Craftables.width / UNIT) * Craftables.grain.h,
+        w = 1, h = 2,
+        flavor = color
+    )
+}
 
 internal fun furniture(
     id: Int,
@@ -88,12 +100,14 @@ private fun metadata(
     page: EntityPage,
     localId: Int,
     w: Int, h: Int,
+    flavor: EntityFlavor? = null,
 ) = metadata(
     page,
     localId,
     x = localId % (page.width / UNIT) * page.grain.w,
     y = localId / (page.width / UNIT) * page.grain.h,
-    w, h
+    w, h,
+    flavor = flavor
 )
 
 @Suppress("SameParameterValue")

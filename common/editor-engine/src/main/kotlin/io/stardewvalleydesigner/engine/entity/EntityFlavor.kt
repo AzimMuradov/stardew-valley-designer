@@ -42,19 +42,10 @@ sealed interface Rotations : EntityFlavor {
 }
 
 
-data class FarmBuildingColors(
-    val building: Color? = null,
-    val roof: Color? = null,
-    val trim: Color? = null,
-) : EntityFlavor {
-
-    override fun default(): FarmBuildingColors = FarmBuildingColors()
-}
-
-data class Color(val r: UByte, val g: UByte, val b: UByte)
-
-
 sealed interface Colors : EntityFlavor {
+
+    val value: Color?
+
 
     enum class FishPondColors : Colors {
         Default,
@@ -63,36 +54,40 @@ sealed interface Colors : EntityFlavor {
         Slimejack,
         VoidSalmon;
 
+        override val value: Color get() = TODO("Not yet implemented")
+
         override fun default(): FishPondColors = Default
     }
 
-    enum class ChestColors : Colors {
-        Default,
-        Blue,
-        LightBlue,
-        Teal,
-        Aqua,
-        Green,
-        LimeGreen,
-        Yellow,
-        LightOrange,
-        Orange,
-        Red,
-        DarkRed,
-        LightPink,
-        Pink,
-        Magenta,
-        Purple,
-        DarkPurple,
-        DarkGrey,
-        MediumGrey,
-        LightGrey,
-        White;
+    enum class ChestColors(override val value: Color?) : Colors {
+        Default(value = null),
+        Blue(Color(r = 85u, g = 85u, b = 255u)),
+        LightBlue(Color(r = 119u, g = 191u, b = 255u)),
+        Teal(Color(r = 0u, g = 170u, b = 170u)),
+        Aqua(Color(r = 0u, g = 234u, b = 175u)),
+        Green(Color(r = 0u, g = 170u, b = 0u)),
+        LimeGreen(Color(r = 159u, g = 236u, b = 0u)),
+        Yellow(Color(r = 255u, g = 234u, b = 18u)),
+        LightOrange(Color(r = 255u, g = 167u, b = 18u)),
+        Orange(Color(r = 255u, g = 105u, b = 18u)),
+        Red(Color(r = 255u, g = 0u, b = 0u)),
+        DarkRed(Color(r = 135u, g = 0u, b = 35u)),
+        LightPink(Color(r = 255u, g = 173u, b = 199u)),
+        Pink(Color(r = 255u, g = 117u, b = 195u)),
+        Magenta(Color(r = 172u, g = 0u, b = 198u)),
+        Purple(Color(r = 143u, g = 0u, b = 255u)),
+        DarkPurple(Color(r = 89u, g = 11u, b = 142u)),
+        DarkGrey(Color(r = 64u, g = 64u, b = 64u)),
+        MediumGrey(Color(r = 100u, g = 100u, b = 100u)),
+        LightGrey(Color(r = 200u, g = 200u, b = 200u)),
+        White(Color(r = 254u, g = 254u, b = 254u));
 
         override fun default(): ChestColors = White
     }
 
     sealed interface FlowerColors : Colors {
+
+        override val value: Color get() = TODO("Not yet implemented")
 
         enum class TulipColors : FlowerColors {
             Color1,
@@ -146,3 +141,16 @@ sealed interface Colors : EntityFlavor {
         }
     }
 }
+
+
+data class FarmBuildingColors(
+    val building: Color? = null,
+    val roof: Color? = null,
+    val trim: Color? = null,
+) : EntityFlavor {
+
+    override fun default(): FarmBuildingColors = FarmBuildingColors()
+}
+
+
+data class Color(val r: UByte, val g: UByte, val b: UByte)
