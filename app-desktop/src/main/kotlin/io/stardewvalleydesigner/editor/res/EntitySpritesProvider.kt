@@ -18,18 +18,50 @@ package io.stardewvalleydesigner.editor.res
 
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
+import io.stardewvalleydesigner.engine.entity.Colors
 import io.stardewvalleydesigner.engine.entity.Entity
-import io.stardewvalleydesigner.metadata.EntityDataProvider
+import io.stardewvalleydesigner.metadata.*
+import io.stardewvalleydesigner.utils.toComposeColor
 
 
 object EntitySpritesProvider {
 
     fun spriteBy(entity: Entity<*>): Sprite =
         EntityDataProvider.entityToMetadata.getValue(entity).let { (id, offset, size) ->
-            Sprite(
-                image = ImageProvider.imageOf(id.page),
-                offset = offset.let { (x, y) -> IntOffset(x, y) },
-                size = size.let { (w, h) -> IntSize(w, h) },
-            )
+            when (val flavor = id.flavor) {
+                null -> spriteImage(id, offset, size)
+
+                is Colors.ChestColors -> {
+                    when (val color = flavor.value) {
+                        null -> spriteImage(id, offset, size)
+
+                        else -> Sprite.TintedImage(
+                            image = ImageProvider.imageOf(id.page),
+                            size = size.let { (w, h) -> IntSize(w, h) },
+                            tint = color.toComposeColor(),
+                            offset = offset.let { (x, y) -> IntOffset(x, y) },
+                            coverOffset = offset.let { (x, y) -> IntOffset(x, y + 32) }
+                        )
+                    }
+                }
+
+                // is Colors.FishPondColors -> TODO
+
+                // is Colors.FlowerColors -> TODO
+
+                // is FarmBuildingColors -> TODO
+
+                // is Rotations.Rotations2 -> TODO
+
+                // is Rotations.Rotations4 -> TODO
+
+                else -> spriteImage(id, offset, size)
+            }
         }
+
+    private fun spriteImage(id: EntityId, offset: EntityOffset, size: EntitySize) = Sprite.Image(
+        image = ImageProvider.imageOf(id.page),
+        offset = offset.let { (x, y) -> IntOffset(x, y) },
+        size = size.let { (w, h) -> IntSize(w, h) },
+    )
 }

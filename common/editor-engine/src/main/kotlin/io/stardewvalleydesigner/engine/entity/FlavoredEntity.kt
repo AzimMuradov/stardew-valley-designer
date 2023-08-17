@@ -56,12 +56,6 @@ sealed class Rotatable private constructor(
 }
 
 
-sealed class TripleColoredFarmBuilding : FlavoredEntity {
-
-    abstract val farmBuildingColors: FarmBuildingColors
-}
-
-
 sealed class Colored<out EType : EntityType> private constructor() : FlavoredEntity {
 
     abstract val color: Colors
@@ -76,4 +70,10 @@ sealed class Colored<out EType : EntityType> private constructor() : FlavoredEnt
 
         abstract override val color: ChestColors
     }
+}
+
+
+sealed class TripleColoredFarmBuilding : FlavoredEntity {
+
+    abstract val farmBuildingColors: FarmBuildingColors
 }

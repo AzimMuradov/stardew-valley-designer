@@ -18,7 +18,7 @@ package io.stardewvalleydesigner.utils
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
@@ -59,18 +59,10 @@ object DrawerUtils {
             y = (layoutH - dstSize.height) / 2,
         ).toIntOffset()
 
-        drawImage(
-            image = sprite.image,
-            srcOffset = sprite.offset,
-            srcSize = sprite.size,
-            dstOffset = dstOffset,
-            dstSize = dstSize,
-            filterQuality = if (spriteW * 1.5 < dstSize.width) {
-                FilterQuality.None
-            } else {
-                FilterQuality.Medium
-            }
-        )
+        when (sprite) {
+            is Sprite.Image -> drawImage(sprite, dstOffset, dstSize)
+            is Sprite.TintedImage -> drawTintedImage(sprite, dstOffset, dstSize)
+        }
     }
 
     fun DrawScope.drawSpriteStretched(
@@ -78,19 +70,12 @@ object DrawerUtils {
         offset: IntOffset = IntOffset.Zero,
         layoutSize: IntSize,
         alpha: Float = 1.0f,
-    ) = drawImage(
-        image = sprite.image,
-        srcOffset = sprite.offset,
-        srcSize = sprite.size,
-        dstOffset = offset,
-        dstSize = layoutSize,
-        alpha = alpha,
-        filterQuality = if (sprite.size.width * 1.5 < layoutSize.width) {
-            FilterQuality.None
-        } else {
-            FilterQuality.Medium
+    ) {
+        when (sprite) {
+            is Sprite.Image -> drawImage(sprite, dstOffset = offset, dstSize = layoutSize, alpha)
+            is Sprite.TintedImage -> drawTintedImage(sprite, dstOffset = offset, dstSize = layoutSize, alpha)
         }
-    )
+    }
 
     fun DrawScope.drawEntityStretched(
         entity: PlacedEntity<*>,
@@ -105,10 +90,18 @@ object DrawerUtils {
             if (renderSpritesFully) {
                 this
             } else {
-                copy(
-                    offset = offset.copy(y = offset.y + (size.height - e.size.h * UNIT)),
-                    size = e.size.toIntSize() * UNIT
-                )
+                when (this) {
+                    is Sprite.Image -> copy(
+                        offset = offset.copy(y = offset.y + (size.height - e.size.h * UNIT)),
+                        size = e.size.toIntSize() * UNIT
+                    )
+
+                    is Sprite.TintedImage -> copy(
+                        offset = offset.copy(y = offset.y + (size.height - e.size.h * UNIT)),
+                        coverOffset = coverOffset.copy(y = coverOffset.y + (size.height - e.size.h * UNIT)),
+                        size = e.size.toIntSize() * UNIT
+                    )
+                }
             }
         }
 
@@ -191,7 +184,63 @@ object DrawerUtils {
     }
 
 
+    private fun DrawScope.drawImage(
+        sprite: Sprite.Image,
+        dstOffset: IntOffset, dstSize: IntSize,
+        alpha: Float = 1.0f,
+    ) {
+        drawSprite(
+            sprite, srcOffset = sprite.offset,
+            dstOffset, dstSize,
+            alpha = alpha
+        )
+    }
+
+    private fun DrawScope.drawTintedImage(
+        sprite: Sprite.TintedImage,
+        dstOffset: IntOffset, dstSize: IntSize,
+        alpha: Float = 1.0f,
+    ) {
+        drawSprite(
+            sprite, srcOffset = sprite.offset,
+            dstOffset, dstSize,
+            colorFilter = tint(sprite.tint),
+            alpha
+        )
+        drawSprite(
+            sprite, srcOffset = sprite.coverOffset,
+            dstOffset, dstSize,
+            alpha = alpha
+        )
+    }
+
+    private fun DrawScope.drawSprite(
+        sprite: Sprite, srcOffset: IntOffset,
+        dstOffset: IntOffset, dstSize: IntSize,
+        colorFilter: ColorFilter? = null,
+        alpha: Float = 1.0f,
+    ) {
+        drawImage(
+            image = sprite.image,
+            srcOffset = srcOffset, srcSize = sprite.size,
+            dstOffset, dstSize,
+            alpha,
+            colorFilter = colorFilter,
+            filterQuality = if (sprite.size.width * 1.5 < dstSize.width) {
+                FilterQuality.None
+            } else {
+                FilterQuality.Medium
+            }
+        )
+    }
+
+
     val placedEntityComparator: Comparator<PlacedEntity<*>> = Comparator
-        .comparing<PlacedEntity<*>, Int> { (e, _) -> e.type.toLayerType().ordinal }
+        .comparingInt<PlacedEntity<*>> { (e, _) -> e.type.toLayerType().ordinal }
         .thenComparingInt { (_, place) -> place.y }
+
+    fun tint(color: Color) = ColorFilter.tint(
+        color = color,
+        blendMode = BlendMode.Modulate
+    )
 }

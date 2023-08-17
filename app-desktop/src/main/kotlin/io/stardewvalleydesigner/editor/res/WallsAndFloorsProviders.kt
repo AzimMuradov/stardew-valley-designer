@@ -24,24 +24,24 @@ import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 
 
-fun flooring(fl: Flooring): Sprite {
+fun flooring(fl: Flooring): Sprite.Image {
     val index = fl.n.toInt()
     val (i, j) = (index % 8) to (index / 8)
     val (w, h) = flooringObjectSpriteSize
 
-    return Sprite(
+    return Sprite.Image(
         image = wallsAndFloors,
         offset = IntOffset(x = i * w, y = 336 + j * h),
         size = flooringObjectSpriteSize,
     )
 }
 
-fun wallpaper(wp: Wallpaper): Sprite {
+fun wallpaper(wp: Wallpaper): Sprite.Image {
     val index = wp.n.toInt()
     val (i, j) = (index % 16) to (index / 16)
     val (w, h) = wallpaperObjectSpriteSize
 
-    return Sprite(
+    return Sprite.Image(
         image = wallsAndFloors,
         offset = IntOffset(x = i * w, y = j * h),
         size = wallpaperObjectSpriteSize,

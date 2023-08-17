@@ -16,6 +16,7 @@
 
 package io.stardewvalleydesigner.screens.editor.sidemenus
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -25,15 +26,20 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.modules.palette.PaletteState
-import io.stardewvalleydesigner.engine.entity.Entity
-import io.stardewvalleydesigner.settings.wordlists.WordList
-import io.stardewvalleydesigner.utils.GlobalSettings
-import io.stardewvalleydesigner.utils.Sprite
+import io.stardewvalleydesigner.editor.res.OtherImages
+import io.stardewvalleydesigner.engine.entity.*
+import io.stardewvalleydesigner.engine.entity.Colors
+import io.stardewvalleydesigner.utils.*
+import io.stardewvalleydesigner.utils.group.GroupOption
+import io.stardewvalleydesigner.utils.group.ToggleButtonsGroup
+import androidx.compose.ui.graphics.Color as ComposeColor
 
 
 @Composable
@@ -42,9 +48,8 @@ fun Palette(
     intentConsumer: (EditorIntent.Palette) -> Unit,
 ) {
     // TODO : hotbar feature (val hotbar = palette.hotbar)
-    val wordList = GlobalSettings.strings
 
-    InUseCard(palette.inUse, wordList)
+    InUseCard(palette.inUse)
 
     // TODO : hotbar feature
     //
@@ -59,23 +64,43 @@ fun Palette(
     // )
 
     // Flavors
-    // if (inUse is EntityFlavor) {
-    //     val a = when (inUse) {
-    //         is RotatableFlavor.RotatableFlavor2 -> TODO()
-    //         is RotatableFlavor.RotatableFlavor4 -> TODO()
-    //         is ColoredFlavor.ColoredFishPondFlavor -> TODO()
-    //         is ColoredFlavor.ColoredChestFlavor -> TODO()
-    //         is ColoredFarmBuildingFlavor -> TODO()
-    //     }
-    // }
+
+    val inUse = palette.inUse
+
+    if (inUse is FlavoredEntity) {
+        Spacer(modifier = Modifier.height(8.dp))
+
+        when (val e = inUse as FlavoredEntity) {
+            is Rotatable -> Unit // TODO
+
+            is Colored.ColoredFishPond -> Unit // TODO
+
+            is Colored.ColoredChest -> ChestColorMenu(
+                color = e.color,
+                onColorChosen = {
+                    intentConsumer(
+                        EditorIntent.Palette.AddToInUse(
+                            when (e) {
+                                is Equipment.Chest -> e.copy(color = it)
+                                is Equipment.StoneChest -> e.copy(color = it)
+                            }
+                        )
+                    )
+                }
+            )
+
+            is TripleColoredFarmBuilding -> Unit // TODO
+        }
+    }
 }
 
 
+// TODO : Size bug on certain entities
+
 @Composable
-private fun InUseCard(
-    inUse: Entity<*>?,
-    wordList: WordList,
-) {
+private fun InUseCard(inUse: Entity<*>?) {
+    val wordList = GlobalSettings.strings
+
     Card(elevation = 0.dp) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(8.dp),
@@ -125,4 +150,44 @@ private fun InUseCard(
             }
         }
     }
+}
+
+
+@Composable
+private fun ChestColorMenu(color: Colors.ChestColors, onColorChosen: (Colors.ChestColors) -> Unit) {
+    ToggleButtonsGroup(
+        buttonLabels = Colors.ChestColors.entries.map { GroupOption.Some(it) },
+        rowSize = 7u,
+        modifier = Modifier.fillMaxWidth(),
+        chosenLabel = color,
+        onButtonClick = onColorChosen,
+        spaceContent = {
+            Icon(
+                imageVector = Icons.Default.Clear,
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize().padding(8.dp),
+            )
+        },
+        buttonContent = { c ->
+            val value = c.value
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .then(
+                        if (value != null) {
+                            Modifier.background(value.toComposeColor())
+                        } else {
+                            Modifier.drawBehind {
+                                drawImage(
+                                    image = OtherImages.defaultChestMenu,
+                                    dstSize = size.toIntSize(),
+                                    filterQuality = FilterQuality.None
+                                )
+                            }
+                        }
+                    )
+                    .border(1.dp, ComposeColor.Black)
+            )
+        }
+    )
 }

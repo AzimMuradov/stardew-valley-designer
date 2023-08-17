@@ -16,7 +16,6 @@
 
 package io.stardewvalleydesigner.metadata.internal
 
-import io.stardewvalleydesigner.engine.entity.Colors.ChestColors.*
 import io.stardewvalleydesigner.engine.entity.Equipment
 import io.stardewvalleydesigner.engine.entity.Equipment.*
 import io.stardewvalleydesigner.metadata.EntityMetadata
@@ -71,53 +70,9 @@ internal fun equipment(entity: Equipment): EntityMetadata = when (entity) {
     // TODO (?) : Tapper,
     // TODO (?) : HeavyTapper,
 
-    is Chest -> when (entity.color) {
-        Default -> craftable(130)
-        Blue -> TODO()
-        LightBlue -> TODO()
-        Teal -> TODO()
-        Aqua -> TODO()
-        Green -> TODO()
-        LimeGreen -> TODO()
-        Yellow -> TODO()
-        LightOrange -> TODO()
-        Orange -> TODO()
-        Red -> TODO()
-        DarkRed -> TODO()
-        LightPink -> TODO()
-        Pink -> TODO()
-        Magenta -> TODO()
-        Purple -> TODO()
-        DarkPurple -> TODO()
-        DarkGrey -> TODO()
-        MediumGrey -> TODO()
-        LightGrey -> TODO()
-        White -> TODO()
-    }
+    is Chest -> chest(130, color = entity.color)
 
-    is StoneChest -> when (entity.color) {
-        Default -> craftable(232)
-        Blue -> TODO()
-        LightBlue -> TODO()
-        Teal -> TODO()
-        Aqua -> TODO()
-        Green -> TODO()
-        LimeGreen -> TODO()
-        Yellow -> TODO()
-        LightOrange -> TODO()
-        Orange -> TODO()
-        Red -> TODO()
-        DarkRed -> TODO()
-        LightPink -> TODO()
-        Pink -> TODO()
-        Magenta -> TODO()
-        Purple -> TODO()
-        DarkPurple -> TODO()
-        DarkGrey -> TODO()
-        MediumGrey -> TODO()
-        LightGrey -> TODO()
-        White -> TODO()
-    }
+    is StoneChest -> craftable(232, flavor = entity.color)
 
     SimpleEquipment.JunimoChest -> craftable(256)
 

@@ -45,7 +45,19 @@ fun Object.toPlacedEntityOrNull(): PlacedEntity<*>? {
             } ?: return null
 
             else -> parentSheetIndex
-        }
+        },
+        flavor = when (typeAttr) {
+            "Chest" -> when (name) {
+                "Chest" -> {
+                    val pcc = playerChoiceColor?.toColor()
+                    Colors.ChestColors.entries.find { it.value == pcc } ?: Colors.ChestColors.Default
+                }
+
+                else -> null
+            }
+
+            else -> null
+        },
     )
     return entityById[entityId]?.placeIt(there = tileLocation.toCoordinate())
 }
@@ -140,6 +152,3 @@ fun Building.toPlacedEntityOrNull(): PlacedEntity<*>? {
     }
     return entity?.placeIt(there = xy(tileX, tileY))
 }
-
-
-fun Position.toCoordinate() = xy(x = x.toInt(), y = y.toInt())
