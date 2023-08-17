@@ -71,7 +71,7 @@ fun Palette(
         Spacer(modifier = Modifier.height(8.dp))
 
         when (val e = inUse as FlavoredEntity) {
-            is Rotatable -> RotationMenu(e.rotation, onRotationChosen = {}) // TODO
+            is Rotatable -> Unit // TODO
 
             is Colored.ColoredFishPond -> Unit // TODO
 
@@ -152,32 +152,6 @@ private fun InUseCard(inUse: Entity<*>?) {
     }
 }
 
-
-@Composable
-private fun RotationMenu(rotation: Rotations, onRotationChosen: (Rotations) -> Unit) {
-    val labels = when (rotation) {
-        is Rotations.Rotations2 -> Rotations.Rotations2.entries
-        is Rotations.Rotations4 -> Rotations.Rotations4.entries
-    }.map { GroupOption.Some(it) }
-
-    ToggleButtonsGroup(
-        buttonLabels = labels,
-        rowSize = 4u,
-        modifier = Modifier.fillMaxWidth(),
-        chosenLabel = rotation,
-        onButtonClick = onRotationChosen,
-        spaceContent = {
-            Icon(
-                imageVector = Icons.Default.Clear,
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize().padding(8.dp),
-            )
-        },
-        buttonContent = { r ->
-            Text("${r.ordinal}")
-        }
-    )
-}
 
 @Composable
 private fun ChestColorMenu(color: Colors.ChestColors, onColorChosen: (Colors.ChestColors) -> Unit) {
