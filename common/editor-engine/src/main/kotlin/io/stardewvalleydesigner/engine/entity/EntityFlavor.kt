@@ -82,7 +82,7 @@ sealed interface Colors : EntityFlavor {
         LightGrey(Color(r = 200u, g = 200u, b = 200u)),
         White(Color(r = 254u, g = 254u, b = 254u));
 
-        override fun default(): ChestColors = White
+        override fun default(): ChestColors = Default
     }
 
     sealed interface FlowerColors : Colors {
