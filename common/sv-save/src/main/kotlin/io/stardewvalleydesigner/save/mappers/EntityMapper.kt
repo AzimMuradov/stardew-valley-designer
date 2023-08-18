@@ -47,13 +47,11 @@ fun Object.toPlacedEntityOrNull(): PlacedEntity<*>? {
             else -> parentSheetIndex
         },
         flavor = when (typeAttr) {
-            "Chest" -> when (name) {
-                "Chest" -> {
-                    val pcc = playerChoiceColor?.toColor()
-                    Colors.ChestColors.entries.find { it.value == pcc } ?: Colors.ChestColors.Default
-                }
-
-                else -> null
+            "Chest" -> if (parentSheetIndex in arrayOf(130, 232)) {
+                val pcc = playerChoiceColor?.toColor()
+                Colors.ChestColors.entries.find { it.value == pcc } ?: Colors.ChestColors.Default
+            } else {
+                null
             }
 
             else -> null
