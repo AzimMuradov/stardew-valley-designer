@@ -45,43 +45,68 @@
 
 ### 0.8.0
 
-- Layout Rules for standard farm
+- Update entity placement restrictions for standard farm
 - New toggleable hints - show various areas of effect (scarecrows, sprinklers, bee houses, junimo huts)
 - New shapes (ellipse, ellipse outline, diamond, diamond outline, line)
 - New toggleable hints - show various functional info (current coordinates, shape size, object count, etc.)
 
 ### 0.9.0
 
-- Support greenhouse and farmhouse
-- Better "toggle preview"
 - New tool (eye dropper)
+- Chest color menu
+
+### 0.10.0
+
 - Palette
 - Rotation menu
-- Chest color menu
 - Tooltips for paths (in import from save menu)
-- More layout flexibility
+
+### 0.11.0
+
+- Fish pond color menu and flower color menu
+- Support greenhouse and farmhouse
+- Better "toggle preview"
 
 ## 1.0.0
 
 - Plan saves
 
-## Backlog
+### 1.1.0
+
+- Modified sprinklers
+- Trees and fruit trees
+
+### 1.2.0
+
+- New layouts (riverland farm, forest farm, hill-top farm, wilderness farm)
+
+### 1.3.0
 
 - Map resize
-- New layouts (riverland farm, forest farm, hill-top farm, wilderness farm, four corners farm, beach farm, barns, coops,
-  farmhouses, slime hutch)
-- Wall furniture
 - Expandable tool windows
-- New shapes (star, star outline, heart, heart outline), `shift` for NxN
-- Search fields for various types of items
-- Clipboard
-- Render (in every season)
-- Settings menu (with ability to store and restore settings)
-- Add new languages
-- Tappers, crab pots and modified sprinklers
-- Building paintings
-- Tooltips, Hotkeys, Cursors (Pointers) & Other PC Features
-- Web version
-- Dark theme, OS theme
 - Support for different window sizes
+- More layout flexibility
+
+### 1.4.0
+
+- Settings menu (with ability to store and restore settings)
+
+## 2.0.0
+
+- Web version
+
+## Backlog
+
+- Tooltips, Hotkeys, Cursors (Pointers) & Other PC Features, `shift` for NxN
+- New layouts (four corners farm, beach farm)
+- New layouts (barns, coops, farmhouses, slime hutch)
+- Wall furniture
+- New shapes (star, star outline, heart, heart outline)
+- Clipboard
+- Building paintings
+- Render (in every season)
+- Search fields for various types of items
+- Add new languages
+- Tappers, crab pots
+- Dark theme, OS theme
 - Stardew Valley mods support

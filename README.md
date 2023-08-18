@@ -8,6 +8,12 @@
 The goal of this project is to provide a finely tuned editor for designing your farm and
 the interior of all its buildings.
 
+## Stardew Valley version
+
+The app aims to support the latest version of Stardew Valley (**1.5.6**).
+
+Other versions may have little or no support.
+
 ## Installation
 
 Latest release - https://azimmuradov.github.io/stardew-valley-designer/download.html.
@@ -21,14 +27,15 @@ Currently supported platforms:
 ## Features
 
 - Working layout editor (currently for shed, big shed and standard farm only)
-- Basic editor tools (hand, pen, eraser, select)
+- Basic editor tools (hand, pen, eraser, select, eye dropper)
 - Layers support
+- Furniture support
 - History manager (undo, redo)
 - Savedata import
 - Ability to save plan as an image
 
-There are currently no way to save the plan for later modifications.
-It's currently the #1 priority.
+_There are currently no way to save the plan for later modifications.
+It's currently the #1 priority._
 
 ![1.png](docs/user/imgs/1.png)
 
