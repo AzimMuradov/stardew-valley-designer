@@ -37,6 +37,31 @@ data class Indoors(
     @XmlChildrenName("item", "", "") val terrainFeatures: List<Item<Vector2Wrapper, TerrainFeatureWrapper>>,
     val wallPaper: IntWrapper? = null,
     val floor: IntWrapper? = null,
+    val appliedWallpaper: AppliedWallpaper? = null,
+    val appliedFloor: AppliedFloor? = null,
+) {
+
+    val firstWallpaper: UByte?
+        get() = wallPaper?.int?.toUByte()
+            ?: appliedWallpaper?.dict?.firstOrNull()?.value?.string?.toUByte()
+
+    val firstFloor: UByte?
+        get() = floor?.int?.toUByte()
+            ?: appliedFloor?.dict?.firstOrNull()?.value?.string?.toUByte()
+}
+
+@Serializable
+data class AppliedWallpaper(
+    @SerialName("SerializableDictionaryOfStringString")
+    @XmlChildrenName("item", "", "")
+    val dict: List<Item<StringWrapper, StringWrapper>>,
+)
+
+@Serializable
+data class AppliedFloor(
+    @SerialName("SerializableDictionaryOfStringString")
+    @XmlChildrenName("item", "", "")
+    val dict: List<Item<StringWrapper, StringWrapper>>,
 )
 
 @Serializable
@@ -50,3 +75,6 @@ data class TerrainFeatureWrapper(@SerialName("TerrainFeature") val tf: TerrainFe
 
 @Serializable
 data class IntWrapper(val int: Int? = null)
+
+@Serializable
+data class StringWrapper(val string: String? = null)
