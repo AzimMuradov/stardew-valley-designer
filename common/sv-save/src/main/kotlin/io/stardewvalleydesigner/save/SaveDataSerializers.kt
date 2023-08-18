@@ -82,8 +82,8 @@ object SaveDataSerializers {
 
                     for (e in es) put(e)
 
-                    wallpaper = building.indoors?.wallPaper?.int?.toUByte()?.run(::Wallpaper)
-                    flooring = building.indoors?.floor?.int?.toUByte()?.run(::Flooring)
+                    wallpaper = building.indoors?.firstWallpaper?.run(::Wallpaper)
+                    flooring = building.indoors?.firstFloor?.run(::Flooring)
                 }
             }
         }
