@@ -12,7 +12,7 @@ the interior of all its buildings.
 
 The app aims to support the latest version of Stardew Valley (**1.5.6**).
 
-Other versions may have little or no support.
+_Other versions may have little or no support._
 
 ## Installation
 
