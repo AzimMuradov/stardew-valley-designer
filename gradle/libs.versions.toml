@@ -75,7 +75,7 @@ xmlutil = [
 
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization-plugin" }
-buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }
 conveyor = { id = "dev.hydraulic.conveyor", version.ref = "conveyor" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
