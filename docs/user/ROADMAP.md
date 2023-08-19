@@ -57,9 +57,10 @@
 
 ### 0.10.0
 
-- Palette
+- Fully functional palette
 - Rotation menu
 - Tooltips for paths (in import from save menu)
+- Better icons for toolbar and palette
 
 ### 0.11.0
 
@@ -91,12 +92,9 @@
 
 - Settings menu (with ability to store and restore settings)
 
-## 2.0.0
-
-- Web version
-
 ## Backlog
 
+- Web version
 - Tooltips, Hotkeys, Cursors (Pointers) & Other PC Features, `shift` for NxN
 - New layouts (four corners farm, beach farm)
 - New layouts (barns, coops, farmhouses, slime hutch)
