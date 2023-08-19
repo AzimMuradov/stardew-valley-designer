@@ -82,6 +82,10 @@ sealed interface WordList {
 
     val infoApplicationSource: String
 
+    val infoCurrentVersion: String
+
+    val infoChangelog: String
+
     val infoConcernedApeTwitter: String
 
     val infoSVText1: String
