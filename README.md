@@ -43,6 +43,8 @@ It's currently the #1 priority._
 
 ![3.png](docs/user/imgs/3.png)
 
+![4.png](docs/user/imgs/4.png)
+
 ## Roadmap
 
 [ROADMAP](docs/user/ROADMAP.md)
