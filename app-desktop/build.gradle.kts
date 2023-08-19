@@ -4,9 +4,11 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.compose)
+    alias(libs.plugins.buildconfig)
     alias(libs.plugins.conveyor)
     alias(libs.plugins.detekt)
 }
+
 
 object App {
 
@@ -20,10 +22,34 @@ object App {
         "The goal of this project is to provide a finely tuned editor for designing your farm and the interior of all its buildings."
 
     const val COPYRIGHT: String = "Copyright (c) 2021-2023 Azim Muradov."
+
+
+    const val AUTHOR_URL: String = "https://github.com/AzimMuradov"
+
+    const val REPOSITORY_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer"
+
+    const val CHANGELOG_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer/releases"
+
+    const val BUG_TRACKER_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer/issues"
+}
+
+buildConfig {
+    className = "App"
+
+    buildConfigField(type = "String", name = "VERSION", value = "\"${App.VERSION}\"")
+    buildConfigField(type = "String", name = "COPYRIGHT", value = "\"${App.COPYRIGHT}\"")
+
+    buildConfigField(type = "String", name = "AUTHOR_URL", value = "\"${App.AUTHOR_URL}\"")
+    buildConfigField(type = "String", name = "REPOSITORY_URL", value = "\"${App.REPOSITORY_URL}\"")
+    buildConfigField(type = "String", name = "CHANGELOG_URL", value = "\"${App.CHANGELOG_URL}\"")
+    buildConfigField(type = "String", name = "BUG_TRACKER_URL", value = "\"${App.BUG_TRACKER_URL}\"")
+
+    buildConfigField(type = "long", name = "BUILD_TIME", value = "${System.currentTimeMillis()}L")
 }
 
 group = App.GROUP
 version = App.VERSION
+
 
 dependencies {
     implementation(projects.common.editorEngine)
@@ -53,7 +79,7 @@ dependencies {
 
     implementation(libs.bundles.bonsai)
 
-    implementation(libs.richeditor.compose)
+    // implementation(libs.richeditor.compose)
 
 
     // Conveyor

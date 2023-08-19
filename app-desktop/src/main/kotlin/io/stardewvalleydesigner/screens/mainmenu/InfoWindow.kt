@@ -21,6 +21,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -42,9 +43,7 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.rememberDialogState
-import com.mohamedrejeb.richeditor.annotation.ExperimentalRichTextApi
-import com.mohamedrejeb.richeditor.model.RichTextValue
-import com.mohamedrejeb.richeditor.ui.material.RichText
+import io.stardewvalleydesigner.app_desktop.App
 import io.stardewvalleydesigner.ternaryColor
 import io.stardewvalleydesigner.utils.BrowserUtils
 import io.stardewvalleydesigner.utils.GlobalSettings
@@ -66,9 +65,7 @@ fun InfoWindow() {
 
     Dialog(
         onCloseRequest = { isOpened = false },
-        state = rememberDialogState(
-            size = DpSize(width = 400.dp, height = 600.dp)
-        ),
+        state = rememberDialogState(size = DpSize(width = 400.dp, height = 650.dp)),
         visible = isOpened,
         title = "",
         resizable = false
@@ -76,6 +73,7 @@ fun InfoWindow() {
         Info()
     }
 }
+
 
 @Composable
 private fun Info() {
@@ -128,29 +126,42 @@ private fun Info() {
     }
 }
 
+
 @Composable
 private fun ApplicationAuthorsSection(heading: SpanStyle) {
     val wordList = GlobalSettings.strings
 
+    val link = MaterialTheme.typography.subtitle1.copy(
+        color = Color.Blue,
+    )
+
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Row(horizontalArrangement = Arrangement.SpaceBetween) {
-            RichText(
-                buildAnnotatedString {
+            Text(
+                text = buildAnnotatedString {
                     withStyle(style = heading) { append(wordList.infoApplicationAuthor) }
-                }.toRichTextValue(),
-                modifier = Modifier.weight(1f)
+                },
+                modifier = Modifier.weight(1f),
             )
-            Text(wordList.author)
+            Box(
+                Modifier
+                    .wrapContentSize()
+                    .pointerHoverIcon(PointerIcon.Hand)
+                    .clickable { BrowserUtils.open(URI.create(App.AUTHOR_URL)) }
+                    .wrapContentSize()
+            ) {
+                DisableSelection { Text(wordList.author, style = link) }
+            }
         }
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            RichText(
-                buildAnnotatedString {
-                    withStyle(style = heading) { append(wordList.infoApplicationSource) }
-                }.toRichTextValue(),
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(heading) { append(wordList.infoApplicationSource) }
+                },
                 modifier = Modifier.weight(1f),
             )
             Spacer(Modifier.size(16.dp))
@@ -167,14 +178,34 @@ private fun ApplicationAuthorsSection(heading: SpanStyle) {
                         interactionSource = remember(::MutableInteractionSource),
                         indication = rememberRipple(color = Color.White)
                     ) {
-                        BrowserUtils.open(
-                            URI.create("https://github.com/AzimMuradov/stardew-valley-designer")
-                        )
+                        BrowserUtils.open(URI.create(App.REPOSITORY_URL))
                     }
                     .padding(8.dp)
                     .size(24.dp),
                 tint = MaterialTheme.colors.onPrimary
             )
+        }
+
+        Row(horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(style = heading) { append(wordList.infoCurrentVersion) }
+                },
+                modifier = Modifier.weight(1f),
+            )
+            Row {
+                Text(App.VERSION)
+                Text(" | ")
+                Box(
+                    Modifier
+                        .wrapContentSize()
+                        .pointerHoverIcon(PointerIcon.Hand)
+                        .clickable { BrowserUtils.open(URI.create(App.CHANGELOG_URL)) }
+                        .wrapContentSize()
+                ) {
+                    DisableSelection { Text(wordList.infoChangelog, style = link) }
+                }
+            }
         }
     }
 }
@@ -184,15 +215,15 @@ private fun StardewValleySection(heading: SpanStyle) {
     val wordList = GlobalSettings.strings
 
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        RichText(
-            buildAnnotatedString {
+        Text(
+            text = buildAnnotatedString {
                 append(wordList.infoSVText1)
                 withStyle(style = heading) { append("ConcernedApe") }
                 append(wordList.infoSVText2)
                 appendLine()
                 appendLine()
                 append(wordList.infoSVText3)
-            }.toRichTextValue(),
+            },
             modifier = Modifier.fillMaxWidth(),
         )
 
@@ -200,10 +231,10 @@ private fun StardewValleySection(heading: SpanStyle) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            RichText(
-                buildAnnotatedString {
+            Text(
+                text = buildAnnotatedString {
                     withStyle(style = heading) { append("ConcernedApe twitter") }
-                }.toRichTextValue(),
+                },
                 modifier = Modifier.weight(1f),
             )
             Spacer(Modifier.size(16.dp))
@@ -216,9 +247,7 @@ private fun StardewValleySection(heading: SpanStyle) {
                         interactionSource = remember(::MutableInteractionSource),
                         indication = rememberRipple(color = Color.White)
                     ) {
-                        BrowserUtils.open(
-                            URI.create("https://twitter.com/ConcernedApe")
-                        )
+                        BrowserUtils.open(URI.create("https://twitter.com/ConcernedApe"))
                     }
                     .size(40.dp)
                     .clip(MaterialTheme.shapes.small)
@@ -252,9 +281,7 @@ private fun BugTrackerSection() {
                     interactionSource = remember(::MutableInteractionSource),
                     indication = rememberRipple(color = Color.White)
                 ) {
-                    BrowserUtils.open(
-                        URI.create("https://github.com/AzimMuradov/stardew-valley-designer/issues")
-                    )
+                    BrowserUtils.open(URI.create(App.BUG_TRACKER_URL))
                 }
                 .padding(8.dp)
                 .size(24.dp),
@@ -262,7 +289,3 @@ private fun BugTrackerSection() {
         )
     }
 }
-
-
-@OptIn(ExperimentalRichTextApi::class)
-private fun AnnotatedString.toRichTextValue() = RichTextValue.from(annotatedString = this)

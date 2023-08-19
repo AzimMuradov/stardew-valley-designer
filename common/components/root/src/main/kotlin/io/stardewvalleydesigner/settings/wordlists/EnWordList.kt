@@ -78,6 +78,10 @@ data object EnWordList : WordList {
 
     override val infoApplicationSource: String = "Application source"
 
+    override val infoCurrentVersion: String = "Current version"
+
+    override val infoChangelog: String = "Changelog"
+
     override val infoConcernedApeTwitter: String = "ConcernedApe twitter"
 
     override val infoSVText1: String = "Stardew Valley is developed by "

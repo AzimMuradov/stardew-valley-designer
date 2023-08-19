@@ -8,12 +8,14 @@ decompose = "1.0.0"
 mvikotlin = "3.2.1"
 
 kotlinx-coroutines = "1.7.3"
-richeditor = "0.2.0"
+# richeditor = "1.0.0-beta02"
 directories = "26"
 bonsai = "1.2.0"
 
 kotlinx-serialization-plugin = "1.9.0"
 xmlutil = "0.86.1"
+
+buildconfig = "4.1.2"
 
 conveyor = "1.6"
 
@@ -35,7 +37,7 @@ mvikotlin-extensions-coroutines = { module = "com.arkivanov.mvikotlin:mvikotlin-
 
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 
-richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditor" }
+# richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditor" }
 
 directories = { module = "dev.dirs:directories", version.ref = "directories" }
 
@@ -73,6 +75,7 @@ xmlutil = [
 
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization-plugin" }
+buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 conveyor = { id = "dev.hydraulic.conveyor", version.ref = "conveyor" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
