@@ -104,6 +104,7 @@
 - Building paintings
 - Render (in every season)
 - Search fields for various types of items
+- Import various metadata (player name, etc.)
 - Add new languages
 - Tappers, crab pots
 - Dark theme, OS theme
