@@ -8,12 +8,6 @@
 The goal of this project is to provide a finely tuned editor for designing your farm and
 the interior of all its buildings.
 
-## Stardew Valley version
-
-The app aims to support the latest version of Stardew Valley (**1.5.6**).
-
-_Other versions may have little or no support._
-
 ## Installation
 
 Latest release - https://azimmuradov.github.io/stardew-valley-designer/download.html.
@@ -23,6 +17,12 @@ Currently supported platforms:
 - Windows (x86-64)
 - Linux (x86-64)
     - Debian family
+
+## Stardew Valley version
+
+The app aims to support the latest version of Stardew Valley (**1.5.6**).
+
+_Other versions may have little or no support._
 
 ## Features
 
