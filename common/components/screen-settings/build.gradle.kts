@@ -1,19 +1,23 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.detekt)
 }
 
-dependencies {
-    implementation(libs.bundles.mvikotlin)
-
-
-    // Meta-code
-
-    detektPlugins(libs.detekt.formatting)
-
-    implementation(projects.common.logger)
-    implementation(libs.kotlinlogging.jvm)
+kotlin {
+    jvm()
 }
+
+// dependencies {
+//     implementation(libs.bundles.mvikotlin)
+//
+//
+//     // Meta-code
+//
+//     detektPlugins(libs.detekt.formatting)
+//
+//     implementation(projects.common.logger)
+//     implementation(libs.kotlinlogging.jvm)
+// }
 
 detekt {
     toolVersion = libs.versions.detekt.get()

@@ -1,18 +1,26 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.detekt)
 }
 
-dependencies {
-    implementation(projects.common.editorEngine)
+kotlin {
+    jvm()
+
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(projects.common.editorEngine)
 
 
-    // Meta-code
+                // Meta-code
 
-    detektPlugins(libs.detekt.formatting)
+                // detektPlugins(libs.detekt.formatting)
 
-    implementation(projects.common.logger)
-    implementation(libs.kotlinlogging.jvm)
+                implementation(projects.common.logger)
+                implementation(libs.kotlinlogging.common)
+            }
+        }
+    }
 }
 
 detekt {

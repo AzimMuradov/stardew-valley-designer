@@ -1,20 +1,33 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.detekt)
 }
 
-dependencies {
-    implementation(libs.kotlinlogging.jvm)
-    implementation(libs.log4j.slf4j2)
+kotlin {
+    jvm()
 
-    implementation(libs.mvikotlin)
-    implementation(libs.mvikotlin.main)
-    implementation(libs.mvikotlin.logging)
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.kotlinlogging.common)
+
+                implementation(libs.mvikotlin)
+                implementation(libs.mvikotlin.main)
+                implementation(libs.mvikotlin.logging)
 
 
-    // Meta-code
+                // Meta-code
 
-    detektPlugins(libs.detekt.formatting)
+                // detektPlugins(libs.detekt.formatting)
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+                implementation(libs.log4j.slf4j2)
+            }
+        }
+    }
 }
 
 detekt {

@@ -44,12 +44,13 @@ directories = { module = "dev.dirs:directories", version.ref = "directories" }
 bonsai-core = { module = "cafe.adriel.bonsai:bonsai-core", version.ref = "bonsai" }
 bonsai-fs = { module = "cafe.adriel.bonsai:bonsai-file-system", version.ref = "bonsai" }
 
-xmlutil-core-jvm = { module = "io.github.pdvrieze.xmlutil:core-jvm", version.ref = "xmlutil" }
-xmlutil-serialization-jvm = { module = "io.github.pdvrieze.xmlutil:serialization-jvm", version.ref = "xmlutil" }
+xmlutil-core-common = { module = "io.github.pdvrieze.xmlutil:core", version.ref = "xmlutil" }
+xmlutil-serialization-common = { module = "io.github.pdvrieze.xmlutil:serialization", version.ref = "xmlutil" }
 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
 kotlinlogging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlinlogging" }
+kotlinlogging-common = { module = "io.github.oshai:kotlin-logging", version.ref = "kotlinlogging" }
 log4j-slf4j2 = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j" }
 
 
@@ -66,14 +67,15 @@ bonsai = [
 ]
 
 xmlutil = [
-    "xmlutil-core-jvm",
-    "xmlutil-serialization-jvm",
+    "xmlutil-core-common",
+    "xmlutil-serialization-common",
 ]
 
 
 [plugins]
 
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization-plugin" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }

@@ -1,22 +1,30 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.detekt)
 }
 
-dependencies {
-    implementation(projects.common.editorEngine)
-    implementation(projects.common.entitiesMetadata)
+kotlin {
+    jvm()
 
-    implementation(libs.bundles.xmlutil)
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(projects.common.editorEngine)
+                implementation(projects.common.entitiesMetadata)
+
+                implementation(libs.bundles.xmlutil)
 
 
-    // Meta-code
+                // Meta-code
 
-    detektPlugins(libs.detekt.formatting)
+                // detektPlugins(libs.detekt.formatting)
 
-    implementation(projects.common.logger)
-    implementation(libs.kotlinlogging.jvm)
+                implementation(projects.common.logger)
+                implementation(libs.kotlinlogging.common)
+            }
+        }
+    }
 }
 
 detekt {

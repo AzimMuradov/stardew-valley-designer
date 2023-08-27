@@ -1,26 +1,34 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.detekt)
 }
 
-dependencies {
-    implementation(projects.common.editorEngine)
+kotlin {
+    jvm()
 
-    implementation(projects.common.components.screenSplash)
-    implementation(projects.common.components.screenMainMenu)
-    implementation(projects.common.components.screenEditor)
-    implementation(projects.common.components.screenSettings)
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(projects.common.editorEngine)
 
-    implementation(libs.decompose)
-    implementation(libs.bundles.mvikotlin)
+                implementation(projects.common.components.screenSplash)
+                implementation(projects.common.components.screenMainMenu)
+                implementation(projects.common.components.screenEditor)
+                implementation(projects.common.components.screenSettings)
+
+                implementation(libs.decompose)
+                implementation(libs.bundles.mvikotlin)
 
 
-    // Meta-code
+                // Meta-code
 
-    detektPlugins(libs.detekt.formatting)
+                // detektPlugins(libs.detekt.formatting)
 
-    implementation(projects.common.logger)
-    implementation(libs.kotlinlogging.jvm)
+                implementation(projects.common.logger)
+                implementation(libs.kotlinlogging.common)
+            }
+        }
+    }
 }
 
 detekt {

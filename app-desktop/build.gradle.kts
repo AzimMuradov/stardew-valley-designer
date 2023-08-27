@@ -2,11 +2,66 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.compose)
     alias(libs.plugins.buildconfig)
     alias(libs.plugins.conveyor)
     alias(libs.plugins.detekt)
+}
+
+kotlin {
+    jvm()
+
+    sourceSets {
+        val jvmMain by getting {
+            dependencies {
+                implementation(projects.common.editorEngine)
+                implementation(projects.common.entitiesMetadata)
+
+                implementation(projects.common.components.root)
+                implementation(projects.common.components.screenSplash)
+                implementation(projects.common.components.screenMainMenu)
+                implementation(projects.common.components.screenEditor)
+                implementation(projects.common.components.screenSettings)
+
+                implementation(projects.common.uiUtils.buttonsGroupUi)
+                implementation(projects.common.uiUtils.dropdownMenu)
+                implementation(projects.common.uiUtils.dropdownMenuUi)
+
+                implementation(compose.desktop.currentOs)
+                implementation(compose.materialIconsExtended)
+
+                implementation(libs.decompose)
+                implementation(libs.decompose.extensions.composejb)
+
+                implementation(libs.bundles.mvikotlin)
+
+                implementation(libs.kotlinx.coroutines.core)
+
+                implementation(libs.directories)
+
+                implementation(libs.bundles.bonsai)
+
+                // implementation(libs.richeditor.compose)
+
+
+                // Conveyor
+
+                // linuxAmd64(compose.desktop.linux_x64)
+                // windowsAmd64(compose.desktop.windows_x64)
+                // macAmd64(compose.desktop.macos_x64)
+                // macAarch64(compose.desktop.macos_arm64)
+
+
+                // Meta-code
+
+                // detektPlugins(libs.detekt.formatting)
+
+                implementation(projects.common.logger)
+                implementation(libs.kotlinlogging.jvm)
+            }
+        }
+    }
 }
 
 
@@ -51,52 +106,6 @@ group = App.GROUP
 version = App.VERSION
 
 
-dependencies {
-    implementation(projects.common.editorEngine)
-    implementation(projects.common.entitiesMetadata)
-
-    implementation(projects.common.components.root)
-    implementation(projects.common.components.screenSplash)
-    implementation(projects.common.components.screenMainMenu)
-    implementation(projects.common.components.screenEditor)
-    implementation(projects.common.components.screenSettings)
-
-    implementation(projects.common.uiUtils.buttonsGroupUi)
-    implementation(projects.common.uiUtils.dropdownMenu)
-    implementation(projects.common.uiUtils.dropdownMenuUi)
-
-    implementation(compose.desktop.currentOs)
-    implementation(compose.materialIconsExtended)
-
-    implementation(libs.decompose)
-    implementation(libs.decompose.extensions.composejb)
-
-    implementation(libs.bundles.mvikotlin)
-
-    implementation(libs.kotlinx.coroutines.core)
-
-    implementation(libs.directories)
-
-    implementation(libs.bundles.bonsai)
-
-    // implementation(libs.richeditor.compose)
-
-
-    // Conveyor
-
-    linuxAmd64(compose.desktop.linux_x64)
-    windowsAmd64(compose.desktop.windows_x64)
-    // macAmd64(compose.desktop.macos_x64)
-    // macAarch64(compose.desktop.macos_arm64)
-
-
-    // Meta-code
-
-    detektPlugins(libs.detekt.formatting)
-
-    implementation(projects.common.logger)
-    implementation(libs.kotlinlogging.jvm)
-}
 
 
 compose.desktop {
@@ -131,9 +140,9 @@ compose.desktop {
     }
 }
 
-kotlin {
-    jvmToolchain(17)
-}
+// kotlin {
+//     jvmToolchain(17)
+// }
 
 tasks.clean {
     delete(rootProject.buildDir)
