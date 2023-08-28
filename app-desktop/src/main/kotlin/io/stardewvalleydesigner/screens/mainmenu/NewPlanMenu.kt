@@ -46,7 +46,7 @@ fun RowScope.NewPlanMenu(
     Dialog(
         onCloseRequest = { intentConsumer(MainMenuIntent.NewPlanMenu.Cancel) },
         state = rememberDialogState(
-            size = DpSize(width = 400.dp, height = 600.dp)
+            size = DpSize(width = 800.dp, height = 600.dp)
         ),
         visible = state is MainMenuState.NewPlanMenu.Idle,
         title = wordList.newPlanWindowTitle,
@@ -57,11 +57,9 @@ fun RowScope.NewPlanMenu(
             layouts = (state as? MainMenuState.NewPlanMenu.Idle)?.availableLayouts,
             placeholder = "",
             chosenLayout = (state as? MainMenuState.NewPlanMenu.Idle)?.chosenLayout,
-            okText = wordList.choose,
-            cancelText = wordList.cancel,
+            okText = wordList.chooseLayout,
             onLayoutChosen = { intentConsumer(MainMenuIntent.NewPlanMenu.ChooseLayout(it)) },
             onOk = { intentConsumer(MainMenuIntent.NewPlanMenu.AcceptChosen) },
-            onCancel = { intentConsumer(MainMenuIntent.NewPlanMenu.Cancel) }
         )
     }
 }

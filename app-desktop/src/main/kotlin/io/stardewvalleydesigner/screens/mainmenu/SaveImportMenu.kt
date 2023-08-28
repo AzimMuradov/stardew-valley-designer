@@ -17,42 +17,29 @@
 package io.stardewvalleydesigner.screens.mainmenu
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.TextFieldDefaults.IconOpacity
-import androidx.compose.material.TextFieldDefaults.UnfocusedIndicatorLineOpacity
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material.icons.filled.FileUpload
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerIcon
-import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.rememberDialogState
-import cafe.adriel.bonsai.core.Bonsai
-import cafe.adriel.bonsai.core.tree.Tree
-import cafe.adriel.bonsai.filesystem.FileSystemBonsaiStyle
-import cafe.adriel.bonsai.filesystem.FileSystemTree
+import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import io.stardewvalleydesigner.LoggerUtils
 import io.stardewvalleydesigner.mainmenu.MainMenuIntent
 import io.stardewvalleydesigner.mainmenu.MainMenuState
 import io.stardewvalleydesigner.utils.GlobalSettings
-import kotlinx.coroutines.delay
-import okio.Path
-import okio.Path.Companion.toPath
 import java.io.File
 import java.util.*
-import kotlin.io.path.*
-import kotlin.time.Duration.Companion.milliseconds
 import java.io.File.separator as sep
 
 
@@ -72,17 +59,17 @@ fun RowScope.SaveImportMenu(
     Dialog(
         onCloseRequest = { intentConsumer(MainMenuIntent.SaveLoaderMenu.Cancel) },
         state = rememberDialogState(
-            size = DpSize(width = 900.dp, height = 600.dp)
+            size = DpSize(width = 800.dp, height = 600.dp)
         ),
         visible = state is MainMenuState.SaveLoaderMenu,
         title = wordList.saveImportWindowTitle,
         resizable = false
     ) {
-        Row(
+        Column(
             modifier = Modifier.fillMaxSize()
                 .background(MaterialTheme.colors.background)
                 .padding(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(18.dp)
+            verticalArrangement = Arrangement.spacedBy(18.dp)
         ) {
             SaveFileLoader(intentConsumer)
 
@@ -95,11 +82,9 @@ fun RowScope.SaveImportMenu(
                     wordList.saveImportPlaceholderError
                 },
                 chosenLayout = (state as? MainMenuState.SaveLoaderMenu.Idle)?.chosenLayout,
-                okText = wordList.choose,
-                cancelText = wordList.cancel,
+                okText = wordList.chooseLayout,
                 onLayoutChosen = { intentConsumer(MainMenuIntent.SaveLoaderMenu.ChooseLayout(it)) },
                 onOk = { intentConsumer(MainMenuIntent.SaveLoaderMenu.AcceptChosen) },
-                onCancel = { intentConsumer(MainMenuIntent.SaveLoaderMenu.Cancel) },
                 isLoading = state is MainMenuState.SaveLoaderMenu.Loading
             )
         }
@@ -108,40 +93,21 @@ fun RowScope.SaveImportMenu(
 
 
 @Composable
-private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMenu) -> Unit) {
+private fun SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMenu) -> Unit) {
     val wordList = GlobalSettings.strings
 
     Column(
         modifier = Modifier
-            .fillMaxHeight()
-            .weight(1f)
+            .fillMaxWidth()
             .shadow(
                 elevation = 4.dp,
                 shape = MaterialTheme.shapes.large
             )
             .background(MaterialTheme.colors.secondary)
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        val roots by remember { mutableStateOf(File.listRoots()) }
-        val root by remember { mutableStateOf(roots.first().absolutePath) }
-
-        LaunchedEffect(Unit) {
-            LoggerUtils.logger.debug { "Roots: ${roots.asList()}" }
-        }
-
-        var currentDir by remember { mutableStateOf(savePath ?: homePath) }
-
-        val tree = PathTree(currentDir).apply {
-            LaunchedEffect(key1 = this) {
-                collapseRoot()
-                while (nodes.size != 1) delay(10.milliseconds)
-                expandRoot()
-            }
-        }
-
         var path by remember { mutableStateOf("") }
-
 
         Row(
             modifier = Modifier.fillMaxWidth().height(56.dp),
@@ -149,143 +115,53 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
             verticalAlignment = Alignment.CenterVertically
         ) {
             TextField(
-                value = currentDir,
+                value = path,
                 onValueChange = {},
                 modifier = Modifier.weight(1f).height(56.dp),
                 readOnly = true,
-                label = { Text(wordList.saveImportCurrentDirectoryLabel) },
-                trailingIcon = {
-                    val interactionSource = remember(::MutableInteractionSource)
-
-                    Icon(
-                        imageVector = Icons.Filled.ArrowUpward,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .pointerHoverIcon(PointerIcon.Hand)
-                            .size(24.dp)
-                            .clickable(
-                                interactionSource = interactionSource,
-                                indication = rememberRipple(
-                                    bounded = false,
-                                    radius = 18.dp,
-                                    color = Color.White
-                                )
-                            ) {
-                                currentDir = currentDir.toPath().parent?.toNioPath()?.absolutePathString() ?: currentDir
-                            }
-                    )
-                },
+                placeholder = { Text(wordList.saveImportTextFieldLabel) },
+                trailingIcon = null,
                 singleLine = true,
                 colors = TextFieldDefaults.textFieldColors(
                     textColor = MaterialTheme.colors.onPrimary,
                     backgroundColor = MaterialTheme.colors.secondaryVariant,
-                    cursorColor = MaterialTheme.colors.onPrimary,
-                    focusedIndicatorColor = MaterialTheme.colors.onPrimary.copy(ContentAlpha.high),
-                    unfocusedIndicatorColor = MaterialTheme.colors.onPrimary.copy(UnfocusedIndicatorLineOpacity),
+                    cursorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
                     trailingIconColor = MaterialTheme.colors.onPrimary.copy(IconOpacity),
-                    focusedLabelColor = MaterialTheme.colors.onPrimary.copy(ContentAlpha.high),
-                    unfocusedLabelColor = MaterialTheme.colors.onPrimary.copy(ContentAlpha.medium),
+                    placeholderColor = MaterialTheme.colors.onPrimary.copy(ContentAlpha.medium)
                 )
             )
-            IconButton(onClick = { currentDir = homePath }) {
-                Icon(
-                    imageVector = Icons.Filled.Home,
-                    contentDescription = null,
-                    modifier = Modifier.pointerHoverIcon(PointerIcon.Hand),
-                    tint = Color.White.copy(alpha = LocalContentAlpha.current)
-                )
-            }
-            IconButton(onClick = { currentDir = savePath!! }, enabled = savePath != null) {
-                Icon(
-                    imageVector = Icons.Filled.Save,
-                    contentDescription = null,
-                    modifier = Modifier.pointerHoverIcon(PointerIcon.Hand),
-                    tint = Color.White.copy(alpha = LocalContentAlpha.current)
-                )
-            }
-        }
-        Box(
-            Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .background(MaterialTheme.colors.surface)
-                .padding(8.dp)
-        ) {
-            Bonsai(
-                tree = tree,
-                modifier = Modifier.fillMaxSize(),
-                onClick = {
-                    val p = it.content.toNioPath()
-                    when {
-                        p.isRegularFile() -> path = p.absolutePathString()
-                        p.isDirectory() -> {
-                            currentDir = if (p.absolutePathString() != root) {
-                                p.absolutePathString()
-                            } else {
-                                currentDir.toPath().parent?.toString() ?: currentDir
-                            }
-                        }
-                    }
-                },
-                onDoubleClick = null,
-                onLongClick = null,
-                style = FileSystemBonsaiStyle()
-            )
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth().height(56.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            TextField(
-                value = path,
-                onValueChange = { path = it },
-                modifier = Modifier.weight(1f).height(56.dp),
-                label = { Text(wordList.saveImportTextFieldLabel) },
-                trailingIcon = {
-                    val interactionSource = remember(::MutableInteractionSource)
 
-                    Icon(
-                        imageVector = Icons.Filled.Cancel,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .pointerHoverIcon(PointerIcon.Hand)
-                            .size(24.dp)
-                            .clickable(
-                                interactionSource = interactionSource,
-                                indication = rememberRipple(
-                                    bounded = false,
-                                    radius = 18.dp,
-                                    color = Color.Black
-                                )
-                            ) {
-                                path = ""
-                            }
-                    )
-                },
-                singleLine = true,
-                colors = TextFieldDefaults.textFieldColors(
-                    textColor = MaterialTheme.colors.onSecondary,
-                    backgroundColor = MaterialTheme.colors.onPrimary,
-                    cursorColor = MaterialTheme.colors.onSecondary,
-                    focusedIndicatorColor = MaterialTheme.colors.onSecondary.copy(ContentAlpha.high),
-                    unfocusedIndicatorColor = MaterialTheme.colors.onSecondary.copy(UnfocusedIndicatorLineOpacity),
-                    trailingIconColor = MaterialTheme.colors.secondaryVariant.copy(IconOpacity),
-                    focusedLabelColor = MaterialTheme.colors.secondaryVariant.copy(ContentAlpha.high),
-                    unfocusedLabelColor = MaterialTheme.colors.secondaryVariant.copy(ContentAlpha.medium),
-                )
-            )
+            var showFilePicker by remember { mutableStateOf(false) }
+
+            FilePicker(
+                show = showFilePicker,
+                initialDirectory = path.takeIf(String::isNotBlank) ?: savePath ?: homePath
+            ) { file ->
+                showFilePicker = false
+                file?.let {
+                    path = it.path
+                    intentConsumer(MainMenuIntent.SaveLoaderMenu.LoadSave(path))
+                }
+            }
+
             Button(
-                onClick = { intentConsumer(MainMenuIntent.SaveLoaderMenu.LoadSave(path)) },
-                modifier = Modifier.height(36.dp),
-                enabled = path.isNotBlank(),
+                onClick = { showFilePicker = true },
+                modifier = Modifier.height(48.dp),
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = MaterialTheme.colors.surface,
-                    contentColor = MaterialTheme.colors.primary
+                    backgroundColor = MaterialTheme.colors.primaryVariant,
+                    contentColor = Color.White
                 )
             ) {
+                Icon(
+                    imageVector = Icons.Filled.FileUpload,
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(Modifier.size(8.dp))
                 Text(
-                    wordList.load,
+                    wordList.selectSaveFile,
                     style = TextStyle(
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 14.sp
@@ -297,38 +173,17 @@ private fun RowScope.SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMe
 }
 
 
-// Shit code to force bonsai to recompose.
-// Bonsai should fix that someday...
-
-@Composable
-private fun PathTree(root: String): Tree<Path> {
-    var rooty by remember { mutableStateOf("") }
-    return if (root != rooty) {
-        rooty = root
-        FileSystemTree(
-            rootPath = Path(root),
-            selfInclude = true
-        )
-    } else {
-        FileSystemTree(
-            rootPath = Path(rooty),
-            selfInclude = true
-        )
-    }
-}
-
-
-private val homePath: String = System.getProperty("user.home")
+private val homePath: String = """${System.getProperty("user.home")}${sep}"""
 
 private val savePath: String? = run {
     val os = System.getProperty("os.name").uppercase(Locale.getDefault())
     val dataPath = if ("WIN" in os) {
         System.getenv("APPDATA")
     } else {
-        "$homePath${sep}.config"
+        "${System.getProperty("user.home")}${sep}.config"
     }
 
-    "$dataPath${sep}StardewValley${sep}Saves".takeIf {
+    "$dataPath${sep}StardewValley${sep}Saves${sep}".takeIf {
         LoggerUtils.logger.debug { "Saves path: $it" }
         File(it).exists()
     }

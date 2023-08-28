@@ -77,7 +77,7 @@ dependencies {
 
     implementation(libs.directories)
 
-    implementation(libs.bundles.bonsai)
+    implementation(libs.mpfilepicker)
 
     // implementation(libs.richeditor.compose)
 

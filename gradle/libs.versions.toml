@@ -10,7 +10,7 @@ mvikotlin = "3.2.1"
 kotlinx-coroutines = "1.7.3"
 # richeditor = "1.0.0-beta02"
 directories = "26"
-bonsai = "1.2.0"
+mpfilepicker = "2.0.2"
 
 kotlinx-serialization-plugin = "1.9.0"
 xmlutil = "0.86.1"
@@ -41,8 +41,7 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 
 directories = { module = "dev.dirs:directories", version.ref = "directories" }
 
-bonsai-core = { module = "cafe.adriel.bonsai:bonsai-core", version.ref = "bonsai" }
-bonsai-fs = { module = "cafe.adriel.bonsai:bonsai-file-system", version.ref = "bonsai" }
+mpfilepicker = { module = "com.darkrockstudios:mpfilepicker", version.ref = "mpfilepicker" }
 
 xmlutil-core-jvm = { module = "io.github.pdvrieze.xmlutil:core-jvm", version.ref = "xmlutil" }
 xmlutil-serialization-jvm = { module = "io.github.pdvrieze.xmlutil:serialization-jvm", version.ref = "xmlutil" }
@@ -58,11 +57,6 @@ log4j-slf4j2 = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.
 mvikotlin = [
     "mvikotlin",
     "mvikotlin-extensions-coroutines",
-]
-
-bonsai = [
-    "bonsai-core",
-    "bonsai-fs",
 ]
 
 xmlutil = [
