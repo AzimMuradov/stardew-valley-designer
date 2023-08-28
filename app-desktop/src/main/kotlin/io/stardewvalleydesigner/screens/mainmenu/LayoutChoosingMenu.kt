@@ -44,10 +44,8 @@ fun LayoutChoosingMenu(
     placeholder: String,
     chosenLayout: EditorEngine?,
     okText: String,
-    cancelText: String,
     onLayoutChosen: (EditorEngine) -> Unit,
     onOk: () -> Unit,
-    onCancel: () -> Unit,
     isLoading: Boolean = false,
 ) {
     val wordList = GlobalSettings.strings
@@ -89,7 +87,7 @@ fun LayoutChoosingMenu(
 
             else -> {
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(count = 2),
+                    columns = GridCells.Fixed(count = 3),
                     modifier = m,
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -129,31 +127,15 @@ fun LayoutChoosingMenu(
             }
         }
 
-        Row(
-            modifier = Modifier.fillMaxWidth().height(56.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Row(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = onOk,
-                modifier = Modifier.height(36.dp),
+                modifier = Modifier.height(48.dp),
                 enabled = chosenLayout != null
             ) {
                 Text(
                     okText,
-                    style = TextStyle(
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 14.sp
-                    )
-                )
-            }
-            OutlinedButton(
-                onClick = onCancel,
-                modifier = Modifier.height(36.dp)
-            ) {
-                Text(
-                    cancelText,
                     style = TextStyle(
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 14.sp

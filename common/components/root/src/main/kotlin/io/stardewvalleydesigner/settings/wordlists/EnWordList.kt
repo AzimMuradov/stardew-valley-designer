@@ -36,12 +36,6 @@ data object EnWordList : WordList {
 
     override val ok: String = "OK"
 
-    override val cancel: String = "CANCEL"
-
-    override val choose: String = "CHOOSE"
-
-    override val load: String = "LOAD"
-
     override fun layout(type: LayoutType): String = when (type) {
         LayoutType.Shed -> "Shed"
         LayoutType.BigShed -> "Big Shed"
@@ -96,6 +90,10 @@ data object EnWordList : WordList {
     override val buttonNewPlanText: String = "New plan"
 
     override val newPlanWindowTitle: String = "Choose from available layouts"
+
+    override val chooseLayout: String = "CHOOSE LAYOUT"
+
+    override val selectSaveFile: String = "SELECT SAVE FILE"
 
     override val buttonOpenPlanText: String = "Open plan"
 

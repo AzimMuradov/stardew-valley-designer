@@ -45,12 +45,6 @@ sealed interface WordList {
 
     val ok: String
 
-    val cancel: String
-
-    val choose: String
-
-    val load: String
-
     fun layout(type: LayoutType): String
 
 
@@ -100,6 +94,10 @@ sealed interface WordList {
     val buttonNewPlanText: String
 
     val newPlanWindowTitle: String
+
+    val chooseLayout: String
+
+    val selectSaveFile: String
 
     val buttonOpenPlanText: String
 
