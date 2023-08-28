@@ -19,8 +19,6 @@ buildconfig = "4.1.2"
 
 conveyor = "1.6"
 
-detekt = "1.23.1"
-
 kotlinlogging = "5.1.0"
 log4j = "2.20.0"
 
@@ -46,8 +44,6 @@ bonsai-fs = { module = "cafe.adriel.bonsai:bonsai-file-system", version.ref = "b
 
 xmlutil-core-common = { module = "io.github.pdvrieze.xmlutil:core", version.ref = "xmlutil" }
 xmlutil-serialization-common = { module = "io.github.pdvrieze.xmlutil:serialization", version.ref = "xmlutil" }
-
-detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
 kotlinlogging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlinlogging" }
 kotlinlogging-common = { module = "io.github.oshai:kotlin-logging", version.ref = "kotlinlogging" }
@@ -80,4 +76,3 @@ kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", vers
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }
 conveyor = { id = "dev.hydraulic.conveyor", version.ref = "conveyor" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

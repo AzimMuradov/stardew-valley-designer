@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.buildconfig)
     alias(libs.plugins.conveyor)
-    alias(libs.plugins.detekt)
 }
 
 kotlin {
@@ -54,8 +53,6 @@ kotlin {
 
 
                 // Meta-code
-
-                // detektPlugins(libs.detekt.formatting)
 
                 implementation(projects.common.logger)
                 implementation(libs.kotlinlogging.jvm)
@@ -146,12 +143,6 @@ compose.desktop {
 
 tasks.clean {
     delete(rootProject.buildDir)
-}
-
-detekt {
-    toolVersion = libs.versions.detekt.get()
-    config.from(projectDir.resolve("config/detekt/detekt.yml"))
-    buildUponDefaultConfig = true
 }
 
 // region Work around temporary Compose bugs.

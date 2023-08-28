@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.detekt)
 }
 
 kotlin {
@@ -14,11 +13,6 @@ kotlin {
                 implementation(libs.mvikotlin)
                 implementation(libs.mvikotlin.main)
                 implementation(libs.mvikotlin.logging)
-
-
-                // Meta-code
-
-                // detektPlugins(libs.detekt.formatting)
             }
         }
 
@@ -28,10 +22,4 @@ kotlin {
             }
         }
     }
-}
-
-detekt {
-    toolVersion = libs.versions.detekt.get()
-    config.from(projectDir.resolve("config/detekt/detekt.yml"))
-    buildUponDefaultConfig = true
 }
