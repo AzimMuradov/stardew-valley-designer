@@ -1,11 +1,11 @@
-name: "Test project"
+name: "Check project"
 
 on:
   push:
   workflow_dispatch:
 
 jobs:
-  test:
+  check:
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest ]
@@ -20,10 +20,10 @@ jobs:
           distribution: "adopt"
       - name: "Grant execute permission for gradlew"
         run: chmod +x gradlew
-      - name: "Test project with Gradle"
-        run: ./gradlew test --stacktrace
+      - name: "Check project with Gradle"
+        run: ./gradlew check --stacktrace
 
-#  test-fedora-latest:
+#  check-fedora-latest:
 #    runs-on: ubuntu-latest
 #    container: fedora:latest
 #    steps:
@@ -36,5 +36,5 @@ jobs:
 #          distribution: "adopt"
 #      - name: "Grant execute permission for gradlew"
 #        run: chmod +x gradlew
-#      - name: "Test project with Gradle"
-#        run: ./gradlew test --stacktrace
+#      - name: "Check project with Gradle"
+#        run: ./gradlew check --stacktrace
