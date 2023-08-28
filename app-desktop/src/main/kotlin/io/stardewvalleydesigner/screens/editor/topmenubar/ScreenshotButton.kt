@@ -18,14 +18,14 @@ package io.stardewvalleydesigner.screens.editor.topmenubar
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Image
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.IntOffset
+import com.darkrockstudios.libraries.mpfilepicker.DirectoryPicker
 import dev.dirs.UserDirectories
 import io.stardewvalleydesigner.editor.modules.map.MapState
 import io.stardewvalleydesigner.editor.res.*
@@ -57,27 +57,38 @@ fun ScreenshotButton(
 ) {
     val wordList = GlobalSettings.strings
 
+    val dir = "${UserDirectories.get().pictureDir}${sep}Stardew Valley Designer${sep}"
+
+    var showFilePicker by remember { mutableStateOf(false) }
+
     Box(modifier = Modifier.aspectRatio(1f).fillMaxHeight()) {
         TooltipArea(wordList.buttonMakeScreenshotTooltip) {
             TopMenuIconButton(
                 icon = Icons.Rounded.Image,
                 onClick = {
                     CoroutineScope(Dispatchers.IO).launch {
-                        val path = makeScreenshot(map, visibleLayers)
-                        snackbarHostState.currentSnackbarData?.dismiss()
-                        snackbarHostState.showSnackbar(
-                            message = "Saved to \"$path\"",
-                            duration = SnackbarDuration.Long
-                        )
+                        Files.createDirectories(Path.of(dir))
+                        showFilePicker = true
                     }
                 }
             )
         }
     }
+
+    DirectoryPicker(show = showFilePicker, initialDirectory = dir) { dir ->
+        showFilePicker = false
+        dir?.let {
+            val path = makeScreenshot(it, map, visibleLayers)
+            snackbarHostState.currentSnackbarData?.dismiss()
+            CoroutineScope(Dispatchers.Default).launch {
+                snackbarHostState.showSnackbar(message = "Saved to \"$path\"")
+            }
+        }
+    }
 }
 
 
-private fun makeScreenshot(map: MapState, visibleLayers: Set<LayerType<*>>): String {
+private fun makeScreenshot(dir: String, map: MapState, visibleLayers: Set<LayerType<*>>): String {
     val now = Instant.now()
 
 
@@ -159,7 +170,6 @@ private fun makeScreenshot(map: MapState, visibleLayers: Set<LayerType<*>>): Str
         .withZone(ZoneId.systemDefault())
         .format(now)
 
-    val dir = "${UserDirectories.get().pictureDir}${sep}Stardew Valley Designer"
     val filename = "design-$formatted.png"
 
     Files.createDirectories(Path.of(dir))
