@@ -20,7 +20,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.TextFieldDefaults.IconOpacity
-import androidx.compose.material.TextFieldDefaults.UnfocusedIndicatorLineOpacity
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FileUpload
 import androidx.compose.material.icons.filled.Save
@@ -120,18 +119,17 @@ private fun SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMenu) -> Un
                 onValueChange = {},
                 modifier = Modifier.weight(1f).height(56.dp),
                 readOnly = true,
-                label = { Text(wordList.saveImportTextFieldLabel) },
+                placeholder = { Text(wordList.saveImportTextFieldLabel) },
                 trailingIcon = null,
                 singleLine = true,
                 colors = TextFieldDefaults.textFieldColors(
                     textColor = MaterialTheme.colors.onPrimary,
                     backgroundColor = MaterialTheme.colors.secondaryVariant,
-                    cursorColor = MaterialTheme.colors.onPrimary,
-                    focusedIndicatorColor = MaterialTheme.colors.onPrimary.copy(ContentAlpha.high),
-                    unfocusedIndicatorColor = MaterialTheme.colors.onPrimary.copy(UnfocusedIndicatorLineOpacity),
+                    cursorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
                     trailingIconColor = MaterialTheme.colors.onPrimary.copy(IconOpacity),
-                    focusedLabelColor = MaterialTheme.colors.onPrimary.copy(ContentAlpha.high),
-                    unfocusedLabelColor = MaterialTheme.colors.onPrimary.copy(ContentAlpha.medium),
+                    placeholderColor = MaterialTheme.colors.onPrimary.copy(ContentAlpha.medium)
                 )
             )
 

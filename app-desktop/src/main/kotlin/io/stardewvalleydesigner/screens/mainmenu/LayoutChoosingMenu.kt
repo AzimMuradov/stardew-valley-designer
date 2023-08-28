@@ -81,7 +81,11 @@ fun LayoutChoosingMenu(
                     modifier = m.padding(40.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(placeholder, textAlign = TextAlign.Center)
+                    Text(
+                        placeholder,
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.h6
+                    )
                 }
             }
 
