@@ -18,6 +18,8 @@ package io.stardewvalleydesigner.screens.editor.topmenubar
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Image
 import androidx.compose.runtime.Composable
@@ -48,7 +50,11 @@ import java.io.File.separator as sep
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ScreenshotButton(map: MapState, visibleLayers: Set<LayerType<*>>) {
+fun ScreenshotButton(
+    map: MapState,
+    visibleLayers: Set<LayerType<*>>,
+    snackbarHostState: SnackbarHostState,
+) {
     val wordList = GlobalSettings.strings
 
     Box(modifier = Modifier.aspectRatio(1f).fillMaxHeight()) {
@@ -57,7 +63,12 @@ fun ScreenshotButton(map: MapState, visibleLayers: Set<LayerType<*>>) {
                 icon = Icons.Rounded.Image,
                 onClick = {
                     CoroutineScope(Dispatchers.IO).launch {
-                        makeScreenshot(map, visibleLayers)
+                        val path = makeScreenshot(map, visibleLayers)
+                        snackbarHostState.currentSnackbarData?.dismiss()
+                        snackbarHostState.showSnackbar(
+                            message = "Saved to \"$path\"",
+                            duration = SnackbarDuration.Long
+                        )
                     }
                 }
             )
@@ -66,7 +77,7 @@ fun ScreenshotButton(map: MapState, visibleLayers: Set<LayerType<*>>) {
 }
 
 
-private fun makeScreenshot(map: MapState, visibleLayers: Set<LayerType<*>>) {
+private fun makeScreenshot(map: MapState, visibleLayers: Set<LayerType<*>>): String {
     val now = Instant.now()
 
 
@@ -158,4 +169,6 @@ private fun makeScreenshot(map: MapState, visibleLayers: Set<LayerType<*>>) {
         "png",
         File("$dir$sep$filename")
     )
+
+    return "$dir$sep$filename"
 }

@@ -19,6 +19,7 @@ package io.stardewvalleydesigner.screens.editor.topmenubar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -42,6 +43,7 @@ fun TopMenu(
     disallowedTypes: Set<EntityType>,
     onEntitySelection: (Entity<*>) -> Unit,
     options: OptionsState,
+    snackbarHostState: SnackbarHostState,
     intentConsumer: (EditorIntent) -> Unit,
 ) {
     Row(
@@ -87,7 +89,7 @@ fun TopMenu(
         // TODO : Entity Search
 
         Row {
-            ScreenshotButton(map, visibleLayers)
+            ScreenshotButton(map, visibleLayers, snackbarHostState)
             Spacer(Modifier.size(8.dp))
             OptionsMenu(
                 options = options,
