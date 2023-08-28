@@ -35,6 +35,7 @@ import io.stardewvalleydesigner.metadata.EntityPage.Companion.UNIT
 import io.stardewvalleydesigner.utils.*
 import io.stardewvalleydesigner.utils.DrawerUtils.placedEntityComparator
 import io.stardewvalleydesigner.utils.DrawerUtils.tint
+import kotlinx.coroutines.*
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -54,7 +55,11 @@ fun ScreenshotButton(map: MapState, visibleLayers: Set<LayerType<*>>) {
         TooltipArea(wordList.buttonMakeScreenshotTooltip) {
             TopMenuIconButton(
                 icon = Icons.Rounded.Image,
-                onClick = { makeScreenshot(map, visibleLayers) }
+                onClick = {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        makeScreenshot(map, visibleLayers)
+                    }
+                }
             )
         }
     }
@@ -62,6 +67,9 @@ fun ScreenshotButton(map: MapState, visibleLayers: Set<LayerType<*>>) {
 
 
 private fun makeScreenshot(map: MapState, visibleLayers: Set<LayerType<*>>) {
+    val now = Instant.now()
+
+
     val layout = map.layout
     val layoutSprite = layoutSpriteBy(layout.type)
     val (nW, nH) = layout.size
@@ -138,7 +146,7 @@ private fun makeScreenshot(map: MapState, visibleLayers: Set<LayerType<*>>) {
     val formatted = DateTimeFormatter
         .ofPattern("yyyy-MM-dd-HH-mm-ss")
         .withZone(ZoneId.systemDefault())
-        .format(Instant.now())
+        .format(now)
 
     val dir = "${UserDirectories.get().pictureDir}${sep}Stardew Valley Designer"
     val filename = "design-$formatted.png"
