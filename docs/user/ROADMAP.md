@@ -57,20 +57,22 @@
 
 ### 0.10.0
 
-- Fully functional palette
-- Rotation menu
-- Tooltips for paths (in import from save menu)
-- Better icons for toolbar and palette
+- Make the application multi-window
+- Experimental plan saves
 
 ### 0.11.0
 
-- Fish pond color menu and flower color menu
 - Support greenhouse and farmhouse
 - Better "toggle preview"
 
+### 0.12.0
+
+- Fish pond color menu and flower color menu
+- Rotation menu
+
 ## 1.0.0
 
-- Plan saves
+- Stable plan saves
 
 ### 1.1.0
 
@@ -95,9 +97,11 @@
 ## Backlog
 
 - Web version
+- Better icons for toolbar and palette
+- Fully functional palette
 - Tooltips, Hotkeys, Cursors (Pointers) & Other PC Features, `shift` for NxN
 - New layouts (four corners farm, beach farm)
-- New layouts (barns, coops, farmhouses, slime hutch)
+- New layouts (barns, coops, farmhouses, slime hutch, greenhouse)
 - Wall furniture
 - New shapes (star, star outline, heart, heart outline)
 - Clipboard
