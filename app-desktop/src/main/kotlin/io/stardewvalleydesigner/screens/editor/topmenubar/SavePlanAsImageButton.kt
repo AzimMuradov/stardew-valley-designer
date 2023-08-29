@@ -18,12 +18,14 @@ package io.stardewvalleydesigner.screens.editor.topmenubar
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Image
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.IntOffset
+import com.darkrockstudios.libraries.mpfilepicker.DirectoryPicker
 import dev.dirs.UserDirectories
 import io.stardewvalleydesigner.editor.modules.map.MapState
 import io.stardewvalleydesigner.editor.res.*
@@ -35,6 +37,7 @@ import io.stardewvalleydesigner.metadata.EntityPage.Companion.UNIT
 import io.stardewvalleydesigner.utils.*
 import io.stardewvalleydesigner.utils.DrawerUtils.placedEntityComparator
 import io.stardewvalleydesigner.utils.DrawerUtils.tint
+import kotlinx.coroutines.*
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -47,21 +50,65 @@ import java.io.File.separator as sep
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ScreenshotButton(map: MapState, visibleLayers: Set<LayerType<*>>) {
+fun SavePlanAsImageButton(
+    map: MapState,
+    visibleLayers: Set<LayerType<*>>,
+    snackbarHostState: SnackbarHostState,
+) {
     val wordList = GlobalSettings.strings
 
+    val defaultDir = "${UserDirectories.get().pictureDir}${sep}Stardew Valley Designer${sep}"
+
+    var showDirPicker by remember { mutableStateOf(false) }
+
     Box(modifier = Modifier.aspectRatio(1f).fillMaxHeight()) {
-        TooltipArea(wordList.buttonMakeScreenshotTooltip) {
+        TooltipArea(wordList.buttonSavePlanAsImageTooltip) {
             TopMenuIconButton(
                 icon = Icons.Rounded.Image,
-                onClick = { makeScreenshot(map, visibleLayers) }
+                onClick = {
+                    Files.createDirectories(Path.of(defaultDir))
+                    showDirPicker = true
+                }
             )
+        }
+    }
+
+    DirectoryPicker(show = showDirPicker, initialDirectory = defaultDir) { dir ->
+        showDirPicker = false
+        dir?.let {
+            CoroutineScope(Dispatchers.Default).launch {
+                val pathname = savePlanAsImage(dir, map, visibleLayers)
+                snackbarHostState.currentSnackbarData?.dismiss()
+                snackbarHostState.showSnackbar(message = "Saved to \"$pathname\"")
+            }
         }
     }
 }
 
 
-private fun makeScreenshot(map: MapState, visibleLayers: Set<LayerType<*>>) {
+private fun savePlanAsImage(dir: String, map: MapState, visibleLayers: Set<LayerType<*>>): String {
+    val pathname = run {
+        val now = Instant.now()
+        val formatted = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd-HH-mm-ss")
+            .withZone(ZoneId.systemDefault())
+            .format(now)
+        val filename = "design-$formatted.png"
+        return@run "$dir$sep$filename"
+    }
+
+    Files.createDirectories(Path.of(dir))
+
+    ImageIO.write(
+        render(map, visibleLayers).toAwtImage(),
+        "png",
+        File(pathname)
+    )
+
+    return pathname
+}
+
+private fun render(map: MapState, visibleLayers: Set<LayerType<*>>): ImageBitmap {
     val layout = map.layout
     val layoutSprite = layoutSpriteBy(layout.type)
     val (nW, nH) = layout.size
@@ -134,20 +181,5 @@ private fun makeScreenshot(map: MapState, visibleLayers: Set<LayerType<*>>) {
         drawImageRect(image = layoutSprite.fgImage, paint = Paint())
     }
 
-
-    val formatted = DateTimeFormatter
-        .ofPattern("yyyy-MM-dd-HH-mm-ss")
-        .withZone(ZoneId.systemDefault())
-        .format(Instant.now())
-
-    val dir = "${UserDirectories.get().pictureDir}${sep}Stardew Valley Designer"
-    val filename = "design-$formatted.png"
-
-    Files.createDirectories(Path.of(dir))
-
-    ImageIO.write(
-        imageBitmap.toAwtImage(),
-        "png",
-        File("$dir$sep$filename")
-    )
+    return imageBitmap
 }

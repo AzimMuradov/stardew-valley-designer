@@ -18,7 +18,9 @@ package io.stardewvalleydesigner.screens
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.mvikotlin.extensions.coroutines.states
@@ -38,7 +40,9 @@ fun EditorScreen(component: EditorComponent) {
     val state by store.states.collectAsState(component.store.state)
     val (history, map, toolkit, palette, /* flavors, */ visLayers, /* clipboard, */ options) = state
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    Column(Modifier.fillMaxSize()) {
         TopMenu(
             map = map,
             visibleLayers = visLayers.visibleLayers,
@@ -46,6 +50,7 @@ fun EditorScreen(component: EditorComponent) {
             disallowedTypes = map.layout.disallowedTypes,
             onEntitySelection = { component.store.accept(EditorIntent.Palette.AddToInUse(it)) },
             options = options,
+            snackbarHostState = snackbarHostState,
             intentConsumer = store::accept
         )
 
@@ -80,6 +85,17 @@ fun EditorScreen(component: EditorComponent) {
                 layout = map.layout,
                 width = menuWidth,
                 intentConsumer = store::accept
+            )
+        }
+    }
+
+    Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Spacer(Modifier.weight(1f))
+
+        SnackbarHost(snackbarHostState) { data ->
+            Snackbar(
+                snackbarData = data,
+                modifier = Modifier.fillMaxWidth(0.4f)
             )
         }
     }
