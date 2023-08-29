@@ -89,7 +89,7 @@ fun TopMenu(
         // TODO : Entity Search
 
         Row {
-            ScreenshotButton(map, visibleLayers, snackbarHostState)
+            SavePlanAsImageButton(map, visibleLayers, snackbarHostState)
             Spacer(Modifier.size(8.dp))
             OptionsMenu(
                 options = options,

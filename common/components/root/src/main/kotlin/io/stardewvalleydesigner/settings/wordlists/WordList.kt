@@ -130,7 +130,7 @@ sealed interface WordList {
      */
     fun entity(e: Entity<*>): String
 
-    val buttonMakeScreenshotTooltip: String
+    val buttonSavePlanAsImageTooltip: String
 
     /**
      * Get tool name by its type.

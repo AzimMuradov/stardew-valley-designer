@@ -50,48 +50,65 @@ import java.io.File.separator as sep
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ScreenshotButton(
+fun SavePlanAsImageButton(
     map: MapState,
     visibleLayers: Set<LayerType<*>>,
     snackbarHostState: SnackbarHostState,
 ) {
     val wordList = GlobalSettings.strings
 
-    val dir = "${UserDirectories.get().pictureDir}${sep}Stardew Valley Designer${sep}"
+    val defaultDir = "${UserDirectories.get().pictureDir}${sep}Stardew Valley Designer${sep}"
 
-    var showFilePicker by remember { mutableStateOf(false) }
+    var showDirPicker by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.aspectRatio(1f).fillMaxHeight()) {
-        TooltipArea(wordList.buttonMakeScreenshotTooltip) {
+        TooltipArea(wordList.buttonSavePlanAsImageTooltip) {
             TopMenuIconButton(
                 icon = Icons.Rounded.Image,
                 onClick = {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        Files.createDirectories(Path.of(dir))
-                        showFilePicker = true
-                    }
+                    Files.createDirectories(Path.of(defaultDir))
+                    showDirPicker = true
                 }
             )
         }
     }
 
-    DirectoryPicker(show = showFilePicker, initialDirectory = dir) { dir ->
-        showFilePicker = false
+    DirectoryPicker(show = showDirPicker, initialDirectory = defaultDir) { dir ->
+        showDirPicker = false
         dir?.let {
-            val path = makeScreenshot(it, map, visibleLayers)
-            snackbarHostState.currentSnackbarData?.dismiss()
             CoroutineScope(Dispatchers.Default).launch {
-                snackbarHostState.showSnackbar(message = "Saved to \"$path\"")
+                val pathname = savePlanAsImage(dir, map, visibleLayers)
+                snackbarHostState.currentSnackbarData?.dismiss()
+                snackbarHostState.showSnackbar(message = "Saved to \"$pathname\"")
             }
         }
     }
 }
 
 
-private fun makeScreenshot(dir: String, map: MapState, visibleLayers: Set<LayerType<*>>): String {
-    val now = Instant.now()
+private fun savePlanAsImage(dir: String, map: MapState, visibleLayers: Set<LayerType<*>>): String {
+    val pathname = run {
+        val now = Instant.now()
+        val formatted = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd-HH-mm-ss")
+            .withZone(ZoneId.systemDefault())
+            .format(now)
+        val filename = "design-$formatted.png"
+        return@run "$dir$sep$filename"
+    }
 
+    Files.createDirectories(Path.of(dir))
 
+    ImageIO.write(
+        render(map, visibleLayers).toAwtImage(),
+        "png",
+        File(pathname)
+    )
+
+    return pathname
+}
+
+private fun render(map: MapState, visibleLayers: Set<LayerType<*>>): ImageBitmap {
     val layout = map.layout
     val layoutSprite = layoutSpriteBy(layout.type)
     val (nW, nH) = layout.size
@@ -164,21 +181,5 @@ private fun makeScreenshot(dir: String, map: MapState, visibleLayers: Set<LayerT
         drawImageRect(image = layoutSprite.fgImage, paint = Paint())
     }
 
-
-    val formatted = DateTimeFormatter
-        .ofPattern("yyyy-MM-dd-HH-mm-ss")
-        .withZone(ZoneId.systemDefault())
-        .format(now)
-
-    val filename = "design-$formatted.png"
-
-    Files.createDirectories(Path.of(dir))
-
-    ImageIO.write(
-        imageBitmap.toAwtImage(),
-        "png",
-        File("$dir$sep$filename")
-    )
-
-    return "$dir$sep$filename"
+    return imageBitmap
 }
