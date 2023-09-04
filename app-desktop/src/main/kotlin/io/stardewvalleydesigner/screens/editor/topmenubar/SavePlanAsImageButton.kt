@@ -65,13 +65,9 @@ fun SavePlanAsImageButton(
         TooltipArea(wordList.buttonSavePlanAsImageTooltip) {
             TopMenuIconButton(
                 icon = Icons.Rounded.Image,
-                enabled = !showDirPicker,
-                preserveStylesIfDisabled = true,
                 onClick = {
-                    if (!showDirPicker) {
-                        Files.createDirectories(Path.of(defaultDir))
-                        showDirPicker = true
-                    }
+                    Files.createDirectories(Path.of(defaultDir))
+                    showDirPicker = true
                 }
             )
         }

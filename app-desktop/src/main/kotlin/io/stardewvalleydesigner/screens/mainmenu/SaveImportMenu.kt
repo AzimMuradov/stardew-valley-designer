@@ -147,14 +147,11 @@ private fun SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMenu) -> Un
             }
 
             Button(
-                onClick = { if (!showFilePicker) showFilePicker = true },
+                onClick = { showFilePicker = true },
                 modifier = Modifier.height(48.dp),
-                enabled = !showFilePicker,
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = MaterialTheme.colors.primaryVariant,
-                    contentColor = Color.White,
-                    disabledBackgroundColor = MaterialTheme.colors.primaryVariant,
-                    disabledContentColor = Color.White,
+                    contentColor = Color.White
                 )
             ) {
                 Icon(

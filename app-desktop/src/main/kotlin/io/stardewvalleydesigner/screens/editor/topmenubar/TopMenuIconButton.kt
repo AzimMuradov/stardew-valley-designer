@@ -39,26 +39,19 @@ import androidx.compose.ui.unit.dp
 fun TopMenuIconButton(
     icon: ImageVector,
     enabled: Boolean = true,
-    preserveStylesIfDisabled: Boolean = false,
     onClick: () -> Unit,
 ) {
     Box(
         Modifier.aspectRatio(1f).fillMaxHeight(),
         Alignment.Center
     ) {
-        val contentAlpha = if (enabled || preserveStylesIfDisabled) ContentAlpha.high else ContentAlpha.disabled
+        val contentAlpha = if (enabled) ContentAlpha.high else ContentAlpha.disabled
         Icon(
             imageVector = icon,
             contentDescription = null,
             modifier = Modifier
                 .clip(CircleShape)
-                .then(
-                    if (enabled || preserveStylesIfDisabled) {
-                        Modifier.pointerHoverIcon(PointerIcon.Hand)
-                    } else {
-                        Modifier
-                    }
-                )
+                .then(if (enabled) Modifier.pointerHoverIcon(PointerIcon.Hand) else Modifier)
                 .clickable(
                     interactionSource = remember(::MutableInteractionSource),
                     indication = rememberRipple(color = Color.White),
