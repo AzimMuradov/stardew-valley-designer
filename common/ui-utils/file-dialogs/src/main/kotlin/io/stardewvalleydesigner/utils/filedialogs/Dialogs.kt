@@ -31,7 +31,7 @@ fun FileSaver(
     defaultPathAndFile: String? = null,
     extensions: List<String>? = null,
     extensionsDescription: String? = null,
-    onFileSelected: (Path?) -> Unit,
+    onPathProvided: (Path?) -> Unit,
 ) {
     ModalDialog {
         val paths = TinyFileDialogsWrapper.createSaveFileDialog(
@@ -39,10 +39,9 @@ fun FileSaver(
             defaultPathAndFile = defaultPathAndFile ?: System.getProperty("user.dir"),
             extensions,
             extensionsDescription,
-        )?.let {
-            Path.of(it)
-        }
-        onFileSelected(paths)
+        )?.let(Path::of)
+
+        onPathProvided(paths)
     }
 }
 
@@ -53,7 +52,7 @@ fun FilePicker(
     extensions: List<String>? = null,
     extensionsDescription: String? = null,
     multiSelect: Boolean = false,
-    onFileSelected: (List<Path>?) -> Unit,
+    onFilesSelected: (List<Path>?) -> Unit,
 ) {
     ModalDialog {
         val paths = TinyFileDialogsWrapper.createOpenFileDialog(
@@ -62,10 +61,9 @@ fun FilePicker(
             extensions,
             extensionsDescription,
             multiSelect,
-        )?.map {
-            Path.of(it)
-        }
-        onFileSelected(paths)
+        )?.map(Path::of)
+
+        onFilesSelected(paths)
     }
 }
 
@@ -79,9 +77,8 @@ fun DirectoryPicker(
         val dirPath = TinyFileDialogsWrapper.createSelectDirectoryDialog(
             title,
             defaultPath = defaultPath ?: System.getProperty("user.dir"),
-        )?.let {
-            Path.of(it)
-        }
+        )?.let(Path::of)
+
         onDirectorySelected(dirPath)
     }
 }
