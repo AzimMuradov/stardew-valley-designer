@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogWindow
 import androidx.compose.ui.window.rememberDialogState
-import io.stardewvalleydesigner.app_desktop.App
+import io.stardewvalleydesigner.AppInfo
 import io.stardewvalleydesigner.ternaryColor
 import io.stardewvalleydesigner.utils.BrowserUtils
 import io.stardewvalleydesigner.utils.GlobalSettings
@@ -147,7 +147,7 @@ private fun ApplicationAuthorsSection(heading: SpanStyle) {
                 Modifier
                     .wrapContentSize()
                     .pointerHoverIcon(PointerIcon.Hand)
-                    .clickable { BrowserUtils.open(URI.create(App.AUTHOR_URL)) }
+                    .clickable { BrowserUtils.open(URI.create(AppInfo.AUTHOR_URL)) }
                     .wrapContentSize()
             ) {
                 DisableSelection { Text(wordList.author, style = link) }
@@ -178,7 +178,7 @@ private fun ApplicationAuthorsSection(heading: SpanStyle) {
                         interactionSource = remember(::MutableInteractionSource),
                         indication = rememberRipple(color = Color.White)
                     ) {
-                        BrowserUtils.open(URI.create(App.REPOSITORY_URL))
+                        BrowserUtils.open(URI.create(AppInfo.REPOSITORY_URL))
                     }
                     .padding(8.dp)
                     .size(24.dp),
@@ -194,13 +194,13 @@ private fun ApplicationAuthorsSection(heading: SpanStyle) {
                 modifier = Modifier.weight(1f),
             )
             Row {
-                Text(App.VERSION)
+                Text(AppInfo.VERSION)
                 Text(" | ")
                 Box(
                     Modifier
                         .wrapContentSize()
                         .pointerHoverIcon(PointerIcon.Hand)
-                        .clickable { BrowserUtils.open(URI.create(App.CHANGELOG_URL)) }
+                        .clickable { BrowserUtils.open(URI.create(AppInfo.CHANGELOG_URL)) }
                         .wrapContentSize()
                 ) {
                     DisableSelection { Text(wordList.infoChangelog, style = link) }
@@ -281,7 +281,7 @@ private fun BugTrackerSection() {
                     interactionSource = remember(::MutableInteractionSource),
                     indication = rememberRipple(color = Color.White)
                 ) {
-                    BrowserUtils.open(URI.create(App.BUG_TRACKER_URL))
+                    BrowserUtils.open(URI.create(AppInfo.BUG_TRACKER_URL))
                 }
                 .padding(8.dp)
                 .size(24.dp),

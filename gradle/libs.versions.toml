@@ -16,8 +16,6 @@ directories = "26"
 kotlinx-serialization-plugin = "1.9.0"
 xmlutil = "0.86.1"
 
-buildconfig = "4.1.2"
-
 conveyor = "1.6"
 
 detekt = "1.23.1"
@@ -72,6 +70,5 @@ xmlutil = [
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization-plugin" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
-buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }
 conveyor = { id = "dev.hydraulic.conveyor", version.ref = "conveyor" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
