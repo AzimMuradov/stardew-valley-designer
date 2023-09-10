@@ -24,7 +24,8 @@ import io.stardewvalleydesigner.engine.editorEngineOf
 import io.stardewvalleydesigner.engine.layout.LayoutType
 import io.stardewvalleydesigner.engine.layout.LayoutsProvider.layoutOf
 import io.stardewvalleydesigner.save.SaveDataSerializers
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import io.stardewvalleydesigner.mainmenu.MainMenuIntent as Intent
 import io.stardewvalleydesigner.mainmenu.MainMenuLabel as Label
 import io.stardewvalleydesigner.mainmenu.MainMenuState as State
@@ -66,7 +67,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
     private class ExecutorImpl(
         private val onEditorScreenCall: (EditorEngine) -> Unit,
-    ) : CoroutineExecutor<Intent, Action, State, Msg, Label>() {
+    ) : CoroutineExecutor<Intent, Action, State, Msg, Label>(mainContext = Dispatchers.Default) {
 
         override fun executeIntent(intent: Intent, getState: () -> State) {
             when (intent) {
@@ -86,7 +87,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 is Intent.SaveLoaderMenu.LoadSave -> {
                     dispatch(Msg.ShowLoadingInSaveLoaderMenu)
 
-                    CoroutineScope(Dispatchers.IO).launch {
+                    scope.launch {
                         val parsed = try {
                             SaveDataSerializers.parse(intent.path.trim())
                         } catch (e: Exception) {
