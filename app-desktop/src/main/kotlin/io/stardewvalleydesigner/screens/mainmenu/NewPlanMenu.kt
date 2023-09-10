@@ -23,7 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogWindow
 import androidx.compose.ui.window.rememberDialogState
 import io.stardewvalleydesigner.mainmenu.MainMenuIntent
 import io.stardewvalleydesigner.mainmenu.MainMenuState
@@ -43,7 +43,7 @@ fun RowScope.NewPlanMenu(
         onClick = { intentConsumer(MainMenuIntent.NewPlanMenu.OpenMenu) }
     )
 
-    Dialog(
+    DialogWindow(
         onCloseRequest = { intentConsumer(MainMenuIntent.NewPlanMenu.Cancel) },
         state = rememberDialogState(
             size = DpSize(width = 800.dp, height = 600.dp)

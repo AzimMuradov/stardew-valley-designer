@@ -41,7 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogWindow
 import androidx.compose.ui.window.rememberDialogState
 import io.stardewvalleydesigner.app_desktop.App
 import io.stardewvalleydesigner.ternaryColor
@@ -63,7 +63,7 @@ fun InfoWindow() {
         onClick = { isOpened = true }
     )
 
-    Dialog(
+    DialogWindow(
         onCloseRequest = { isOpened = false },
         state = rememberDialogState(size = DpSize(width = 400.dp, height = 650.dp)),
         visible = isOpened,

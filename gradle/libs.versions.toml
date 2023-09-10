@@ -2,7 +2,7 @@
 
 kotlin = "1.9.0"
 
-compose = "1.4.3"
+compose = "1.5.1"
 
 lwjgl = "3.3.2"
 

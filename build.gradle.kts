@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
     alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.compose) apply false
     alias(libs.plugins.detekt) apply false
 }
 
