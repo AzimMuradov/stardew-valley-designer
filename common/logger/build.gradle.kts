@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     implementation(libs.kotlinlogging.jvm)
-    implementation(libs.log4j.slf4j2)
+    runtimeOnly(libs.log4j.slf4j2)
 
     implementation(libs.mvikotlin)
     implementation(libs.mvikotlin.main)
