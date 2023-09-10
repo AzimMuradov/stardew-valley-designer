@@ -64,6 +64,7 @@ dependencies {
     implementation(projects.common.uiUtils.buttonsGroupUi)
     implementation(projects.common.uiUtils.dropdownMenu)
     implementation(projects.common.uiUtils.dropdownMenuUi)
+    implementation(projects.common.uiUtils.fileDialogs)
 
     implementation(compose.desktop.currentOs)
     implementation(compose.materialIconsExtended)
@@ -76,8 +77,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
 
     implementation(libs.directories)
-
-    implementation(libs.mpfilepicker)
 
     // implementation(libs.richeditor.compose)
 
@@ -120,6 +119,8 @@ compose.desktop {
             licenseFile = rootProject.file("LICENSE")
 
             outputBaseDir = rootProject.buildDir.resolve(relative = "bin")
+
+            includeAllModules = true
 
             targetFormats(
                 TargetFormat.Deb,

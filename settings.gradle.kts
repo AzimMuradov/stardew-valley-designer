@@ -36,6 +36,7 @@ include(
     ":common:ui-utils:dropdown-menu",
     ":common:ui-utils:dropdown-menu-ui",
 )
+include(":common:ui-utils:file-dialogs")
 
 // Logger
 

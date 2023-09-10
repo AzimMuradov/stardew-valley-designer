@@ -33,11 +33,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.rememberDialogState
-import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import io.stardewvalleydesigner.LoggerUtils
 import io.stardewvalleydesigner.mainmenu.MainMenuIntent
 import io.stardewvalleydesigner.mainmenu.MainMenuState
 import io.stardewvalleydesigner.utils.GlobalSettings
+import io.stardewvalleydesigner.utils.filedialogs.FilePicker
 import java.io.File
 import java.util.*
 import java.io.File.separator as sep
@@ -107,7 +107,7 @@ private fun SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMenu) -> Un
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        var path by remember { mutableStateOf("") }
+        var pathString by remember { mutableStateOf("") }
 
         Row(
             modifier = Modifier.fillMaxWidth().height(56.dp),
@@ -115,7 +115,7 @@ private fun SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMenu) -> Un
             verticalAlignment = Alignment.CenterVertically
         ) {
             TextField(
-                value = path,
+                value = pathString,
                 onValueChange = {},
                 modifier = Modifier.weight(1f).height(56.dp),
                 readOnly = true,
@@ -135,14 +135,16 @@ private fun SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMenu) -> Un
 
             var showFilePicker by remember { mutableStateOf(false) }
 
-            FilePicker(
-                show = showFilePicker,
-                initialDirectory = path.takeIf(String::isNotBlank) ?: savePath ?: homePath
-            ) { file ->
-                showFilePicker = false
-                file?.let {
-                    path = it.path
-                    intentConsumer(MainMenuIntent.SaveLoaderMenu.LoadSave(path))
+            if (showFilePicker) {
+                FilePicker(
+                    title = "Choose savedata",
+                    defaultPathAndFile = pathString.takeIf(String::isNotBlank) ?: savePath ?: homePath
+                ) { path ->
+                    showFilePicker = false
+                    path?.let {
+                        pathString = it.first().toString()
+                        intentConsumer(MainMenuIntent.SaveLoaderMenu.LoadSave(pathString))
+                    }
                 }
             }
 

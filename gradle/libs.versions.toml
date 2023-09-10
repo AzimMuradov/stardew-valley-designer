@@ -4,13 +4,14 @@ kotlin = "1.9.0"
 
 compose = "1.4.3"
 
+lwjgl = "3.3.2"
+
 decompose = "1.0.0"
 mvikotlin = "3.2.1"
 
 kotlinx-coroutines = "1.7.3"
 # richeditor = "1.0.0-beta02"
 directories = "26"
-mpfilepicker = "2.0.2"
 
 kotlinx-serialization-plugin = "1.9.0"
 xmlutil = "0.86.1"
@@ -27,6 +28,9 @@ log4j = "2.20.0"
 
 [libraries]
 
+lwjgl = { module = "org.lwjgl:lwjgl", version.ref = "lwjgl" }
+lwjgl-tinyfd = { module = "org.lwjgl:lwjgl-tinyfd", version.ref = "lwjgl" }
+
 decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 decompose-extensions-composejb = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose" }
 
@@ -40,8 +44,6 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 # richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditor" }
 
 directories = { module = "dev.dirs:directories", version.ref = "directories" }
-
-mpfilepicker = { module = "com.darkrockstudios:mpfilepicker", version.ref = "mpfilepicker" }
 
 xmlutil-core-jvm = { module = "io.github.pdvrieze.xmlutil:core-jvm", version.ref = "xmlutil" }
 xmlutil-serialization-jvm = { module = "io.github.pdvrieze.xmlutil:serialization-jvm", version.ref = "xmlutil" }

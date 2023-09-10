@@ -1,8 +1,9 @@
+ -optimizationpasses 5
+# -verbose
 -ignorewarnings
 
--keepattributes Signature
-
--keep class kotlin.Metadata { *; }
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable,Signature
 
 -keepclassmembers enum * {
     public static **[] values();
@@ -25,4 +26,31 @@
     # public *** info(...);
     # public *** warn(...);
     # public *** error(...);
+}
+
+
+# Java & LWJGL & Native
+
+-dontwarn java.awt.**
+-dontwarn org.lwjgl.**
+
+-dontnote java.awt.**
+-dontnote org.lwjgl.**
+
+-keep class org.lwjgl.** { *; }
+
+-keepnames class * implements java.io.Serializable
+
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    !static !transient <fields>;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+
+-keepclasseswithmembernames class * {
+    native <methods>;
 }

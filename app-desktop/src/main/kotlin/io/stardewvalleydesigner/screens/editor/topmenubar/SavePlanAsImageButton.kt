@@ -25,7 +25,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.IntOffset
-import com.darkrockstudios.libraries.mpfilepicker.DirectoryPicker
 import dev.dirs.UserDirectories
 import io.stardewvalleydesigner.editor.modules.map.MapState
 import io.stardewvalleydesigner.editor.res.*
@@ -37,6 +36,7 @@ import io.stardewvalleydesigner.metadata.EntityPage.Companion.UNIT
 import io.stardewvalleydesigner.utils.*
 import io.stardewvalleydesigner.utils.DrawerUtils.placedEntityComparator
 import io.stardewvalleydesigner.utils.DrawerUtils.tint
+import io.stardewvalleydesigner.utils.filedialogs.FileSaver
 import kotlinx.coroutines.*
 import java.io.File
 import java.nio.file.Files
@@ -57,47 +57,53 @@ fun SavePlanAsImageButton(
 ) {
     val wordList = GlobalSettings.strings
 
-    val defaultDir = "${UserDirectories.get().pictureDir}${sep}Stardew Valley Designer${sep}"
+    var pathname by remember { mutableStateOf("") }
 
-    var showDirPicker by remember { mutableStateOf(false) }
+    var showFileSaver by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.aspectRatio(1f).fillMaxHeight()) {
         TooltipArea(wordList.buttonSavePlanAsImageTooltip) {
             TopMenuIconButton(
                 icon = Icons.Rounded.Image,
                 onClick = {
+                    val defaultDir = "${UserDirectories.get().pictureDir}${sep}Stardew Valley Designer${sep}"
                     Files.createDirectories(Path.of(defaultDir))
-                    showDirPicker = true
+                    pathname = run {
+                        val now = Instant.now()
+                        val formatted = DateTimeFormatter
+                            .ofPattern("yyyy-MM-dd-HH-mm-ss")
+                            .withZone(ZoneId.systemDefault())
+                            .format(now)
+                        val filename = "design-$formatted.png"
+                        return@run "$defaultDir$sep$filename"
+                    }
+                    showFileSaver = true
                 }
             )
         }
     }
 
-    DirectoryPicker(show = showDirPicker, initialDirectory = defaultDir) { dir ->
-        showDirPicker = false
-        dir?.let {
-            CoroutineScope(Dispatchers.Default).launch {
-                val pathname = savePlanAsImage(dir, map, visibleLayers)
-                snackbarHostState.currentSnackbarData?.dismiss()
-                snackbarHostState.showSnackbar(message = "Saved to \"$pathname\"")
+    if (showFileSaver) {
+        FileSaver(
+            title = "Choose where to save",
+            defaultPathAndFile = pathname,
+            extensions = listOf("png"),
+        ) { path ->
+            showFileSaver = false
+            path?.let {
+                CoroutineScope(Dispatchers.Default).launch {
+                    savePlanAsImage(path.toString(), map, visibleLayers)
+                    snackbarHostState.currentSnackbarData?.dismiss()
+                    snackbarHostState.showSnackbar(message = "Saved to \"$path\"")
+                }
             }
         }
     }
 }
 
 
-private fun savePlanAsImage(dir: String, map: MapState, visibleLayers: Set<LayerType<*>>): String {
-    val pathname = run {
-        val now = Instant.now()
-        val formatted = DateTimeFormatter
-            .ofPattern("yyyy-MM-dd-HH-mm-ss")
-            .withZone(ZoneId.systemDefault())
-            .format(now)
-        val filename = "design-$formatted.png"
-        return@run "$dir$sep$filename"
-    }
-
-    Files.createDirectories(Path.of(dir))
+private fun savePlanAsImage(pathname: String, map: MapState, visibleLayers: Set<LayerType<*>>): String {
+    Files.createDirectories(Path.of(pathname).parent)
 
     ImageIO.write(
         render(map, visibleLayers).toAwtImage(),
