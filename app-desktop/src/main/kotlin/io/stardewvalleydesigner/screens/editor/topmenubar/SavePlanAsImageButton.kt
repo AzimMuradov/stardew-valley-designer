@@ -37,7 +37,7 @@ import io.stardewvalleydesigner.utils.*
 import io.stardewvalleydesigner.utils.DrawerUtils.placedEntityComparator
 import io.stardewvalleydesigner.utils.DrawerUtils.tint
 import io.stardewvalleydesigner.utils.filedialogs.FileSaver
-import kotlinx.coroutines.*
+import kotlinx.coroutines.launch
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -83,6 +83,8 @@ fun SavePlanAsImageButton(
         }
     }
 
+    val scope = rememberCoroutineScope()
+
     if (showFileSaver) {
         FileSaver(
             title = "Choose where to save",
@@ -91,7 +93,7 @@ fun SavePlanAsImageButton(
         ) { path ->
             showFileSaver = false
             path?.let {
-                CoroutineScope(Dispatchers.Default).launch {
+                scope.launch {
                     savePlanAsImage(path.toString(), map, visibleLayers)
                     snackbarHostState.currentSnackbarData?.dismiss()
                     snackbarHostState.showSnackbar(message = "Saved to \"$path\"")

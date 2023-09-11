@@ -19,8 +19,8 @@ package io.stardewvalleydesigner.utils.filedialogs
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogState
+import androidx.compose.ui.window.DialogWindow
 import kotlinx.coroutines.CoroutineScope
 import java.nio.file.Path
 
@@ -89,7 +89,7 @@ fun DirectoryPicker(
  */
 @Composable
 private fun ModalDialog(content: suspend CoroutineScope.() -> Unit) {
-    Dialog(
+    DialogWindow(
         onCloseRequest = {},
         state = DialogState(size = DpSize.Zero),
         undecorated = true,

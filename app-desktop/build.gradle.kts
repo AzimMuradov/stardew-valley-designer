@@ -1,55 +1,7 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-
-
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.compose)
-    alias(libs.plugins.buildconfig)
-    alias(libs.plugins.conveyor)
-    alias(libs.plugins.detekt)
 }
-
-
-object App {
-
-    const val GROUP: String = "io.stardewvalleydesigner"
-
-    const val NAME: String = "stardew-valley-designer"
-
-    const val VERSION: String = "0.9.0"
-
-    const val DESCRIPTION: String =
-        "The goal of this project is to provide a finely tuned editor for designing your farm and the interior of all its buildings."
-
-    const val COPYRIGHT: String = "Copyright (c) 2021-2023 Azim Muradov."
-
-
-    const val AUTHOR_URL: String = "https://github.com/AzimMuradov"
-
-    const val REPOSITORY_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer"
-
-    const val CHANGELOG_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer/releases"
-
-    const val BUG_TRACKER_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer/issues"
-}
-
-buildConfig {
-    className = "App"
-
-    buildConfigField(type = "String", name = "VERSION", value = "\"${App.VERSION}\"")
-    buildConfigField(type = "String", name = "COPYRIGHT", value = "\"${App.COPYRIGHT}\"")
-
-    buildConfigField(type = "String", name = "AUTHOR_URL", value = "\"${App.AUTHOR_URL}\"")
-    buildConfigField(type = "String", name = "REPOSITORY_URL", value = "\"${App.REPOSITORY_URL}\"")
-    buildConfigField(type = "String", name = "CHANGELOG_URL", value = "\"${App.CHANGELOG_URL}\"")
-    buildConfigField(type = "String", name = "BUG_TRACKER_URL", value = "\"${App.BUG_TRACKER_URL}\"")
-
-    buildConfigField(type = "long", name = "BUILD_TIME", value = "${System.currentTimeMillis()}L")
-}
-
-group = App.GROUP
-version = App.VERSION
-
 
 dependencies {
     implementation(projects.common.editorEngine)
@@ -66,7 +18,15 @@ dependencies {
     implementation(projects.common.uiUtils.dropdownMenuUi)
     implementation(projects.common.uiUtils.fileDialogs)
 
-    implementation(compose.desktop.currentOs)
+    if (System.getProperty("deploy")?.toBooleanStrictOrNull() == true) {
+        implementation(compose.desktop.linux_x64)
+        implementation(compose.desktop.windows_x64)
+        // implementation(compose.desktop.macos_x64)
+        // implementation(compose.desktop.macos_arm64)
+    } else {
+        implementation(compose.desktop.currentOs)
+    }
+
     implementation(compose.materialIconsExtended)
 
     implementation(libs.decompose)
@@ -78,25 +38,12 @@ dependencies {
 
     implementation(libs.directories)
 
-    // implementation(libs.richeditor.compose)
-
-
-    // Conveyor
-
-    linuxAmd64(compose.desktop.linux_x64)
-    windowsAmd64(compose.desktop.windows_x64)
-    // macAmd64(compose.desktop.macos_x64)
-    // macAarch64(compose.desktop.macos_arm64)
-
 
     // Meta-code
-
-    detektPlugins(libs.detekt.formatting)
 
     implementation(projects.common.logger)
     implementation(libs.kotlinlogging.jvm)
 }
-
 
 compose.desktop {
     application {
@@ -111,24 +58,7 @@ compose.desktop {
             // obfuscate.set(true)
         }
 
-        nativeDistributions {
-            packageName = App.NAME
-            packageVersion = App.VERSION
-            description = App.DESCRIPTION
-            copyright = App.COPYRIGHT
-            licenseFile = rootProject.file("LICENSE")
-
-            outputBaseDir = rootProject.buildDir.resolve(relative = "bin")
-
-            includeAllModules = true
-
-            targetFormats(
-                TargetFormat.Deb,
-                // TargetFormat.Rpm,
-                TargetFormat.Exe,
-                // TargetFormat.Pkg, // TODO : Signing
-            )
-        }
+        // Native distributions are done via `conveyor`, see "conveyor.conf"
     }
 }
 
@@ -138,19 +68,5 @@ kotlin {
 
 tasks.clean {
     delete(rootProject.buildDir)
+    delete(rootDir.resolve("output"))
 }
-
-detekt {
-    toolVersion = libs.versions.detekt.get()
-    config.from(projectDir.resolve("config/detekt/detekt.yml"))
-    buildUponDefaultConfig = true
-}
-
-// region Work around temporary Compose bugs.
-configurations.all {
-    attributes {
-        // https://github.com/JetBrains/compose-jb/issues/1404#issuecomment-1146894731
-        attribute(Attribute.of("ui", String::class.java), "awt")
-    }
-}
-// endregion

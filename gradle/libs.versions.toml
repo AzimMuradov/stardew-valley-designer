@@ -2,7 +2,7 @@
 
 kotlin = "1.9.0"
 
-compose = "1.4.3"
+compose = "1.5.1"
 
 lwjgl = "3.3.2"
 
@@ -10,17 +10,10 @@ decompose = "1.0.0"
 mvikotlin = "3.2.1"
 
 kotlinx-coroutines = "1.7.3"
-# richeditor = "1.0.0-beta02"
 directories = "26"
 
 kotlinx-serialization-plugin = "1.9.0"
 xmlutil = "0.86.1"
-
-buildconfig = "4.1.2"
-
-conveyor = "1.6"
-
-detekt = "1.23.1"
 
 kotlinlogging = "5.1.0"
 log4j = "2.20.0"
@@ -41,17 +34,14 @@ mvikotlin-extensions-coroutines = { module = "com.arkivanov.mvikotlin:mvikotlin-
 
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 
-# richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditor" }
-
 directories = { module = "dev.dirs:directories", version.ref = "directories" }
 
 xmlutil-core-jvm = { module = "io.github.pdvrieze.xmlutil:core-jvm", version.ref = "xmlutil" }
 xmlutil-serialization-jvm = { module = "io.github.pdvrieze.xmlutil:serialization-jvm", version.ref = "xmlutil" }
 
-detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
-
 kotlinlogging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlinlogging" }
 log4j-slf4j2 = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j" }
+log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
 
 
 [bundles]
@@ -72,6 +62,3 @@ xmlutil = [
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization-plugin" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
-buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }
-conveyor = { id = "dev.hydraulic.conveyor", version.ref = "conveyor" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

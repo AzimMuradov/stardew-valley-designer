@@ -1,9 +1,11 @@
 ### Idea ###
-.idea/
+/.idea/
+!/.idea/runConfigurations/
+!/.idea/icon.png
 
 
 ### Gradle ###
-.gradle/
+/.gradle/
 build/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
@@ -12,4 +14,4 @@ build/
 
 ### Deployment ###
 
-output/
+/output/

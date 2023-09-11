@@ -23,7 +23,7 @@
 -assumenosideeffects class * implements org.slf4j.Logger {
     public *** trace(...);
     public *** debug(...);
-    # public *** info(...);
+    public *** info(...);
     # public *** warn(...);
     # public *** error(...);
 }

@@ -31,7 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
-import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogWindow
 import androidx.compose.ui.window.rememberDialogState
 import io.stardewvalleydesigner.LoggerUtils
 import io.stardewvalleydesigner.mainmenu.MainMenuIntent
@@ -56,7 +56,7 @@ fun RowScope.SaveImportMenu(
         onClick = { intentConsumer(MainMenuIntent.SaveLoaderMenu.OpenMenu) }
     )
 
-    Dialog(
+    DialogWindow(
         onCloseRequest = { intentConsumer(MainMenuIntent.SaveLoaderMenu.Cancel) },
         state = rememberDialogState(
             size = DpSize(width = 800.dp, height = 600.dp)
