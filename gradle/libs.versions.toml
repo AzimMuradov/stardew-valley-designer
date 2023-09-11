@@ -15,8 +15,6 @@ directories = "26"
 kotlinx-serialization-plugin = "1.9.0"
 xmlutil = "0.86.1"
 
-detekt = "1.23.1"
-
 kotlinlogging = "5.1.0"
 log4j = "2.20.0"
 
@@ -41,8 +39,6 @@ directories = { module = "dev.dirs:directories", version.ref = "directories" }
 xmlutil-core-jvm = { module = "io.github.pdvrieze.xmlutil:core-jvm", version.ref = "xmlutil" }
 xmlutil-serialization-jvm = { module = "io.github.pdvrieze.xmlutil:serialization-jvm", version.ref = "xmlutil" }
 
-detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
-
 kotlinlogging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlinlogging" }
 log4j-slf4j2 = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j" }
 
@@ -65,4 +61,3 @@ xmlutil = [
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization-plugin" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

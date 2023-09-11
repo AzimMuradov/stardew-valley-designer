@@ -1,4 +1,3 @@
-import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
@@ -7,7 +6,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.compose) apply false
-    alias(libs.plugins.detekt) apply false
 }
 
 subprojects {
@@ -21,16 +19,5 @@ subprojects {
             jvmTarget = JvmTarget.JVM_17
             freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
         }
-    }
-
-    tasks.withType<Detekt>().configureEach {
-        reports {
-            xml.required = true
-            html.required = true
-            txt.required = true
-            sarif.required = true
-            md.required = true
-        }
-        ignoreFailures = true
     }
 }
