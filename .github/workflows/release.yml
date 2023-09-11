@@ -22,7 +22,7 @@ jobs:
       - name: "Generate release jars with Gradle"
         run: ./gradlew proguardReleaseJars -Ddeploy=true --stacktrace
       - name: "Render and print Conveyor config"
-        uses: hydraulic-software/conveyor/actions/build@11.1
+        uses: hydraulic-software/conveyor/actions/build@v11.1
         with:
           command: json
           extra_flags: --file=app-desktop/conveyor.conf
@@ -31,7 +31,7 @@ jobs:
         env:
           GH_CONVEYOR: ${{ secrets.GH_CONVEYOR }}
       - name: "Package and publish release"
-        uses: hydraulic-software/conveyor/actions/build@11.1
+        uses: hydraulic-software/conveyor/actions/build@v11.1
         with:
           command: make copied-site
           extra_flags: --file=app-desktop/conveyor.conf
