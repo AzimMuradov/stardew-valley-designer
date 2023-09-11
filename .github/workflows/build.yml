@@ -6,7 +6,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
@@ -17,23 +20,5 @@ jobs:
           distribution: "adopt"
       - name: "Grant execute permission for gradlew"
         run: chmod +x gradlew
-      - name: "Generate release jars with Gradle"
-        run: ./gradlew proguardReleaseJars -Ddeploy=true --stacktrace
-      - name: "Render and print Conveyor config"
-        uses: hydraulic-software/conveyor/actions/build@v11.1
-        with:
-          command: json
-          extra_flags: --file=app-desktop/conveyor.conf
-          agree_to_license: 1
-          signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
-        env:
-          GH_CONVEYOR: ${{ secrets.GH_CONVEYOR }}
-      - name: "Package and publish release"
-        uses: hydraulic-software/conveyor/actions/build@v11.1
-        with:
-          command: make site
-          extra_flags: --file=app-desktop/conveyor.conf
-          agree_to_license: 1
-          signing_key: ${{ secrets.CONVEYOR_SIGNING_KEY }}
-        env:
-          GH_CONVEYOR: ${{ secrets.GH_CONVEYOR }}
+      - name: "Build project"
+        run: ./gradlew build --stacktrace

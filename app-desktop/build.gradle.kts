@@ -71,7 +71,7 @@ kotlin {
 
 tasks.clean {
     delete(rootProject.buildDir)
-    delete(rootProject.relativePath("output"))
+    delete(rootDir.resolve("output"))
 }
 
 detekt {
