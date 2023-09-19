@@ -18,7 +18,6 @@ package io.stardewvalleydesigner.components
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
-import io.stardewvalleydesigner.components.screens.SplashComponent
 import io.stardewvalleydesigner.editor.EditorComponent
 import io.stardewvalleydesigner.engine.EditorEngine
 import io.stardewvalleydesigner.mainmenu.MainMenuComponent
@@ -29,13 +28,10 @@ interface RootComponent {
     val childStack: Value<ChildStack<*, Child>>
 
     sealed class Child {
-        class SplashChild(val component: SplashComponent) : Child()
         class MainMenuChild(val component: MainMenuComponent) : Child()
         class EditorChild(val component: EditorComponent) : Child()
     }
 
-
-    fun onSplashScreenEnd()
 
     fun onEditorScreenCall(engine: EditorEngine)
 

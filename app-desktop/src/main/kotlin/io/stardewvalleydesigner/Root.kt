@@ -22,7 +22,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import io.stardewvalleydesigner.components.RootComponent
-import io.stardewvalleydesigner.screens.*
+import io.stardewvalleydesigner.screens.EditorScreen
+import io.stardewvalleydesigner.screens.MainMenuScreen
 
 
 @Composable
@@ -32,7 +33,6 @@ fun Root(component: RootComponent) {
     Box(modifier = Modifier.fillMaxSize()) {
         Children(stack = component.childStack) { (_, child) ->
             when (child) {
-                is RootComponent.Child.SplashChild -> SplashScreen(child.component)
                 is RootComponent.Child.MainMenuChild -> MainMenuScreen(child.component)
                 is RootComponent.Child.EditorChild -> EditorScreen(child.component)
             }

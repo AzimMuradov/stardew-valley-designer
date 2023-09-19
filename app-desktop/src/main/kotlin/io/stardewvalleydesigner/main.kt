@@ -42,7 +42,7 @@ fun main() {
     application {
         val state = rememberWindowState(
             position = WindowPosition(Alignment.Center),
-            size = DpSize(width = 800.dp, height = 600.dp)
+            size = DpSize(width = 1000.dp, height = 700.dp)
         )
 
         val childStack by root.childStack.subscribeAsState()
@@ -87,7 +87,6 @@ fun main() {
 
             LaunchedEffect(childStack.active.instance, density) {
                 window.minimumSize = when (childStack.active.instance) {
-                    is RootComponent.Child.SplashChild -> dimension(800.dp, 600.dp, density)
                     is RootComponent.Child.MainMenuChild -> dimension(1000.dp, 700.dp, density)
                     is RootComponent.Child.EditorChild -> dimension(1280.dp, 720.dp, density)
                 }

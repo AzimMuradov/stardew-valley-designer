@@ -23,11 +23,12 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.essenty.parcelable.Parcelable
 import io.stardewvalleydesigner.components.RootComponent.Child
-import io.stardewvalleydesigner.components.RootComponent.Child.*
-import io.stardewvalleydesigner.components.RootComponentImpl.Config.*
+import io.stardewvalleydesigner.components.RootComponent.Child.EditorChild
+import io.stardewvalleydesigner.components.RootComponent.Child.MainMenuChild
+import io.stardewvalleydesigner.components.RootComponentImpl.Config.EditorConfig
+import io.stardewvalleydesigner.components.RootComponentImpl.Config.MainMenuConfig
 import io.stardewvalleydesigner.components.screens.editor.EditorComponentImpl
 import io.stardewvalleydesigner.components.screens.menu.MainMenuComponentImpl
-import io.stardewvalleydesigner.components.screens.splash.SplashComponentImpl
 import io.stardewvalleydesigner.engine.EditorEngine
 
 
@@ -46,16 +47,12 @@ private class RootComponentImpl(
 
     private val stack = childStack(
         source = navigation,
-        initialConfiguration = SplashConfig,
+        initialConfiguration = MainMenuConfig,
         childFactory = ::child,
     )
 
     override val childStack: Value<ChildStack<*, Child>> = stack
 
-
-    override fun onSplashScreenEnd() {
-        navigation.replaceCurrent(configuration = MainMenuConfig)
-    }
 
     override fun onEditorScreenCall(engine: EditorEngine) {
         navigation.push(configuration = EditorConfig(engine))
@@ -67,12 +64,6 @@ private class RootComponentImpl(
 
 
     private fun child(config: Config, componentContext: ComponentContext): Child = when (config) {
-        SplashConfig -> SplashChild(
-            SplashComponentImpl(
-                this::onSplashScreenEnd,
-            )
-        )
-
         MainMenuConfig -> MainMenuChild(
             MainMenuComponentImpl(
                 this::onEditorScreenCall,
@@ -88,7 +79,6 @@ private class RootComponentImpl(
     }
 
     private sealed class Config : Parcelable {
-        data object SplashConfig : Config()
         data object MainMenuConfig : Config()
         data class EditorConfig(val engine: EditorEngine) : Config()
     }
