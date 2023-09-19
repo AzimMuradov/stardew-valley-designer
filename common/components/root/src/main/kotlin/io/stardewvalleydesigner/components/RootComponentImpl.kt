@@ -58,28 +58,27 @@ private class RootComponentImpl(
         navigation.push(configuration = EditorConfig(engine))
     }
 
-    override fun onEditorScreenReturn() {
-        navigation.pop()
-    }
-
 
     private fun child(config: Config, componentContext: ComponentContext): Child = when (config) {
         MainMenuConfig -> MainMenuChild(
             MainMenuComponentImpl(
-                this::onEditorScreenCall,
+                onEditorScreenCall = this::onEditorScreenCall,
             )
         )
 
         is EditorConfig -> EditorChild(
             EditorComponentImpl(
                 engine = config.engine,
-                onEditorScreenReturn = this::onEditorScreenReturn,
             )
         )
     }
 
     private sealed class Config : Parcelable {
-        data object MainMenuConfig : Config()
+        data object MainMenuConfig : Config() {
+
+            private fun readResolve(): Any = MainMenuConfig
+        }
+
         data class EditorConfig(val engine: EditorEngine) : Config()
     }
 }

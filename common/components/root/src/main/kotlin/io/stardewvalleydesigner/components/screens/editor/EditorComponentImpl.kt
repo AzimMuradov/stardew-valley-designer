@@ -24,7 +24,6 @@ import io.stardewvalleydesigner.engine.EditorEngine
 
 internal class EditorComponentImpl(
     engine: EditorEngine,
-    override val onEditorScreenReturn: () -> Unit,
 ) : EditorComponent {
 
     override val store = EditorStoreFactory(createLoggerAwareStoreFactory()).create(engine)
