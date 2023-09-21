@@ -50,3 +50,11 @@ data class MapState(
         )
     }
 }
+
+
+fun MapState.toEngineData(): EditorEngineData = EditorEngineData(
+    layoutType = layout.type,
+    layeredEntitiesData = entities,
+    wallpaper = wallpaper,
+    flooring = flooring,
+)

@@ -17,14 +17,12 @@
 package io.stardewvalleydesigner.components.screens.editor
 
 import io.stardewvalleydesigner.LoggerUtils.createLoggerAwareStoreFactory
-import io.stardewvalleydesigner.editor.EditorComponent
-import io.stardewvalleydesigner.editor.EditorStoreFactory
-import io.stardewvalleydesigner.engine.EditorEngine
+import io.stardewvalleydesigner.editor.*
 
 
 internal class EditorComponentImpl(
-    engine: EditorEngine,
+    initialState: EditorState,
 ) : EditorComponent {
 
-    override val store = EditorStoreFactory(createLoggerAwareStoreFactory()).create(engine)
+    override val store = EditorStoreFactory(createLoggerAwareStoreFactory()).create(initialState)
 }

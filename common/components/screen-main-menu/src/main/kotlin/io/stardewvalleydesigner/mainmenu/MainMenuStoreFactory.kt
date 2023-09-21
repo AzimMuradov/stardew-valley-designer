@@ -19,13 +19,12 @@ package io.stardewvalleydesigner.mainmenu
 import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import io.stardewvalleydesigner.engine.EditorEngine
-import io.stardewvalleydesigner.engine.editorEngineOf
+import io.stardewvalleydesigner.engine.*
 import io.stardewvalleydesigner.engine.layout.LayoutType
 import io.stardewvalleydesigner.engine.layout.LayoutsProvider.layoutOf
 import io.stardewvalleydesigner.save.SaveDataSerializers
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.swing.Swing
 import io.stardewvalleydesigner.mainmenu.MainMenuIntent as Intent
 import io.stardewvalleydesigner.mainmenu.MainMenuLabel as Label
 import io.stardewvalleydesigner.mainmenu.MainMenuState as State
@@ -37,7 +36,7 @@ internal typealias MainMenuStore = Store<Intent, State, Label>
 class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
     fun create(
-        onEditorScreenCall: (EditorEngine) -> Unit,
+        onEditorScreenCall: (EditorEngineData) -> Unit,
     ): MainMenuStore = object : MainMenuStore by storeFactory.create(
         name = "MainMenuStore",
         initialState = State.default(),
@@ -66,8 +65,8 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
     }
 
     private class ExecutorImpl(
-        private val onEditorScreenCall: (EditorEngine) -> Unit,
-    ) : CoroutineExecutor<Intent, Action, State, Msg, Label>(mainContext = Dispatchers.Default) {
+        private val onEditorScreenCall: (EditorEngineData) -> Unit,
+    ) : CoroutineExecutor<Intent, Action, State, Msg, Label>(mainContext = Dispatchers.Swing) {
 
         override fun executeIntent(intent: Intent, getState: () -> State) {
             when (intent) {
@@ -76,7 +75,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 is Intent.NewPlanMenu.ChooseLayout -> dispatch(Msg.ChooseLayoutFromNewPlanMenu(intent.layout))
 
                 Intent.NewPlanMenu.AcceptChosen -> onEditorScreenCall(
-                    (getState() as State.NewPlanMenu.Idle).chosenLayout!!
+                    (getState() as State.NewPlanMenu.Idle).chosenLayout!!.exportData()
                 )
 
                 Intent.NewPlanMenu.Cancel -> dispatch(Msg.ToMainMenu)
@@ -89,7 +88,9 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
                     scope.launch {
                         val parsed = try {
-                            SaveDataSerializers.parse(intent.path.trim())
+                            withContext(Dispatchers.IO) {
+                                SaveDataSerializers.parse(intent.path.trim())
+                            }
                         } catch (e: Exception) {
                             null
                         }
@@ -109,9 +110,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 Intent.SaveLoaderMenu.AcceptChosen -> {
                     val layout = (getState() as State.SaveLoaderMenu.Idle).chosenLayout!!
 
-                    dispatch(Msg.ToMainMenu)
-
-                    onEditorScreenCall(layout)
+                    onEditorScreenCall(layout.exportData())
                 }
 
                 Intent.SaveLoaderMenu.Cancel -> dispatch(Msg.ToMainMenu)

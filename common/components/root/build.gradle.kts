@@ -9,7 +9,8 @@ dependencies {
     implementation(projects.common.components.screenEditor)
     implementation(projects.common.components.screenSettings)
 
-    implementation(libs.decompose)
+    implementation(libs.kotlinx.coroutines.core)
+
     implementation(libs.bundles.mvikotlin)
 
 

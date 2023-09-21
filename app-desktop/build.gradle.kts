@@ -28,9 +28,6 @@ dependencies {
 
     implementation(compose.materialIconsExtended)
 
-    implementation(libs.decompose)
-    implementation(libs.decompose.extensions.composejb)
-
     implementation(libs.bundles.mvikotlin)
 
     implementation(libs.kotlinx.coroutines.core)

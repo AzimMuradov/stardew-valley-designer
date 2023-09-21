@@ -16,24 +16,23 @@
 
 package io.stardewvalleydesigner.components
 
-import com.arkivanov.decompose.router.stack.ChildStack
-import com.arkivanov.decompose.value.Value
 import io.stardewvalleydesigner.editor.EditorComponent
-import io.stardewvalleydesigner.engine.EditorEngine
+import io.stardewvalleydesigner.engine.EditorEngineData
 import io.stardewvalleydesigner.mainmenu.MainMenuComponent
+import kotlinx.coroutines.flow.StateFlow
 
 
 interface RootComponent {
 
-    val childStack: Value<ChildStack<*, Child>>
+    val children: StateFlow<Children>
 
-    sealed class Child {
-        class MainMenuChild(val component: MainMenuComponent) : Child()
-        class EditorChild(val component: EditorComponent) : Child()
-    }
+    class Children(
+        val mainMenuComponent: MainMenuComponent,
+        val editorComponents: List<EditorComponent>,
+    )
 
 
-    fun onEditorScreenCall(engine: EditorEngine)
+    fun createEditorComponent(data: EditorEngineData)
 
-    fun onEditorScreenReturn()
+    fun destroyEditorComponent(component: EditorComponent)
 }

@@ -16,89 +16,60 @@
 
 package io.stardewvalleydesigner
 
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.input.key.*
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.*
-import androidx.compose.ui.window.*
-import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
+import androidx.compose.runtime.*
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.application
+import com.arkivanov.mvikotlin.core.utils.setMainThreadId
 import io.stardewvalleydesigner.components.RootComponent
 import io.stardewvalleydesigner.components.rootComponent
-import io.stardewvalleydesigner.editor.EditorIntent
+import io.stardewvalleydesigner.screens.EditorScreen
+import io.stardewvalleydesigner.screens.MainMenuScreen
 import io.stardewvalleydesigner.settings.Lang
-import io.stardewvalleydesigner.utils.WithMeasuredWindow
+import io.stardewvalleydesigner.utils.GlobalSettings
 import io.stardewvalleydesigner.utils.WithSettings
-import java.awt.Dimension
 
 
-@OptIn(ExperimentalComposeUiApi::class)
 fun main() {
-    val root = rootComponent()
+    val root: RootComponent = runOnUiThread {
+        setMainThreadId(Thread.currentThread().id)
+        rootComponent()
+    }
 
     application {
-        val state = rememberWindowState(
-            position = WindowPosition(Alignment.Center),
-            size = DpSize(width = 1000.dp, height = 700.dp)
-        )
-
-        val childStack by root.childStack.subscribeAsState()
-
-        Window(
-            onCloseRequest = ::exitApplication,
-            state = state,
-            title = "",
-            icon = painterResource(ICON_RES_PATH),
-            onKeyEvent = {
-                when (val currentChild = childStack.active.instance) {
-                    is RootComponent.Child.EditorChild -> {
-                        when {
-                            it.isCtrlPressed && it.key == Key.Z && it.type == KeyEventType.KeyUp -> {
-                                currentChild.component.store.accept(EditorIntent.History.GoBack)
-                                true
-                            }
-
-                            it.isCtrlPressed && it.key == Key.Y && it.type == KeyEventType.KeyUp -> {
-                                currentChild.component.store.accept(EditorIntent.History.GoForward)
-                                true
-                            }
-
-                            else -> false
-                        }
-                    }
-
-                    else -> false
-                }
-            },
-            resizable = true,
-        ) {
-            WithMeasuredWindow(windowWidth = with(LocalDensity.current) { state.size.width.roundToPx() }) {
-                AppTheme(themeVariant = ThemeVariant.LIGHT) {
-                    WithSettings(lang = Lang.EN) {
-                        Root(root)
-                    }
-                }
-            }
-
-            val density = LocalDensity.current
-
-            LaunchedEffect(childStack.active.instance, density) {
-                window.minimumSize = when (childStack.active.instance) {
-                    is RootComponent.Child.MainMenuChild -> dimension(1000.dp, 700.dp, density)
-                    is RootComponent.Child.EditorChild -> dimension(1280.dp, 720.dp, density)
-                }
-                state.position = WindowPosition(Alignment.Center)
+        AppTheme(themeVariant = ThemeVariant.LIGHT) {
+            WithSettings(lang = Lang.EN) {
+                Root(root, ::exitApplication)
             }
         }
     }
 }
 
-private fun dimension(w: Dp, h: Dp, density: Density) = with(density) {
-    Dimension(w.roundToPx(), h.roundToPx())
-}
+@Composable
+private fun Root(component: RootComponent, exitApplication: () -> Unit) {
+    val wordlist = GlobalSettings.strings
 
+    val rootChildren by component.children.collectAsState()
+
+    Screen(
+        title = "Stardew Valley Designer | Main Menu",
+        initialSize = DpSize(width = 1000.dp, height = 700.dp),
+        onCloseRequest = exitApplication,
+    ) {
+        MainMenuScreen(rootChildren.mainMenuComponent)
+    }
+
+    rootChildren.editorComponents.forEach { editorComponent ->
+        key(editorComponent) {
+            Screen(
+                title = "Stardew Valley Designer | ${wordlist.layout(editorComponent.store.state.map.layout.type)}",
+                initialSize = DpSize(width = 1280.dp, height = 720.dp),
+                onCloseRequest = { component.destroyEditorComponent(editorComponent) },
+            ) {
+                EditorScreen(editorComponent)
+            }
+        }
+    }
+}
 
 const val ICON_RES_PATH: String = "icons/icon-1024.png"

@@ -19,9 +19,9 @@ package io.stardewvalleydesigner.editor
 import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
+import io.stardewvalleydesigner.editor.EditorState
 import io.stardewvalleydesigner.editor.modules.history.*
-import io.stardewvalleydesigner.editor.modules.map.EditorEngineImpl
-import io.stardewvalleydesigner.editor.modules.map.MapState
+import io.stardewvalleydesigner.editor.modules.map.*
 import io.stardewvalleydesigner.editor.modules.options.OptionsState
 import io.stardewvalleydesigner.editor.modules.options.reduce
 import io.stardewvalleydesigner.editor.modules.palette.PaletteState
@@ -30,6 +30,9 @@ import io.stardewvalleydesigner.editor.modules.toolkit.*
 import io.stardewvalleydesigner.editor.modules.vislayers.VisLayersState
 import io.stardewvalleydesigner.editor.modules.vislayers.reduce
 import io.stardewvalleydesigner.engine.EditorEngine
+import io.stardewvalleydesigner.engine.generateEngine
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.swing.Swing
 import io.stardewvalleydesigner.editor.EditorIntent as Intent
 import io.stardewvalleydesigner.editor.EditorLabel as Label
 import io.stardewvalleydesigner.editor.EditorState as State
@@ -42,11 +45,11 @@ internal typealias EditorStore = Store<Intent, State, Label>
 
 class EditorStoreFactory(private val storeFactory: StoreFactory) {
 
-    fun create(engine: EditorEngine): EditorStore = object : EditorStore by storeFactory.create(
+    fun create(initialState: EditorState): EditorStore = object : EditorStore by storeFactory.create(
         name = "EditorStore",
-        initialState = State.from(engine),
+        initialState = initialState,
         bootstrapper = BootstrapperImpl(),
-        executorFactory = { ExecutorImpl(engine) },
+        executorFactory = { ExecutorImpl(initialState.map.toEngineData().generateEngine()) },
         reducer = reducer
     ) {}
 
@@ -67,7 +70,9 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
         override fun invoke() = Unit
     }
 
-    private class ExecutorImpl(engine: EditorEngine) : CoroutineExecutor<Intent, Action, State, Msg, Label>() {
+    private class ExecutorImpl(
+        engine: EditorEngine,
+    ) : CoroutineExecutor<Intent, Action, State, Msg, Label>(mainContext = Dispatchers.Swing) {
 
         private val history = HistoryManagerImpl(MapState.from(engine))
 
