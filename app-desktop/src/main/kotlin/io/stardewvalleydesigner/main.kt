@@ -17,12 +17,14 @@
 package io.stardewvalleydesigner
 
 import androidx.compose.runtime.*
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.application
 import com.arkivanov.mvikotlin.core.utils.setMainThreadId
 import io.stardewvalleydesigner.components.RootComponent
 import io.stardewvalleydesigner.components.rootComponent
+import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.screens.EditorScreen
 import io.stardewvalleydesigner.screens.MainMenuScreen
 import io.stardewvalleydesigner.settings.Lang
@@ -66,6 +68,21 @@ private fun Root(component: RootComponent, exitApplication: () -> Unit) {
                 title = wordList.screenTitle(wordList.layout(layoutType)),
                 initialSize = DpSize(width = 1280.dp, height = 720.dp),
                 onCloseRequest = { component.destroyEditorComponent(editorComponent) },
+                onKeyEvent = {
+                    when {
+                        it.isCtrlPressed && it.key == Key.Z && it.type == KeyEventType.KeyUp -> {
+                            editorComponent.store.accept(EditorIntent.History.GoBack)
+                            true
+                        }
+
+                        it.isCtrlPressed && it.key == Key.Y && it.type == KeyEventType.KeyUp -> {
+                            editorComponent.store.accept(EditorIntent.History.GoForward)
+                            true
+                        }
+
+                        else -> false
+                    }
+                },
             ) {
                 EditorScreen(editorComponent)
             }

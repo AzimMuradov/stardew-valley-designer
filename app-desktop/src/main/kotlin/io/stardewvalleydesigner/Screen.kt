@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.*
@@ -36,6 +37,7 @@ fun Screen(
     title: String,
     initialSize: DpSize,
     onCloseRequest: () -> Unit,
+    onKeyEvent: (KeyEvent) -> Boolean = { false },
     ui: @Composable () -> Unit,
 ) {
     Window(
@@ -47,6 +49,7 @@ fun Screen(
         title = title,
         icon = painterResource(ICON_RES_PATH),
         resizable = true,
+        onKeyEvent = onKeyEvent,
     ) {
         WithMeasuredWindow(windowWidth = window.width) {
             Box(
