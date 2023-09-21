@@ -49,7 +49,7 @@ import java.awt.datatransfer.StringSelection
 
 @Composable
 fun ObjectCounter(entities: LayeredEntitiesData) {
-    val wordlist = GlobalSettings.strings
+    val wordList = GlobalSettings.strings
     val countedEntities = entities
         .flattenSequence()
         .map { it.rectObject }
@@ -59,7 +59,7 @@ fun ObjectCounter(entities: LayeredEntitiesData) {
         .sortedWith(
             Comparator
                 .comparingInt<Map.Entry<EntityId, Int>> { -it.value }
-                .thenBy { wordlist.entity(EntityDataProvider.entityById.getValue(it.key)) }
+                .thenBy { wordList.entity(EntityDataProvider.entityById.getValue(it.key)) }
                 .thenComparingInt { it.key.page.ordinal }
                 .thenComparingInt { it.key.localId }
         )
@@ -85,7 +85,7 @@ fun ObjectCounter(entities: LayeredEntitiesData) {
         Divider(Modifier.weight(1f))
         Spacer(Modifier.width(8.dp))
         Text(
-            text = wordlist.objectCounterTitle,
+            text = wordList.objectCounterTitle,
             style = MaterialTheme.typography.subtitle1
         )
         Spacer(Modifier.width(8.dp))
@@ -103,11 +103,11 @@ fun ObjectCounter(entities: LayeredEntitiesData) {
                     onClick = {
                         copyToClipboard(
                             text = buildString {
-                                appendLine("# ${wordlist.objectCounterTitle}")
+                                appendLine("# ${wordList.objectCounterTitle}")
                                 appendLine()
                                 for ((eId, cnt) in countedEntities) {
                                     val entity = EntityDataProvider.entityById.getValue(eId)
-                                    appendLine("- [ ] ${wordlist.entity(entity)} - $cnt")
+                                    appendLine("- [ ] ${wordList.entity(entity)} - $cnt")
                                 }
                             }
                         )
@@ -143,7 +143,7 @@ fun ObjectCounter(entities: LayeredEntitiesData) {
                         Sprite(entity, modifier = Modifier.size(16.dp).padding(2.dp))
                     }
                     Spacer(Modifier.width(6.dp))
-                    Text(text = wordlist.entity(entity))
+                    Text(text = wordList.entity(entity))
                     Spacer(Modifier.weight(1f))
                     Text(text = "$cnt")
                 }

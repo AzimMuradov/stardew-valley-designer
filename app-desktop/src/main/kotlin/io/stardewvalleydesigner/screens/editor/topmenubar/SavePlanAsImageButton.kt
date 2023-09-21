@@ -87,16 +87,17 @@ fun SavePlanAsImageButton(
 
     if (showFileSaver) {
         FileSaver(
-            title = "Choose where to save",
+            title = wordList.savePlanAsImageTitle,
             defaultPathAndFile = pathname,
             extensions = listOf("png"),
         ) { path ->
             showFileSaver = false
             path?.let {
                 scope.launch {
-                    savePlanAsImage(path.toString(), map, visibleLayers)
+                    val pathStr = path.toString()
+                    savePlanAsImage(pathStr, map, visibleLayers)
                     snackbarHostState.currentSnackbarData?.dismiss()
-                    snackbarHostState.showSnackbar(message = "Saved to \"$path\"")
+                    snackbarHostState.showSnackbar(message = wordList.savePlanAsImageNotificationMessage(pathStr))
                 }
             }
         }

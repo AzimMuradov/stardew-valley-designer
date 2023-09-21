@@ -41,6 +41,11 @@ sealed interface WordList {
     val author: String
 
 
+    fun screenTitle(subTitle: String) = "$application | $subTitle"
+
+    val mainMenuTitle: String
+
+
     // General
 
     val ok: String
@@ -95,25 +100,29 @@ sealed interface WordList {
 
     val newPlanWindowTitle: String
 
-    val chooseLayout: String
-
-    val selectSaveFile: String
 
     val buttonOpenPlanText: String
+
 
     val buttonSaveImportText: String
 
     val saveImportWindowTitle: String
 
-    val saveImportCurrentDirectoryLabel: String
-
-    val saveImportTextFieldLabel: String
-
     val saveImportPlaceholder: String
 
     val saveImportPlaceholderError: String
 
+    val saveImportSelectSaveFileButton: String
+
+    val saveImportSelectSaveFileTitle: String
+
+    val saveImportTextFieldLabel: String
+
+
     val buttonSearchForAPlanText: String
+
+
+    val chooseLayout: String
 
 
     // Editor Screen
@@ -131,6 +140,10 @@ sealed interface WordList {
     fun entity(e: Entity<*>): String
 
     val buttonSavePlanAsImageTooltip: String
+
+    val savePlanAsImageTitle: String
+
+    fun savePlanAsImageNotificationMessage(path: String): String
 
     /**
      * Get tool name by its type.

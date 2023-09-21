@@ -47,12 +47,12 @@ fun main() {
 
 @Composable
 private fun Root(component: RootComponent, exitApplication: () -> Unit) {
-    val wordlist = GlobalSettings.strings
+    val wordList = GlobalSettings.strings
 
     val rootChildren by component.children.collectAsState()
 
     Screen(
-        title = "Stardew Valley Designer | Main Menu",
+        title = wordList.screenTitle(wordList.mainMenuTitle),
         initialSize = DpSize(width = 1000.dp, height = 700.dp),
         onCloseRequest = exitApplication,
     ) {
@@ -61,8 +61,9 @@ private fun Root(component: RootComponent, exitApplication: () -> Unit) {
 
     rootChildren.editorComponents.forEach { editorComponent ->
         key(editorComponent) {
+            val layoutType = editorComponent.store.state.map.layout.type
             Screen(
-                title = "Stardew Valley Designer | ${wordlist.layout(editorComponent.store.state.map.layout.type)}",
+                title = wordList.screenTitle(wordList.layout(layoutType)),
                 initialSize = DpSize(width = 1280.dp, height = 720.dp),
                 onCloseRequest = { component.destroyEditorComponent(editorComponent) },
             ) {

@@ -62,7 +62,7 @@ fun EditorLayout(
     options: OptionsState,
     intentConsumer: (EditorIntent) -> Unit,
 ) {
-    val wordlist = GlobalSettings.strings
+    val wordList = GlobalSettings.strings
 
     val layout = map.layout
     val (nW, nH) = layout.size
@@ -202,7 +202,7 @@ fun EditorLayout(
 
                 Row(Modifier.weight(2f), Arrangement.Center) {
                     toolkit.actionVector?.let { (start, end) ->
-                        Text("${wordlist.start}: $start, ${wordlist.end}: $end")
+                        Text("${wordList.start}: $start, ${wordList.end}: $end")
                     }
                 }
 
@@ -211,7 +211,7 @@ fun EditorLayout(
                 Row(Modifier.weight(1f), Arrangement.Center) {
                     toolkit.actionVector?.let { (start, end) ->
                         val (w, h) = CanonicalCorners.fromTwoCoordinates(start, end).rect
-                        Text("${wordlist.width}: $w, ${wordlist.height}: $h")
+                        Text("${wordList.width}: $w, ${wordList.height}: $h")
                     }
                 }
             }

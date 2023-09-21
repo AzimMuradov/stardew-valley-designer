@@ -32,6 +32,9 @@ data object EnWordList : WordList {
     override val author: String = "Azim Muradov"
 
 
+    override val mainMenuTitle: String = "Main Menu"
+
+
     // General
 
     override val ok: String = "OK"
@@ -87,29 +90,34 @@ data object EnWordList : WordList {
 
     override val infoBugs: String = "If you encounter a bug or have any questions, please let me know."
 
+
     override val buttonNewPlanText: String = "New plan"
 
-    override val newPlanWindowTitle: String = "Choose from available layouts"
+    override val newPlanWindowTitle: String = "Create new plan"
 
-    override val chooseLayout: String = "CHOOSE LAYOUT"
-
-    override val selectSaveFile: String = "SELECT SAVE FILE"
 
     override val buttonOpenPlanText: String = "Open plan"
 
+
     override val buttonSaveImportText: String = "Import from save"
 
-    override val saveImportWindowTitle: String = "Load your save file and then choose from available layouts"
+    override val saveImportWindowTitle: String = "Import plan from save"
 
-    override val saveImportCurrentDirectoryLabel: String = "current directory"
-
-    override val saveImportTextFieldLabel: String = "path to your save file"
-
-    override val saveImportPlaceholder: String = "Load your save file"
+    override val saveImportPlaceholder: String = "Load your save file and then choose from available layouts"
 
     override val saveImportPlaceholderError: String = "Something went wrong, try again or choose another file"
 
+    override val saveImportSelectSaveFileButton: String = "SELECT SAVE FILE"
+
+    override val saveImportSelectSaveFileTitle: String = "Select save file"
+
+    override val saveImportTextFieldLabel: String = "path to your save file"
+
+
     override val buttonSearchForAPlanText: String = "Search for a plan"
+
+
+    override val chooseLayout: String = "CHOOSE LAYOUT"
 
 
     // Editor Screen
@@ -713,6 +721,10 @@ data object EnWordList : WordList {
     }.also { entities[e] = it }
 
     override val buttonSavePlanAsImageTooltip: String = "Save plan as an image"
+
+    override val savePlanAsImageTitle: String = "Provide path for the plan save"
+
+    override fun savePlanAsImageNotificationMessage(path: String): String = "Saved to \"$path\""
 
     override fun tool(type: ToolType?): String = when (type) {
         null -> "No tool selected"
