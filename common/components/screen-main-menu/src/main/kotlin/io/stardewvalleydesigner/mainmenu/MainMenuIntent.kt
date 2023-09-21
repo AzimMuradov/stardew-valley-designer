@@ -16,7 +16,7 @@
 
 package io.stardewvalleydesigner.mainmenu
 
-import io.stardewvalleydesigner.engine.EditorEngine
+import io.stardewvalleydesigner.engine.EditorEngineData
 
 
 sealed interface MainMenuIntent {
@@ -25,7 +25,7 @@ sealed interface MainMenuIntent {
 
         data object OpenMenu : NewPlanMenu
 
-        data class ChooseLayout(val layout: EditorEngine) : NewPlanMenu
+        data class ChooseLayout(val layout: EditorEngineData) : NewPlanMenu
 
         data object AcceptChosen : NewPlanMenu
 
@@ -38,7 +38,7 @@ sealed interface MainMenuIntent {
 
         data class LoadSave(val path: String) : SaveLoaderMenu
 
-        data class ChooseLayout(val layout: EditorEngine) : SaveLoaderMenu
+        data class ChooseLayout(val layout: EditorEngineData) : SaveLoaderMenu
 
         data object AcceptChosen : SaveLoaderMenu
 

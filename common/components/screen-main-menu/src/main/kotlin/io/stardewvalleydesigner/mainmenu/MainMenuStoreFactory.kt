@@ -19,10 +19,10 @@ package io.stardewvalleydesigner.mainmenu
 import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import io.stardewvalleydesigner.engine.*
+import io.stardewvalleydesigner.engine.EditorEngineData
+import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layout.LayoutType
-import io.stardewvalleydesigner.engine.layout.LayoutsProvider.layoutOf
-import io.stardewvalleydesigner.save.SaveDataSerializers
+import io.stardewvalleydesigner.save.SaveDataParser
 import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing
 import io.stardewvalleydesigner.mainmenu.MainMenuIntent as Intent
@@ -51,12 +51,12 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
     private sealed interface Msg {
         data object ToMainMenu : Msg
         data object OpenNewPlanMenu : Msg
-        data class ChooseLayoutFromNewPlanMenu(val layout: EditorEngine) : Msg
+        data class ChooseLayoutFromNewPlanMenu(val layout: EditorEngineData) : Msg
         data object OpenSaveLoaderMenu : Msg
         data object ShowLoadingInSaveLoaderMenu : Msg
-        data class ShowSuccessInSaveLoaderMenu(val layouts: List<EditorEngine>) : Msg
+        data class ShowSuccessInSaveLoaderMenu(val layouts: List<EditorEngineData>) : Msg
         data object ShowErrorInSaveLoaderMenu : Msg
-        data class ChooseLayoutFromSaveLoaderMenu(val layout: EditorEngine) : Msg
+        data class ChooseLayoutFromSaveLoaderMenu(val layout: EditorEngineData) : Msg
     }
 
     private class BootstrapperImpl : CoroutineBootstrapper<Action>() {
@@ -75,7 +75,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 is Intent.NewPlanMenu.ChooseLayout -> dispatch(Msg.ChooseLayoutFromNewPlanMenu(intent.layout))
 
                 Intent.NewPlanMenu.AcceptChosen -> onEditorScreenCall(
-                    (getState() as State.NewPlanMenu.Idle).chosenLayout!!.exportData()
+                    (getState() as State.NewPlanMenu.Idle).chosenLayout!!
                 )
 
                 Intent.NewPlanMenu.Cancel -> dispatch(Msg.ToMainMenu)
@@ -89,7 +89,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                     scope.launch {
                         val parsed = try {
                             withContext(Dispatchers.IO) {
-                                SaveDataSerializers.parse(intent.path.trim())
+                                SaveDataParser.parse(intent.path.trim())
                             }
                         } catch (e: Exception) {
                             null
@@ -110,7 +110,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 Intent.SaveLoaderMenu.AcceptChosen -> {
                     val layout = (getState() as State.SaveLoaderMenu.Idle).chosenLayout!!
 
-                    onEditorScreenCall(layout.exportData())
+                    onEditorScreenCall(layout)
                 }
 
                 Intent.SaveLoaderMenu.Cancel -> dispatch(Msg.ToMainMenu)
@@ -123,11 +123,14 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
     private val reducer = Reducer<State, Msg> { msg ->
         when (msg) {
             Msg.OpenNewPlanMenu -> State.NewPlanMenu.Idle(
-                availableLayouts = listOf(
-                    editorEngineOf(layoutOf(LayoutType.Shed)),
-                    editorEngineOf(layoutOf(LayoutType.BigShed)),
-                    editorEngineOf(layoutOf(LayoutType.StandardFarm)),
-                ),
+                availableLayouts = LayoutType.entries.map { layoutType ->
+                    EditorEngineData(
+                        layoutType = layoutType,
+                        layeredEntitiesData = LayeredEntitiesData(),
+                        wallpaper = null,
+                        flooring = null,
+                    )
+                },
                 chosenLayout = null
             )
 

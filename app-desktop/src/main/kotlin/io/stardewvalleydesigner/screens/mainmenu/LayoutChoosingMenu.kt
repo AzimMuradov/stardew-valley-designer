@@ -31,20 +31,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.stardewvalleydesigner.engine.EditorEngine
-import io.stardewvalleydesigner.engine.layers.entities
-import io.stardewvalleydesigner.engine.layout
+import io.stardewvalleydesigner.engine.EditorEngineData
+import io.stardewvalleydesigner.engine.layout.LayoutsProvider.layoutOf
 import io.stardewvalleydesigner.utils.GlobalSettings
 
 
 @Composable
 fun LayoutChoosingMenu(
     modifier: Modifier,
-    layouts: List<EditorEngine>?,
+    layouts: List<EditorEngineData>?,
     placeholder: String,
-    chosenLayout: EditorEngine?,
+    chosenLayout: EditorEngineData?,
     okText: String,
-    onLayoutChosen: (EditorEngine) -> Unit,
+    onLayoutChosen: (EditorEngineData) -> Unit,
     onOk: () -> Unit,
     isLoading: Boolean = false,
 ) {
@@ -115,14 +114,14 @@ fun LayoutChoosingMenu(
                         ) {
                             Box {
                                 LayoutPreview(
-                                    layout = engine.layout,
-                                    entities = engine.layers.entities,
+                                    layout = layoutOf(engine.layoutType),
+                                    entities = engine.layeredEntitiesData,
                                     wallpaper = engine.wallpaper,
                                     flooring = engine.flooring,
                                 )
                             }
                             Text(
-                                text = wordList.layout(engine.layout.type),
+                                text = wordList.layout(engine.layoutType),
                                 style = MaterialTheme.typography.subtitle2
                             )
                         }

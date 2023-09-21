@@ -16,7 +16,7 @@
 
 package io.stardewvalleydesigner.mainmenu
 
-import io.stardewvalleydesigner.engine.EditorEngine
+import io.stardewvalleydesigner.engine.EditorEngineData
 
 
 sealed interface MainMenuState {
@@ -26,16 +26,16 @@ sealed interface MainMenuState {
     sealed interface NewPlanMenu : MainMenuState {
 
         data class Idle(
-            val availableLayouts: List<EditorEngine>,
-            val chosenLayout: EditorEngine?,
+            val availableLayouts: List<EditorEngineData>,
+            val chosenLayout: EditorEngineData?,
         ) : NewPlanMenu
     }
 
     sealed interface SaveLoaderMenu : MainMenuState {
 
         data class Idle(
-            val availableLayouts: List<EditorEngine>?,
-            val chosenLayout: EditorEngine?,
+            val availableLayouts: List<EditorEngineData>?,
+            val chosenLayout: EditorEngineData?,
         ) : SaveLoaderMenu
 
         data object Loading : SaveLoaderMenu
