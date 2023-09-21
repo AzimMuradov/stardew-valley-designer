@@ -33,17 +33,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.stardewvalleydesigner.engine.EditorEngineData
 import io.stardewvalleydesigner.engine.layout.LayoutsProvider.layoutOf
+import io.stardewvalleydesigner.mainmenu.Wrapper
 import io.stardewvalleydesigner.utils.GlobalSettings
 
 
 @Composable
 fun LayoutChoosingMenu(
     modifier: Modifier,
-    layouts: List<EditorEngineData>?,
+    layouts: List<Wrapper<EditorEngineData>>?,
     placeholder: String,
-    chosenLayout: EditorEngineData?,
+    chosenLayout: Wrapper<EditorEngineData>?,
     okText: String,
-    onLayoutChosen: (EditorEngineData) -> Unit,
+    onLayoutChosen: (Wrapper<EditorEngineData>) -> Unit,
     onOk: () -> Unit,
     isLoading: Boolean = false,
 ) {
@@ -112,16 +113,17 @@ fun LayoutChoosingMenu(
                             verticalArrangement = Arrangement.spacedBy(4.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
+                            val (layoutType, layeredEntitiesData, wallpaper, flooring) = engine.value
                             Box {
                                 LayoutPreview(
-                                    layout = layoutOf(engine.layoutType),
-                                    entities = engine.layeredEntitiesData,
-                                    wallpaper = engine.wallpaper,
-                                    flooring = engine.flooring,
+                                    layout = layoutOf(layoutType),
+                                    entities = layeredEntitiesData,
+                                    wallpaper = wallpaper,
+                                    flooring = flooring,
                                 )
                             }
                             Text(
-                                text = wordList.layout(engine.layoutType),
+                                text = wordList.layout(layoutType),
                                 style = MaterialTheme.typography.subtitle2
                             )
                         }

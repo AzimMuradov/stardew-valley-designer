@@ -51,12 +51,12 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
     private sealed interface Msg {
         data object ToMainMenu : Msg
         data object OpenNewPlanMenu : Msg
-        data class ChooseLayoutFromNewPlanMenu(val layout: EditorEngineData) : Msg
+        data class ChooseLayoutFromNewPlanMenu(val layout: Wrapper<EditorEngineData>) : Msg
         data object OpenSaveLoaderMenu : Msg
         data object ShowLoadingInSaveLoaderMenu : Msg
-        data class ShowSuccessInSaveLoaderMenu(val layouts: List<EditorEngineData>) : Msg
+        data class ShowSuccessInSaveLoaderMenu(val layouts: List<Wrapper<EditorEngineData>>) : Msg
         data object ShowErrorInSaveLoaderMenu : Msg
-        data class ChooseLayoutFromSaveLoaderMenu(val layout: EditorEngineData) : Msg
+        data class ChooseLayoutFromSaveLoaderMenu(val layout: Wrapper<EditorEngineData>) : Msg
     }
 
     private class BootstrapperImpl : CoroutineBootstrapper<Action>() {
@@ -75,7 +75,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 is Intent.NewPlanMenu.ChooseLayout -> dispatch(Msg.ChooseLayoutFromNewPlanMenu(intent.layout))
 
                 Intent.NewPlanMenu.AcceptChosen -> onEditorScreenCall(
-                    (getState() as State.NewPlanMenu.Idle).chosenLayout!!
+                    (getState() as State.NewPlanMenu.Idle).chosenLayout!!.value
                 )
 
                 Intent.NewPlanMenu.Cancel -> dispatch(Msg.ToMainMenu)
@@ -89,7 +89,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                     scope.launch {
                         val parsed = try {
                             withContext(Dispatchers.IO) {
-                                SaveDataParser.parse(intent.path.trim())
+                                SaveDataParser.parse(intent.path.trim()).map { it.wrapped() }
                             }
                         } catch (e: Exception) {
                             null
@@ -110,7 +110,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 Intent.SaveLoaderMenu.AcceptChosen -> {
                     val layout = (getState() as State.SaveLoaderMenu.Idle).chosenLayout!!
 
-                    onEditorScreenCall(layout)
+                    onEditorScreenCall(layout.value)
                 }
 
                 Intent.SaveLoaderMenu.Cancel -> dispatch(Msg.ToMainMenu)
@@ -122,17 +122,21 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
     private val reducer = Reducer<State, Msg> { msg ->
         when (msg) {
-            Msg.OpenNewPlanMenu -> State.NewPlanMenu.Idle(
-                availableLayouts = LayoutType.entries.map { layoutType ->
+            Msg.OpenNewPlanMenu -> {
+                val availableLayouts = LayoutType.entries.map { layoutType ->
                     EditorEngineData(
                         layoutType = layoutType,
                         layeredEntitiesData = LayeredEntitiesData(),
                         wallpaper = null,
                         flooring = null,
                     )
-                },
-                chosenLayout = null
-            )
+                }.map(EditorEngineData::wrapped)
+
+                State.NewPlanMenu.Idle(
+                    availableLayouts = availableLayouts,
+                    chosenLayout = availableLayouts.first()
+                )
+            }
 
             is Msg.ChooseLayoutFromNewPlanMenu -> (this as State.NewPlanMenu.Idle).copy(
                 chosenLayout = msg.layout
@@ -148,7 +152,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
             is Msg.ShowSuccessInSaveLoaderMenu -> State.SaveLoaderMenu.Idle(
                 availableLayouts = msg.layouts,
-                chosenLayout = null
+                chosenLayout = msg.layouts.firstOrNull()
             )
 
             Msg.ShowErrorInSaveLoaderMenu -> State.SaveLoaderMenu.Error

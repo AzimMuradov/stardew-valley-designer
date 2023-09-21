@@ -25,7 +25,7 @@ sealed interface MainMenuIntent {
 
         data object OpenMenu : NewPlanMenu
 
-        data class ChooseLayout(val layout: EditorEngineData) : NewPlanMenu
+        data class ChooseLayout(val layout: Wrapper<EditorEngineData>) : NewPlanMenu
 
         data object AcceptChosen : NewPlanMenu
 
@@ -38,7 +38,7 @@ sealed interface MainMenuIntent {
 
         data class LoadSave(val path: String) : SaveLoaderMenu
 
-        data class ChooseLayout(val layout: EditorEngineData) : SaveLoaderMenu
+        data class ChooseLayout(val layout: Wrapper<EditorEngineData>) : SaveLoaderMenu
 
         data object AcceptChosen : SaveLoaderMenu
 
