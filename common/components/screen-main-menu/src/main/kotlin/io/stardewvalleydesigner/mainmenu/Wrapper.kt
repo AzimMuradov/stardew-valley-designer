@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.components.screens.splash
-
-import io.stardewvalleydesigner.components.screens.SplashComponent
+package io.stardewvalleydesigner.mainmenu
 
 
-internal class SplashComponentImpl(
-    override val onSplashScreenEnd: () -> Unit,
-) : SplashComponent
+class Wrapper<T>(val value: T)
+
+fun <T> T.wrapped() = Wrapper(value = this)

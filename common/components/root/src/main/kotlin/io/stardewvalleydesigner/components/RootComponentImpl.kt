@@ -16,80 +16,46 @@
 
 package io.stardewvalleydesigner.components
 
-import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.DefaultComponentContext
-import com.arkivanov.decompose.router.stack.*
-import com.arkivanov.decompose.value.Value
-import com.arkivanov.essenty.lifecycle.LifecycleRegistry
-import com.arkivanov.essenty.parcelable.Parcelable
-import io.stardewvalleydesigner.components.RootComponent.Child
-import io.stardewvalleydesigner.components.RootComponent.Child.*
-import io.stardewvalleydesigner.components.RootComponentImpl.Config.*
+import io.stardewvalleydesigner.components.RootComponent.Children
 import io.stardewvalleydesigner.components.screens.editor.EditorComponentImpl
 import io.stardewvalleydesigner.components.screens.menu.MainMenuComponentImpl
-import io.stardewvalleydesigner.components.screens.splash.SplashComponentImpl
-import io.stardewvalleydesigner.engine.EditorEngine
+import io.stardewvalleydesigner.editor.EditorComponent
+import io.stardewvalleydesigner.editor.EditorState
+import io.stardewvalleydesigner.engine.EditorEngineData
+import io.stardewvalleydesigner.engine.generateEngine
+import kotlinx.coroutines.flow.*
 
 
-fun rootComponent(): RootComponent = RootComponentImpl(
-    componentContext = DefaultComponentContext(
-        lifecycle = LifecycleRegistry(),
-    ),
-)
+fun rootComponent(): RootComponent = RootComponentImpl()
 
 
-private class RootComponentImpl(
-    componentContext: ComponentContext,
-) : RootComponent, ComponentContext by componentContext {
+private class RootComponentImpl : RootComponent {
 
-    private val navigation = StackNavigation<Config>()
-
-    private val stack = childStack(
-        source = navigation,
-        initialConfiguration = SplashConfig,
-        childFactory = ::child,
+    private val _children: MutableStateFlow<Children> = MutableStateFlow(
+        Children(
+            mainMenuComponent = MainMenuComponentImpl(
+                onEditorScreenCall = this::createEditorComponent,
+            ),
+            editorComponents = emptyList(),
+        )
     )
 
-    override val childStack: Value<ChildStack<*, Child>> = stack
+    override val children: StateFlow<Children> = _children
 
 
-    override fun onSplashScreenEnd() {
-        navigation.replaceCurrent(configuration = MainMenuConfig)
-    }
-
-    override fun onEditorScreenCall(engine: EditorEngine) {
-        navigation.push(configuration = EditorConfig(engine))
-    }
-
-    override fun onEditorScreenReturn() {
-        navigation.pop()
-    }
-
-
-    private fun child(config: Config, componentContext: ComponentContext): Child = when (config) {
-        SplashConfig -> SplashChild(
-            SplashComponentImpl(
-                this::onSplashScreenEnd,
-            )
-        )
-
-        MainMenuConfig -> MainMenuChild(
-            MainMenuComponentImpl(
-                this::onEditorScreenCall,
-            )
-        )
-
-        is EditorConfig -> EditorChild(
-            EditorComponentImpl(
-                engine = config.engine,
-                onEditorScreenReturn = this::onEditorScreenReturn,
-            )
+    override fun createEditorComponent(data: EditorEngineData) = _children.update { children ->
+        Children(
+            mainMenuComponent = children.mainMenuComponent,
+            editorComponents = children.editorComponents + EditorComponentImpl(
+                initialState = EditorState.from(data.generateEngine()),
+            ),
         )
     }
 
-    private sealed class Config : Parcelable {
-        data object SplashConfig : Config()
-        data object MainMenuConfig : Config()
-        data class EditorConfig(val engine: EditorEngine) : Config()
+    override fun destroyEditorComponent(component: EditorComponent) = _children.update { children ->
+        Children(
+            mainMenuComponent = children.mainMenuComponent,
+            editorComponents = children.editorComponents - component,
+        )
     }
 }

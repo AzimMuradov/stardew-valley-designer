@@ -31,20 +31,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.stardewvalleydesigner.engine.EditorEngine
-import io.stardewvalleydesigner.engine.layers.entities
-import io.stardewvalleydesigner.engine.layout
+import io.stardewvalleydesigner.engine.EditorEngineData
+import io.stardewvalleydesigner.engine.layout.LayoutsProvider.layoutOf
+import io.stardewvalleydesigner.mainmenu.Wrapper
 import io.stardewvalleydesigner.utils.GlobalSettings
 
 
 @Composable
 fun LayoutChoosingMenu(
     modifier: Modifier,
-    layouts: List<EditorEngine>?,
+    layouts: List<Wrapper<EditorEngineData>>?,
     placeholder: String,
-    chosenLayout: EditorEngine?,
+    chosenLayout: Wrapper<EditorEngineData>?,
     okText: String,
-    onLayoutChosen: (EditorEngine) -> Unit,
+    onLayoutChosen: (Wrapper<EditorEngineData>) -> Unit,
     onOk: () -> Unit,
     isLoading: Boolean = false,
 ) {
@@ -113,16 +113,17 @@ fun LayoutChoosingMenu(
                             verticalArrangement = Arrangement.spacedBy(4.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
+                            val (layoutType, layeredEntitiesData, wallpaper, flooring) = engine.value
                             Box {
                                 LayoutPreview(
-                                    layout = engine.layout,
-                                    entities = engine.layers.entities,
-                                    wallpaper = engine.wallpaper,
-                                    flooring = engine.flooring,
+                                    layout = layoutOf(layoutType),
+                                    entities = layeredEntitiesData,
+                                    wallpaper = wallpaper,
+                                    flooring = flooring,
                                 )
                             }
                             Text(
-                                text = wordList.layout(engine.layout.type),
+                                text = wordList.layout(layoutType),
                                 style = MaterialTheme.typography.subtitle2
                             )
                         }

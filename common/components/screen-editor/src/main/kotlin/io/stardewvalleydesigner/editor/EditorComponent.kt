@@ -20,6 +20,4 @@ package io.stardewvalleydesigner.editor
 interface EditorComponent {
 
     val store: EditorStore
-
-    val onEditorScreenReturn: () -> Unit
 }

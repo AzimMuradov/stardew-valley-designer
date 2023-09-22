@@ -19,13 +19,12 @@ package io.stardewvalleydesigner.mainmenu
 import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import io.stardewvalleydesigner.engine.EditorEngine
-import io.stardewvalleydesigner.engine.editorEngineOf
+import io.stardewvalleydesigner.engine.EditorEngineData
+import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layout.LayoutType
-import io.stardewvalleydesigner.engine.layout.LayoutsProvider.layoutOf
-import io.stardewvalleydesigner.save.SaveDataSerializers
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import io.stardewvalleydesigner.save.SaveDataParser
+import kotlinx.coroutines.*
+import kotlinx.coroutines.swing.Swing
 import io.stardewvalleydesigner.mainmenu.MainMenuIntent as Intent
 import io.stardewvalleydesigner.mainmenu.MainMenuLabel as Label
 import io.stardewvalleydesigner.mainmenu.MainMenuState as State
@@ -37,7 +36,7 @@ internal typealias MainMenuStore = Store<Intent, State, Label>
 class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
     fun create(
-        onEditorScreenCall: (EditorEngine) -> Unit,
+        onEditorScreenCall: (EditorEngineData) -> Unit,
     ): MainMenuStore = object : MainMenuStore by storeFactory.create(
         name = "MainMenuStore",
         initialState = State.default(),
@@ -52,12 +51,12 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
     private sealed interface Msg {
         data object ToMainMenu : Msg
         data object OpenNewPlanMenu : Msg
-        data class ChooseLayoutFromNewPlanMenu(val layout: EditorEngine) : Msg
+        data class ChooseLayoutFromNewPlanMenu(val layout: Wrapper<EditorEngineData>) : Msg
         data object OpenSaveLoaderMenu : Msg
         data object ShowLoadingInSaveLoaderMenu : Msg
-        data class ShowSuccessInSaveLoaderMenu(val layouts: List<EditorEngine>) : Msg
+        data class ShowSuccessInSaveLoaderMenu(val layouts: List<Wrapper<EditorEngineData>>) : Msg
         data object ShowErrorInSaveLoaderMenu : Msg
-        data class ChooseLayoutFromSaveLoaderMenu(val layout: EditorEngine) : Msg
+        data class ChooseLayoutFromSaveLoaderMenu(val layout: Wrapper<EditorEngineData>) : Msg
     }
 
     private class BootstrapperImpl : CoroutineBootstrapper<Action>() {
@@ -66,8 +65,8 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
     }
 
     private class ExecutorImpl(
-        private val onEditorScreenCall: (EditorEngine) -> Unit,
-    ) : CoroutineExecutor<Intent, Action, State, Msg, Label>(mainContext = Dispatchers.Default) {
+        private val onEditorScreenCall: (EditorEngineData) -> Unit,
+    ) : CoroutineExecutor<Intent, Action, State, Msg, Label>(mainContext = Dispatchers.Swing) {
 
         override fun executeIntent(intent: Intent, getState: () -> State) {
             when (intent) {
@@ -76,7 +75,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 is Intent.NewPlanMenu.ChooseLayout -> dispatch(Msg.ChooseLayoutFromNewPlanMenu(intent.layout))
 
                 Intent.NewPlanMenu.AcceptChosen -> onEditorScreenCall(
-                    (getState() as State.NewPlanMenu.Idle).chosenLayout!!
+                    (getState() as State.NewPlanMenu.Idle).chosenLayout!!.value
                 )
 
                 Intent.NewPlanMenu.Cancel -> dispatch(Msg.ToMainMenu)
@@ -89,7 +88,9 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
                     scope.launch {
                         val parsed = try {
-                            SaveDataSerializers.parse(intent.path.trim())
+                            withContext(Dispatchers.IO) {
+                                SaveDataParser.parse(intent.path.trim()).map { it.wrapped() }
+                            }
                         } catch (e: Exception) {
                             null
                         }
@@ -109,9 +110,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 Intent.SaveLoaderMenu.AcceptChosen -> {
                     val layout = (getState() as State.SaveLoaderMenu.Idle).chosenLayout!!
 
-                    dispatch(Msg.ToMainMenu)
-
-                    onEditorScreenCall(layout)
+                    onEditorScreenCall(layout.value)
                 }
 
                 Intent.SaveLoaderMenu.Cancel -> dispatch(Msg.ToMainMenu)
@@ -123,14 +122,21 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
     private val reducer = Reducer<State, Msg> { msg ->
         when (msg) {
-            Msg.OpenNewPlanMenu -> State.NewPlanMenu.Idle(
-                availableLayouts = listOf(
-                    editorEngineOf(layoutOf(LayoutType.Shed)),
-                    editorEngineOf(layoutOf(LayoutType.BigShed)),
-                    editorEngineOf(layoutOf(LayoutType.StandardFarm)),
-                ),
-                chosenLayout = null
-            )
+            Msg.OpenNewPlanMenu -> {
+                val availableLayouts = LayoutType.entries.map { layoutType ->
+                    EditorEngineData(
+                        layoutType = layoutType,
+                        layeredEntitiesData = LayeredEntitiesData(),
+                        wallpaper = null,
+                        flooring = null,
+                    )
+                }.map(EditorEngineData::wrapped)
+
+                State.NewPlanMenu.Idle(
+                    availableLayouts = availableLayouts,
+                    chosenLayout = availableLayouts.first()
+                )
+            }
 
             is Msg.ChooseLayoutFromNewPlanMenu -> (this as State.NewPlanMenu.Idle).copy(
                 chosenLayout = msg.layout
@@ -146,7 +152,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
             is Msg.ShowSuccessInSaveLoaderMenu -> State.SaveLoaderMenu.Idle(
                 availableLayouts = msg.layouts,
-                chosenLayout = null
+                chosenLayout = msg.layouts.firstOrNull()
             )
 
             Msg.ShowErrorInSaveLoaderMenu -> State.SaveLoaderMenu.Error

@@ -8,7 +8,6 @@ dependencies {
     implementation(projects.common.entitiesMetadata)
 
     implementation(projects.common.components.root)
-    implementation(projects.common.components.screenSplash)
     implementation(projects.common.components.screenMainMenu)
     implementation(projects.common.components.screenEditor)
     implementation(projects.common.components.screenSettings)
@@ -28,9 +27,6 @@ dependencies {
     }
 
     implementation(compose.materialIconsExtended)
-
-    implementation(libs.decompose)
-    implementation(libs.decompose.extensions.composejb)
 
     implementation(libs.bundles.mvikotlin)
 

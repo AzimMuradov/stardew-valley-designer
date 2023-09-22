@@ -137,7 +137,7 @@ private fun SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMenu) -> Un
 
             if (showFilePicker) {
                 FilePicker(
-                    title = "Choose savedata",
+                    title = wordList.saveImportSelectSaveFileTitle,
                     defaultPathAndFile = pathString.takeIf(String::isNotBlank) ?: savePath ?: homePath
                 ) { path ->
                     showFilePicker = false
@@ -163,7 +163,7 @@ private fun SaveFileLoader(intentConsumer: (MainMenuIntent.SaveLoaderMenu) -> Un
                 )
                 Spacer(Modifier.size(8.dp))
                 Text(
-                    wordList.selectSaveFile,
+                    wordList.saveImportSelectSaveFileButton,
                     style = TextStyle(
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 14.sp

@@ -14,10 +14,28 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.components.screens
+package io.stardewvalleydesigner
+
+import javax.swing.SwingUtilities
 
 
-interface SplashComponent {
+fun <T> runOnUiThread(block: () -> T): T {
+    if (SwingUtilities.isEventDispatchThread()) {
+        return block()
+    }
 
-    val onSplashScreenEnd: () -> Unit
+    var result: T? = null
+    var error: Throwable? = null
+
+    SwingUtilities.invokeAndWait {
+        try {
+            result = block()
+        } catch (e: Throwable) {
+            error = e
+        }
+    }
+
+    error?.also { throw it }
+
+    return result!!
 }

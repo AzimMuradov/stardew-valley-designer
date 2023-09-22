@@ -17,13 +17,13 @@
 package io.stardewvalleydesigner.components.screens.menu
 
 import io.stardewvalleydesigner.LoggerUtils.createLoggerAwareStoreFactory
-import io.stardewvalleydesigner.engine.EditorEngine
+import io.stardewvalleydesigner.engine.EditorEngineData
 import io.stardewvalleydesigner.mainmenu.MainMenuComponent
 import io.stardewvalleydesigner.mainmenu.MainMenuStoreFactory
 
 
 internal class MainMenuComponentImpl(
-    override val onEditorScreenCall: (EditorEngine) -> Unit,
+    override val onEditorScreenCall: (EditorEngineData) -> Unit,
 ) : MainMenuComponent {
 
     override val store = MainMenuStoreFactory(createLoggerAwareStoreFactory()).create(onEditorScreenCall)
