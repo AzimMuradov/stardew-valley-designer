@@ -22,7 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.*
+import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.*
@@ -40,18 +40,19 @@ fun Screen(
     onKeyEvent: (KeyEvent) -> Boolean = { false },
     ui: @Composable () -> Unit,
 ) {
+    val state = rememberWindowState(
+        position = WindowPosition(Alignment.Center),
+        size = initialSize
+    )
     Window(
         onCloseRequest = onCloseRequest,
-        state = rememberWindowState(
-            position = WindowPosition(Alignment.Center),
-            size = initialSize
-        ),
+        state = state,
         title = title,
         icon = painterResource(ICON_RES_PATH),
         resizable = true,
         onKeyEvent = onKeyEvent,
     ) {
-        WithMeasuredWindow(windowWidth = window.width) {
+        WithMeasuredWindow(windowWidth = with(LocalDensity.current) { state.size.width.roundToPx() }) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
