@@ -85,60 +85,65 @@ sealed interface Colors : EntityFlavor {
         override fun default(): ChestColors = Default
     }
 
-    sealed interface FlowerColors : Colors {
+    enum class TulipColors : Colors {
+        Color1,
+        Color2,
+        Color3,
+        Color4,
+        Color5;
 
         override val value: Color get() = TODO("Not yet implemented")
 
-        enum class TulipColors : FlowerColors {
-            Color1,
-            Color2,
-            Color3,
-            Color4,
-            Color5;
+        override fun default(): TulipColors = Color1
+    }
 
-            override fun default(): TulipColors = Color1
-        }
+    enum class SummerSpangleColors : Colors {
+        Color1,
+        Color2,
+        Color3,
+        Color4,
+        Color5,
+        Color6;
 
-        enum class SummerSpangleColors : FlowerColors {
-            Color1,
-            Color2,
-            Color3,
-            Color4,
-            Color5,
-            Color6;
+        override val value: Color get() = TODO("Not yet implemented")
 
-            override fun default(): SummerSpangleColors = Color1
-        }
+        override fun default(): SummerSpangleColors = Color1
+    }
 
-        enum class FairyRoseColors : FlowerColors {
-            Color1,
-            Color2,
-            Color3,
-            Color4,
-            Color5,
-            Color6;
+    enum class FairyRoseColors : Colors {
+        Color1,
+        Color2,
+        Color3,
+        Color4,
+        Color5,
+        Color6;
 
-            override fun default(): FairyRoseColors = Color1
-        }
+        override val value: Color get() = TODO("Not yet implemented")
 
-        enum class BlueJazzColors : FlowerColors {
-            Color1,
-            Color2,
-            Color3,
-            Color4,
-            Color5,
-            Color6;
+        override fun default(): FairyRoseColors = Color1
+    }
 
-            override fun default(): BlueJazzColors = Color1
-        }
+    enum class BlueJazzColors : Colors {
+        Color1,
+        Color2,
+        Color3,
+        Color4,
+        Color5,
+        Color6;
 
-        enum class PoppyColors : FlowerColors {
-            Color1,
-            Color2,
-            Color3;
+        override val value: Color get() = TODO("Not yet implemented")
 
-            override fun default(): PoppyColors = Color1
-        }
+        override fun default(): BlueJazzColors = Color1
+    }
+
+    enum class PoppyColors : Colors {
+        Color1,
+        Color2,
+        Color3;
+
+        override val value: Color get() = TODO("Not yet implemented")
+
+        override fun default(): PoppyColors = Color1
     }
 }
 

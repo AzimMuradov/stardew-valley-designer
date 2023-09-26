@@ -10,6 +10,10 @@ include(":app-desktop")
 
 include(":common:editor-engine")
 
+// Design Format
+
+include(":common:design-format")
+
 // Entities metadata
 
 include(":common:entities-metadata")
