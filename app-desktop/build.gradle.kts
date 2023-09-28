@@ -12,7 +12,7 @@ dependencies {
     implementation(projects.common.components.root)
     implementation(projects.common.components.screenMainMenu)
     implementation(projects.common.components.screenEditor)
-    implementation(projects.common.components.screenSettings)
+    // implementation(projects.common.components.screenSettings)
 
     implementation(projects.common.uiUtils.buttonsGroupUi)
     implementation(projects.common.uiUtils.dropdownMenu)

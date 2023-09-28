@@ -29,7 +29,7 @@ include(":common:components:root")
 include(
     ":common:components:screen-main-menu",
     ":common:components:screen-editor",
-    ":common:components:screen-settings",
+    // ":common:components:screen-settings",
 )
 
 // Compose UI Utils
