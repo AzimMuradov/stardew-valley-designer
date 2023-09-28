@@ -19,12 +19,16 @@ package io.stardewvalleydesigner.mainmenu
 import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
+import io.stardewvalleydesigner.LoggerUtils.logger
+import io.stardewvalleydesigner.designformat.PlanFormatConverter
 import io.stardewvalleydesigner.engine.EditorEngineData
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
+import io.stardewvalleydesigner.engine.layers.layeredData
 import io.stardewvalleydesigner.engine.layout.LayoutType
 import io.stardewvalleydesigner.save.SaveDataParser
 import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing
+import java.io.File
 import io.stardewvalleydesigner.mainmenu.MainMenuIntent as Intent
 import io.stardewvalleydesigner.mainmenu.MainMenuLabel as Label
 import io.stardewvalleydesigner.mainmenu.MainMenuState as State
@@ -52,6 +56,12 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
         data object ToMainMenu : Msg
         data object OpenNewPlanMenu : Msg
         data class ChooseLayoutFromNewPlanMenu(val layout: Wrapper<EditorEngineData>) : Msg
+
+        data object OpenOpenPlanMenu : Msg
+        data object ShowLoadingInOpenPlanMenu : Msg
+        data class ShowSuccessInOpenPlanMenu(val layout: Wrapper<EditorEngineData>) : Msg
+        data object ShowErrorInOpenPlanMenu : Msg
+
         data object OpenSaveLoaderMenu : Msg
         data object ShowLoadingInSaveLoaderMenu : Msg
         data class ShowSuccessInSaveLoaderMenu(val layouts: List<Wrapper<EditorEngineData>>) : Msg
@@ -81,6 +91,50 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 Intent.NewPlanMenu.Cancel -> dispatch(Msg.ToMainMenu)
 
 
+                Intent.OpenPlanMenu.OpenMenu -> dispatch(Msg.OpenOpenPlanMenu)
+
+                is Intent.OpenPlanMenu.LoadPlan -> {
+                    dispatch(Msg.ShowLoadingInOpenPlanMenu)
+
+                    scope.launch {
+                        val parsed = try {
+                            withContext(Dispatchers.IO) {
+                                val (_, entities, wallpaper, flooring, layout) = PlanFormatConverter.parse(
+                                    File(intent.path.trim()).readText()
+                                )
+                                return@withContext EditorEngineData(
+                                    layoutType = layout,
+                                    layeredEntitiesData = entities.layeredData(),
+                                    wallpaper = wallpaper,
+                                    flooring = flooring
+                                ).wrapped()
+                            }
+                        } catch (e: Exception) {
+                            logger.warn { e.stackTraceToString() }
+                            null
+                        }
+
+                        dispatch(
+                            if (parsed != null) {
+                                Msg.ShowSuccessInOpenPlanMenu(parsed)
+                            } else {
+                                Msg.ShowErrorInOpenPlanMenu
+                            }
+                        )
+                    }
+                }
+
+                Intent.OpenPlanMenu.Accept -> {
+                    val layout = (getState() as State.OpenPlanMenu.Loaded).layout.value
+
+                    dispatch(Msg.ToMainMenu)
+
+                    onEditorScreenCall(layout)
+                }
+
+                Intent.OpenPlanMenu.Cancel -> dispatch(Msg.ToMainMenu)
+
+
                 Intent.SaveLoaderMenu.OpenMenu -> dispatch(Msg.OpenSaveLoaderMenu)
 
                 is Intent.SaveLoaderMenu.LoadSave -> {
@@ -93,7 +147,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                             }
                         } catch (e: Exception) {
                             null
-                        }
+                        }?.takeIf { it.isNotEmpty() }
 
                         dispatch(
                             if (parsed != null) {
@@ -108,7 +162,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 is Intent.SaveLoaderMenu.ChooseLayout -> dispatch(Msg.ChooseLayoutFromSaveLoaderMenu(intent.layout))
 
                 Intent.SaveLoaderMenu.AcceptChosen -> {
-                    val layout = (getState() as State.SaveLoaderMenu.Idle).chosenLayout!!
+                    val layout = (getState() as State.SaveLoaderMenu.Loaded).chosenLayout!!
 
                     onEditorScreenCall(layout.value)
                 }
@@ -143,21 +197,29 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
             )
 
 
-            Msg.OpenSaveLoaderMenu -> State.SaveLoaderMenu.Idle(
-                availableLayouts = null,
-                chosenLayout = null
+            Msg.OpenOpenPlanMenu -> State.OpenPlanMenu.Empty
+
+            Msg.ShowLoadingInOpenPlanMenu -> State.OpenPlanMenu.Loading
+
+            is Msg.ShowSuccessInOpenPlanMenu -> State.OpenPlanMenu.Loaded(
+                layout = msg.layout
             )
+
+            Msg.ShowErrorInOpenPlanMenu -> State.OpenPlanMenu.Error
+
+
+            Msg.OpenSaveLoaderMenu -> State.SaveLoaderMenu.Empty
 
             Msg.ShowLoadingInSaveLoaderMenu -> State.SaveLoaderMenu.Loading
 
-            is Msg.ShowSuccessInSaveLoaderMenu -> State.SaveLoaderMenu.Idle(
+            is Msg.ShowSuccessInSaveLoaderMenu -> State.SaveLoaderMenu.Loaded(
                 availableLayouts = msg.layouts,
-                chosenLayout = msg.layouts.firstOrNull()
+                chosenLayout = msg.layouts.first()
             )
 
             Msg.ShowErrorInSaveLoaderMenu -> State.SaveLoaderMenu.Error
 
-            is Msg.ChooseLayoutFromSaveLoaderMenu -> (this as State.SaveLoaderMenu.Idle).copy(
+            is Msg.ChooseLayoutFromSaveLoaderMenu -> (this as State.SaveLoaderMenu.Loaded).copy(
                 chosenLayout = msg.layout
             )
 

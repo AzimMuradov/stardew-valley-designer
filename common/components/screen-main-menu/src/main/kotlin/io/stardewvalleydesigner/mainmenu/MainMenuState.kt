@@ -27,18 +27,31 @@ sealed interface MainMenuState {
 
         data class Idle(
             val availableLayouts: List<Wrapper<EditorEngineData>>,
-            val chosenLayout: Wrapper<EditorEngineData>?,
+            val chosenLayout: Wrapper<EditorEngineData>,
         ) : NewPlanMenu
+    }
+
+    sealed interface OpenPlanMenu : MainMenuState {
+
+        data object Empty : OpenPlanMenu
+
+        data object Loading : OpenPlanMenu
+
+        data class Loaded(val layout: Wrapper<EditorEngineData>) : OpenPlanMenu
+
+        data object Error : OpenPlanMenu
     }
 
     sealed interface SaveLoaderMenu : MainMenuState {
 
-        data class Idle(
-            val availableLayouts: List<Wrapper<EditorEngineData>>?,
-            val chosenLayout: Wrapper<EditorEngineData>?,
-        ) : SaveLoaderMenu
+        data object Empty : SaveLoaderMenu
 
         data object Loading : SaveLoaderMenu
+
+        data class Loaded(
+            val availableLayouts: List<Wrapper<EditorEngineData>>,
+            val chosenLayout: Wrapper<EditorEngineData>,
+        ) : SaveLoaderMenu
 
         data object Error : SaveLoaderMenu
     }

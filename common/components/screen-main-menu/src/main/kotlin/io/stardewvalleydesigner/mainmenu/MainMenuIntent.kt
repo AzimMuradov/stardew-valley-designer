@@ -32,6 +32,17 @@ sealed interface MainMenuIntent {
         data object Cancel : NewPlanMenu
     }
 
+    sealed interface OpenPlanMenu : MainMenuIntent {
+
+        data object OpenMenu : OpenPlanMenu
+
+        data class LoadPlan(val path: String) : OpenPlanMenu
+
+        data object Accept : OpenPlanMenu
+
+        data object Cancel : OpenPlanMenu
+    }
+
     sealed interface SaveLoaderMenu : MainMenuIntent {
 
         data object OpenMenu : SaveLoaderMenu

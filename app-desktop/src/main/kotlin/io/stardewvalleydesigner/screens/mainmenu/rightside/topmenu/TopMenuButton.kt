@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.screens.mainmenu
+package io.stardewvalleydesigner.screens.mainmenu.rightside.topmenu
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -28,13 +28,11 @@ import androidx.compose.ui.unit.dp
 fun RowScope.TopMenuButton(
     text: String,
     icon: ImageVector,
-    onClick: () -> Unit = {},
-    enabled: Boolean = true,
+    onClick: () -> Unit,
 ) {
     Button(
         onClick = onClick,
         modifier = Modifier.fillMaxHeight().weight(1f),
-        enabled = enabled
     ) {
         Icon(
             imageVector = icon,

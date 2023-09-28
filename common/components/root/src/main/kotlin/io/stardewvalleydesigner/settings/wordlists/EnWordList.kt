@@ -98,6 +98,18 @@ data object EnWordList : WordList {
 
     override val buttonOpenPlanText: String = "Open plan"
 
+    override val openPlanWindowTitle: String = "Open plan design"
+
+    override val openPlanPlaceholder: String = "Load your plan design"
+
+    override val openPlanPlaceholderError: String = "Something went wrong, try again or choose another file"
+
+    override val openPlanSelectPlanButton: String = "SELECT PLAN DESIGN"
+
+    override val openPlanSelectPlanTitle: String = "Select plan design"
+
+    override val openPlanSelectPlanPlaceholder: String = "path to your plan design"
+
 
     override val buttonSaveImportText: String = "Import from save"
 
@@ -111,13 +123,13 @@ data object EnWordList : WordList {
 
     override val saveImportSelectSaveFileTitle: String = "Select save file"
 
-    override val saveImportTextFieldLabel: String = "path to your save file"
-
-
-    override val buttonSearchForAPlanText: String = "Search for a plan"
+    override val saveImportSelectSaveFilePlaceholder: String = "path to your save file"
 
 
     override val chooseLayout: String = "CHOOSE LAYOUT"
+
+
+    // TODO : override val buttonSearchForAPlanText: String = "Search for a plan"
 
 
     // Editor Screen
