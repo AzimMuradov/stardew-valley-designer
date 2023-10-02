@@ -32,7 +32,7 @@ interface RootComponent {
     )
 
 
-    fun createEditorComponent(data: EditorEngineData)
+    fun createEditorComponent(data: EditorEngineData, planPath: String?)
 
     fun destroyEditorComponent(component: EditorComponent)
 }

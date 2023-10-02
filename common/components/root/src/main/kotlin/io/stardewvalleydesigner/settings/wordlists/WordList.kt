@@ -151,11 +151,25 @@ sealed interface WordList {
      */
     fun entity(e: Entity<*>): String
 
+
     val buttonSavePlanAsImageTooltip: String
 
     val savePlanAsImageTitle: String
 
     fun savePlanAsImageNotificationMessage(path: String): String
+
+
+    val buttonSavePlanTooltip: String
+
+    val savePlanNotificationMessage: String
+
+
+    val buttonSavePlanAsTooltip: String
+
+    val savePlanAsTitle: String
+
+    fun savePlanAsNotificationMessage(path: String): String
+
 
     /**
      * Get tool name by its type.

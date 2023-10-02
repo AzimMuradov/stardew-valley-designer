@@ -36,6 +36,8 @@ dependencies {
 
     implementation(libs.directories)
 
+    implementation("io.github.irgaly.kfswatch:kfswatch:1.0.0")
+
 
     // Meta-code
 

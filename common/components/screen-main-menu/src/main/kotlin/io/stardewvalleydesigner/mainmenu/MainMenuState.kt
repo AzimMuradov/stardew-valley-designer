@@ -37,7 +37,7 @@ sealed interface MainMenuState {
 
         data object Loading : OpenPlanMenu
 
-        data class Loaded(val layout: Wrapper<EditorEngineData>) : OpenPlanMenu
+        data class Loaded(val layout: Wrapper<EditorEngineData>, val planPath: String?) : OpenPlanMenu
 
         data object Error : OpenPlanMenu
     }

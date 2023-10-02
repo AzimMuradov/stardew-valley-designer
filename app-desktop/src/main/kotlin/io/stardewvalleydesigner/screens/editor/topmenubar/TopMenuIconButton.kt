@@ -41,10 +41,7 @@ fun TopMenuIconButton(
     enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
-    Box(
-        Modifier.aspectRatio(1f).fillMaxHeight(),
-        Alignment.Center
-    ) {
+    Box(contentAlignment = Alignment.Center) {
         val contentAlpha = if (enabled) ContentAlpha.high else ContentAlpha.disabled
         Icon(
             imageVector = icon,

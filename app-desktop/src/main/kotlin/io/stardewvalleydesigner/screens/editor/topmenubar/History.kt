@@ -21,7 +21,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.ArrowForward
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.modules.history.HistoryState
 
@@ -31,12 +33,16 @@ fun History(
     history: HistoryState,
     intentConsumer: (EditorIntent) -> Unit,
 ) {
-    Row(modifier = Modifier.wrapContentWidth().fillMaxHeight()) {
+    Row(
+        modifier = Modifier.wrapContentWidth().fillMaxHeight(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         TopMenuIconButton(
             icon = Icons.Rounded.ArrowBack,
             enabled = history.canGoBack,
             onClick = { intentConsumer(EditorIntent.History.GoBack) }
         )
+        Spacer(Modifier.size(4.dp))
         TopMenuIconButton(
             icon = Icons.Rounded.ArrowForward,
             enabled = history.canGoForward,

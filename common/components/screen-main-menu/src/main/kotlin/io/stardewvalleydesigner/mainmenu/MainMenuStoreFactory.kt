@@ -40,7 +40,7 @@ internal typealias MainMenuStore = Store<Intent, State, Label>
 class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
     fun create(
-        onEditorScreenCall: (EditorEngineData) -> Unit,
+        onEditorScreenCall: (EditorEngineData, planPath: String?) -> Unit,
     ): MainMenuStore = object : MainMenuStore by storeFactory.create(
         name = "MainMenuStore",
         initialState = State.default(),
@@ -59,7 +59,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
         data object OpenOpenPlanMenu : Msg
         data object ShowLoadingInOpenPlanMenu : Msg
-        data class ShowSuccessInOpenPlanMenu(val layout: Wrapper<EditorEngineData>) : Msg
+        data class ShowSuccessInOpenPlanMenu(val layout: Wrapper<EditorEngineData>, val planPath: String?) : Msg
         data object ShowErrorInOpenPlanMenu : Msg
 
         data object OpenSaveLoaderMenu : Msg
@@ -75,7 +75,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
     }
 
     private class ExecutorImpl(
-        private val onEditorScreenCall: (EditorEngineData) -> Unit,
+        private val onEditorScreenCall: (EditorEngineData, planPath: String?) -> Unit,
     ) : CoroutineExecutor<Intent, Action, State, Msg, Label>(mainContext = Dispatchers.Swing) {
 
         override fun executeIntent(intent: Intent, getState: () -> State) {
@@ -85,7 +85,8 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 is Intent.NewPlanMenu.ChooseLayout -> dispatch(Msg.ChooseLayoutFromNewPlanMenu(intent.layout))
 
                 Intent.NewPlanMenu.AcceptChosen -> onEditorScreenCall(
-                    (getState() as State.NewPlanMenu.Idle).chosenLayout!!.value
+                    (getState() as State.NewPlanMenu.Idle).chosenLayout.value,
+                    null,
                 )
 
                 Intent.NewPlanMenu.Cancel -> dispatch(Msg.ToMainMenu)
@@ -97,10 +98,12 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                     dispatch(Msg.ShowLoadingInOpenPlanMenu)
 
                     scope.launch {
+                        val path = intent.path.trim()
+
                         val parsed = try {
                             withContext(Dispatchers.IO) {
                                 val (_, entities, wallpaper, flooring, layout) = PlanFormatConverter.parse(
-                                    File(intent.path.trim()).readText()
+                                    File(path).readText()
                                 )
                                 return@withContext EditorEngineData(
                                     layoutType = layout,
@@ -116,7 +119,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
                         dispatch(
                             if (parsed != null) {
-                                Msg.ShowSuccessInOpenPlanMenu(parsed)
+                                Msg.ShowSuccessInOpenPlanMenu(parsed, path)
                             } else {
                                 Msg.ShowErrorInOpenPlanMenu
                             }
@@ -125,11 +128,11 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 }
 
                 Intent.OpenPlanMenu.Accept -> {
-                    val layout = (getState() as State.OpenPlanMenu.Loaded).layout.value
+                    val (layout, planPath) = getState() as State.OpenPlanMenu.Loaded
 
                     dispatch(Msg.ToMainMenu)
 
-                    onEditorScreenCall(layout)
+                    onEditorScreenCall(layout.value, planPath)
                 }
 
                 Intent.OpenPlanMenu.Cancel -> dispatch(Msg.ToMainMenu)
@@ -162,9 +165,9 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 is Intent.SaveLoaderMenu.ChooseLayout -> dispatch(Msg.ChooseLayoutFromSaveLoaderMenu(intent.layout))
 
                 Intent.SaveLoaderMenu.AcceptChosen -> {
-                    val layout = (getState() as State.SaveLoaderMenu.Loaded).chosenLayout!!
+                    val layout = (getState() as State.SaveLoaderMenu.Loaded).chosenLayout
 
-                    onEditorScreenCall(layout.value)
+                    onEditorScreenCall(layout.value, null)
                 }
 
                 Intent.SaveLoaderMenu.Cancel -> dispatch(Msg.ToMainMenu)
@@ -202,7 +205,8 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
             Msg.ShowLoadingInOpenPlanMenu -> State.OpenPlanMenu.Loading
 
             is Msg.ShowSuccessInOpenPlanMenu -> State.OpenPlanMenu.Loaded(
-                layout = msg.layout
+                layout = msg.layout,
+                planPath = msg.planPath
             )
 
             Msg.ShowErrorInOpenPlanMenu -> State.OpenPlanMenu.Error
