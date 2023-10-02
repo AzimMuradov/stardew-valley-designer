@@ -14,17 +14,10 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.components.screens.menu
-
-import io.stardewvalleydesigner.LoggerUtils.createLoggerAwareStoreFactory
-import io.stardewvalleydesigner.engine.EditorEngineData
-import io.stardewvalleydesigner.mainmenu.MainMenuComponent
-import io.stardewvalleydesigner.mainmenu.MainMenuStoreFactory
+package io.stardewvalleydesigner.designformat.models
 
 
-internal class MainMenuComponentImpl(
-    override val onEditorScreenCall: (EditorEngineData, planPath: String?) -> Unit,
-) : MainMenuComponent {
+enum class PlanVersion {
 
-    override val store = MainMenuStoreFactory(createLoggerAwareStoreFactory()).create(onEditorScreenCall)
+    VERSION_0_9_0,
 }

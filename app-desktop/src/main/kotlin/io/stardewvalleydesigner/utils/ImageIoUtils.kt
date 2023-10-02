@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.components.screens.menu
+package io.stardewvalleydesigner.utils
 
-import io.stardewvalleydesigner.LoggerUtils.createLoggerAwareStoreFactory
-import io.stardewvalleydesigner.engine.EditorEngineData
-import io.stardewvalleydesigner.mainmenu.MainMenuComponent
-import io.stardewvalleydesigner.mainmenu.MainMenuStoreFactory
+import java.awt.image.RenderedImage
+import java.io.File
+import javax.imageio.ImageIO
 
 
-internal class MainMenuComponentImpl(
-    override val onEditorScreenCall: (EditorEngineData, planPath: String?) -> Unit,
-) : MainMenuComponent {
+object ImageIoUtils {
 
-    override val store = MainMenuStoreFactory(createLoggerAwareStoreFactory()).create(onEditorScreenCall)
+    const val FORMAT = "png"
+
+    fun write(image: RenderedImage, output: String) = ImageIO.write(image, FORMAT, File(output))
 }

@@ -103,6 +103,18 @@ sealed interface WordList {
 
     val buttonOpenPlanText: String
 
+    val openPlanWindowTitle: String
+
+    val openPlanPlaceholder: String
+
+    val openPlanPlaceholderError: String
+
+    val openPlanSelectPlanButton: String
+
+    val openPlanSelectPlanTitle: String
+
+    val openPlanSelectPlanPlaceholder: String
+
 
     val buttonSaveImportText: String
 
@@ -116,13 +128,13 @@ sealed interface WordList {
 
     val saveImportSelectSaveFileTitle: String
 
-    val saveImportTextFieldLabel: String
-
-
-    val buttonSearchForAPlanText: String
+    val saveImportSelectSaveFilePlaceholder: String
 
 
     val chooseLayout: String
+
+
+    // TODO : val buttonSearchForAPlanText: String
 
 
     // Editor Screen
@@ -139,11 +151,25 @@ sealed interface WordList {
      */
     fun entity(e: Entity<*>): String
 
+
     val buttonSavePlanAsImageTooltip: String
 
     val savePlanAsImageTitle: String
 
     fun savePlanAsImageNotificationMessage(path: String): String
+
+
+    val buttonSavePlanTooltip: String
+
+    val savePlanNotificationMessage: String
+
+
+    val buttonSavePlanAsTooltip: String
+
+    val savePlanAsTitle: String
+
+    fun savePlanAsNotificationMessage(path: String): String
+
 
     /**
      * Get tool name by its type.

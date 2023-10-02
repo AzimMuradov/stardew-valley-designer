@@ -7,10 +7,12 @@ dependencies {
     implementation(projects.common.editorEngine)
     implementation(projects.common.entitiesMetadata)
 
+    implementation(projects.common.designFormat)
+
     implementation(projects.common.components.root)
     implementation(projects.common.components.screenMainMenu)
     implementation(projects.common.components.screenEditor)
-    implementation(projects.common.components.screenSettings)
+    // implementation(projects.common.components.screenSettings)
 
     implementation(projects.common.uiUtils.buttonsGroupUi)
     implementation(projects.common.uiUtils.dropdownMenu)
@@ -33,6 +35,8 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
 
     implementation(libs.directories)
+
+    implementation("io.github.irgaly.kfswatch:kfswatch:1.0.0")
 
 
     // Meta-code

@@ -7,7 +7,7 @@ dependencies {
 
     implementation(projects.common.components.screenMainMenu)
     implementation(projects.common.components.screenEditor)
-    implementation(projects.common.components.screenSettings)
+    // implementation(projects.common.components.screenSettings)
 
     implementation(libs.kotlinx.coroutines.core)
 

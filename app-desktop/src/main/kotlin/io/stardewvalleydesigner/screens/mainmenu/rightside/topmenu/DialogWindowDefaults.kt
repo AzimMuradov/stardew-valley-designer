@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.components.screens.menu
+package io.stardewvalleydesigner.screens.mainmenu.rightside.topmenu
 
-import io.stardewvalleydesigner.LoggerUtils.createLoggerAwareStoreFactory
-import io.stardewvalleydesigner.engine.EditorEngineData
-import io.stardewvalleydesigner.mainmenu.MainMenuComponent
-import io.stardewvalleydesigner.mainmenu.MainMenuStoreFactory
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 
 
-internal class MainMenuComponentImpl(
-    override val onEditorScreenCall: (EditorEngineData, planPath: String?) -> Unit,
-) : MainMenuComponent {
+object DialogWindowDefaults {
 
-    override val store = MainMenuStoreFactory(createLoggerAwareStoreFactory()).create(onEditorScreenCall)
+    val size = DpSize(width = 800.dp, height = 600.dp)
 }

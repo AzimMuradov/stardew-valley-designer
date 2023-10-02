@@ -66,7 +66,7 @@ private fun Root(component: RootComponent, exitApplication: () -> Unit) {
             val layoutType = editorComponent.store.state.map.layout.type
             Screen(
                 title = wordList.screenTitle(wordList.layout(layoutType)),
-                initialSize = DpSize(width = 1280.dp, height = 720.dp),
+                initialSize = DpSize(width = 1366.dp, height = 768.dp),
                 onCloseRequest = { component.destroyEditorComponent(editorComponent) },
                 onKeyEvent = {
                     when {

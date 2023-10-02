@@ -98,6 +98,18 @@ data object EnWordList : WordList {
 
     override val buttonOpenPlanText: String = "Open plan"
 
+    override val openPlanWindowTitle: String = "Open plan design"
+
+    override val openPlanPlaceholder: String = "Load your plan design"
+
+    override val openPlanPlaceholderError: String = "Something went wrong, try again or choose another file"
+
+    override val openPlanSelectPlanButton: String = "SELECT PLAN DESIGN"
+
+    override val openPlanSelectPlanTitle: String = "Select plan design"
+
+    override val openPlanSelectPlanPlaceholder: String = "path to your plan design"
+
 
     override val buttonSaveImportText: String = "Import from save"
 
@@ -111,13 +123,13 @@ data object EnWordList : WordList {
 
     override val saveImportSelectSaveFileTitle: String = "Select save file"
 
-    override val saveImportTextFieldLabel: String = "path to your save file"
-
-
-    override val buttonSearchForAPlanText: String = "Search for a plan"
+    override val saveImportSelectSaveFilePlaceholder: String = "path to your save file"
 
 
     override val chooseLayout: String = "CHOOSE LAYOUT"
+
+
+    // TODO : override val buttonSearchForAPlanText: String = "Search for a plan"
 
 
     // Editor Screen
@@ -720,11 +732,25 @@ data object EnWordList : WordList {
         Crop.SimpleCrop.Pineapple -> "Pineapple"
     }.also { entities[e] = it }
 
+
     override val buttonSavePlanAsImageTooltip: String = "Save plan as an image"
 
     override val savePlanAsImageTitle: String = "Provide path for the plan save"
 
     override fun savePlanAsImageNotificationMessage(path: String): String = "Saved to \"$path\""
+
+
+    override val buttonSavePlanTooltip: String = "Save plan"
+
+    override val savePlanNotificationMessage: String = "Saved"
+
+
+    override val buttonSavePlanAsTooltip: String = "Save plan as..."
+
+    override val savePlanAsTitle: String = "Provide path for the plan save"
+
+    override fun savePlanAsNotificationMessage(path: String): String = "Saved to \"$path\""
+
 
     override fun tool(type: ToolType?): String = when (type) {
         null -> "No tool selected"

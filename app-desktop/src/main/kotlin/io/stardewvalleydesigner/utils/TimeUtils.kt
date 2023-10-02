@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.components.screens.menu
+package io.stardewvalleydesigner.utils
 
-import io.stardewvalleydesigner.LoggerUtils.createLoggerAwareStoreFactory
-import io.stardewvalleydesigner.engine.EditorEngineData
-import io.stardewvalleydesigner.mainmenu.MainMenuComponent
-import io.stardewvalleydesigner.mainmenu.MainMenuStoreFactory
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 
-internal class MainMenuComponentImpl(
-    override val onEditorScreenCall: (EditorEngineData, planPath: String?) -> Unit,
-) : MainMenuComponent {
-
-    override val store = MainMenuStoreFactory(createLoggerAwareStoreFactory()).create(onEditorScreenCall)
-}
+fun nowFormatted(): String = DateTimeFormatter
+    .ofPattern("yyyy-MM-dd-HH-mm-ss")
+    .withZone(ZoneId.systemDefault())
+    .format(Instant.now())

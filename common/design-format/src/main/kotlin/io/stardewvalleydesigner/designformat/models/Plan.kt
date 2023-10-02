@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.components.screens.menu
+package io.stardewvalleydesigner.designformat.models
 
-import io.stardewvalleydesigner.LoggerUtils.createLoggerAwareStoreFactory
-import io.stardewvalleydesigner.engine.EditorEngineData
-import io.stardewvalleydesigner.mainmenu.MainMenuComponent
-import io.stardewvalleydesigner.mainmenu.MainMenuStoreFactory
+import io.stardewvalleydesigner.engine.layout.LayoutType
+import kotlinx.serialization.Serializable
 
 
-internal class MainMenuComponentImpl(
-    override val onEditorScreenCall: (EditorEngineData, planPath: String?) -> Unit,
-) : MainMenuComponent {
-
-    override val store = MainMenuStoreFactory(createLoggerAwareStoreFactory()).create(onEditorScreenCall)
-}
+@Serializable
+data class Plan(
+    val version: PlanVersion = PlanVersion.VERSION_0_9_0,
+    val entities: List<PlacedEntityPacked>,
+    val wallpaper: WallpaperPacked? = null,
+    val flooring: FlooringPacked? = null,
+    val layout: LayoutType,
+)

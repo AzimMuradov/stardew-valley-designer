@@ -22,6 +22,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import io.stardewvalleydesigner.editor.EditorComponent
@@ -38,7 +39,7 @@ import io.stardewvalleydesigner.utils.WindowSize
 fun EditorScreen(component: EditorComponent) {
     val store = component.store
     val state by store.states.collectAsState(component.store.state)
-    val (history, map, toolkit, palette, /* flavors, */ visLayers, /* clipboard, */ options) = state
+    val (history, map, toolkit, palette, /* flavors, */ visLayers, /* clipboard, */ options, planPath) = state
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -51,7 +52,8 @@ fun EditorScreen(component: EditorComponent) {
             onEntitySelection = { component.store.accept(EditorIntent.Palette.AddToInUse(it)) },
             options = options,
             snackbarHostState = snackbarHostState,
-            intentConsumer = store::accept
+            intentConsumer = store::accept,
+            planPath = planPath,
         )
 
         val menuWidth by animateDpAsState(
@@ -94,8 +96,18 @@ fun EditorScreen(component: EditorComponent) {
 
         SnackbarHost(snackbarHostState) { data ->
             Snackbar(
-                snackbarData = data,
-                modifier = Modifier.fillMaxWidth(0.4f)
+                modifier = when (data.message.length) {
+                    in 0..<10 -> Modifier.fillMaxWidth(0.2f)
+                    in 10..<30 -> Modifier.fillMaxWidth(0.4f)
+                    else -> Modifier.fillMaxWidth(0.6f)
+                }.padding(12.dp),
+                content = {
+                    Text(
+                        text = data.message,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                },
             )
         }
     }

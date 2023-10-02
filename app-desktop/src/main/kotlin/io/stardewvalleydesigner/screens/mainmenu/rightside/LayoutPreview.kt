@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.screens.mainmenu
+package io.stardewvalleydesigner.screens.mainmenu.rightside
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background

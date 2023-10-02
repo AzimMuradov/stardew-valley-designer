@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
@@ -45,6 +46,7 @@ fun TopMenu(
     options: OptionsState,
     snackbarHostState: SnackbarHostState,
     intentConsumer: (EditorIntent) -> Unit,
+    planPath: String?
 ) {
     Row(
         modifier = Modifier
@@ -86,10 +88,10 @@ fun TopMenu(
             onEntitySelection = onEntitySelection,
         )
 
-        // TODO : Entity Search
-
-        Row {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             SavePlanAsImageButton(map, visibleLayers, snackbarHostState)
+            Spacer(Modifier.size(4.dp))
+            SavePlanButton(map, snackbarHostState, planPath)
             Spacer(Modifier.size(8.dp))
             OptionsMenu(
                 options = options,

@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.screens.mainmenu
+package io.stardewvalleydesigner.screens.mainmenu.rightside.topmenu
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogWindow
-import androidx.compose.ui.window.rememberDialogState
 import io.stardewvalleydesigner.mainmenu.MainMenuIntent
 import io.stardewvalleydesigner.mainmenu.MainMenuState
 import io.stardewvalleydesigner.utils.GlobalSettings
@@ -37,29 +32,34 @@ fun RowScope.NewPlanMenu(
 ) {
     val wordList = GlobalSettings.strings
 
-    TopMenuButton(
-        text = wordList.buttonNewPlanText,
-        icon = Icons.Filled.Add,
-        onClick = { intentConsumer(MainMenuIntent.NewPlanMenu.OpenMenu) }
-    )
-
-    DialogWindow(
+    DialogWindowMenu(
         onCloseRequest = { intentConsumer(MainMenuIntent.NewPlanMenu.Cancel) },
-        state = rememberDialogState(
-            size = DpSize(width = 800.dp, height = 600.dp)
-        ),
         visible = state is MainMenuState.NewPlanMenu.Idle,
         title = wordList.newPlanWindowTitle,
-        resizable = false
-    ) {
-        LayoutChoosingMenu(
-            modifier = Modifier.fillMaxSize().padding(12.dp),
-            layouts = (state as? MainMenuState.NewPlanMenu.Idle)?.availableLayouts,
-            placeholder = "",
-            chosenLayout = (state as? MainMenuState.NewPlanMenu.Idle)?.chosenLayout,
-            okText = wordList.chooseLayout,
-            onLayoutChosen = { intentConsumer(MainMenuIntent.NewPlanMenu.ChooseLayout(it)) },
-            onOk = { intentConsumer(MainMenuIntent.NewPlanMenu.AcceptChosen) },
-        )
-    }
+        topMenuButton = {
+            TopMenuButton(
+                text = wordList.buttonNewPlanText,
+                icon = Icons.Filled.Add,
+                onClick = { intentConsumer(MainMenuIntent.NewPlanMenu.OpenMenu) }
+            )
+        },
+        filePickerBar = null,
+        mainPart = {
+            if (state is MainMenuState.NewPlanMenu.Idle) {
+                LayoutsGrid(
+                    layouts = state.availableLayouts,
+                    chosenLayout = state.chosenLayout,
+                    onChoose = { intentConsumer(MainMenuIntent.NewPlanMenu.ChooseLayout(it)) }
+                )
+            }
+        },
+        acceptLayoutBar = {
+            AcceptLayoutBar(
+                textFieldText = "",
+                buttonText = wordList.chooseLayout,
+                placeholderText = "",
+                onClick = { intentConsumer(MainMenuIntent.NewPlanMenu.AcceptChosen) },
+            )
+        },
+    )
 }

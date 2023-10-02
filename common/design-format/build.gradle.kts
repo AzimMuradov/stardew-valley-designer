@@ -1,16 +1,18 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 dependencies {
     implementation(projects.common.editorEngine)
     implementation(projects.common.entitiesMetadata)
-    implementation(projects.common.designFormat)
-    implementation(projects.common.svSave)
 
-    implementation(libs.bundles.mvikotlin)
+    implementation(libs.kotlinx.serialization.json)
 
-    implementation(libs.kotlinx.coroutines.core)
+
+    // Test
+
+    // testImplementation("io.kotest:kotest-runner-junit5:5.7.2")
 
 
     // Meta-code
@@ -18,3 +20,7 @@ dependencies {
     implementation(projects.common.logger)
     implementation(libs.kotlinlogging.jvm)
 }
+
+// tasks.withType<Test>().configureEach {
+//     useJUnitPlatform()
+// }

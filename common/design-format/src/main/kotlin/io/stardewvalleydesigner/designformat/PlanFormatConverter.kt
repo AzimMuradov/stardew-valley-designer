@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.components.screens.menu
+package io.stardewvalleydesigner.designformat
 
-import io.stardewvalleydesigner.LoggerUtils.createLoggerAwareStoreFactory
-import io.stardewvalleydesigner.engine.EditorEngineData
-import io.stardewvalleydesigner.mainmenu.MainMenuComponent
-import io.stardewvalleydesigner.mainmenu.MainMenuStoreFactory
+import io.stardewvalleydesigner.designformat.models.Plan
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 
-internal class MainMenuComponentImpl(
-    override val onEditorScreenCall: (EditorEngineData, planPath: String?) -> Unit,
-) : MainMenuComponent {
+object PlanFormatConverter {
 
-    override val store = MainMenuStoreFactory(createLoggerAwareStoreFactory()).create(onEditorScreenCall)
+    fun parse(text: String): Plan = json.decodeFromString(text)
+
+    fun stringify(plan: Plan): String = json.encodeToString(plan)
+
+
+    private val json = Json
 }

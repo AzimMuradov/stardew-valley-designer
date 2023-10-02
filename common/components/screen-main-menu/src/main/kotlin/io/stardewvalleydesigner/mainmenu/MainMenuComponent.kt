@@ -23,5 +23,5 @@ interface MainMenuComponent {
 
     val store: MainMenuStore
 
-    val onEditorScreenCall: (EditorEngineData) -> Unit
+    val onEditorScreenCall: (EditorEngineData, planPath: String?) -> Unit
 }

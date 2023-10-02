@@ -38,13 +38,8 @@ import io.stardewvalleydesigner.utils.DrawerUtils.placedEntityComparator
 import io.stardewvalleydesigner.utils.DrawerUtils.tint
 import io.stardewvalleydesigner.utils.filedialogs.FileSaver
 import kotlinx.coroutines.launch
-import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import javax.imageio.ImageIO
 import java.io.File.separator as sep
 
 
@@ -61,7 +56,7 @@ fun SavePlanAsImageButton(
 
     var showFileSaver by remember { mutableStateOf(false) }
 
-    Box(modifier = Modifier.aspectRatio(1f).fillMaxHeight()) {
+    Box(modifier = Modifier) {
         TooltipArea(wordList.buttonSavePlanAsImageTooltip) {
             TopMenuIconButton(
                 icon = Icons.Rounded.Image,
@@ -69,13 +64,8 @@ fun SavePlanAsImageButton(
                     val defaultDir = "${UserDirectories.get().pictureDir}${sep}Stardew Valley Designer${sep}"
                     Files.createDirectories(Path.of(defaultDir))
                     pathname = run {
-                        val now = Instant.now()
-                        val formatted = DateTimeFormatter
-                            .ofPattern("yyyy-MM-dd-HH-mm-ss")
-                            .withZone(ZoneId.systemDefault())
-                            .format(now)
-                        val filename = "design-$formatted.png"
-                        return@run "$defaultDir$sep$filename"
+                        val filename = "design-${nowFormatted()}.${ImageIoUtils.FORMAT}"
+                        "$defaultDir$sep$filename"
                     }
                     showFileSaver = true
                 }
@@ -89,7 +79,7 @@ fun SavePlanAsImageButton(
         FileSaver(
             title = wordList.savePlanAsImageTitle,
             defaultPathAndFile = pathname,
-            extensions = listOf("png"),
+            extensions = listOf(ImageIoUtils.FORMAT),
         ) { path ->
             showFileSaver = false
             path?.let {
@@ -104,17 +94,12 @@ fun SavePlanAsImageButton(
     }
 }
 
-
-private fun savePlanAsImage(pathname: String, map: MapState, visibleLayers: Set<LayerType<*>>): String {
+private fun savePlanAsImage(pathname: String, map: MapState, visibleLayers: Set<LayerType<*>>) {
     Files.createDirectories(Path.of(pathname).parent)
-
-    ImageIO.write(
-        render(map, visibleLayers).toAwtImage(),
-        "png",
-        File(pathname)
+    ImageIoUtils.write(
+        image = render(map, visibleLayers).toAwtImage(),
+        output = pathname
     )
-
-    return pathname
 }
 
 private fun render(map: MapState, visibleLayers: Set<LayerType<*>>): ImageBitmap {

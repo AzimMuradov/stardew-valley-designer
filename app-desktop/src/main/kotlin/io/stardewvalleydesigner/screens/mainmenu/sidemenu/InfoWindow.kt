@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.screens.mainmenu
+package io.stardewvalleydesigner.screens.mainmenu.sidemenu
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
