@@ -22,16 +22,15 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.DialogState
 import androidx.compose.ui.window.DialogWindow
 import kotlinx.coroutines.CoroutineScope
-import java.nio.file.Path
 
 
 @Composable
-fun FileSaver(
+actual fun FileSaver(
     title: String,
-    defaultPathAndFile: String? = null,
-    extensions: List<String>? = null,
-    extensionsDescription: String? = null,
-    onPathProvided: (Path?) -> Unit,
+    defaultPathAndFile: String?,
+    extensions: List<String>?,
+    extensionsDescription: String?,
+    onPathProvided: (String?) -> Unit,
 ) {
     ModalDialog {
         val paths = TinyFileDialogsWrapper.createSaveFileDialog(
@@ -39,20 +38,20 @@ fun FileSaver(
             defaultPathAndFile = defaultPathAndFile ?: System.getProperty("user.dir"),
             extensions,
             extensionsDescription,
-        )?.let(Path::of)
+        )
 
         onPathProvided(paths)
     }
 }
 
 @Composable
-fun FilePicker(
+actual fun FilePicker(
     title: String,
-    defaultPathAndFile: String? = null,
-    extensions: List<String>? = null,
-    extensionsDescription: String? = null,
-    multiSelect: Boolean = false,
-    onFilesSelected: (List<Path>?) -> Unit,
+    defaultPathAndFile: String?,
+    extensions: List<String>?,
+    extensionsDescription: String?,
+    multiSelect: Boolean,
+    onFilesSelected: (List<String>?) -> Unit,
 ) {
     ModalDialog {
         val paths = TinyFileDialogsWrapper.createOpenFileDialog(
@@ -61,23 +60,23 @@ fun FilePicker(
             extensions,
             extensionsDescription,
             multiSelect,
-        )?.map(Path::of)
+        )
 
         onFilesSelected(paths)
     }
 }
 
 @Composable
-fun DirectoryPicker(
+actual fun DirectoryPicker(
     title: String,
-    defaultPath: String? = null,
-    onDirectorySelected: (Path?) -> Unit,
+    defaultPath: String?,
+    onDirectorySelected: (String?) -> Unit,
 ) {
     ModalDialog {
         val dirPath = TinyFileDialogsWrapper.createSelectDirectoryDialog(
             title,
             defaultPath = defaultPath ?: System.getProperty("user.dir"),
-        )?.let(Path::of)
+        )
 
         onDirectorySelected(dirPath)
     }
