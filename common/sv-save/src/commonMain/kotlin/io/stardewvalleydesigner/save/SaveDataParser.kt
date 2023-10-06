@@ -23,23 +23,20 @@ import io.stardewvalleydesigner.save.mappers.toPlacedEntityOrNull
 import io.stardewvalleydesigner.save.models.SaveGame
 import kotlinx.serialization.decodeFromString
 import nl.adaptivity.xmlutil.serialization.XML
-import java.io.File
 
 
 object SaveDataParser {
 
-    fun parse(path: String): List<EditorEngineData> {
+    fun parse(text: String): List<EditorEngineData> {
         val xml = XML {
             indent = 2
             customPolicy()
         }
 
         // Fix BOM bug
-        val text = File(path).readText().run {
-            if (first() == '\uFEFF') drop(n = 1) else this
-        }
+        fun String.dropBOM() = if (first() == '\uFEFF') drop(n = 1) else this
 
-        val save = xml.decodeFromString<SaveGame>(text)
+        val save = xml.decodeFromString<SaveGame>(text.dropBOM())
 
         val farm = save.locations.first { it.type == "Farm" }
         val buildings = farm.buildings.filter { it.buildingType in buildingsByType }

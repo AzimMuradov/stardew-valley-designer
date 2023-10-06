@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
@@ -12,10 +11,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(projects.common.editorEngine)
-                implementation(projects.common.entitiesMetadata)
-
-                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.kotlinx.io.core)
 
 
                 // Meta-code
