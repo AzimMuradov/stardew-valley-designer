@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:OptIn(ExperimentalXmlUtilApi::class)
-
 package io.stardewvalleydesigner.save
 
 import nl.adaptivity.xmlutil.ExperimentalXmlUtilApi
@@ -24,11 +22,13 @@ import nl.adaptivity.xmlutil.serialization.*
 import nl.adaptivity.xmlutil.serialization.structure.SafeParentInfo
 
 
+@OptIn(ExperimentalXmlUtilApi::class)
 internal fun XmlConfig.Builder.customPolicy() {
     policy = CustomPolicy
 }
 
 
+@OptIn(ExperimentalXmlUtilApi::class)
 private object CustomPolicy : DefaultXmlSerializationPolicy(
     pedantic = false,
     encodeDefault = XmlSerializationPolicy.XmlEncodeDefault.ALWAYS,
