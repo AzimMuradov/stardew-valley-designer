@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="svd [proguardReleaseJars]" type="GradleRunConfiguration" factoryName="Gradle">
+  <configuration default="false" name="svd:app-desktop [proguardReleaseJars]" type="GradleRunConfiguration" factoryName="Gradle">
     <ExternalSystemSettings>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -10,7 +10,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="proguardReleaseJars" />
+          <option value=":app-desktop:proguardReleaseJars" />
         </list>
       </option>
       <option name="vmOptions" />
