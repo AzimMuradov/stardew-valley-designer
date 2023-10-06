@@ -82,7 +82,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
         entitiesToDraw = placedShape
             .coordinates
             .asSequence()
-            .sortedWith(Comparator.comparingInt(Coordinate::x).thenComparingInt(Coordinate::y))
+            .sortedWith(compareBy(Coordinate::x).thenBy(Coordinate::y))
             .map(currentEntity!!::placeIt)
             .filter { it respectsLayout engine.layout }
             .filterTo(mutableSetOf()) {

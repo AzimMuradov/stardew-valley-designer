@@ -25,6 +25,7 @@ import io.stardewvalleydesigner.engine.EditorEngineData
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layers.layeredData
 import io.stardewvalleydesigner.engine.layout.LayoutType
+import io.stardewvalleydesigner.io.FileIO
 import io.stardewvalleydesigner.save.SaveDataParser
 import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing
@@ -146,7 +147,9 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                     scope.launch {
                         val parsed = try {
                             withContext(Dispatchers.IO) {
-                                SaveDataParser.parse(intent.path.trim()).map { it.wrapped() }
+                                SaveDataParser.parse(
+                                    text = FileIO.readText(intent.path.trim())
+                                ).map(EditorEngineData::wrapped)
                             }
                         } catch (e: Exception) {
                             null
