@@ -43,7 +43,10 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 xmlutil-core-jvm = { module = "io.github.pdvrieze.xmlutil:core-jvm", version.ref = "xmlutil" }
 xmlutil-serialization-jvm = { module = "io.github.pdvrieze.xmlutil:serialization-jvm", version.ref = "xmlutil" }
 
+kotlinlogging-common = { module = "io.github.oshai:kotlin-logging", version.ref = "kotlinlogging" }
 kotlinlogging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlinlogging" }
+kotlinlogging-js = { module = "io.github.oshai:kotlin-logging-js", version.ref = "kotlinlogging" }
+
 log4j-slf4j2 = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j" }
 log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
 
@@ -64,6 +67,9 @@ xmlutil = [
 
 [plugins]
 
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization-plugin" }
+
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
