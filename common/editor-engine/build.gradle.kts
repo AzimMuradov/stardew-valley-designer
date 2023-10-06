@@ -1,10 +1,21 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.multiplatform)
 }
 
-dependencies {
-    // Meta-code
+kotlin {
+    jvm()
+    js(IR) {
+        browser()
+    }
 
-    implementation(projects.common.logger)
-    implementation(libs.kotlinlogging.jvm)
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                // Meta-code
+
+                implementation(projects.common.logger)
+                implementation(libs.kotlinlogging.common)
+            }
+        }
+    }
 }

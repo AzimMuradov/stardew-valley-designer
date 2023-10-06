@@ -1,13 +1,34 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.multiplatform)
 }
 
-dependencies {
-    implementation(libs.kotlinlogging.jvm)
-    runtimeOnly(libs.log4j.slf4j2)
-    compileOnly(libs.log4j.core)
+kotlin {
+    jvm()
+    js(IR) {
+        browser()
+    }
 
-    implementation(libs.mvikotlin)
-    implementation(libs.mvikotlin.main)
-    implementation(libs.mvikotlin.logging)
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.kotlinlogging.common)
+
+                implementation(libs.mvikotlin)
+                implementation(libs.mvikotlin.main)
+                implementation(libs.mvikotlin.logging)
+            }
+        }
+        val jvmMain by getting {
+            dependencies {
+                implementation(libs.kotlinlogging.jvm)
+                runtimeOnly(libs.log4j.slf4j2)
+                compileOnly(libs.log4j.core)
+            }
+        }
+        val jsMain by getting {
+            dependencies {
+                implementation(libs.kotlinlogging.js)
+            }
+        }
+    }
 }

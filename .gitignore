@@ -1,5 +1,5 @@
 ### Idea ###
-/.idea/
+/.idea/*
 !/.idea/runConfigurations/
 !/.idea/icon.png
 

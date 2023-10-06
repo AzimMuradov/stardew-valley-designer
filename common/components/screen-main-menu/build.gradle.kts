@@ -1,20 +1,30 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.multiplatform)
 }
 
-dependencies {
-    implementation(projects.common.editorEngine)
-    implementation(projects.common.entitiesMetadata)
-    implementation(projects.common.designFormat)
-    implementation(projects.common.svSave)
+kotlin {
+    jvm()
 
-    implementation(libs.bundles.mvikotlin)
+    sourceSets {
+        val jvmMain by getting {
+            dependencies {
+                implementation(projects.common.editorEngine)
+                implementation(projects.common.entitiesMetadata)
+                implementation(projects.common.designFormat)
+                implementation(projects.common.svSave)
 
-    implementation(libs.kotlinx.coroutines.core)
+                implementation(projects.common.io)
+
+                implementation(libs.kotlinx.coroutines.swing)
+
+                implementation(libs.bundles.mvikotlin)
 
 
-    // Meta-code
+                // Meta-code
 
-    implementation(projects.common.logger)
-    implementation(libs.kotlinlogging.jvm)
+                implementation(projects.common.logger)
+                implementation(libs.kotlinlogging.common)
+            }
+        }
+    }
 }

@@ -4,13 +4,16 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 
 plugins {
-    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
     alias(libs.plugins.compose) apply false
 }
 
 subprojects {
     repositories {
         mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
+        maven("https://maven.pkg.jetbrains.space/kotlin/p/wasm/experimental")
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 
     tasks.withType<KotlinJvmCompile>().configureEach {

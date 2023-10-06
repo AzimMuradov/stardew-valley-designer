@@ -1,48 +1,56 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.compose)
 }
 
-dependencies {
-    implementation(projects.common.editorEngine)
-    implementation(projects.common.entitiesMetadata)
+kotlin {
+    jvm()
 
-    implementation(projects.common.designFormat)
+    sourceSets {
+        val jvmMain by getting {
+            dependencies {
+                implementation(projects.common.editorEngine)
+                implementation(projects.common.entitiesMetadata)
 
-    implementation(projects.common.components.root)
-    implementation(projects.common.components.screenMainMenu)
-    implementation(projects.common.components.screenEditor)
-    // implementation(projects.common.components.screenSettings)
+                implementation(projects.common.designFormat)
 
-    implementation(projects.common.uiUtils.buttonsGroupUi)
-    implementation(projects.common.uiUtils.dropdownMenu)
-    implementation(projects.common.uiUtils.dropdownMenuUi)
-    implementation(projects.common.uiUtils.fileDialogs)
+                implementation(projects.common.components.root)
+                implementation(projects.common.components.screenMainMenu)
+                implementation(projects.common.components.screenEditor)
+                // implementation(projects.common.components.screenSettings)
 
-    if (System.getProperty("deploy")?.toBooleanStrictOrNull() == true) {
-        implementation(compose.desktop.linux_x64)
-        implementation(compose.desktop.windows_x64)
-        // implementation(compose.desktop.macos_x64)
-        // implementation(compose.desktop.macos_arm64)
-    } else {
-        implementation(compose.desktop.currentOs)
+                implementation(projects.common.uiUtils.buttonsGroupUi)
+                implementation(projects.common.uiUtils.dropdownMenu)
+                implementation(projects.common.uiUtils.dropdownMenuUi)
+                implementation(projects.common.uiUtils.fileDialogs)
+
+                if (System.getProperty("deploy")?.toBooleanStrictOrNull() == true) {
+                    implementation(compose.desktop.linux_x64)
+                    implementation(compose.desktop.windows_x64)
+                    // implementation(compose.desktop.macos_x64)
+                    // implementation(compose.desktop.macos_arm64)
+                } else {
+                    implementation(compose.desktop.currentOs)
+                }
+
+                implementation(compose.materialIconsExtended)
+
+                implementation(libs.bundles.mvikotlin)
+
+                implementation(libs.kotlinx.coroutines.core)
+
+                implementation(libs.directories)
+
+                implementation("io.github.irgaly.kfswatch:kfswatch:1.0.0")
+
+
+                // Meta-code
+
+                implementation(projects.common.logger)
+                implementation(libs.kotlinlogging.jvm)
+            }
+        }
     }
-
-    implementation(compose.materialIconsExtended)
-
-    implementation(libs.bundles.mvikotlin)
-
-    implementation(libs.kotlinx.coroutines.core)
-
-    implementation(libs.directories)
-
-    implementation("io.github.irgaly.kfswatch:kfswatch:1.0.0")
-
-
-    // Meta-code
-
-    implementation(projects.common.logger)
-    implementation(libs.kotlinlogging.jvm)
 }
 
 compose.desktop {

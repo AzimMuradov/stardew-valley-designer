@@ -1,17 +1,28 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlinx.serialization)
 }
 
-dependencies {
-    implementation(projects.common.editorEngine)
-    implementation(projects.common.entitiesMetadata)
+kotlin {
+    jvm()
+    js(IR) {
+        browser()
+    }
 
-    implementation(libs.bundles.xmlutil)
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(projects.common.editorEngine)
+                implementation(projects.common.entitiesMetadata)
+
+                implementation(libs.bundles.xmlutil)
 
 
-    // Meta-code
+                // Meta-code
 
-    implementation(projects.common.logger)
-    implementation(libs.kotlinlogging.jvm)
+                implementation(projects.common.logger)
+                implementation(libs.kotlinlogging.common)
+            }
+        }
+    }
 }

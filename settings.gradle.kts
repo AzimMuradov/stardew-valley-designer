@@ -4,7 +4,8 @@ rootProject.name = "stardew-valley-designer"
 // Applications
 
 include(":app-desktop")
-// TODO : include(":app-web")
+include(":app-web")
+
 
 // Editor Engine
 
@@ -22,6 +23,7 @@ include(":common:entities-metadata")
 
 include(":common:sv-save")
 
+
 // Components
 
 include(":common:components:root")
@@ -32,6 +34,7 @@ include(
     // ":common:components:screen-settings",
 )
 
+
 // Compose UI Utils
 
 include(":common:ui-utils:buttons-group-ui")
@@ -40,6 +43,11 @@ include(
     ":common:ui-utils:dropdown-menu-ui",
 )
 include(":common:ui-utils:file-dialogs")
+
+
+// Input-Output
+
+include(":common:io")
 
 // Logger
 
