@@ -17,6 +17,7 @@
 package io.stardewvalleydesigner.engine.geometry
 
 import io.stardewvalleydesigner.engine.*
+import kotlin.jvm.JvmInline
 
 
 /**

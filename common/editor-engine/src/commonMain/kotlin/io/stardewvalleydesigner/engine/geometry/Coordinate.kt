@@ -17,14 +17,14 @@
 package io.stardewvalleydesigner.engine.geometry
 
 import io.stardewvalleydesigner.engine.*
-import kotlin.math.hypot
+import kotlin.jvm.JvmInline
 
 
 /**
- * 2D vector.
+ * 2D coordinate.
  */
 @JvmInline
-value class Vector internal constructor(@PublishedApi internal val packedValue: Long) {
+value class Coordinate internal constructor(@PublishedApi internal val packedValue: Long) {
 
     inline val x: Int get() = unpackInt1(packedValue)
 
@@ -36,7 +36,7 @@ value class Vector internal constructor(@PublishedApi internal val packedValue: 
     operator fun component2(): Int = y
 
 
-    fun copy(x: Int = this.x, y: Int = this.y): Vector = vec(x, y)
+    fun copy(x: Int = this.x, y: Int = this.y): Coordinate = xy(x, y)
 
 
     override fun toString(): String = "(x=$x, y=$y)"
@@ -44,25 +44,19 @@ value class Vector internal constructor(@PublishedApi internal val packedValue: 
 
     companion object {
 
-        val ZERO: Vector = vec(x = 0, y = 0)
+        val ZERO: Coordinate = xy(x = 0, y = 0)
     }
 }
 
 
 /**
- * Creates a 2D vector.
+ * Creates a 2D coordinate.
  */
-fun vec(x: Int, y: Int): Vector = Vector(packInts(x, y))
-
-
-/**
- * Length of the vector.
- */
-val Vector.length get() = hypot(x.toFloat(), y.toFloat())
+fun xy(x: Int, y: Int): Coordinate = Coordinate(packInts(x, y))
 
 
 // Pair interop
 
-fun Vector.toPair(): Pair<Int, Int> = x to y
+fun Coordinate.toPair(): Pair<Int, Int> = x to y
 
-fun Pair<Int, Int>.toVector2(): Vector = vec(first, second)
+fun Pair<Int, Int>.toCoordinate(): Coordinate = xy(first, second)

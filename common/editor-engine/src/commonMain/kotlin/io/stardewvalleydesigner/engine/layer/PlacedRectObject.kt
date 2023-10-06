@@ -45,9 +45,7 @@ data class PlacedRectObject<out RO : RectObject>(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as PlacedRectObject<*>
+        if (other !is PlacedRectObject<*>) return false
 
         // `rectObject` and `place` are swapped for efficiency
 
