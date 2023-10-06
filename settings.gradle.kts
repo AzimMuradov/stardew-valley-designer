@@ -4,7 +4,7 @@ rootProject.name = "stardew-valley-designer"
 // Applications
 
 include(":app-desktop")
-// TODO : include(":app-web")
+include(":app-web")
 
 
 // Editor Engine
