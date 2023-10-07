@@ -7,27 +7,17 @@ include(":app-desktop")
 include(":app-web")
 
 
-// Editor Engine
+// Core Modules
 
 include(":common:editor-engine")
-
-// Design Format
-
-include(":common:design-format")
-
-// Entities metadata
-
 include(":common:entities-metadata")
-
-// Save data parser
-
+include(":common:design-format")
 include(":common:sv-save")
 
 
 // Components
 
 include(":common:components:root")
-
 include(
     ":common:components:screen-main-menu",
     ":common:components:screen-editor",
@@ -35,7 +25,7 @@ include(
 )
 
 
-// Compose UI Utils
+// Compose UI Utilities
 
 include(":common:ui-utils:buttons-group-ui")
 include(
@@ -45,7 +35,7 @@ include(
 include(":common:ui-utils:file-dialogs")
 
 
-// Logger
+// Utilities
 
 include(":common:logger")
 
