@@ -13,8 +13,6 @@ kotlin {
                 implementation(projects.common.designFormat)
                 implementation(projects.common.svSave)
 
-                implementation(projects.common.io)
-
                 implementation(libs.kotlinx.coroutines.swing)
 
                 implementation(libs.bundles.mvikotlin)
