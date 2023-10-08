@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.screens.editor.topmenubar
+package io.stardewvalleydesigner.screens.editor.topmenu
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -35,9 +35,9 @@ import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.menus.OptionsItemValue
 import io.stardewvalleydesigner.editor.menus.OptionsMenu
 import io.stardewvalleydesigner.editor.modules.options.OptionsState
-import io.stardewvalleydesigner.utils.GlobalSettings
 import io.stardewvalleydesigner.uilib.menu.DropdownMenuStyle
 import io.stardewvalleydesigner.uilib.menu.HoverableDropdownMenu
+import io.stardewvalleydesigner.utils.GlobalSettings
 
 
 @Composable

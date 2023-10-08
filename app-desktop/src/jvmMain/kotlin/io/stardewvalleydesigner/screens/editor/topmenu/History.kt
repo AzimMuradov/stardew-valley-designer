@@ -14,29 +14,39 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.screens.editor.main
+package io.stardewvalleydesigner.screens.editor.topmenu
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.editor.EditorIntent
-import io.stardewvalleydesigner.editor.modules.map.MapState
-import io.stardewvalleydesigner.editor.modules.options.OptionsState
-import io.stardewvalleydesigner.editor.modules.toolkit.ToolkitState
-import io.stardewvalleydesigner.engine.layer.LayerType
+import io.stardewvalleydesigner.editor.modules.history.HistoryState
 
 
 @Composable
-fun RowScope.MainPart(
-    map: MapState,
-    visibleLayers: Set<LayerType<*>>,
-    toolkit: ToolkitState,
-    options: OptionsState,
+fun History(
+    history: HistoryState,
     intentConsumer: (EditorIntent) -> Unit,
 ) {
-    Box(Modifier.fillMaxHeight().weight(1f).padding(30.dp), Alignment.Center) {
-        EditorLayout(map, visibleLayers, toolkit, options, intentConsumer)
+    Row(
+        modifier = Modifier.wrapContentWidth().fillMaxHeight(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        TopMenuIconButton(
+            icon = Icons.Rounded.ArrowBack,
+            enabled = history.canGoBack,
+            onClick = { intentConsumer(EditorIntent.History.GoBack) }
+        )
+        Spacer(Modifier.size(4.dp))
+        TopMenuIconButton(
+            icon = Icons.Rounded.ArrowForward,
+            enabled = history.canGoForward,
+            onClick = { intentConsumer(EditorIntent.History.GoForward) }
+        )
     }
 }

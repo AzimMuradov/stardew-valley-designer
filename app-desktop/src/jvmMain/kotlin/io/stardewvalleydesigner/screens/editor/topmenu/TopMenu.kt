@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.screens.editor.topmenubar
+package io.stardewvalleydesigner.screens.editor.topmenu
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -46,7 +46,7 @@ fun TopMenu(
     options: OptionsState,
     snackbarHostState: SnackbarHostState,
     intentConsumer: (EditorIntent) -> Unit,
-    planPath: String?
+    planPath: String?,
 ) {
     Row(
         modifier = Modifier

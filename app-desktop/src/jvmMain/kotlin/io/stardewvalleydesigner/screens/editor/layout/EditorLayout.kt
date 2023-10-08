@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.screens.editor.main
+package io.stardewvalleydesigner.screens.editor.layout
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
