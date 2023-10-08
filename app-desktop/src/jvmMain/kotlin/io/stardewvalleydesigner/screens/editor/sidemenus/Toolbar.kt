@@ -28,10 +28,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import io.stardewvalleydesigner.cmplib.group.GroupOption
+import io.stardewvalleydesigner.cmplib.group.ToggleButtonsGroup
 import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.modules.toolkit.*
-import io.stardewvalleydesigner.uilib.group.GroupOption
-import io.stardewvalleydesigner.uilib.group.ToggleButtonsGroup
 import io.stardewvalleydesigner.utils.GlobalSettings
 import io.stardewvalleydesigner.utils.TooltipArea
 

@@ -28,10 +28,11 @@ kotlin {
                 // implementation(projects.common.components.screenEditor)
                 // implementation(projects.common.components.screenSettings)
 
-                implementation(projects.common.uiLibs.dropdownMenu)
-                implementation(projects.common.uiLibs.dropdownMenuUi)
-                implementation(projects.common.uiLibs.buttonsGroupUi)
-                implementation(projects.common.uiLibs.fileDialogsUi)
+                implementation(projects.common.cmpLibs.dropdownMenu)
+                implementation(projects.common.cmpLibs.dropdownMenuUi)
+                implementation(projects.common.cmpLibs.sideMenusUi)
+                implementation(projects.common.cmpLibs.buttonsGroupUi)
+                implementation(projects.common.cmpLibs.fileDialogsUi)
 
                 implementation(compose.runtime)
                 implementation(compose.ui)

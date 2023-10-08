@@ -16,12 +16,12 @@
 
 package io.stardewvalleydesigner.editor.menus
 
+import io.stardewvalleydesigner.cmplib.menu.Menu
+import io.stardewvalleydesigner.cmplib.menu.MenuElement
+import io.stardewvalleydesigner.cmplib.menu.MenuElement.Item
+import io.stardewvalleydesigner.cmplib.menu.MenuElement.Submenu
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.EntityType
-import io.stardewvalleydesigner.uilib.menu.Menu
-import io.stardewvalleydesigner.uilib.menu.MenuElement
-import io.stardewvalleydesigner.uilib.menu.MenuElement.Item
-import io.stardewvalleydesigner.uilib.menu.MenuElement.Submenu
 
 
 typealias EntitySelectionMenu = Menu<EntitySelectionRoot, EntitySelectionRoot, Entity<*>>

@@ -32,12 +32,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.stardewvalleydesigner.cmplib.menu.DropdownMenuStyle
+import io.stardewvalleydesigner.cmplib.menu.HoverableDropdownMenu
 import io.stardewvalleydesigner.editor.menus.EntitySelectionMenu
 import io.stardewvalleydesigner.editor.menus.filterElements
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.EntityType
-import io.stardewvalleydesigner.uilib.menu.DropdownMenuStyle
-import io.stardewvalleydesigner.uilib.menu.HoverableDropdownMenu
 import io.stardewvalleydesigner.utils.GlobalSettings
 import io.stardewvalleydesigner.utils.Sprite
 

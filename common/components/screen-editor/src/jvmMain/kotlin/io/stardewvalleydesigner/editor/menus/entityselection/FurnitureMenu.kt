@@ -16,9 +16,9 @@
 
 package io.stardewvalleydesigner.editor.menus.entityselection
 
+import io.stardewvalleydesigner.cmplib.menu.menu
 import io.stardewvalleydesigner.editor.menus.EntitySelectionMenu
 import io.stardewvalleydesigner.engine.entity.*
-import io.stardewvalleydesigner.uilib.menu.menu
 import io.stardewvalleydesigner.editor.menus.EntitySelectionRoot as Root
 
 

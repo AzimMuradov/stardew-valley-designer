@@ -25,15 +25,15 @@ include(
 )
 
 
-// Custom Compose Multiplatform UI Libraries
+// Custom Compose Multiplatform Libraries
 
 include(
-    ":common:ui-libs:dropdown-menu",
-    ":common:ui-libs:dropdown-menu-ui",
+    ":common:cmp-libs:dropdown-menu",
+    ":common:cmp-libs:dropdown-menu-ui",
 )
-include(":common:ui-libs:side-menus-ui")
-include(":common:ui-libs:buttons-group-ui")
-include(":common:ui-libs:file-dialogs-ui")
+include(":common:cmp-libs:side-menus-ui")
+include(":common:cmp-libs:buttons-group-ui")
+include(":common:cmp-libs:file-dialogs-ui")
 
 
 // Utilities

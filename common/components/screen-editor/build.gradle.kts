@@ -10,7 +10,7 @@ kotlin {
             dependencies {
                 implementation(projects.common.editorEngine)
 
-                implementation(projects.common.uiLibs.dropdownMenu)
+                implementation(projects.common.cmpLibs.dropdownMenu)
 
                 implementation(libs.kotlinx.coroutines.swing)
 

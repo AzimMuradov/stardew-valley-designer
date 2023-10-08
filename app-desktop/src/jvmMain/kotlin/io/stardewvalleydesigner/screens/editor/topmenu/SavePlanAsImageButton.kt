@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.IntOffset
 import dev.dirs.UserDirectories
+import io.stardewvalleydesigner.cmplib.filedialogs.FileSaver
 import io.stardewvalleydesigner.editor.modules.map.MapState
 import io.stardewvalleydesigner.editor.res.*
 import io.stardewvalleydesigner.editor.res.LayoutSpritesProvider.layoutSpriteBy
@@ -33,7 +34,6 @@ import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.metadata.EntityPage.Companion.UNIT
-import io.stardewvalleydesigner.uilib.filedialogs.FileSaver
 import io.stardewvalleydesigner.utils.*
 import io.stardewvalleydesigner.utils.DrawerUtils.placedEntityComparator
 import io.stardewvalleydesigner.utils.DrawerUtils.tint

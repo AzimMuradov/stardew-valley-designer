@@ -16,8 +16,8 @@
 
 package io.stardewvalleydesigner.editor.menus
 
-import io.stardewvalleydesigner.uilib.menu.Menu
-import io.stardewvalleydesigner.uilib.menu.menu
+import io.stardewvalleydesigner.cmplib.menu.Menu
+import io.stardewvalleydesigner.cmplib.menu.menu
 
 
 typealias OptionsMenu = Menu<OptionsRoot, Nothing, OptionsItemValue>

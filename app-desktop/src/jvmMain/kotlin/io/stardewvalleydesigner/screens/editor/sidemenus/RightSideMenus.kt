@@ -22,10 +22,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.stardewvalleydesigner.cmplib.sidemenus.FixedSideMenus
 import io.stardewvalleydesigner.editor.modules.map.LayoutState
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.allEntityTypes
-import io.stardewvalleydesigner.uilib.sidemenus.FixedSideMenus
 import io.stardewvalleydesigner.editor.EditorIntent as Intent
 
 
