@@ -31,6 +31,7 @@ include(
     ":common:ui-libs:dropdown-menu",
     ":common:ui-libs:dropdown-menu-ui",
 )
+include(":common:ui-libs:side-menus-ui")
 include(":common:ui-libs:buttons-group-ui")
 include(":common:ui-libs:file-dialogs-ui")
 

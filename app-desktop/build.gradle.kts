@@ -21,6 +21,7 @@ kotlin {
 
                 implementation(projects.common.uiLibs.dropdownMenu)
                 implementation(projects.common.uiLibs.dropdownMenuUi)
+                implementation(projects.common.uiLibs.sideMenusUi)
                 implementation(projects.common.uiLibs.buttonsGroupUi)
                 implementation(projects.common.uiLibs.fileDialogsUi)
 

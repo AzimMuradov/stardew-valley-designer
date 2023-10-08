@@ -16,20 +16,18 @@
 
 package io.stardewvalleydesigner.screens.editor.sidemenus
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.editor.menus.OptionsItemValue.Toggleable
-import io.stardewvalleydesigner.editor.modules.map.LayoutState
 import io.stardewvalleydesigner.editor.modules.options.OptionsState
 import io.stardewvalleydesigner.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.editor.modules.toolkit.ToolkitState
-import io.stardewvalleydesigner.engine.layer.LayerType
-import io.stardewvalleydesigner.engine.layer.allEntityTypes
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layers.isEmpty
+import io.stardewvalleydesigner.uilib.sidemenus.FixedSideMenus
 import io.stardewvalleydesigner.editor.EditorIntent as Intent
 
 
@@ -51,39 +49,4 @@ fun LeftSideMenus(
             }
         }
     }
-}
-
-@Composable
-fun RightSideMenus(
-    visibleLayers: Set<LayerType<*>>,
-    onVisibilityChange: (LayerType<*>, Boolean) -> Unit,
-    layout: LayoutState,
-    width: Dp,
-    intentConsumer: (Intent) -> Unit,
-) {
-    FixedSideMenus(width) {
-        menu(padding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)) {
-            LayersVisibility(
-                allowedLayers = LayerType.all.filterTo(mutableSetOf()) { lType ->
-                    lType.allEntityTypes().any { eType -> eType !in layout.disallowedTypes }
-                },
-                visibleLayers = visibleLayers,
-                onVisibilityChange = onVisibilityChange
-            )
-        }
-        if (layout.type.isShed()) {
-            menu(modifier = Modifier.height(300.dp)) {
-                WallpaperAndFlooringSelection(
-                    onWallpaperSelection = { intentConsumer(Intent.WallpaperAndFlooring.ChooseWallpaper(it)) },
-                    onFlooringSelection = { intentConsumer(Intent.WallpaperAndFlooring.ChooseFlooring(it)) },
-                )
-            }
-        }
-    }
-}
-
-
-@Composable
-private fun FixedSideMenus(width: Dp, content: SideMenusBuilder.() -> Unit) {
-    SideMenus(Modifier.fillMaxHeight().width(width), content)
 }

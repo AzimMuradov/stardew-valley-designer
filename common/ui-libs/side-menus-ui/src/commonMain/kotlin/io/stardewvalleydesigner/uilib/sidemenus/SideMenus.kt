@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.screens.editor.sidemenus
+package io.stardewvalleydesigner.uilib.sidemenus
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 
@@ -41,40 +40,7 @@ fun SideMenus(
     }
 }
 
-
-class SideMenusBuilder internal constructor(columnScope: ColumnScope) : ColumnScope by columnScope {
-
-    fun menu(
-        modifier: Modifier = Modifier,
-        padding: PaddingValues = PaddingValues(16.dp),
-        content: @Composable ColumnScope.() -> Unit,
-    ) {
-        menus += { SideMenuCard(modifier, padding, content) }
-    }
-
-    fun spacer(modifier: Modifier = Modifier) {
-        menus += { Spacer(modifier) }
-    }
-
-    internal fun build(): List<@Composable () -> Unit> = menus
-
-    private val menus: MutableList<@Composable () -> Unit> = mutableListOf()
-}
-
 @Composable
-private fun SideMenuCard(
-    modifier: Modifier,
-    paddingValues: PaddingValues,
-    content: @Composable ColumnScope.() -> Unit,
-) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        elevation = 4.dp,
-    ) {
-        Column(
-            modifier = Modifier.fillMaxWidth().padding(paddingValues),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            content = content
-        )
-    }
+fun FixedSideMenus(width: Dp, content: SideMenusBuilder.() -> Unit) {
+    SideMenus(Modifier.fillMaxHeight().width(width), content)
 }

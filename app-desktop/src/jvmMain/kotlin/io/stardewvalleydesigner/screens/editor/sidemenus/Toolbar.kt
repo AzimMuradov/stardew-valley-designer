@@ -30,10 +30,10 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.modules.toolkit.*
-import io.stardewvalleydesigner.utils.GlobalSettings
-import io.stardewvalleydesigner.utils.TooltipArea
 import io.stardewvalleydesigner.uilib.group.GroupOption
 import io.stardewvalleydesigner.uilib.group.ToggleButtonsGroup
+import io.stardewvalleydesigner.utils.GlobalSettings
+import io.stardewvalleydesigner.utils.TooltipArea
 
 
 @Composable
@@ -41,8 +41,8 @@ fun Toolbar(
     toolkit: ToolkitState,
     intentConsumer: (EditorIntent.Toolkit) -> Unit,
 ) {
-    val tools = ToolType.values().map { GroupOption.Some(it) }
-    val shapes = (listOf(null) + ShapeType.values()).map {
+    val tools = ToolType.entries.map { GroupOption.Some(it) }
+    val shapes = (listOf(null) + ShapeType.entries).map {
         if (it in toolkit.allowedShapes) {
             GroupOption.Some(it)
         } else {
