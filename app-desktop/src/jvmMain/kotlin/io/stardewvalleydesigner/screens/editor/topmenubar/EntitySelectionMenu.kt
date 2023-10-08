@@ -38,8 +38,8 @@ import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.EntityType
 import io.stardewvalleydesigner.utils.GlobalSettings
 import io.stardewvalleydesigner.utils.Sprite
-import io.stardewvalleydesigner.utils.menu.DropdownMenuStyle
-import io.stardewvalleydesigner.utils.menu.HoverableDropdownMenu
+import io.stardewvalleydesigner.uilib.menu.DropdownMenuStyle
+import io.stardewvalleydesigner.uilib.menu.HoverableDropdownMenu
 
 
 @Composable

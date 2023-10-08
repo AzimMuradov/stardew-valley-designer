@@ -31,7 +31,7 @@ import io.stardewvalleydesigner.designformat.models.Plan
 import io.stardewvalleydesigner.editor.modules.map.MapState
 import io.stardewvalleydesigner.engine.layers.flatten
 import io.stardewvalleydesigner.utils.*
-import io.stardewvalleydesigner.utils.filedialogs.FileSaver
+import io.stardewvalleydesigner.uilib.filedialogs.FileSaver
 import kotlinx.coroutines.launch
 import java.io.File
 import java.nio.file.Files

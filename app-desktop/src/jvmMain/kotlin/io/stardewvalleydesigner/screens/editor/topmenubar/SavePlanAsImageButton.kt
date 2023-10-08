@@ -36,7 +36,7 @@ import io.stardewvalleydesigner.metadata.EntityPage.Companion.UNIT
 import io.stardewvalleydesigner.utils.*
 import io.stardewvalleydesigner.utils.DrawerUtils.placedEntityComparator
 import io.stardewvalleydesigner.utils.DrawerUtils.tint
-import io.stardewvalleydesigner.utils.filedialogs.FileSaver
+import io.stardewvalleydesigner.uilib.filedialogs.FileSaver
 import kotlinx.coroutines.launch
 import java.nio.file.Files
 import java.nio.file.Path

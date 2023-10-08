@@ -36,8 +36,8 @@ import io.stardewvalleydesigner.editor.menus.OptionsItemValue
 import io.stardewvalleydesigner.editor.menus.OptionsMenu
 import io.stardewvalleydesigner.editor.modules.options.OptionsState
 import io.stardewvalleydesigner.utils.GlobalSettings
-import io.stardewvalleydesigner.utils.menu.DropdownMenuStyle
-import io.stardewvalleydesigner.utils.menu.HoverableDropdownMenu
+import io.stardewvalleydesigner.uilib.menu.DropdownMenuStyle
+import io.stardewvalleydesigner.uilib.menu.HoverableDropdownMenu
 
 
 @Composable

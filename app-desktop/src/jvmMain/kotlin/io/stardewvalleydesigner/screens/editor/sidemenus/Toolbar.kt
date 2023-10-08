@@ -32,8 +32,8 @@ import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.modules.toolkit.*
 import io.stardewvalleydesigner.utils.GlobalSettings
 import io.stardewvalleydesigner.utils.TooltipArea
-import io.stardewvalleydesigner.utils.group.GroupOption
-import io.stardewvalleydesigner.utils.group.ToggleButtonsGroup
+import io.stardewvalleydesigner.uilib.group.GroupOption
+import io.stardewvalleydesigner.uilib.group.ToggleButtonsGroup
 
 
 @Composable

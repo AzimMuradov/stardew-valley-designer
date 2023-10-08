@@ -18,10 +18,10 @@ package io.stardewvalleydesigner.editor.menus
 
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.EntityType
-import io.stardewvalleydesigner.utils.menu.Menu
-import io.stardewvalleydesigner.utils.menu.MenuElement
-import io.stardewvalleydesigner.utils.menu.MenuElement.Item
-import io.stardewvalleydesigner.utils.menu.MenuElement.Submenu
+import io.stardewvalleydesigner.uilib.menu.Menu
+import io.stardewvalleydesigner.uilib.menu.MenuElement
+import io.stardewvalleydesigner.uilib.menu.MenuElement.Item
+import io.stardewvalleydesigner.uilib.menu.MenuElement.Submenu
 
 
 typealias EntitySelectionMenu = Menu<EntitySelectionRoot, EntitySelectionRoot, Entity<*>>

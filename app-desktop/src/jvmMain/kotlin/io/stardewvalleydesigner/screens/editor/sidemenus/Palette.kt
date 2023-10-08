@@ -37,8 +37,8 @@ import io.stardewvalleydesigner.editor.res.OtherImages
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.entity.Colors
 import io.stardewvalleydesigner.utils.*
-import io.stardewvalleydesigner.utils.group.GroupOption
-import io.stardewvalleydesigner.utils.group.ToggleButtonsGroup
+import io.stardewvalleydesigner.uilib.group.GroupOption
+import io.stardewvalleydesigner.uilib.group.ToggleButtonsGroup
 import androidx.compose.ui.graphics.Color as ComposeColor
 
 
