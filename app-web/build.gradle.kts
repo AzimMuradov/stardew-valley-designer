@@ -20,7 +20,6 @@ kotlin {
             dependencies {
                 implementation(projects.common.editorEngine)
                 implementation(projects.common.entitiesMetadata)
-
                 implementation(projects.common.designFormat)
 
                 // implementation(projects.common.components.root)
@@ -42,9 +41,9 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.materialIconsExtended)
 
-                implementation(libs.bundles.mvikotlin)
-
                 implementation(libs.kotlinx.coroutines.core)
+
+                implementation(libs.bundles.mvikotlin)
 
 
                 // Meta-code
