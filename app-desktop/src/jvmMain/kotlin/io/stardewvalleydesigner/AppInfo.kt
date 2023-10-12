@@ -16,10 +16,12 @@
 
 package io.stardewvalleydesigner
 
+import io.stardewvalleydesigner.kmplib.env.Environment
+
 
 object AppInfo {
 
-    val VERSION: String = System.getProperty("app.version") ?: "SNAPSHOT"
+    val VERSION: String = Environment.getVar(name = "app.version") ?: "SNAPSHOT"
 
     const val AUTHOR_URL: String = "https://github.com/AzimMuradov"
 
