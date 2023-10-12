@@ -47,6 +47,7 @@ kotlin {
 
                 implementation(libs.kfswatch)
 
+                implementation(libs.kotlinx.datetime)
 
                 // Meta-code
 

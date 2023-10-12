@@ -16,12 +16,20 @@
 
 package io.stardewvalleydesigner.utils
 
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
+import kotlinx.datetime.*
 
 
-fun nowFormatted(): String = DateTimeFormatter
-    .ofPattern("yyyy-MM-dd-HH-mm-ss")
-    .withZone(ZoneId.systemDefault())
-    .format(Instant.now())
+fun nowFormatted(): String {
+    val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+    return with(now) {
+        buildList {
+            addAll(listOf(year.pad4(), monthNumber.pad2(), dayOfMonth.pad2()))
+            addAll(listOf(hour.pad2(), minute.pad2(), second.pad2()))
+        }
+    }.joinToString(separator = "-")
+}
+
+
+private fun Int.pad2() = toString().padStart(length = 2, padChar = '0')
+
+private fun Int.pad4() = toString().padStart(length = 4, padChar = '0')
