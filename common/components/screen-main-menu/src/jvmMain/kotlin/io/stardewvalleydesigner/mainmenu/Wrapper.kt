@@ -17,6 +17,6 @@
 package io.stardewvalleydesigner.mainmenu
 
 
-class Wrapper<T>(val value: T)
+class Wrapper<T> internal constructor(val value: T)
 
 fun <T> T.wrapped() = Wrapper(value = this)
