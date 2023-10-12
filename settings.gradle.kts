@@ -25,6 +25,13 @@ include(
 )
 
 
+// Custom Kotlin Multiplatform Libraries
+
+include(":common:kmp-libs:browser")
+include(":common:kmp-libs:clipboard")
+include(":common:kmp-libs:env")
+
+
 // Custom Compose Multiplatform Libraries
 
 include(
