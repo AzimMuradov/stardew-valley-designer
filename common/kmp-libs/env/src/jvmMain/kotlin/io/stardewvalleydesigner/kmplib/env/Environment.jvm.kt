@@ -17,7 +17,23 @@
 package io.stardewvalleydesigner.kmplib.env
 
 
-expect object Environment {
+/**
+ * Execution environment.
+ *
+ * It's a combination of the process environment and the JVM environment.
+ */
+actual object Environment {
 
-    fun getVar(name: String): String?
+    /**
+     * Get the process environment variable and if there is none get the JVM system property.
+     */
+    actual fun getVar(name: String): String? = try {
+        System.getenv(name)
+    } catch (e: SecurityException) {
+        null
+    } ?: try {
+        System.getProperty(name)
+    } catch (e: SecurityException) {
+        null
+    }
 }

@@ -25,4 +25,6 @@ actual object Clipboard {
     actual fun copyToClipboard(text: String) = Toolkit.getDefaultToolkit()
         .systemClipboard
         .setContents(StringSelection(text), null)
+
+    actual fun pasteFromClipboard(): String? = TODO()
 }

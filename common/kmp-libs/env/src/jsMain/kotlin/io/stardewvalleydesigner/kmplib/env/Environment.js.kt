@@ -17,7 +17,15 @@
 package io.stardewvalleydesigner.kmplib.env
 
 
+/**
+ * Execution environment.
+ *
+ * It's a combination of the process environment and the Browser environment.
+ */
 actual object Environment {
 
+    /**
+     * Get the process environment variable.
+     */
     actual fun getVar(name: String): String? = TODO()
 }

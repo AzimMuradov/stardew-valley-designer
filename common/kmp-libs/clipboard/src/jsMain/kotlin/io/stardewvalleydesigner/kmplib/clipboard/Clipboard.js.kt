@@ -20,4 +20,6 @@ package io.stardewvalleydesigner.kmplib.clipboard
 actual object Clipboard {
 
     actual fun copyToClipboard(text: String): Unit = TODO()
+
+    actual fun pasteFromClipboard(): String? = TODO()
 }

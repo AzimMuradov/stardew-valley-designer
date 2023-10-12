@@ -24,7 +24,7 @@ import java.util.*
 actual object Browser {
 
     actual fun openLink(url: String) {
-        val uri = URI(url)
+        val uri = URI.create(url)
         val osName by lazy(LazyThreadSafetyMode.NONE) { System.getProperty("os.name").lowercase(Locale.ENGLISH) }
         val desktop = Desktop.getDesktop()
         when {

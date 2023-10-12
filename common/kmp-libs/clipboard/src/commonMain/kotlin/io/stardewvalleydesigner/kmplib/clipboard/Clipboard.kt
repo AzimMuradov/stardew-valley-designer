@@ -20,4 +20,6 @@ package io.stardewvalleydesigner.kmplib.clipboard
 expect object Clipboard {
 
     fun copyToClipboard(text: String)
+
+    fun pasteFromClipboard(): String?
 }
