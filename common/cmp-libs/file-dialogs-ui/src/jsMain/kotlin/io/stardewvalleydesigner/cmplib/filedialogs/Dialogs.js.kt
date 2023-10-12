@@ -17,11 +17,14 @@
 package io.stardewvalleydesigner.cmplib.filedialogs
 
 import androidx.compose.runtime.Composable
+import io.stardewvalleydesigner.LoggerUtils.logger
+import io.stardewvalleydesigner.cmplib.filedialogs.DomDialogsWrapper.loadFileFromDisk
+import kotlinx.browser.document
 
 
 @Composable
 actual fun FileSaver(
-    title: String,
+    title: String?,
     defaultPathAndFile: String?,
     extensions: List<String>?,
     extensionsDescription: String?,
@@ -32,21 +35,20 @@ actual fun FileSaver(
 
 @Composable
 actual fun FilePicker(
-    title: String,
+    title: String?,
     defaultPathAndFile: String?,
     extensions: List<String>?,
     extensionsDescription: String?,
     multiSelect: Boolean,
     onFilesSelected: (List<String>?) -> Unit,
 ) {
-    TODO()
-}
+    if (title != null) logger.warn { "`title` was ignored" }
+    if (defaultPathAndFile != null) logger.warn { "`defaultPathAndFile` was ignored" }
+    if (extensionsDescription != null) logger.warn { "`extensionsDescription` was ignored" }
 
-@Composable
-actual fun DirectoryPicker(
-    title: String,
-    defaultPath: String?,
-    onDirectorySelected: (String?) -> Unit,
-) {
-    TODO()
+    document.loadFileFromDisk(
+        accept = (extensions ?: emptyList()).joinToString { ".$it" },
+        multiple = multiSelect,
+        onLoaded = { onFilesSelected(listOf(it)) }
+    )
 }

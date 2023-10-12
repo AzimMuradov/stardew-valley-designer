@@ -26,7 +26,7 @@ import kotlinx.coroutines.CoroutineScope
 
 @Composable
 actual fun FileSaver(
-    title: String,
+    title: String?,
     defaultPathAndFile: String?,
     extensions: List<String>?,
     extensionsDescription: String?,
@@ -46,7 +46,7 @@ actual fun FileSaver(
 
 @Composable
 actual fun FilePicker(
-    title: String,
+    title: String?,
     defaultPathAndFile: String?,
     extensions: List<String>?,
     extensionsDescription: String?,
@@ -66,25 +66,9 @@ actual fun FilePicker(
     }
 }
 
-@Composable
-actual fun DirectoryPicker(
-    title: String,
-    defaultPath: String?,
-    onDirectorySelected: (String?) -> Unit,
-) {
-    ModalDialog {
-        val dirPath = TinyFileDialogsWrapper.createSelectDirectoryDialog(
-            title,
-            defaultPath = defaultPath ?: System.getProperty("user.dir"),
-        )
-
-        onDirectorySelected(dirPath)
-    }
-}
-
 
 /**
- * Hack to make [FileSaver], [FilePicker] and [DirectoryPicker] modal.
+ * Hack to make [FileSaver] and [FilePicker] modal.
  */
 @Composable
 private fun ModalDialog(content: suspend CoroutineScope.() -> Unit) {

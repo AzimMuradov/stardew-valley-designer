@@ -45,7 +45,7 @@ kotlin {
 
                 implementation(libs.bundles.mvikotlin)
 
-                implementation(libs.bundles.fs)
+                implementation(libs.kfswatch)
 
 
                 // Meta-code

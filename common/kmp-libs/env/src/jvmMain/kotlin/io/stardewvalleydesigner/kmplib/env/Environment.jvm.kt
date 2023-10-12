@@ -16,6 +16,8 @@
 
 package io.stardewvalleydesigner.kmplib.env
 
+import dev.dirs.UserDirectories
+
 
 /**
  * Execution environment.
@@ -36,4 +38,11 @@ actual object Environment {
     } catch (e: SecurityException) {
         null
     }
+
+
+    actual fun getHomeDir(): String? = UserDirectories.get().homeDir
+
+    actual fun getDocsDir(): String? = UserDirectories.get().documentDir
+
+    actual fun getPicsDir(): String? = UserDirectories.get().pictureDir
 }

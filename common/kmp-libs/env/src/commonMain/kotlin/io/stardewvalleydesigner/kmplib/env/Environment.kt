@@ -28,4 +28,11 @@ expect object Environment {
      * Get the process environment variable and in case of it's missing get the platform specific variable (if it's a thing).
      */
     fun getVar(name: String): String?
+
+
+    fun getHomeDir(): String?
+
+    fun getDocsDir(): String?
+
+    fun getPicsDir(): String?
 }

@@ -21,7 +21,7 @@ import androidx.compose.runtime.Composable
 
 @Composable
 expect fun FileSaver(
-    title: String,
+    title: String? = null,
     defaultPathAndFile: String? = null,
     extensions: List<String>? = null,
     extensionsDescription: String? = null,
@@ -30,17 +30,10 @@ expect fun FileSaver(
 
 @Composable
 expect fun FilePicker(
-    title: String,
+    title: String? = null,
     defaultPathAndFile: String? = null,
     extensions: List<String>? = null,
     extensionsDescription: String? = null,
     multiSelect: Boolean = false,
     onFilesSelected: (List<String>?) -> Unit,
-)
-
-@Composable
-expect fun DirectoryPicker(
-    title: String,
-    defaultPath: String? = null,
-    onDirectorySelected: (String?) -> Unit,
 )

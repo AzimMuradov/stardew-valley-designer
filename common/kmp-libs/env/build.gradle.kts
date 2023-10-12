@@ -7,4 +7,12 @@ kotlin {
     js(IR) {
         browser()
     }
+
+    sourceSets {
+        val jvmMain by getting {
+            dependencies {
+                implementation(libs.directories)
+            }
+        }
+    }
 }

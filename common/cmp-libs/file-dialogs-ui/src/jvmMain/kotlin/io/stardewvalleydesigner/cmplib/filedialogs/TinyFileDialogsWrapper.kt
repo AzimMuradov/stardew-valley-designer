@@ -58,13 +58,6 @@ internal object TinyFileDialogsWrapper {
         }
     }
 
-    fun createSelectDirectoryDialog(
-        title: String? = null,
-        defaultPath: String? = null,
-    ): String? = catchingNativeCall {
-        TinyFileDialogs.tinyfd_selectFolderDialog(title, defaultPath)
-    }
-
 
     private fun List<String>.putOn(
         stack: MemoryStack,

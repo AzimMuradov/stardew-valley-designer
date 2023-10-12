@@ -28,4 +28,11 @@ actual object Environment {
      * Get the process environment variable.
      */
     actual fun getVar(name: String): String? = TODO()
+
+
+    actual fun getHomeDir(): String? = null
+
+    actual fun getDocsDir(): String? = null
+
+    actual fun getPicsDir(): String? = null
 }
