@@ -60,6 +60,6 @@ compose.experimental.web {
 }
 
 tasks.clean {
-    delete(rootProject.buildDir)
+    delete(rootProject.layout.buildDirectory)
     delete(rootDir.resolve("output"))
 }

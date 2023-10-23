@@ -1,10 +1,10 @@
 [versions]
 
-kotlin = "1.9.0"
+kotlin = "1.9.10"
 
 compose = "1.5.3"
 
-lwjgl = "3.3.2"
+lwjgl = "3.3.3"
 
 #decompose = "2.1.0-beta-01"
 
@@ -21,7 +21,7 @@ directories = "26"
 
 kotlinx-serialization-plugin = "1.9.0"
 kotlinx-serialization-json = "1.6.0"
-xmlutil = "0.86.1"
+xmlutil = "0.86.2"
 
 # Date & Time
 
@@ -30,7 +30,7 @@ kotlinx-datetime = "0.4.1"
 # Logging
 
 kotlinlogging = "5.1.0"
-log4j = "2.20.0"
+log4j = "2.21.0"
 
 
 [libraries]

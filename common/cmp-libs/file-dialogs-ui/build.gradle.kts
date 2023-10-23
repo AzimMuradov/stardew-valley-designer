@@ -10,7 +10,7 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(compose.foundation)
                 implementation(compose.runtime)
