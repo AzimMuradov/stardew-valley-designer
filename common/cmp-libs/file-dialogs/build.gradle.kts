@@ -25,7 +25,7 @@ kotlin {
                 implementation(libs.kotlinlogging.common)
             }
         }
-        val jvmMain by getting {
+        jvmMain {
             dependencies {
                 implementation(libs.lwjgl.asProvider())
                 implementation(libs.lwjgl.tinyfd)

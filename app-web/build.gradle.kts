@@ -16,7 +16,7 @@ kotlin {
     }
 
     sourceSets {
-        val jsMain by getting {
+        jsMain {
             dependencies {
                 implementation(projects.common.editorEngine)
                 implementation(projects.common.entitiesMetadata)

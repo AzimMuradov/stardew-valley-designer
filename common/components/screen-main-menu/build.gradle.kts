@@ -6,7 +6,7 @@ kotlin {
     jvm()
 
     sourceSets {
-        val jvmMain by getting {
+        jvmMain {
             dependencies {
                 implementation(projects.common.editorEngine)
                 implementation(projects.common.entitiesMetadata)

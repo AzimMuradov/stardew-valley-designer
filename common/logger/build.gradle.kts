@@ -20,14 +20,14 @@ kotlin {
                 implementation(libs.mvikotlin.logging)
             }
         }
-        val jvmMain by getting {
+        jvmMain {
             dependencies {
                 implementation(libs.kotlinlogging.jvm)
                 runtimeOnly(libs.log4j.slf4j2)
                 compileOnly(libs.log4j.core)
             }
         }
-        val jsMain by getting {
+        jsMain {
             dependencies {
                 implementation(libs.kotlinlogging.js)
             }

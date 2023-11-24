@@ -9,7 +9,7 @@ kotlin {
     }
 
     sourceSets {
-        val jvmMain by getting {
+        jvmMain {
             dependencies {
                 implementation(libs.directories)
             }
