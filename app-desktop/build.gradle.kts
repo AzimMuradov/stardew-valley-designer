@@ -81,6 +81,5 @@ kotlin {
 }
 
 tasks.clean {
-    delete(rootProject.layout.buildDirectory)
     delete(rootDir.resolve("output"))
 }

@@ -4,7 +4,7 @@ plugins {
 }
 
 kotlin {
-    js(IR) {
+    js {
         browser {
             commonWebpackConfig {
                 outputFileName = "svd.js"
@@ -73,9 +73,4 @@ kotlin {
 
 compose.experimental.web {
     application {}
-}
-
-tasks.clean {
-    delete(rootProject.layout.buildDirectory)
-    delete(rootDir.resolve("output"))
 }
