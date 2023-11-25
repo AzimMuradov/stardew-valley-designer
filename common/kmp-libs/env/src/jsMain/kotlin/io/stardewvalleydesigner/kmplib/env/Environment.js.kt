@@ -19,20 +19,34 @@ package io.stardewvalleydesigner.kmplib.env
 
 /**
  * Execution environment.
- *
- * It's a combination of the process environment and the Browser environment.
  */
 actual object Environment {
 
     /**
-     * Get the process environment variable.
+     * Get the environment variable with the given [name] defined in `webpack`.
      */
-    actual fun getVar(name: String): String? = TODO()
+    actual fun getVar(name: String): String? = ENV[name]
+
+    private val ENV: Map<String, String> =
+        (js("Object.entries") as (dynamic) -> Array<Array<Any?>>)
+            .invoke(js("CUSTOM_ENV"))
+            .associate { entry -> entry[0] as String to entry[1] }
+            .filterValues { it != null }
+            .mapValues { (_, value) -> value.toString() }
 
 
+    /**
+     * Returns null.
+     */
     actual fun getHomeDir(): String? = null
 
+    /**
+     * Returns null.
+     */
     actual fun getDocsDir(): String? = null
 
+    /**
+     * Returns null.
+     */
     actual fun getPicsDir(): String? = null
 }

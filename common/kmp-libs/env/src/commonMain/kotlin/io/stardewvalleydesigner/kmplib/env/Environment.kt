@@ -19,20 +19,27 @@ package io.stardewvalleydesigner.kmplib.env
 
 /**
  * Execution environment.
- *
- * It's a combination of the process environment and the platform (JVM or Browser) specific environment.
  */
 expect object Environment {
 
     /**
-     * Get the process environment variable and in case of it's missing get the platform specific variable (if it's a thing).
+     * Get the environment variable with the given [name].
      */
     fun getVar(name: String): String?
 
 
+    /**
+     * Get the user's home directory.
+     */
     fun getHomeDir(): String?
 
+    /**
+     * Get the user's documents directory.
+     */
     fun getDocsDir(): String?
 
+    /**
+     * Get the user's pictures directory.
+     */
     fun getPicsDir(): String?
 }

@@ -6,11 +6,16 @@ plugins {
 kotlin {
     js(IR) {
         browser {
-            commonWebpackConfig(
-                Action {
-                    outputFileName = "svd.js"
+            commonWebpackConfig {
+                outputFileName = "svd.js"
+                export = false
+            }
+
+            runTask {
+                System.getProperty("debug")?.let { value ->
+                    args.plusAssign(listOf("--env", "debug=$value"))
                 }
-            )
+            }
         }
         binaries.executable()
     }
