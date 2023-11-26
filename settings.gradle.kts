@@ -23,6 +23,7 @@ include(
     ":common:components:screen-editor",
     // ":common:components:screen-settings",
 )
+include(":common:components:settings")
 
 
 // Custom Kotlin Multiplatform Libraries

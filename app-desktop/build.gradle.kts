@@ -18,6 +18,8 @@ kotlin {
                 implementation(projects.common.components.screenEditor)
                 // implementation(projects.common.components.screenSettings)
 
+                implementation(projects.common.components.settings)
+
 
                 // Compose Multiplatform
 
