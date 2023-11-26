@@ -44,6 +44,7 @@ import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.coordinates
 import io.stardewvalleydesigner.engine.layers.flatten
 import io.stardewvalleydesigner.engine.layers.flattenSequence
+import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import io.stardewvalleydesigner.utils.*
 import io.stardewvalleydesigner.utils.DrawerUtils.drawEntityStretched
 import io.stardewvalleydesigner.utils.DrawerUtils.drawFlooring

@@ -31,6 +31,7 @@ import io.stardewvalleydesigner.designformat.PlanFormatConverter
 import io.stardewvalleydesigner.designformat.models.Plan
 import io.stardewvalleydesigner.editor.modules.map.MapState
 import io.stardewvalleydesigner.engine.layers.flatten
+import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import io.stardewvalleydesigner.utils.*
 import kotlinx.coroutines.launch
 import java.io.File

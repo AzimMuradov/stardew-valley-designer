@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.LoggerUtils
 import io.stardewvalleydesigner.mainmenu.MainMenuIntent
 import io.stardewvalleydesigner.mainmenu.MainMenuState
-import io.stardewvalleydesigner.utils.GlobalSettings
+import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import java.io.File
 import java.util.*
 import java.io.File.separator as sep

@@ -38,7 +38,7 @@ import io.stardewvalleydesigner.editor.menus.EntitySelectionMenu
 import io.stardewvalleydesigner.editor.menus.filterElements
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.EntityType
-import io.stardewvalleydesigner.utils.GlobalSettings
+import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import io.stardewvalleydesigner.utils.Sprite
 
 

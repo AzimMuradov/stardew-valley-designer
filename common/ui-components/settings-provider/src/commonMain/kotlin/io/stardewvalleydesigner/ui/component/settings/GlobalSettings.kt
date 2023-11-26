@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.utils
+package io.stardewvalleydesigner.ui.component.settings
 
 import androidx.compose.runtime.*
 import io.stardewvalleydesigner.settings.Lang

@@ -26,6 +26,11 @@ include(
 include(":common:components:settings")
 
 
+// UI Components
+
+include(":common:ui-components:settings-provider")
+
+
 // Custom Kotlin Multiplatform Libraries
 
 include(":common:kmp-libs:browser")

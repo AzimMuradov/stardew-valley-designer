@@ -26,7 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.engine.layer.LayerType
-import io.stardewvalleydesigner.utils.GlobalSettings
+import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 
 @Composable

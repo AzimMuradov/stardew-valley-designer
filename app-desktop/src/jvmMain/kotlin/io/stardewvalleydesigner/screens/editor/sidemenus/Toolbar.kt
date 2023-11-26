@@ -32,7 +32,7 @@ import io.stardewvalleydesigner.cmplib.group.GroupOption
 import io.stardewvalleydesigner.cmplib.group.ToggleButtonsGroup
 import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.modules.toolkit.*
-import io.stardewvalleydesigner.utils.GlobalSettings
+import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import io.stardewvalleydesigner.utils.TooltipArea
 
 

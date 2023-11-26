@@ -42,7 +42,7 @@ import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layers.flattenSequence
 import io.stardewvalleydesigner.kmplib.clipboard.Clipboard
 import io.stardewvalleydesigner.metadata.*
-import io.stardewvalleydesigner.utils.GlobalSettings
+import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import io.stardewvalleydesigner.utils.Sprite
 
 

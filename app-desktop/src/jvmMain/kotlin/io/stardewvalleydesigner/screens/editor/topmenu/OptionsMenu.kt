@@ -37,7 +37,7 @@ import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.menus.OptionsItemValue
 import io.stardewvalleydesigner.editor.menus.OptionsMenu
 import io.stardewvalleydesigner.editor.modules.options.OptionsState
-import io.stardewvalleydesigner.utils.GlobalSettings
+import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 
 @Composable
