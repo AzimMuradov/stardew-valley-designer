@@ -4,15 +4,18 @@ plugins {
 
 kotlin {
     jvm()
+    js {
+        browser()
+    }
 
     sourceSets {
-        jvmMain {
+        commonMain {
             dependencies {
                 implementation(projects.common.editorEngine)
 
-                implementation(projects.common.cmpLibs.dropdownMenuModel)
+                implementation(projects.common.kmpLibs.dispatcher)
 
-                implementation(libs.kotlinx.coroutines.swing)
+                implementation(projects.common.cmpLibs.dropdownMenuModel)
 
                 implementation(libs.bundles.mvikotlin)
 
