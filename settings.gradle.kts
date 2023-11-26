@@ -30,6 +30,7 @@ include(":common:components:settings")
 
 include(":common:kmp-libs:browser")
 include(":common:kmp-libs:clipboard")
+include(":common:kmp-libs:dispatcher")
 include(":common:kmp-libs:env")
 
 
