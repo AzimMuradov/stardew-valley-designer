@@ -16,20 +16,41 @@
 
 package io.stardewvalleydesigner
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.CanvasBasedWindow
+import io.stardewvalleydesigner.editor.*
+import io.stardewvalleydesigner.engine.layout.LayoutType
+import io.stardewvalleydesigner.engine.layout.LayoutsProvider
+import io.stardewvalleydesigner.settings.Lang
+import io.stardewvalleydesigner.ui.component.editor.res.WithImageResources
+import io.stardewvalleydesigner.ui.component.editor.screens.EditorScreen
+import io.stardewvalleydesigner.ui.component.settings.WithSettings
+import io.stardewvalleydesigner.ui.component.themes.AppTheme
+import io.stardewvalleydesigner.ui.component.themes.ThemeVariant
+import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.skiko.wasm.onWasmReady
 
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalResourceApi::class)
 fun main() {
     onWasmReady {
         CanvasBasedWindow("Stardew Valley Designer") {
-            MaterialTheme {
-                Text("Hello, Stardew!")
+            AppTheme(themeVariant = ThemeVariant.LIGHT) {
+                WithSettings(lang = Lang.EN) {
+                    WithImageResources(themeVariant = ThemeVariant.LIGHT) {
+                        EditorScreen(
+                            component = EditorComponentImpl(EditorState.default(LayoutsProvider.layoutOf(LayoutType.BigShed)))
+                        )
+                    }
+                }
             }
         }
     }
+}
+
+internal class EditorComponentImpl(
+    initialState: EditorState,
+) : EditorComponent {
+
+    override val store = EditorStoreFactory(LoggerUtils.createLoggerAwareStoreFactory()).create(initialState)
 }

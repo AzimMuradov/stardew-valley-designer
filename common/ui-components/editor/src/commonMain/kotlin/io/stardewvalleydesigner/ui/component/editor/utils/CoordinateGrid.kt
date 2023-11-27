@@ -14,19 +14,28 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.utils
+package io.stardewvalleydesigner.ui.component.editor.utils
 
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
-import io.stardewvalleydesigner.engine.geometry.Rect
-import io.stardewvalleydesigner.engine.geometry.rectOf
-import kotlin.math.roundToInt
+import androidx.compose.ui.geometry.Offset
+import io.stardewvalleydesigner.engine.geometry.Coordinate
+import kotlin.jvm.JvmInline
 
 
-fun Size.toIntSize(): IntSize = IntSize(width.roundToInt(), height.roundToInt())
+@JvmInline
+value class CoordinateGrid(private val cellSide: Float) {
 
-fun IntSize.toRect(): Rect = rectOf(width, height)
+    operator fun get(x: Int, y: Int): Offset = Offset(
+        x = x * cellSide,
+        y = y * cellSide
+    )
+
+    operator fun get(coordinate: Coordinate): Offset = Offset(
+        x = coordinate.x * cellSide,
+        y = coordinate.y * cellSide
+    )
 
 
-operator fun Int.times(size: IntOffset): IntOffset = IntOffset(x = this * size.x, y = this * size.y)
+    fun getX(x: Int): Float = x * cellSide
+
+    fun getY(y: Int): Float = y * cellSide
+}

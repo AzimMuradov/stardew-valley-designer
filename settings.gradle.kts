@@ -28,6 +28,7 @@ include(":common:components:settings")
 
 // UI Components
 
+include(":common:ui-components:editor")
 include(":common:ui-components:settings-provider")
 include(":common:ui-components:themes")
 

@@ -25,9 +25,10 @@ import com.arkivanov.mvikotlin.core.utils.setMainThreadId
 import io.stardewvalleydesigner.components.RootComponent
 import io.stardewvalleydesigner.components.rootComponent
 import io.stardewvalleydesigner.editor.EditorIntent
-import io.stardewvalleydesigner.screens.EditorScreen
 import io.stardewvalleydesigner.screens.MainMenuScreen
 import io.stardewvalleydesigner.settings.Lang
+import io.stardewvalleydesigner.ui.component.editor.res.WithImageResources
+import io.stardewvalleydesigner.ui.component.editor.screens.EditorScreen
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import io.stardewvalleydesigner.ui.component.settings.WithSettings
 import io.stardewvalleydesigner.ui.component.themes.AppTheme
@@ -43,7 +44,9 @@ fun main() {
     application {
         AppTheme(themeVariant = ThemeVariant.LIGHT) {
             WithSettings(lang = Lang.EN) {
-                Root(root, ::exitApplication)
+                WithImageResources(themeVariant = ThemeVariant.LIGHT) {
+                    Root(root, ::exitApplication)
+                }
             }
         }
     }

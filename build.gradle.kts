@@ -23,7 +23,7 @@ subprojects {
     tasks {
         withType<KotlinCompilationTask<*>>().configureEach {
             compilerOptions {
-                languageVersion = KotlinVersion.KOTLIN_2_1
+                // languageVersion = KotlinVersion.KOTLIN_2_1
                 freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
                 freeCompilerArgs.add("-Xexpect-actual-classes")
             }

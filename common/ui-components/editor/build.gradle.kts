@@ -4,24 +4,13 @@ plugins {
 }
 
 kotlin {
+    jvm()
     js {
-        browser {
-            commonWebpackConfig {
-                outputFileName = "svd.js"
-                export = false
-            }
-
-            runTask {
-                System.getProperty("debug")?.let { value ->
-                    args.plusAssign(listOf("--env", "debug=$value"))
-                }
-            }
-        }
-        binaries.executable()
+        browser()
     }
 
     sourceSets {
-        jsMain {
+        commonMain {
             dependencies {
                 implementation(projects.common.editorEngine)
                 implementation(projects.common.entitiesMetadata)
@@ -30,7 +19,6 @@ kotlin {
                 implementation(projects.common.components.screenEditor)
                 implementation(projects.common.components.settings)
 
-                implementation(projects.common.uiComponents.editor)
                 implementation(projects.common.uiComponents.settingsProvider)
                 implementation(projects.common.uiComponents.themes)
 
@@ -38,6 +26,7 @@ kotlin {
                 // Compose Multiplatform
 
                 implementation(compose.runtime)
+                implementation(compose.animation)
                 implementation(compose.ui)
                 implementation(compose.foundation)
                 implementation(compose.material)
@@ -59,8 +48,6 @@ kotlin {
 
                 implementation(libs.bundles.mvikotlin)
 
-                // implementation(libs.kfswatch)
-
                 implementation(libs.kotlinx.datetime)
 
 
@@ -71,8 +58,4 @@ kotlin {
             }
         }
     }
-}
-
-compose.experimental.web {
-    application {}
 }

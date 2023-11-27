@@ -25,17 +25,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
-import io.stardewvalleydesigner.editor.res.LayoutSpritesProvider.layoutSpriteBy
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.geometry.aspectRatio
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layout.Layout
-import io.stardewvalleydesigner.utils.*
-import io.stardewvalleydesigner.utils.DrawerUtils.drawFlooring
-import io.stardewvalleydesigner.utils.DrawerUtils.drawVisibleEntities
-import io.stardewvalleydesigner.utils.DrawerUtils.drawWallpaper
+import io.stardewvalleydesigner.ui.component.editor.res.ImageResources
+import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.layoutSpriteBy
+import io.stardewvalleydesigner.ui.component.editor.utils.CoordinateGrid
+import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.drawFlooring
+import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.drawVisibleEntities
+import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.drawWallpaper
+import io.stardewvalleydesigner.utils.toIntSize
+import io.stardewvalleydesigner.utils.toRect
 
 
 @Composable
@@ -45,6 +48,9 @@ fun BoxScope.LayoutPreview(
     wallpaper: Wallpaper?,
     flooring: Flooring?,
 ) {
+    val images = ImageResources.entities
+    val image = ImageResources.wallsAndFloors
+
     val (nW, nH) = layout.size
     val layoutSprite = layoutSpriteBy(layout.type)
 
@@ -77,11 +83,12 @@ fun BoxScope.LayoutPreview(
         // Main content
 
         if (layout.type.isShed()) {
-            drawFlooring(flooring, nW, nH, cellSide)
-            drawWallpaper(wallpaper, nW, cellSide)
+            drawFlooring(image, flooring, nW, nH, cellSide)
+            drawWallpaper(image, wallpaper, nW, cellSide)
         }
 
         drawVisibleEntities(
+            images = images,
             entities = entities,
             visibleLayers = LayerType.all,
             renderSpritesFully = true,

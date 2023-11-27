@@ -14,19 +14,32 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.utils
+package io.stardewvalleydesigner.ui.component.editor.res
 
-import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
-import io.stardewvalleydesigner.engine.geometry.Rect
-import io.stardewvalleydesigner.engine.geometry.rectOf
-import kotlin.math.roundToInt
 
 
-fun Size.toIntSize(): IntSize = IntSize(width.roundToInt(), height.roundToInt())
+sealed interface Sprite {
 
-fun IntSize.toRect(): Rect = rectOf(width, height)
+    val image: ImageBitmap
+
+    val size: IntSize
 
 
-operator fun Int.times(size: IntOffset): IntOffset = IntOffset(x = this * size.x, y = this * size.y)
+    data class Image(
+        override val image: ImageBitmap,
+        val offset: IntOffset,
+        override val size: IntSize,
+    ) : Sprite
+
+    data class TintedImage(
+        override val image: ImageBitmap,
+        override val size: IntSize,
+        val tint: Color,
+        val offset: IntOffset,
+        val coverOffset: IntOffset,
+    ) : Sprite
+}
