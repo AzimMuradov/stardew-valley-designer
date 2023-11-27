@@ -30,7 +30,7 @@ kotlinx-datetime = "0.4.1"
 # Logging
 
 kotlinlogging = "5.1.0"
-log4j = "2.21.0"
+log4j = "2.22.0"
 
 
 [libraries]

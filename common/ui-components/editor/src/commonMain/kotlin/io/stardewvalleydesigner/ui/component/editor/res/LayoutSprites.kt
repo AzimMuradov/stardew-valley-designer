@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.utils
+package io.stardewvalleydesigner.ui.component.editor.res
 
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.IntSize
-import io.stardewvalleydesigner.engine.geometry.Rect
-import io.stardewvalleydesigner.engine.geometry.rectOf
-import kotlin.math.roundToInt
 
 
-fun Size.toIntSize(): IntSize = IntSize(width.roundToInt(), height.roundToInt())
+data class LayoutSprites(
+    val fgImage: ImageBitmap,
+    val bgImage: ImageBitmap,
+) {
 
-fun IntSize.toRect(): Rect = rectOf(width, height)
-
-
-operator fun Int.times(size: IntOffset): IntOffset = IntOffset(x = this * size.x, y = this * size.y)
+    val size = IntSize(bgImage.width, bgImage.height)
+}

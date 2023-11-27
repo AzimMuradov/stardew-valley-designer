@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.utils
+package io.stardewvalleydesigner.ui.component.editor.utils
 
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
-import io.stardewvalleydesigner.engine.geometry.Rect
-import io.stardewvalleydesigner.engine.geometry.rectOf
-import kotlin.math.roundToInt
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toComposeImageBitmap
+import org.jetbrains.skia.Image
 
 
-fun Size.toIntSize(): IntSize = IntSize(width.roundToInt(), height.roundToInt())
+// @OptIn(ExperimentalResourceApi::class)
+// suspend fun useResource(path: String) = resource(path).readBytes().toImageBitmap()
 
-fun IntSize.toRect(): Rect = rectOf(width, height)
-
-
-operator fun Int.times(size: IntOffset): IntOffset = IntOffset(x = this * size.x, y = this * size.y)
+internal fun ByteArray.toImageBitmap(): ImageBitmap =
+    Image.makeFromEncoded(this).toComposeImageBitmap()

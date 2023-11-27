@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.utils
+package io.stardewvalleydesigner.ui.component.editor.utils
 
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
-import io.stardewvalleydesigner.engine.geometry.Rect
-import io.stardewvalleydesigner.engine.geometry.rectOf
-import kotlin.math.roundToInt
+import kotlinx.datetime.*
 
 
-fun Size.toIntSize(): IntSize = IntSize(width.roundToInt(), height.roundToInt())
+internal fun Clock.nowFormatted(): String {
+    val now = now().toLocalDateTime(TimeZone.currentSystemDefault())
+    return with(now) {
+        buildList {
+            addAll(listOf(year.pad4(), monthNumber.pad2(), dayOfMonth.pad2()))
+            addAll(listOf(hour.pad2(), minute.pad2(), second.pad2()))
+        }
+    }.joinToString(separator = "-")
+}
 
-fun IntSize.toRect(): Rect = rectOf(width, height)
 
+private fun Int.pad2() = toString().padStart(length = 2, padChar = '0')
 
-operator fun Int.times(size: IntOffset): IntOffset = IntOffset(x = this * size.x, y = this * size.y)
+private fun Int.pad4() = toString().padStart(length = 4, padChar = '0')
