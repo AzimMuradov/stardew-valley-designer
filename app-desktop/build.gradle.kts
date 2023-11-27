@@ -21,6 +21,7 @@ kotlin {
                 implementation(projects.common.components.settings)
 
                 implementation(projects.common.uiComponents.settingsProvider)
+                implementation(projects.common.uiComponents.themes)
 
 
                 // Compose Multiplatform

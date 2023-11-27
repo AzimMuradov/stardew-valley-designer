@@ -29,6 +29,7 @@ include(":common:components:settings")
 // UI Components
 
 include(":common:ui-components:settings-provider")
+include(":common:ui-components:themes")
 
 
 // Custom Kotlin Multiplatform Libraries

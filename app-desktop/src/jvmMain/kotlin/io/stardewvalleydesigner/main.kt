@@ -30,6 +30,8 @@ import io.stardewvalleydesigner.screens.MainMenuScreen
 import io.stardewvalleydesigner.settings.Lang
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import io.stardewvalleydesigner.ui.component.settings.WithSettings
+import io.stardewvalleydesigner.ui.component.themes.AppTheme
+import io.stardewvalleydesigner.ui.component.themes.ThemeVariant
 
 
 fun main() {
