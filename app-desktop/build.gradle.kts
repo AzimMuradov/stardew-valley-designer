@@ -45,6 +45,7 @@ kotlin {
 
                 implementation(libs.bundles.mvikotlin)
 
+                implementation(libs.directories)
                 implementation(libs.kfswatch)
 
                 implementation(libs.kotlinx.datetime)
