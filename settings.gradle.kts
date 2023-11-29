@@ -32,6 +32,8 @@ include(":common:ui-components:editor")
 include(":common:ui-components:settings-provider")
 include(":common:ui-components:themes")
 
+include(":common:ui-components:tooltip")
+
 
 // Custom Kotlin Multiplatform Libraries
 
