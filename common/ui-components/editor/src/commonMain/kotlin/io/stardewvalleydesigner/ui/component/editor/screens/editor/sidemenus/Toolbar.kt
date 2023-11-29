@@ -16,7 +16,6 @@
 
 package io.stardewvalleydesigner.ui.component.editor.screens.editor.sidemenus
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -24,12 +23,15 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.cmplib.group.GroupOption
 import io.stardewvalleydesigner.cmplib.group.ToggleButtonsGroup
 import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.modules.toolkit.*
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
+import io.stardewvalleydesigner.ui.component.tooltip.TooltipArea
+import io.stardewvalleydesigner.ui.component.tooltip.TooltipPlacement
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
@@ -137,22 +139,22 @@ internal fun Toolbar(
 }
 
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalResourceApi::class)
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun ButtonContent(tooltip: String, resourcePath: String) {
-    // TooltipArea(
-    //     tooltip,
-    //     delayMillis = 1000,
-    //     tooltipPlacement = TooltipPlacement.ComponentRect(
-    //         anchor = Alignment.TopEnd,
-    //         alignment = Alignment.TopEnd,
-    //         offset = DpOffset((-8).dp, 8.dp)
-    //     )
-    // ) {
-    Icon(
-        painter = painterResource(resourcePath),
-        contentDescription = null,
-        modifier = Modifier.fillMaxSize().padding(8.dp),
-    )
-    // }
+    TooltipArea(
+        tooltip,
+        delayMillis = 1000,
+        tooltipPlacement = TooltipPlacement.ComponentRect(
+            anchor = Alignment.TopEnd,
+            alignment = Alignment.TopEnd,
+            offset = DpOffset((-8).dp, 8.dp)
+        )
+    ) {
+        Icon(
+            painter = painterResource(resourcePath),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize().padding(8.dp),
+        )
+    }
 }

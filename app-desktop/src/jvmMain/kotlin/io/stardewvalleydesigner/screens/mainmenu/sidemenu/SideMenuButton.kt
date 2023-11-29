@@ -16,8 +16,6 @@
 
 package io.stardewvalleydesigner.screens.mainmenu.sidemenu
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.TooltipPlacement
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -26,10 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import io.stardewvalleydesigner.utils.TooltipArea
+import io.stardewvalleydesigner.ui.component.tooltip.TooltipArea
+import io.stardewvalleydesigner.ui.component.tooltip.TooltipPlacement
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SideMenuButton(
     text: String,

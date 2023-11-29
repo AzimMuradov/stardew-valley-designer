@@ -29,11 +29,11 @@ internal fun XmlConfig.Builder.customPolicy() {
 
 
 @OptIn(ExperimentalXmlUtilApi::class)
-private object CustomPolicy : DefaultXmlSerializationPolicy(
-    pedantic = false,
-    encodeDefault = XmlSerializationPolicy.XmlEncodeDefault.ALWAYS,
+private object CustomPolicy : DefaultXmlSerializationPolicy({
+    pedantic = false
+    encodeDefault = XmlSerializationPolicy.XmlEncodeDefault.ALWAYS
     unknownChildHandler = XmlConfig.IGNORING_UNKNOWN_CHILD_HANDLER
-) {
+}) {
 
     override fun effectiveOutputKind(
         serializerParent: SafeParentInfo,

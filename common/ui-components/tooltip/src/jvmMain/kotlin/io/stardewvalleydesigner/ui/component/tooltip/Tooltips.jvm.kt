@@ -14,32 +14,29 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.utils
+package io.stardewvalleydesigner.ui.component.tooltip
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.ui.component.themes.ternaryColor
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TooltipArea(
+actual fun TooltipArea(
     tooltip: String,
-    enabled: Boolean = true,
-    delayMillis: Int = 500,
-    tooltipPlacement: TooltipPlacement = TooltipPlacement.CursorPoint(
-        offset = DpOffset(0.dp, 8.dp)
-    ),
+    enabled: Boolean,
+    delayMillis: Int,
+    tooltipPlacement: TooltipPlacement,
     content: @Composable () -> Unit,
 ) {
-    TooltipArea(
+    androidx.compose.foundation.TooltipArea(
         tooltip = {
             if (enabled) {
                 Surface(
@@ -57,7 +54,19 @@ fun TooltipArea(
             }
         },
         delayMillis = delayMillis,
-        tooltipPlacement = tooltipPlacement,
+        tooltipPlacement = when (tooltipPlacement) {
+            is TooltipPlacement.CursorPoint -> androidx.compose.foundation.TooltipPlacement.CursorPoint(
+                tooltipPlacement.offset,
+                tooltipPlacement.alignment,
+                tooltipPlacement.windowMargin,
+            )
+
+            is TooltipPlacement.ComponentRect -> androidx.compose.foundation.TooltipPlacement.ComponentRect(
+                tooltipPlacement.anchor,
+                tooltipPlacement.alignment,
+                tooltipPlacement.offset,
+            )
+        },
         content = content
     )
 }
