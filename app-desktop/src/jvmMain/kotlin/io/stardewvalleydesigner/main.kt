@@ -70,12 +70,12 @@ private fun Root(component: RootComponent, exitApplication: () -> Unit) {
                 onCloseRequest = { component.destroyEditorComponent(editorComponent) },
                 onKeyEvent = {
                     when {
-                        it.isCtrlPressed && it.key == Key.Z && it.type == KeyEventType.KeyUp -> {
+                        it.isCtrlPressed && it.key == Key.Z && it.type == KeyEventType.KeyDown -> {
                             editorComponent.store.accept(EditorIntent.History.GoBack)
                             true
                         }
 
-                        it.isCtrlPressed && it.key == Key.Y && it.type == KeyEventType.KeyUp -> {
+                        it.isCtrlPressed && it.key == Key.Y && it.type == KeyEventType.KeyDown -> {
                             editorComponent.store.accept(EditorIntent.History.GoForward)
                             true
                         }

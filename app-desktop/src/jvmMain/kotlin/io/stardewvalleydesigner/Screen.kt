@@ -25,7 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.*
 import io.stardewvalleydesigner.utils.WithMeasuredWindow
 import kotlinx.coroutines.delay
@@ -64,7 +65,7 @@ fun Screen(
         val density = LocalDensity.current
 
         LaunchedEffect(Unit) {
-            window.minimumSize = dimension(initialSize.width, initialSize.height, density)
+            window.minimumSize = dimension(initialSize, density)
             delay(timeMillis = 200)
             window.toFront()
         }
@@ -72,6 +73,6 @@ fun Screen(
 }
 
 
-private fun dimension(w: Dp, h: Dp, density: Density) = with(density) {
-    Dimension(w.roundToPx(), h.roundToPx())
+private fun dimension(dpSize: DpSize, density: Density) = with(density) {
+    Dimension(dpSize.width.roundToPx(), dpSize.height.roundToPx())
 }
