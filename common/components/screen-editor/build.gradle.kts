@@ -9,7 +9,8 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(projects.common.editorEngine)
-                implementation(projects.common.uiUtils.dropdownMenu)
+
+                implementation(projects.common.cmpLibs.dropdownMenu)
 
                 implementation(libs.kotlinx.coroutines.swing)
 

@@ -27,10 +27,10 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import io.stardewvalleydesigner.editor.EditorComponent
 import io.stardewvalleydesigner.editor.EditorIntent
-import io.stardewvalleydesigner.screens.editor.main.MainPart
+import io.stardewvalleydesigner.screens.editor.layout.MainPart
 import io.stardewvalleydesigner.screens.editor.sidemenus.LeftSideMenus
 import io.stardewvalleydesigner.screens.editor.sidemenus.RightSideMenus
-import io.stardewvalleydesigner.screens.editor.topmenubar.TopMenu
+import io.stardewvalleydesigner.screens.editor.topmenu.TopMenu
 import io.stardewvalleydesigner.utils.LocalWindowSize
 import io.stardewvalleydesigner.utils.WindowSize
 

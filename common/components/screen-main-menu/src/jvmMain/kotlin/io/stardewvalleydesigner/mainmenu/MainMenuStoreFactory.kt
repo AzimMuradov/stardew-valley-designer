@@ -103,7 +103,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                         val parsed = try {
                             withContext(Dispatchers.IO) {
                                 val (_, entities, wallpaper, flooring, layout) = PlanFormatConverter.parse(
-                                    File(path).readText()
+                                    text = File(path).readText()
                                 )
                                 return@withContext EditorEngineData(
                                     layoutType = layout,
@@ -144,15 +144,16 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                     dispatch(Msg.ShowLoadingInSaveLoaderMenu)
 
                     scope.launch {
+                        val path = intent.path.trim()
+
                         val parsed = try {
                             withContext(Dispatchers.IO) {
-                                SaveDataParser.parse(
-                                    text = File(intent.path.trim()).readText()
-                                ).map(EditorEngineData::wrapped)
+                                SaveDataParser.parse(text = File(path).readText()).map(EditorEngineData::wrapped)
                             }
                         } catch (e: Exception) {
+                            logger.warn { e.stackTraceToString() }
                             null
-                        }?.takeIf { it.isNotEmpty() }
+                        }
 
                         dispatch(
                             if (parsed != null) {

@@ -11,7 +11,6 @@ kotlin {
             dependencies {
                 implementation(projects.common.editorEngine)
                 implementation(projects.common.entitiesMetadata)
-
                 implementation(projects.common.designFormat)
 
                 implementation(projects.common.components.root)
@@ -19,10 +18,11 @@ kotlin {
                 implementation(projects.common.components.screenEditor)
                 // implementation(projects.common.components.screenSettings)
 
-                implementation(projects.common.uiUtils.buttonsGroupUi)
-                implementation(projects.common.uiUtils.dropdownMenu)
-                implementation(projects.common.uiUtils.dropdownMenuUi)
-                implementation(projects.common.uiUtils.fileDialogs)
+                implementation(projects.common.cmpLibs.dropdownMenu)
+                implementation(projects.common.cmpLibs.dropdownMenuUi)
+                implementation(projects.common.cmpLibs.sideMenusUi)
+                implementation(projects.common.cmpLibs.buttonsGroupUi)
+                implementation(projects.common.cmpLibs.fileDialogsUi)
 
                 if (System.getProperty("deploy")?.toBooleanStrictOrNull() == true) {
                     implementation(compose.desktop.linux_x64)
@@ -32,22 +32,19 @@ kotlin {
                 } else {
                     implementation(compose.desktop.currentOs)
                 }
-
                 implementation(compose.materialIconsExtended)
-
-                implementation(libs.bundles.mvikotlin)
 
                 implementation(libs.kotlinx.coroutines.core)
 
-                implementation(libs.directories)
+                implementation(libs.bundles.mvikotlin)
 
-                implementation("io.github.irgaly.kfswatch:kfswatch:1.0.0")
+                implementation(libs.bundles.fs)
 
 
                 // Meta-code
 
                 implementation(projects.common.logger)
-                implementation(libs.kotlinlogging.jvm)
+                implementation(libs.kotlinlogging.common)
             }
         }
     }

@@ -16,10 +16,10 @@
 
 package io.stardewvalleydesigner.editor.menus.entityselection
 
+import io.stardewvalleydesigner.cmplib.menu.menu
 import io.stardewvalleydesigner.editor.menus.EntitySelectionMenu
 import io.stardewvalleydesigner.engine.entity.Crop
 import io.stardewvalleydesigner.engine.entity.Equipment
-import io.stardewvalleydesigner.utils.menu.menu
 import io.stardewvalleydesigner.editor.menus.EntitySelectionRoot as Root
 
 

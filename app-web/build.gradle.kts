@@ -20,7 +20,6 @@ kotlin {
             dependencies {
                 implementation(projects.common.editorEngine)
                 implementation(projects.common.entitiesMetadata)
-
                 implementation(projects.common.designFormat)
 
                 // implementation(projects.common.components.root)
@@ -28,10 +27,11 @@ kotlin {
                 // implementation(projects.common.components.screenEditor)
                 // implementation(projects.common.components.screenSettings)
 
-                implementation(projects.common.uiUtils.buttonsGroupUi)
-                implementation(projects.common.uiUtils.dropdownMenu)
-                implementation(projects.common.uiUtils.dropdownMenuUi)
-                implementation(projects.common.uiUtils.fileDialogs)
+                implementation(projects.common.cmpLibs.dropdownMenu)
+                implementation(projects.common.cmpLibs.dropdownMenuUi)
+                implementation(projects.common.cmpLibs.sideMenusUi)
+                implementation(projects.common.cmpLibs.buttonsGroupUi)
+                implementation(projects.common.cmpLibs.fileDialogsUi)
 
                 implementation(compose.runtime)
                 implementation(compose.ui)
@@ -41,9 +41,9 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.materialIconsExtended)
 
-                implementation(libs.bundles.mvikotlin)
-
                 implementation(libs.kotlinx.coroutines.core)
+
+                implementation(libs.bundles.mvikotlin)
 
 
                 // Meta-code

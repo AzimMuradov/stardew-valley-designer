@@ -7,14 +7,23 @@ compose = "1.5.3"
 lwjgl = "3.3.2"
 
 #decompose = "2.1.0-beta-01"
+
 mvikotlin = "3.2.1"
 
 kotlinx-coroutines = "1.7.3"
+
+# File System
+
+kfswatch = "1.0.0"
 directories = "26"
+
+# Serialization
 
 kotlinx-serialization-plugin = "1.9.0"
 kotlinx-serialization-json = "1.6.0"
 xmlutil = "0.86.1"
+
+# Logging
 
 kotlinlogging = "5.1.0"
 log4j = "2.20.0"
@@ -22,26 +31,41 @@ log4j = "2.20.0"
 
 [libraries]
 
+# LWJGL
+
 lwjgl = { module = "org.lwjgl:lwjgl", version.ref = "lwjgl" }
 lwjgl-tinyfd = { module = "org.lwjgl:lwjgl-tinyfd", version.ref = "lwjgl" }
 
+# Decompose
+
 #decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 #decompose-extensions-composejb = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose" }
+
+# MVIKotlin
 
 mvikotlin = { module = "com.arkivanov.mvikotlin:mvikotlin", version.ref = "mvikotlin" }
 mvikotlin-main = { module = "com.arkivanov.mvikotlin:mvikotlin-main", version.ref = "mvikotlin" }
 mvikotlin-logging = { module = "com.arkivanov.mvikotlin:mvikotlin-logging", version.ref = "mvikotlin" }
 mvikotlin-extensions-coroutines = { module = "com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines", version.ref = "mvikotlin" }
 
+# Coroutines
+
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 
+# File System
+
+kfswatch = { module = "io.github.irgaly.kfswatch:kfswatch", version.ref = "kfswatch" }
 directories = { module = "dev.dirs:directories", version.ref = "directories" }
+
+# Serialization
 
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 
 xmlutil-core = { module = "io.github.pdvrieze.xmlutil:core", version.ref = "xmlutil" }
 xmlutil-serialization = { module = "io.github.pdvrieze.xmlutil:serialization", version.ref = "xmlutil" }
+
+# Logging
 
 kotlinlogging-common = { module = "io.github.oshai:kotlin-logging", version.ref = "kotlinlogging" }
 kotlinlogging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlinlogging" }
@@ -61,6 +85,11 @@ mvikotlin = [
 xmlutil = [
     "xmlutil-core",
     "xmlutil-serialization",
+]
+
+fs = [
+    "kfswatch",
+    "directories",
 ]
 
 
