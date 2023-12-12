@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner
+package io.stardewvalleydesigner.kmplib.clipboard
 
-import io.stardewvalleydesigner.kmplib.env.Environment
+import java.awt.Toolkit
+import java.awt.datatransfer.StringSelection
 
 
-object AppInfo {
+actual object Clipboard {
 
-    val VERSION: String = Environment.getVar(name = "app.version") ?: "SNAPSHOT"
+    actual fun copyToClipboard(text: String) = Toolkit.getDefaultToolkit()
+        .systemClipboard
+        .setContents(StringSelection(text), null)
 
-    const val AUTHOR_URL: String = "https://github.com/AzimMuradov"
-
-    const val REPOSITORY_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer"
-
-    const val CHANGELOG_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer/releases"
-
-    const val BUG_TRACKER_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer/issues"
+    actual fun pasteFromClipboard(): String? = TODO()
 }

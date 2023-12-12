@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner
-
-import io.stardewvalleydesigner.kmplib.env.Environment
+package io.stardewvalleydesigner.kmplib.clipboard
 
 
-object AppInfo {
+expect object Clipboard {
 
-    val VERSION: String = Environment.getVar(name = "app.version") ?: "SNAPSHOT"
+    fun copyToClipboard(text: String)
 
-    const val AUTHOR_URL: String = "https://github.com/AzimMuradov"
-
-    const val REPOSITORY_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer"
-
-    const val CHANGELOG_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer/releases"
-
-    const val BUG_TRACKER_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer/issues"
+    fun pasteFromClipboard(): String?
 }

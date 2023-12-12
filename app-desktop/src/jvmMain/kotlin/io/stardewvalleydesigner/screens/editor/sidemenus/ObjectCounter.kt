@@ -40,11 +40,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layers.flattenSequence
+import io.stardewvalleydesigner.kmplib.clipboard.Clipboard
 import io.stardewvalleydesigner.metadata.*
 import io.stardewvalleydesigner.utils.GlobalSettings
 import io.stardewvalleydesigner.utils.Sprite
-import java.awt.Toolkit
-import java.awt.datatransfer.StringSelection
 
 
 @Composable
@@ -101,7 +100,7 @@ fun ObjectCounter(entities: LayeredEntitiesData) {
                     interactionSource = remember(::MutableInteractionSource),
                     indication = rememberRipple(color = Color.Black),
                     onClick = {
-                        copyToClipboard(
+                        Clipboard.copyToClipboard(
                             text = buildString {
                                 appendLine("# ${wordList.objectCounterTitle}")
                                 appendLine()
@@ -158,9 +157,3 @@ fun ObjectCounter(entities: LayeredEntitiesData) {
         }
     }
 }
-
-
-private fun copyToClipboard(text: String) = Toolkit
-    .getDefaultToolkit()
-    .systemClipboard
-    .setContents(StringSelection(text), null)

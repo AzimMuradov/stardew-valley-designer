@@ -23,5 +23,3 @@ import io.github.oshai.kotlinlogging.Level
 internal actual fun configureLoggerLevel(isDebug: Boolean) {
     KotlinLoggingConfiguration.logLevel = if (isDebug) Level.DEBUG else Level.WARN
 }
-
-internal actual fun isDebug(): Boolean = false

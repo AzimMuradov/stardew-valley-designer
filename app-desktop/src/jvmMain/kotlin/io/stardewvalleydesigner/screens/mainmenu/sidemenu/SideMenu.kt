@@ -37,9 +37,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.stardewvalleydesigner.ICON_RES_PATH
+import io.stardewvalleydesigner.kmplib.browser.Browser
 import io.stardewvalleydesigner.ternaryColor
 import io.stardewvalleydesigner.utils.*
-import java.net.URI
 
 
 @Composable
@@ -116,7 +116,7 @@ fun RowScope.SideMenu() {
                 text = wordList.buttonStardewValleyText,
                 tooltip = wordList.buttonStardewValleyTooltip,
                 icon = Icons.Filled.OpenInBrowser,
-                onClick = { BrowserUtils.open(URI.create("https://www.stardewvalley.net/")) }
+                onClick = { Browser.openLink(url = "https://www.stardewvalley.net/") }
             )
             SideMenuButton(
                 text = wordList.buttonSwitchThemeText,

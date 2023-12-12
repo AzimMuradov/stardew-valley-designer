@@ -32,5 +32,3 @@ internal actual fun configureLoggerLevel(isDebug: Boolean) {
         ctx.updateLoggers()
     }
 }
-
-internal actual fun isDebug(): Boolean = System.getProperty("debug")?.toBooleanStrictOrNull() ?: true

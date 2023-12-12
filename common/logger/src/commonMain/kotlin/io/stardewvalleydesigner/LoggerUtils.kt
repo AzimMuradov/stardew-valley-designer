@@ -22,18 +22,21 @@ import com.arkivanov.mvikotlin.logging.store.LoggingStoreFactory
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
+import io.stardewvalleydesigner.kmplib.env.Environment
 import com.arkivanov.mvikotlin.logging.logger.Logger as MviLogger
 
 
 object LoggerUtils {
 
-    private val _isDebug: Boolean by lazy(::isDebug)
-
-    val logger: KLogger = KotlinLogging.logger {}.apply {
-        configureLoggerLevel(_isDebug)
+    private val isDebug: Boolean by lazy {
+        Environment.getVar(name = "debug")?.toBooleanStrictOrNull() ?: true
     }
 
-    fun createLoggerAwareStoreFactory(): StoreFactory = if (_isDebug) {
+    val logger: KLogger = KotlinLogging.logger {}.apply {
+        configureLoggerLevel(isDebug)
+    }
+
+    fun createLoggerAwareStoreFactory(): StoreFactory = if (isDebug) {
         LoggingStoreFactory(
             delegate = DefaultStoreFactory(),
             logger = object : MviLogger {
@@ -49,5 +52,3 @@ object LoggerUtils {
 }
 
 internal expect fun configureLoggerLevel(isDebug: Boolean)
-
-internal expect fun isDebug(): Boolean

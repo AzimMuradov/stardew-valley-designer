@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.utils
+package io.stardewvalleydesigner.kmplib.browser
 
 import java.awt.Desktop
 import java.net.URI
 import java.util.*
 
 
-object BrowserUtils {
+actual object Browser {
 
-    fun open(uri: URI) {
+    actual fun openLink(url: String) {
+        val uri = URI.create(url)
         val osName by lazy(LazyThreadSafetyMode.NONE) { System.getProperty("os.name").lowercase(Locale.ENGLISH) }
         val desktop = Desktop.getDesktop()
         when {

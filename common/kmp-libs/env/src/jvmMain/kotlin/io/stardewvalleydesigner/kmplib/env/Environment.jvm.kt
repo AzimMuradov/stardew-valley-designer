@@ -14,20 +14,26 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner
-
-import io.stardewvalleydesigner.kmplib.env.Environment
+package io.stardewvalleydesigner.kmplib.env
 
 
-object AppInfo {
+/**
+ * Execution environment.
+ *
+ * It's a combination of the process environment and the JVM environment.
+ */
+actual object Environment {
 
-    val VERSION: String = Environment.getVar(name = "app.version") ?: "SNAPSHOT"
-
-    const val AUTHOR_URL: String = "https://github.com/AzimMuradov"
-
-    const val REPOSITORY_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer"
-
-    const val CHANGELOG_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer/releases"
-
-    const val BUG_TRACKER_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer/issues"
+    /**
+     * Get the process environment variable and if there is none get the JVM system property.
+     */
+    actual fun getVar(name: String): String? = try {
+        System.getenv(name)
+    } catch (e: SecurityException) {
+        null
+    } ?: try {
+        System.getProperty(name)
+    } catch (e: SecurityException) {
+        null
+    }
 }

@@ -11,6 +11,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(projects.common.kmpLibs.env)
+
                 implementation(libs.kotlinlogging.common)
 
                 implementation(libs.mvikotlin)
