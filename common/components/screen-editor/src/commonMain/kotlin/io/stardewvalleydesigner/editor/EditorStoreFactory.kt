@@ -31,8 +31,7 @@ import io.stardewvalleydesigner.editor.modules.vislayers.VisLayersState
 import io.stardewvalleydesigner.editor.modules.vislayers.reduce
 import io.stardewvalleydesigner.engine.EditorEngine
 import io.stardewvalleydesigner.engine.generateEngine
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.swing.Swing
+import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
 import io.stardewvalleydesigner.editor.EditorIntent as Intent
 import io.stardewvalleydesigner.editor.EditorLabel as Label
 import io.stardewvalleydesigner.editor.EditorState as State
@@ -72,7 +71,7 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
 
     private class ExecutorImpl(
         engine: EditorEngine,
-    ) : CoroutineExecutor<Intent, Action, State, Msg, Label>(mainContext = Dispatchers.Swing) {
+    ) : CoroutineExecutor<Intent, Action, State, Msg, Label>(mainContext = PlatformDispatcher.Main) {
 
         private val history = HistoryManagerImpl(MapState.from(engine))
 

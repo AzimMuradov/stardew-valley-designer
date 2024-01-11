@@ -25,7 +25,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import io.stardewvalleydesigner.ternaryColor
+import io.stardewvalleydesigner.ui.component.themes.ternaryColor
 
 
 @OptIn(ExperimentalFoundationApi::class)

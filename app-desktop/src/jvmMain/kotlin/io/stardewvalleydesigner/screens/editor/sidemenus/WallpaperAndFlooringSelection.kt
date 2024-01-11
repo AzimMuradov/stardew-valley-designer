@@ -33,8 +33,10 @@ import io.stardewvalleydesigner.editor.res.flooring
 import io.stardewvalleydesigner.editor.res.wallpaper
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
-import io.stardewvalleydesigner.utils.*
+import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import io.stardewvalleydesigner.utils.DrawerUtils.drawSpriteStretched
+import io.stardewvalleydesigner.utils.bounceClickable
+import io.stardewvalleydesigner.utils.toIntSize
 
 
 @Composable

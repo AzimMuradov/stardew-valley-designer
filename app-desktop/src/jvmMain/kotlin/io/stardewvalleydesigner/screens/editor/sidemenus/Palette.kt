@@ -38,6 +38,7 @@ import io.stardewvalleydesigner.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.editor.res.OtherImages
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.entity.Colors
+import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import io.stardewvalleydesigner.utils.*
 import androidx.compose.ui.graphics.Color as ComposeColor
 

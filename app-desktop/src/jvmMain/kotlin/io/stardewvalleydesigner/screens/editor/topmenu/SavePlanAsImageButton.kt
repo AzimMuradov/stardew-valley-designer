@@ -34,6 +34,7 @@ import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.metadata.EntityPage.Companion.UNIT
+import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import io.stardewvalleydesigner.utils.*
 import io.stardewvalleydesigner.utils.DrawerUtils.placedEntityComparator
 import io.stardewvalleydesigner.utils.DrawerUtils.tint

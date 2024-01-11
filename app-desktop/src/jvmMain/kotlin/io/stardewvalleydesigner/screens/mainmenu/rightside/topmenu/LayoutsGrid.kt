@@ -31,7 +31,7 @@ import io.stardewvalleydesigner.engine.EditorEngineData
 import io.stardewvalleydesigner.engine.layout.LayoutsProvider.layoutOf
 import io.stardewvalleydesigner.mainmenu.Wrapper
 import io.stardewvalleydesigner.screens.mainmenu.rightside.LayoutPreview
-import io.stardewvalleydesigner.utils.GlobalSettings
+import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 
 @Composable

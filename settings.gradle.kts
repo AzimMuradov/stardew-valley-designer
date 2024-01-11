@@ -23,12 +23,20 @@ include(
     ":common:components:screen-editor",
     // ":common:components:screen-settings",
 )
+include(":common:components:settings")
+
+
+// UI Components
+
+include(":common:ui-components:settings-provider")
+include(":common:ui-components:themes")
 
 
 // Custom Kotlin Multiplatform Libraries
 
 include(":common:kmp-libs:browser")
 include(":common:kmp-libs:clipboard")
+include(":common:kmp-libs:dispatcher")
 include(":common:kmp-libs:env")
 
 

@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner
+package io.stardewvalleydesigner.ui.component.themes
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.resource
 
 
 @Composable
@@ -63,7 +65,7 @@ private fun AppLightTheme(content: @Composable () -> Unit) {
             onSurface = Color.Black,
             onError = Color.White,
         ),
-        typography = typography,
+        typography = getTypography(),
         shapes = shapes,
         content = content,
     )
@@ -86,38 +88,15 @@ private fun AppDarkTheme(content: @Composable () -> Unit) {
             // onSurface =,
             // onError =,
         ),
-        typography = typography,
+        typography = getTypography(),
         shapes = shapes,
         content = content,
     )
 }
 
-
-private val typography = Typography(
-    defaultFontFamily = FontFamily(
-        buildList {
-            for ((weight, weightName) in listOf(
-                FontWeight.Thin to "Thin",
-                FontWeight.Light to "Light",
-                FontWeight.Normal to "Regular",
-                FontWeight.Medium to "Medium",
-                FontWeight.Bold to "Bold",
-                FontWeight.Black to "Black",
-            )) {
-                for ((style, styleName) in listOf(
-                    FontStyle.Normal to "",
-                    FontStyle.Italic to "Italic"
-                )) {
-                    this += Font(
-                        family = "Roboto",
-                        name = "Roboto-$weightName$styleName",
-                        weight = weight,
-                        style = style,
-                    )
-                }
-            }
-        }
-    ),
+@Composable
+private fun getTypography(): Typography = Typography(
+    defaultFontFamily = fontFamily(),
     h1 = TextStyle(
         fontWeight = FontWeight.Light,
         fontSize = 60.sp,
@@ -192,9 +171,50 @@ private val shapes = Shapes(
 )
 
 
-private fun Font(
+@Composable
+private fun fontFamily(): FontFamily {
+    var ff: FontFamily by remember { mutableStateOf(FontFamily.Default) }
+
+    LaunchedEffect(Unit) {
+        ff = FontFamily(
+            buildList {
+                for ((weight, weightName) in listOf(
+                    FontWeight.Thin to "Thin",
+                    FontWeight.Light to "Light",
+                    FontWeight.Normal to "Regular",
+                    FontWeight.Medium to "Medium",
+                    FontWeight.Bold to "Bold",
+                    FontWeight.Black to "Black",
+                )) {
+                    for ((style, styleName) in listOf(
+                        FontStyle.Normal to "",
+                        FontStyle.Italic to "Italic"
+                    )) {
+                        this += Font(
+                            family = "Roboto",
+                            name = "Roboto-$weightName$styleName",
+                            weight = weight,
+                            style = style,
+                        )
+                    }
+                }
+            }
+        )
+    }
+
+    return ff
+}
+
+
+@OptIn(ExperimentalResourceApi::class)
+private suspend fun Font(
     family: String,
     name: String,
     weight: FontWeight = FontWeight.Normal,
     style: FontStyle = FontStyle.Normal,
-) = Font(resource = "fonts/$family/$name.ttf", weight, style)
+) = Font(
+    identity = "$name-$family",
+    data = resource("fonts/$family/$name.ttf").readBytes(),
+    weight,
+    style
+)
