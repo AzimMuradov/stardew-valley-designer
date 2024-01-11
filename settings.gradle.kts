@@ -34,13 +34,13 @@ include(":common:kmp-libs:env")
 
 // Custom Compose Multiplatform Libraries
 
+include(":common:cmp-libs:buttons-group")
 include(
+    ":common:cmp-libs:dropdown-menu-model",
     ":common:cmp-libs:dropdown-menu",
-    ":common:cmp-libs:dropdown-menu-ui",
 )
-include(":common:cmp-libs:side-menus-ui")
-include(":common:cmp-libs:buttons-group-ui")
-include(":common:cmp-libs:file-dialogs-ui")
+include(":common:cmp-libs:file-dialogs")
+include(":common:cmp-libs:side-menus")
 
 
 // Utilities

@@ -14,22 +14,26 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.utils
+package io.stardewvalleydesigner.cmplib.filedialogs
 
-import kotlinx.datetime.*
-
-
-fun nowFormatted(): String {
-    val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-    return with(now) {
-        buildList {
-            addAll(listOf(year.pad4(), monthNumber.pad2(), dayOfMonth.pad2()))
-            addAll(listOf(hour.pad2(), minute.pad2(), second.pad2()))
-        }
-    }.joinToString(separator = "-")
-}
+import androidx.compose.runtime.Composable
 
 
-private fun Int.pad2() = toString().padStart(length = 2, padChar = '0')
+@Composable
+expect fun FileSaver(
+    title: String? = null,
+    defaultPathAndFile: String? = null,
+    extensions: List<String>? = null,
+    extensionsDescription: String? = null,
+    onPathProvided: (String?) -> Unit,
+)
 
-private fun Int.pad4() = toString().padStart(length = 4, padChar = '0')
+@Composable
+expect fun FilePicker(
+    title: String? = null,
+    defaultPathAndFile: String? = null,
+    extensions: List<String>? = null,
+    extensionsDescription: String? = null,
+    multiSelect: Boolean = false,
+    onFilesSelected: (List<String>?) -> Unit,
+)

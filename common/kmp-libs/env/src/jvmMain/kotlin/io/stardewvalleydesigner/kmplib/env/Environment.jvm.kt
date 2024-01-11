@@ -16,16 +16,16 @@
 
 package io.stardewvalleydesigner.kmplib.env
 
+import dev.dirs.UserDirectories
+
 
 /**
  * Execution environment.
- *
- * It's a combination of the process environment and the JVM environment.
  */
 actual object Environment {
 
     /**
-     * Get the process environment variable and if there is none get the JVM system property.
+     * Get the process environment variable with the given [name] and if there is none get the corresponding JVM system property.
      */
     actual fun getVar(name: String): String? = try {
         System.getenv(name)
@@ -36,4 +36,20 @@ actual object Environment {
     } catch (e: SecurityException) {
         null
     }
+
+
+    /**
+     * Get the user's home directory.
+     */
+    actual fun getHomeDir(): String? = UserDirectories.get().homeDir
+
+    /**
+     * Get the user's documents directory.
+     */
+    actual fun getDocsDir(): String? = UserDirectories.get().documentDir
+
+    /**
+     * Get the user's pictures directory.
+     */
+    actual fun getPicsDir(): String? = UserDirectories.get().pictureDir
 }

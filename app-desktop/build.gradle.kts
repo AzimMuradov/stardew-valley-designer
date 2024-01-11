@@ -7,7 +7,7 @@ kotlin {
     jvm()
 
     sourceSets {
-        val jvmMain by getting {
+        jvmMain {
             dependencies {
                 implementation(projects.common.editorEngine)
                 implementation(projects.common.entitiesMetadata)
@@ -31,11 +31,11 @@ kotlin {
                 }
                 implementation(compose.materialIconsExtended)
 
+                implementation(projects.common.cmpLibs.buttonsGroup)
+                implementation(projects.common.cmpLibs.dropdownMenuModel)
                 implementation(projects.common.cmpLibs.dropdownMenu)
-                implementation(projects.common.cmpLibs.dropdownMenuUi)
-                implementation(projects.common.cmpLibs.sideMenusUi)
-                implementation(projects.common.cmpLibs.buttonsGroupUi)
-                implementation(projects.common.cmpLibs.fileDialogsUi)
+                implementation(projects.common.cmpLibs.fileDialogs)
+                implementation(projects.common.cmpLibs.sideMenus)
 
                 implementation(projects.common.kmpLibs.browser)
                 implementation(projects.common.kmpLibs.clipboard)
@@ -45,7 +45,10 @@ kotlin {
 
                 implementation(libs.bundles.mvikotlin)
 
-                implementation(libs.bundles.fs)
+                implementation(libs.directories)
+                implementation(libs.kfswatch)
+
+                implementation(libs.kotlinx.datetime)
 
 
                 // Meta-code
@@ -79,6 +82,5 @@ kotlin {
 }
 
 tasks.clean {
-    delete(rootProject.buildDir)
     delete(rootDir.resolve("output"))
 }

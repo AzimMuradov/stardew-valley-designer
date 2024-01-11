@@ -4,7 +4,15 @@ plugins {
 
 kotlin {
     jvm()
-    js(IR) {
+    js {
         browser()
+    }
+
+    sourceSets {
+        jvmMain {
+            dependencies {
+                implementation(libs.directories)
+            }
+        }
     }
 }

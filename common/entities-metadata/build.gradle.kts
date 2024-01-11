@@ -4,12 +4,12 @@ plugins {
 
 kotlin {
     jvm()
-    js(IR) {
+    js {
         browser()
     }
 
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(projects.common.editorEngine)
 

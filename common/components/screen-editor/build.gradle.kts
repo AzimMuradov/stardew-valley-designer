@@ -6,11 +6,11 @@ kotlin {
     jvm()
 
     sourceSets {
-        val jvmMain by getting {
+        jvmMain {
             dependencies {
                 implementation(projects.common.editorEngine)
 
-                implementation(projects.common.cmpLibs.dropdownMenu)
+                implementation(projects.common.cmpLibs.dropdownMenuModel)
 
                 implementation(libs.kotlinx.coroutines.swing)
 

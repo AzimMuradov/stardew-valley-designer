@@ -4,19 +4,24 @@ plugins {
 }
 
 kotlin {
-    js(IR) {
+    js {
         browser {
-            commonWebpackConfig(
-                Action {
-                    outputFileName = "svd.js"
+            commonWebpackConfig {
+                outputFileName = "svd.js"
+                export = false
+            }
+
+            runTask {
+                System.getProperty("debug")?.let { value ->
+                    args.plusAssign(listOf("--env", "debug=$value"))
                 }
-            )
+            }
         }
         binaries.executable()
     }
 
     sourceSets {
-        val jsMain by getting {
+        jsMain {
             dependencies {
                 implementation(projects.common.editorEngine)
                 implementation(projects.common.entitiesMetadata)
@@ -27,11 +32,8 @@ kotlin {
                 // implementation(projects.common.components.screenEditor)
                 // implementation(projects.common.components.screenSettings)
 
-                implementation(projects.common.cmpLibs.dropdownMenu)
-                implementation(projects.common.cmpLibs.dropdownMenuUi)
-                implementation(projects.common.cmpLibs.sideMenusUi)
-                implementation(projects.common.cmpLibs.buttonsGroupUi)
-                implementation(projects.common.cmpLibs.fileDialogsUi)
+
+                // Compose Multiplatform
 
                 implementation(compose.runtime)
                 implementation(compose.ui)
@@ -41,9 +43,23 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.materialIconsExtended)
 
+                implementation(projects.common.cmpLibs.buttonsGroup)
+                implementation(projects.common.cmpLibs.dropdownMenuModel)
+                implementation(projects.common.cmpLibs.dropdownMenu)
+                implementation(projects.common.cmpLibs.fileDialogs)
+                implementation(projects.common.cmpLibs.sideMenus)
+
+                implementation(projects.common.kmpLibs.browser)
+                implementation(projects.common.kmpLibs.clipboard)
+                implementation(projects.common.kmpLibs.env)
+
                 implementation(libs.kotlinx.coroutines.core)
 
                 implementation(libs.bundles.mvikotlin)
+
+                // implementation(libs.kfswatch)
+
+                implementation(libs.kotlinx.datetime)
 
 
                 // Meta-code
@@ -57,9 +73,4 @@ kotlin {
 
 compose.experimental.web {
     application {}
-}
-
-tasks.clean {
-    delete(rootProject.buildDir)
-    delete(rootDir.resolve("output"))
 }
