@@ -1,10 +1,14 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
 }
 
 kotlin {
     jvm()
-    js {
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
         browser()
     }
 
@@ -27,9 +31,9 @@ kotlin {
                 compileOnly(libs.log4j.core)
             }
         }
-        jsMain {
+        val wasmJsMain by getting {
             dependencies {
-                implementation(libs.kotlinlogging.js)
+                implementation(libs.kotlinlogging.wasmJs)
             }
         }
     }

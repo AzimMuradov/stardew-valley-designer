@@ -1,10 +1,14 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.compose)
 }
 
 kotlin {
-    js {
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
         browser {
             commonWebpackConfig {
                 outputFileName = "svd.js"
@@ -21,7 +25,7 @@ kotlin {
     }
 
     sourceSets {
-        jsMain {
+        val wasmJsMain by getting {
             dependencies {
                 implementation(projects.common.editorEngine)
                 implementation(projects.common.entitiesMetadata)
