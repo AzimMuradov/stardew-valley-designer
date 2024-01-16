@@ -80,7 +80,7 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
         private val toolkit = ToolkitImpl(engine, ToolkitState.default())
 
 
-        override fun executeIntent(intent: Intent, getState: () -> State) {
+        override fun executeIntent(intent: Intent) {
             when (intent) {
                 is Intent.History -> {
                     var isSnapshotChanged = false
@@ -104,7 +104,7 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
                 }
 
                 is Intent.Engine -> {
-                    val actionReturn = getState().let { (_, map, _, palette, visLayers) ->
+                    val actionReturn = state().let { (_, map, _, palette, visLayers) ->
                         toolkit.runAction(
                             action = intent,
                             currentEntity = palette.inUse,
@@ -114,49 +114,49 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
                     }
                     if (actionReturn != null) {
                         dispatch(Msg.UpdateToolkit(actionReturn.toolkit))
-                        dispatch(Msg.UpdatePalette(getState().palette.copy(inUse = actionReturn.currentEntity)))
+                        dispatch(Msg.UpdatePalette(state().palette.copy(inUse = actionReturn.currentEntity)))
                         dispatch(Msg.UpdateMap(engine.pullState(actionReturn.selectedEntities)))
 
                         if (intent == Intent.Engine.End) {
-                            history.register(getState().map)
+                            history.register(state().map)
                             dispatch(Msg.UpdateHistory(history.state))
                         }
                     }
                 }
 
                 is Intent.Toolkit -> {
-                    dispatch(Msg.UpdateToolkit(getState().toolkit.reduce(intent)))
-                    getState().toolkit.run { toolkit.setTool(tool, shape) }
+                    dispatch(Msg.UpdateToolkit(state().toolkit.reduce(intent)))
+                    state().toolkit.run { toolkit.setTool(tool, shape) }
                 }
 
-                is Intent.Palette -> dispatch(Msg.UpdatePalette(getState().palette.reduce(intent)))
+                is Intent.Palette -> dispatch(Msg.UpdatePalette(state().palette.reduce(intent)))
 
-                is Intent.VisLayers -> dispatch(Msg.UpdateVisLayers(getState().visLayers.reduce(intent)))
+                is Intent.VisLayers -> dispatch(Msg.UpdateVisLayers(state().visLayers.reduce(intent)))
 
                 is Intent.WallpaperAndFlooring -> {
                     dispatch(
                         when (intent) {
                             is Intent.WallpaperAndFlooring.ChooseWallpaper -> {
                                 engine.wallpaper = intent.wallpaper
-                                Msg.UpdateMap(getState().map.copy(wallpaper = intent.wallpaper))
+                                Msg.UpdateMap(state().map.copy(wallpaper = intent.wallpaper))
                             }
 
                             is Intent.WallpaperAndFlooring.ChooseFlooring -> {
                                 engine.flooring = intent.flooring
-                                Msg.UpdateMap(getState().map.copy(flooring = intent.flooring))
+                                Msg.UpdateMap(state().map.copy(flooring = intent.flooring))
                             }
                         }
                     )
 
-                    history.register(getState().map)
+                    history.register(state().map)
                     dispatch(Msg.UpdateHistory(history.state))
                 }
 
-                is Intent.Options -> dispatch(Msg.UpdateOptions(getState().options.reduce(intent)))
+                is Intent.Options -> dispatch(Msg.UpdateOptions(state().options.reduce(intent)))
             }
         }
 
-        override fun executeAction(action: Action, getState: () -> State) = Unit
+        override fun executeAction(action: Action) = Unit
     }
 
     private val reducer = Reducer<State, Msg> { msg ->

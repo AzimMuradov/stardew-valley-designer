@@ -78,14 +78,14 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
         private val onEditorScreenCall: (EditorEngineData, planPath: String?) -> Unit,
     ) : CoroutineExecutor<Intent, Action, State, Msg, Label>(mainContext = Dispatchers.Swing) {
 
-        override fun executeIntent(intent: Intent, getState: () -> State) {
+        override fun executeIntent(intent: Intent) {
             when (intent) {
                 Intent.NewPlanMenu.OpenMenu -> dispatch(Msg.OpenNewPlanMenu)
 
                 is Intent.NewPlanMenu.ChooseLayout -> dispatch(Msg.ChooseLayoutFromNewPlanMenu(intent.layout))
 
                 Intent.NewPlanMenu.AcceptChosen -> onEditorScreenCall(
-                    (getState() as State.NewPlanMenu.Idle).chosenLayout.value,
+                    (state() as State.NewPlanMenu.Idle).chosenLayout.value,
                     null,
                 )
 
@@ -128,7 +128,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 }
 
                 Intent.OpenPlanMenu.Accept -> {
-                    val (layout, planPath) = getState() as State.OpenPlanMenu.Loaded
+                    val (layout, planPath) = state() as State.OpenPlanMenu.Loaded
 
                     dispatch(Msg.ToMainMenu)
 
@@ -168,7 +168,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 is Intent.SaveLoaderMenu.ChooseLayout -> dispatch(Msg.ChooseLayoutFromSaveLoaderMenu(intent.layout))
 
                 Intent.SaveLoaderMenu.AcceptChosen -> {
-                    val layout = (getState() as State.SaveLoaderMenu.Loaded).chosenLayout
+                    val layout = (state() as State.SaveLoaderMenu.Loaded).chosenLayout
 
                     onEditorScreenCall(layout.value, null)
                 }
@@ -177,7 +177,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
             }
         }
 
-        override fun executeAction(action: Action, getState: () -> State) = Unit
+        override fun executeAction(action: Action) = Unit
     }
 
     private val reducer = Reducer<State, Msg> { msg ->
