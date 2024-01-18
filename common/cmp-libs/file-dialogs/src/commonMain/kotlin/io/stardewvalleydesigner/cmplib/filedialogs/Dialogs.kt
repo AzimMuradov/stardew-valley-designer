@@ -34,6 +34,12 @@ expect fun FilePicker(
     defaultPathAndFile: String? = null,
     extensions: List<String>? = null,
     extensionsDescription: String? = null,
-    multiSelect: Boolean = false,
-    onFilesSelected: (List<String>?) -> Unit,
+    // multiSelect: Boolean = false, // TODO : Add support for multiple files?
+    onFilePicked: (FilePickerResult?) -> Unit,
+)
+
+data class FilePickerResult(
+    val text: String,
+    // val name: String, // TODO : Add support for file name?
+    val absolutePath: String?,
 )

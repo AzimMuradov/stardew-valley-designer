@@ -28,7 +28,6 @@ import io.stardewvalleydesigner.engine.layout.LayoutType
 import io.stardewvalleydesigner.save.SaveDataParser
 import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing
-import java.io.File
 import io.stardewvalleydesigner.mainmenu.MainMenuIntent as Intent
 import io.stardewvalleydesigner.mainmenu.MainMenuLabel as Label
 import io.stardewvalleydesigner.mainmenu.MainMenuState as State
@@ -98,12 +97,10 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                     dispatch(Msg.ShowLoadingInOpenPlanMenu)
 
                     scope.launch {
-                        val path = intent.path.trim()
-
                         val parsed = try {
                             withContext(Dispatchers.IO) {
                                 val (_, entities, wallpaper, flooring, layout) = PlanFormatConverter.parse(
-                                    text = File(path).readText()
+                                    text = intent.text
                                 )
                                 return@withContext EditorEngineData(
                                     layoutType = layout,
@@ -119,7 +116,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
                         dispatch(
                             if (parsed != null) {
-                                Msg.ShowSuccessInOpenPlanMenu(parsed, path)
+                                Msg.ShowSuccessInOpenPlanMenu(parsed, intent.absolutePath)
                             } else {
                                 Msg.ShowErrorInOpenPlanMenu
                             }
@@ -144,11 +141,9 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                     dispatch(Msg.ShowLoadingInSaveLoaderMenu)
 
                     scope.launch {
-                        val path = intent.path.trim()
-
                         val parsed = try {
                             withContext(Dispatchers.IO) {
-                                SaveDataParser.parse(text = File(path).readText()).map(EditorEngineData::wrapped)
+                                SaveDataParser.parse(intent.text).map(EditorEngineData::wrapped)
                             }
                         } catch (e: Exception) {
                             logger.warn { e.stackTraceToString() }

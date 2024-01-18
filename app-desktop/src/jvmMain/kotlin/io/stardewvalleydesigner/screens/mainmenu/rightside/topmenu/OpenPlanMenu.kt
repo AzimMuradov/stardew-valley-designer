@@ -61,7 +61,9 @@ fun RowScope.OpenPlanMenu(
                 filePickerTitle = wordList.openPlanSelectPlanTitle,
                 placeholderText = wordList.openPlanSelectPlanPlaceholder,
                 defaultPathAndFile = savePath,
-                onFilePicked = { path -> intentConsumer(MainMenuIntent.OpenPlanMenu.LoadPlan(path)) },
+                onFilePicked = { text, absolutePath ->
+                    intentConsumer(MainMenuIntent.OpenPlanMenu.LoadPlan(text, absolutePath))
+                },
                 fileFormat = "json"
             )
         },

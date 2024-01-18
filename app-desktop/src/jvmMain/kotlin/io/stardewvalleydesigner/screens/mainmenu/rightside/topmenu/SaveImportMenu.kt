@@ -26,7 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import io.stardewvalleydesigner.LoggerUtils
+import io.stardewvalleydesigner.LoggerUtils.logger
 import io.stardewvalleydesigner.mainmenu.MainMenuIntent
 import io.stardewvalleydesigner.mainmenu.MainMenuState
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
@@ -59,7 +59,9 @@ fun RowScope.SaveImportMenu(
                 filePickerTitle = wordList.saveImportSelectSaveFileTitle,
                 placeholderText = wordList.saveImportSelectSaveFilePlaceholder,
                 defaultPathAndFile = savePath,
-                onFilePicked = { path -> intentConsumer(MainMenuIntent.SaveLoaderMenu.LoadSave(path)) },
+                onFilePicked = { text, absolutePath ->
+                    intentConsumer(MainMenuIntent.SaveLoaderMenu.LoadSave(text, absolutePath))
+                },
             )
         },
         mainPart = {
@@ -119,7 +121,7 @@ private val savePath: String? = run {
     }
 
     "$dataPath${sep}StardewValley${sep}Saves${sep}".takeIf {
-        LoggerUtils.logger.debug { "Saves path: $it" }
+        logger.debug { "Saves path: $it" }
         File(it).exists()
     }
 }

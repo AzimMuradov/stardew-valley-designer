@@ -30,6 +30,10 @@ actual fun FileSaver(
     extensionsDescription: String?,
     onPathProvided: (String?) -> Unit,
 ) {
+    if (title != null) logger.info { "`title` was ignored" }
+    if (defaultPathAndFile != null) logger.info { "`defaultPathAndFile` was ignored" }
+    if (extensionsDescription != null) logger.info { "`extensionsDescription` was ignored" }
+
     TODO()
 }
 
@@ -39,16 +43,16 @@ actual fun FilePicker(
     defaultPathAndFile: String?,
     extensions: List<String>?,
     extensionsDescription: String?,
-    multiSelect: Boolean,
-    onFilesSelected: (List<String>?) -> Unit,
+    onFilePicked: (FilePickerResult?) -> Unit,
 ) {
-    if (title != null) logger.warn { "`title` was ignored" }
-    if (defaultPathAndFile != null) logger.warn { "`defaultPathAndFile` was ignored" }
-    if (extensionsDescription != null) logger.warn { "`extensionsDescription` was ignored" }
+    if (title != null) logger.info { "`title` was ignored" }
+    if (defaultPathAndFile != null) logger.info { "`defaultPathAndFile` was ignored" }
+    if (extensionsDescription != null) logger.info { "`extensionsDescription` was ignored" }
 
     document.loadFileFromDisk(
-        accept = (extensions ?: emptyList()).joinToString { ".$it" },
-        multiple = multiSelect,
-        onLoaded = { onFilesSelected(listOf(it)) }
+        extensionsString = (extensions ?: emptyList()).joinToString { ".$it" },
+        onLoaded = { text ->
+            onFilePicked(FilePickerResult(text, absolutePath = null))
+        },
     )
 }

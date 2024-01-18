@@ -42,28 +42,27 @@ internal object DomDialogsWrapper {
     // }
 
     fun Document.loadFileFromDisk(
-        accept: String,
-        multiple: Boolean = false,
+        extensionsString: String,
         onLoaded: (String) -> Unit,
     ) {
-        val tempInput = (createElement("input") as HTMLInputElement).also { input ->
-            input.type = "file"
-            input.style.display = "none"
-            input.accept = accept
-            input.multiple = multiple
+        val multiSelect = false
+        val tempInput = (createElement("input") as HTMLInputElement).apply {
+            type = "file"
+            style.display = "none"
+            accept = extensionsString
+            multiple = multiSelect
         }
 
-        tempInput.onchange = { changeEvt ->
-            val files = targetFiles(changeEvt.target!!).asList()
-            // TODO : Add support for multiple files?
-            val file = files[0]
+        tempInput.onchange = { changeEvent ->
+            val file = targetFiles(changeEvent.target!!).asList().first()
 
-            val reader = FileReader()
-            reader.onload = { loadEvt ->
-                val content = targetResult(loadEvt.target!!)
-                onLoaded(content)
+            FileReader().run {
+                onload = { loadEvent ->
+                    val content = targetResult(loadEvent.target!!)
+                    onLoaded(content)
+                }
+                readAsText(file, label = "UTF-8")
             }
-            reader.readAsText(file, label = "UTF-8")
         }
 
         body!!.append(tempInput)

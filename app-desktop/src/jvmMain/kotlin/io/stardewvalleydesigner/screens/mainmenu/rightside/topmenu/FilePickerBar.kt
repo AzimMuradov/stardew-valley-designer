@@ -40,7 +40,7 @@ fun FilePickerBar(
     filePickerTitle: String,
     placeholderText: String,
     defaultPathAndFile: String?,
-    onFilePicked: (String) -> Unit,
+    onFilePicked: (String, String) -> Unit,
     fileFormat: String? = null,
 ) {
     var pathString by remember { mutableStateOf("") }
@@ -67,11 +67,11 @@ fun FilePickerBar(
                 title = filePickerTitle,
                 defaultPathAndFile = pathString.takeIf(String::isNotBlank) ?: defaultPathAndFile ?: homePath,
                 extensions = fileFormat?.let(::listOf)
-            ) { path ->
+            ) { result ->
                 showFilePicker = false
-                path?.let {
-                    pathString = it.first().toString()
-                    onFilePicked(pathString)
+                result?.let {
+                    pathString = it.absolutePath ?: ""
+                    onFilePicked(it.text, pathString)
                 }
             }
         }
