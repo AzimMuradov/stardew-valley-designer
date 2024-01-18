@@ -17,44 +17,58 @@
 package io.stardewvalleydesigner.cmplib.filedialogs
 
 import io.stardewvalleydesigner.LoggerUtils.logger
+import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
+import kotlinx.coroutines.withContext
 import org.lwjgl.PointerBuffer
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.util.tinyfd.TinyFileDialogs
+import java.io.File
 
 
 internal object TinyFileDialogsWrapper {
 
-    fun createSaveFileDialog(
+    suspend fun createSaveFileDialog(
         title: String? = null,
         defaultPathAndFile: String? = null,
         extensions: List<String>? = null,
         extensionsDescription: String? = null,
-    ): String? = catchingNativeCall {
-        MemoryStack.stackPush().use { stack ->
-            TinyFileDialogs.tinyfd_saveFileDialog(
-                title,
-                defaultPathAndFile,
-                extensions?.map { "*.$it" }?.putOn(stack),
-                extensionsDescription,
-            )
+    ): String? = withContext(PlatformDispatcher.IO) {
+        catchingNativeCall {
+            MemoryStack.stackPush().use { stack ->
+                TinyFileDialogs.tinyfd_saveFileDialog(
+                    title,
+                    defaultPathAndFile,
+                    extensions?.map { "*.$it" }?.putOn(stack),
+                    extensionsDescription,
+                )
+            }
         }
     }
 
-    fun createOpenFileDialog(
+    suspend fun createOpenFileDialog(
         title: String? = null,
         defaultPathAndFile: String? = null,
         extensions: List<String>? = null,
         extensionsDescription: String? = null,
-        multiSelect: Boolean = false,
-    ): List<String>? = catchingNativeCall {
-        MemoryStack.stackPush().use { stack ->
-            TinyFileDialogs.tinyfd_openFileDialog(
-                title,
-                defaultPathAndFile,
-                extensions?.map { "*.$it" }?.putOn(stack),
-                extensionsDescription,
-                multiSelect,
-            )?.split('|')
+    ): FilePickerResult? = withContext(PlatformDispatcher.IO) {
+        catchingNativeCall {
+            val path = MemoryStack.stackPush().use { stack ->
+                val multiSelect = false
+                TinyFileDialogs.tinyfd_openFileDialog(
+                    title,
+                    defaultPathAndFile,
+                    extensions?.map { "*.$it" }?.putOn(stack),
+                    extensionsDescription,
+                    multiSelect,
+                )?.split('|')?.firstOrNull()
+            }
+
+            if (path != null) {
+                val file = File(path)
+                FilePickerResult(file.readText(), file.absolutePath)
+            } else {
+                null
+            }
         }
     }
 

@@ -36,7 +36,10 @@ sealed interface MainMenuIntent {
 
         data object OpenMenu : OpenPlanMenu
 
-        data class LoadPlan(val path: String) : OpenPlanMenu
+        data class LoadPlan(val text: String, val absolutePath: String) : OpenPlanMenu {
+
+            override fun toString(): String = "LoadPlan(text='${text.take(n = 100)}', absolutePath='$absolutePath')"
+        }
 
         data object Accept : OpenPlanMenu
 
@@ -47,7 +50,10 @@ sealed interface MainMenuIntent {
 
         data object OpenMenu : SaveLoaderMenu
 
-        data class LoadSave(val path: String) : SaveLoaderMenu
+        data class LoadSave(val text: String, val absolutePath: String) : SaveLoaderMenu {
+
+            override fun toString(): String = "LoadSave(text='${text.take(n = 100)}', absolutePath='$absolutePath')"
+        }
 
         data class ChooseLayout(val layout: Wrapper<EditorEngineData>) : SaveLoaderMenu
 

@@ -50,19 +50,17 @@ actual fun FilePicker(
     defaultPathAndFile: String?,
     extensions: List<String>?,
     extensionsDescription: String?,
-    multiSelect: Boolean,
-    onFilesSelected: (List<String>?) -> Unit,
+    onFilePicked: (FilePickerResult?) -> Unit,
 ) {
     ModalDialog {
-        val paths = TinyFileDialogsWrapper.createOpenFileDialog(
+        val result = TinyFileDialogsWrapper.createOpenFileDialog(
             title,
             defaultPathAndFile = defaultPathAndFile ?: System.getProperty("user.dir"),
             extensions,
             extensionsDescription,
-            multiSelect,
         )
 
-        onFilesSelected(paths)
+        onFilePicked(result)
     }
 }
 

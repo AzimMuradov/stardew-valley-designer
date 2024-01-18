@@ -16,6 +16,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(projects.common.kmpLibs.dispatcher)
+
                 implementation(compose.foundation)
                 implementation(compose.runtime)
                 implementation(compose.animation)
