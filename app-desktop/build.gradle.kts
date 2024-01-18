@@ -20,6 +20,10 @@ kotlin {
                 implementation(projects.common.components.settings)
 
                 implementation(projects.common.uiComponents.editor)
+                implementation(projects.common.uiComponents.editorMenus.savePlan)
+                implementation(projects.common.uiComponents.editorMenus.savePlanAs)
+                implementation(projects.common.uiComponents.editorMenus.savePlanImg)
+
                 implementation(projects.common.uiComponents.settingsProvider)
                 implementation(projects.common.uiComponents.themes)
 

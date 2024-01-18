@@ -17,6 +17,9 @@
 package io.stardewvalleydesigner.kmplib.env
 
 import dev.dirs.UserDirectories
+import kotlin.io.path.Path
+import kotlin.io.path.exists
+import java.io.File.separator as sep
 
 
 /**
@@ -52,4 +55,27 @@ actual object Environment {
      * Get the user's pictures directory.
      */
     actual fun getPicsDir(): String? = UserDirectories.get().pictureDir
+
+
+    actual fun getSvdImagesDir(): String? = relativeIfExists(
+        dir = getPicsDir(),
+        filename = "Stardew Valley Designer",
+    )
+
+    actual fun getSvdSavesDir(): String? = relativeIfExists(
+        dir = getDocsDir(),
+        filename = "Stardew Valley Designer",
+    )
+
+
+    actual fun relative(dir: String?, filename: String): String? = if (dir != null) {
+        "$dir$sep$filename"
+    } else {
+        null
+    }
+
+    actual fun relativeIfExists(dir: String?, filename: String): String? = relative(dir, filename)?.takeIfExists()
+
+
+    private fun String.takeIfExists(): String? = takeIf { Path(it).exists() }
 }

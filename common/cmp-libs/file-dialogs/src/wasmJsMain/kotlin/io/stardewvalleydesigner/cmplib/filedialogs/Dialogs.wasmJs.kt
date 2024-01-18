@@ -28,7 +28,8 @@ actual fun FileSaver(
     defaultPathAndFile: String?,
     extensions: List<String>?,
     extensionsDescription: String?,
-    onPathProvided: (String?) -> Unit,
+    bytes: () -> ByteArray,
+    onFileSaved: (FileSaverResult?) -> Unit,
 ) {
     if (title != null) logger.info { "`title` was ignored" }
     if (defaultPathAndFile != null) logger.info { "`defaultPathAndFile` was ignored" }

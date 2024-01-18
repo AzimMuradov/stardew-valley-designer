@@ -29,6 +29,7 @@ import io.stardewvalleydesigner.screens.MainMenuScreen
 import io.stardewvalleydesigner.settings.Lang
 import io.stardewvalleydesigner.ui.component.editor.res.WithImageResources
 import io.stardewvalleydesigner.ui.component.editor.screens.EditorScreen
+import io.stardewvalleydesigner.ui.component.editor.screens.editor.menu.*
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import io.stardewvalleydesigner.ui.component.settings.WithSettings
 import io.stardewvalleydesigner.ui.component.themes.AppTheme
@@ -89,7 +90,29 @@ private fun Root(component: RootComponent, exitApplication: () -> Unit) {
                     }
                 },
             ) {
-                EditorScreen(editorComponent)
+                EditorScreen(
+                    editorComponent,
+                    rightBottomMenus = { editorState, snackbarHostState ->
+                        var designSaveAbsolutePath: String? by remember { mutableStateOf(editorState.planPath) }
+
+                        SavePlanButton(
+                            map = editorState.map,
+                            snackbarHostState = snackbarHostState,
+                            designSaveAbsolutePath = designSaveAbsolutePath,
+                        )
+                        SavePlanAsButton(
+                            map = editorState.map,
+                            snackbarHostState = snackbarHostState,
+                            designSaveAbsolutePath = designSaveAbsolutePath,
+                            onDesignSaveAbsolutePathChanged = { designSaveAbsolutePath = it },
+                        )
+                        SavePlanAsImageButton(
+                            map = editorState.map,
+                            visibleLayers = editorState.visLayers,
+                            snackbarHostState = snackbarHostState,
+                        )
+                    }
+                )
             }
         }
     }

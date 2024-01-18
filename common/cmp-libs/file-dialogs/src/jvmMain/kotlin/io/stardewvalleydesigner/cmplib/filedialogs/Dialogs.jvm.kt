@@ -30,17 +30,19 @@ actual fun FileSaver(
     defaultPathAndFile: String?,
     extensions: List<String>?,
     extensionsDescription: String?,
-    onPathProvided: (String?) -> Unit,
+    bytes: () -> ByteArray,
+    onFileSaved: (FileSaverResult?) -> Unit,
 ) {
     ModalDialog {
-        val paths = TinyFileDialogsWrapper.createSaveFileDialog(
+        val result = TinyFileDialogsWrapper.createSaveFileDialog(
             title,
             defaultPathAndFile = defaultPathAndFile ?: System.getProperty("user.dir"),
             extensions,
             extensionsDescription,
+            bytes = bytes(),
         )
 
-        onPathProvided(paths)
+        onFileSaved(result)
     }
 }
 

@@ -24,33 +24,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arkivanov.mvikotlin.extensions.coroutines.states
-import io.stardewvalleydesigner.editor.EditorComponent
-import io.stardewvalleydesigner.editor.EditorIntent
+import io.stardewvalleydesigner.editor.*
+import io.stardewvalleydesigner.ui.component.editor.screens.editor.bottommenu.BottomMenu
 import io.stardewvalleydesigner.ui.component.editor.screens.editor.layout.MainPart
 import io.stardewvalleydesigner.ui.component.editor.screens.editor.sidemenus.LeftSideMenus
 import io.stardewvalleydesigner.ui.component.editor.screens.editor.sidemenus.RightSideMenus
 import io.stardewvalleydesigner.ui.component.editor.screens.editor.topmenu.TopMenu
+import io.stardewvalleydesigner.ui.component.editor.utils.UNDEFINED
 
 
 @Composable
-fun EditorScreen(component: EditorComponent) {
+fun EditorScreen(
+    component: EditorComponent,
+    leftBottomMenus: @Composable RowScope.(EditorState, SnackbarHostState) -> Unit = { _, _ -> },
+    rightBottomMenus: @Composable RowScope.(EditorState, SnackbarHostState) -> Unit = { _, _ -> },
+) {
     val store = component.store
     val state by store.states.collectAsState(component.store.state)
     val (history, map, toolkit, palette, /* flavors, */ visLayers, /* clipboard, */ options, planPath) = state
 
     val snackbarHostState = remember { SnackbarHostState() }
+    var currCoordinate by remember { mutableStateOf(UNDEFINED) }
 
     Column(Modifier.fillMaxSize()) {
         TopMenu(
-            map = map,
-            visibleLayers = visLayers.visibleLayers,
             history = history,
             disallowedTypes = map.layout.disallowedTypes,
             onEntitySelection = { component.store.accept(EditorIntent.Palette.AddToInUse(it)) },
             options = options,
-            snackbarHostState = snackbarHostState,
             intentConsumer = store::accept,
-            planPath = planPath,
         )
 
         val menuWidth = 350.dp
@@ -69,6 +71,8 @@ fun EditorScreen(component: EditorComponent) {
                 visibleLayers = visLayers.visibleLayers,
                 toolkit = toolkit,
                 options = options,
+                currCoordinate = currCoordinate,
+                onCurrCoordinateChanged = { currCoordinate = it },
                 intentConsumer = store::accept
             )
             RightSideMenus(
@@ -81,6 +85,14 @@ fun EditorScreen(component: EditorComponent) {
                 intentConsumer = store::accept
             )
         }
+
+        BottomMenu(
+            editorState = state,
+            snackbarHostState = snackbarHostState,
+            currCoordinate = currCoordinate,
+            leftBottomMenus = leftBottomMenus,
+            rightBottomMenus = rightBottomMenus,
+        )
     }
 
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {

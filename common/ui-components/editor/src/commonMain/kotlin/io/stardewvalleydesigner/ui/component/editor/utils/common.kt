@@ -24,6 +24,9 @@ import io.stardewvalleydesigner.engine.geometry.*
 import kotlin.math.roundToInt
 
 
+internal val UNDEFINED: Coordinate = xy(Int.MAX_VALUE, Int.MAX_VALUE)
+
+
 internal val Size.ratio: Float get() = width / height
 
 internal val IntSize.ratio: Float get() = width.toFloat() / height.toFloat()

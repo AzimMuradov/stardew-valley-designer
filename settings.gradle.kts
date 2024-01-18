@@ -29,6 +29,11 @@ include(":common:components:settings")
 // UI Components
 
 include(":common:ui-components:editor")
+include(
+    ":common:ui-components:editor-menus:save-plan",
+    ":common:ui-components:editor-menus:save-plan-as",
+    ":common:ui-components:editor-menus:save-plan-img",
+)
 include(":common:ui-components:settings-provider")
 include(":common:ui-components:themes")
 
@@ -41,6 +46,7 @@ include(":common:kmp-libs:browser")
 include(":common:kmp-libs:clipboard")
 include(":common:kmp-libs:dispatcher")
 include(":common:kmp-libs:env")
+include(":common:kmp-libs:png")
 
 
 // Custom Compose Multiplatform Libraries
