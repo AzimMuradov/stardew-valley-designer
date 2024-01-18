@@ -156,7 +156,7 @@ sealed interface WordList {
 
     val savePlanAsImageTitle: String
 
-    fun savePlanAsImageNotificationMessage(path: String): String
+    fun savePlanAsImageNotificationMessage(path: String?): String
 
 
     val buttonSavePlanTooltip: String
@@ -168,7 +168,7 @@ sealed interface WordList {
 
     val savePlanAsTitle: String
 
-    fun savePlanAsNotificationMessage(path: String): String
+    fun savePlanAsNotificationMessage(path: String?): String
 
 
     /**
@@ -201,4 +201,8 @@ sealed interface WordList {
     val start: String
 
     val end: String
+
+    val noCursor: String
+
+    val noSelection: String
 }

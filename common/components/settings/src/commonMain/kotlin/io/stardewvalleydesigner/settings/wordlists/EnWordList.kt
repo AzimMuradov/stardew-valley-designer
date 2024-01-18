@@ -737,7 +737,11 @@ data object EnWordList : WordList {
 
     override val savePlanAsImageTitle: String = "Provide path for the plan save"
 
-    override fun savePlanAsImageNotificationMessage(path: String): String = "Saved to \"$path\""
+    override fun savePlanAsImageNotificationMessage(path: String?): String = if (path != null) {
+        "Saved to \"$path\""
+    } else {
+        "Saved"
+    }
 
 
     override val buttonSavePlanTooltip: String = "Save plan"
@@ -749,7 +753,11 @@ data object EnWordList : WordList {
 
     override val savePlanAsTitle: String = "Provide path for the plan save"
 
-    override fun savePlanAsNotificationMessage(path: String): String = "Saved to \"$path\""
+    override fun savePlanAsNotificationMessage(path: String?): String = if (path != null) {
+        "Saved to \"$path\""
+    } else {
+        "Saved"
+    }
 
 
     override fun tool(type: ToolType?): String = when (type) {
@@ -794,6 +802,10 @@ data object EnWordList : WordList {
     override val start: String = "Start"
 
     override val end: String = "End"
+
+    override val noCursor: String = "No cursor \uD83D\uDC24"
+
+    override val noSelection: String = "No selection \uD83D\uDC14"
 
 
     // Private

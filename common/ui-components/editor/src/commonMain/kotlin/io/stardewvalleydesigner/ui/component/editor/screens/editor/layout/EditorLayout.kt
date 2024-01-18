@@ -19,10 +19,12 @@ package io.stardewvalleydesigner.ui.component.editor.screens.editor.layout
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -30,7 +32,6 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.pointer.*
-import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.menus.OptionsItemValue.Toggleable
 import io.stardewvalleydesigner.editor.modules.map.MapState
@@ -52,7 +53,6 @@ import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.drawFloori
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.drawVisibleEntities
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.drawWallpaper
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.placedEntityComparator
-import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import kotlin.math.floor
 
 
@@ -63,10 +63,10 @@ internal fun EditorLayout(
     visibleLayers: Set<LayerType<*>>,
     toolkit: ToolkitState,
     options: OptionsState,
+    currCoordinate: Coordinate,
+    onCurrCoordinateChanged: (Coordinate) -> Unit,
     intentConsumer: (EditorIntent) -> Unit,
 ) {
-    val wordList = GlobalSettings.strings
-
     val images = ImageResources.entities
     val image = ImageResources.wallsAndFloors
 
@@ -77,7 +77,6 @@ internal fun EditorLayout(
     val hoveredColor = MaterialTheme.colors.secondary
 
     var cellSide by remember { mutableStateOf(-1f) }
-    var currCoordinate by remember { mutableStateOf(UNDEFINED) }
     var prevDragCoordinate by remember { mutableStateOf(UNDEFINED) }
 
 
@@ -92,137 +91,95 @@ internal fun EditorLayout(
         UNDEFINED
     }
 
-
-    Column(
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Canvas(
-            modifier = Modifier
-                .aspectRatio(layoutSprite.size.toRect().aspectRatio)
-                .weight(1f)
-                .clipToBounds()
-                .background(color = MaterialTheme.colors.surface)
-                // Hovered cell
-                .onPointerEvent(PointerEventType.Move) { event ->
-                    currCoordinate = event.changes.first().position.toCoordinateStrict()
-                }
-                .onPointerEvent(PointerEventType.Exit) { currCoordinate = UNDEFINED }
-                // Tools logic
-                .onPointerEvent(eventType = PointerEventType.Press) { event ->
-                    val current = event.changes.first().position.toCoordinateStrict()
-                        .takeUnless { it == UNDEFINED } ?: return@onPointerEvent
-                    prevDragCoordinate = current
-                    intentConsumer(EditorIntent.Engine.Start(current))
-                }
-                .onPointerEvent(eventType = PointerEventType.Release) {
-                    prevDragCoordinate = UNDEFINED
-                    intentConsumer(EditorIntent.Engine.End)
-                }
-                .pointerInput(toolkit.tool) {
-                    detectDragGestures(
-                        onDrag = { change, _ ->
-                            val current = change.position.toCoordinate()
-                            if (current != prevDragCoordinate) {
-                                prevDragCoordinate = current
-                                intentConsumer(EditorIntent.Engine.Keep(current))
-                            }
-                        },
-                        onDragCancel = {
-                            prevDragCoordinate = UNDEFINED
-                            intentConsumer(EditorIntent.Engine.End)
+    Canvas(
+        modifier = Modifier
+            .aspectRatio(layoutSprite.size.toRect().aspectRatio)
+            .fillMaxSize()
+            .clipToBounds()
+            .background(color = MaterialTheme.colors.surface)
+            // Hovered cell
+            .onPointerEvent(PointerEventType.Move) { event ->
+                onCurrCoordinateChanged(event.changes.first().position.toCoordinateStrict())
+            }
+            .onPointerEvent(PointerEventType.Exit) { onCurrCoordinateChanged(UNDEFINED) }
+            // Tools logic
+            .onPointerEvent(eventType = PointerEventType.Press) { event ->
+                val current = event.changes.first().position.toCoordinateStrict()
+                    .takeUnless { it == UNDEFINED } ?: return@onPointerEvent
+                prevDragCoordinate = current
+                intentConsumer(EditorIntent.Engine.Start(current))
+            }
+            .onPointerEvent(eventType = PointerEventType.Release) {
+                prevDragCoordinate = UNDEFINED
+                intentConsumer(EditorIntent.Engine.End)
+            }
+            .pointerInput(toolkit.tool) {
+                detectDragGestures(
+                    onDrag = { change, _ ->
+                        val current = change.position.toCoordinate()
+                        if (current != prevDragCoordinate) {
+                            prevDragCoordinate = current
+                            intentConsumer(EditorIntent.Engine.Keep(current))
                         }
-                    )
-                }
-        ) {
-            cellSide = size.height / nH
-
-            val cellSize = Size(cellSide, cellSide)
-            val grid = CoordinateGrid(cellSide)
-
-
-            // Background
-
-            drawImage(
-                image = layoutSprite.bgImage,
-                srcSize = layoutSprite.size,
-                dstSize = size.toIntSize(),
-                filterQuality = FilterQuality.None,
-            )
-
-
-            // Main content
-
-            if (layout.type.isShed()) {
-                drawFlooring(image, map.flooring, nW, nH, cellSide)
-                drawWallpaper(image, map.wallpaper, nW, cellSide)
+                    },
+                    onDragCancel = {
+                        prevDragCoordinate = UNDEFINED
+                        intentConsumer(EditorIntent.Engine.End)
+                    }
+                )
             }
+    ) {
+        cellSide = size.height / nH
 
-            drawVisibleEntities(
-                images = images,
-                entities = map.entities,
-                visibleLayers = visibleLayers,
-                renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
-                grid = grid
-            )
-
-            drawSpecificSpritesAndEffects(images, map, toolkit, options, grid, cellSize)
+        val cellSize = Size(cellSide, cellSide)
+        val grid = CoordinateGrid(cellSide)
 
 
-            // Foreground
+        // Background
 
-            drawImage(
-                image = layoutSprite.fgImage,
-                srcSize = layoutSprite.size,
-                dstSize = size.toIntSize(),
-                filterQuality = FilterQuality.None,
-            )
+        drawImage(
+            image = layoutSprite.bgImage,
+            srcSize = layoutSprite.size,
+            dstSize = size.toIntSize(),
+            filterQuality = FilterQuality.None,
+        )
 
 
-            // Hints and visual guides
+        // Main content
 
-            drawAreasOfEffects(images, map, options, grid, cellSize)
-
-            drawGrid(options, grid, nW, nH)
-
-            drawHoveredCellAndAxis(options, grid, cellSize, currCoordinate, hoveredColor)
+        if (layout.type.isShed()) {
+            drawFlooring(image, map.flooring, nW, nH, cellSide)
+            drawWallpaper(image, map.wallpaper, nW, cellSide)
         }
 
-        if (options.toggleables.getValue(Toggleable.ShowCurrentCoordinatesAnsShapeSize)) {
-            Spacer(Modifier.size(32.dp))
+        drawVisibleEntities(
+            images = images,
+            entities = map.entities,
+            visibleLayers = visibleLayers,
+            renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
+            grid = grid
+        )
 
-            Divider(thickness = 2.dp)
+        drawSpecificSpritesAndEffects(images, map, toolkit, options, grid, cellSize)
 
-            Spacer(Modifier.size(12.dp))
 
-            Row(
-                modifier = Modifier.fillMaxWidth().height(24.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(Modifier.weight(1f), Arrangement.Center) {
-                    if (currCoordinate != UNDEFINED) {
-                        Text("X: ${currCoordinate.x}, Y: ${currCoordinate.y}")
-                    }
-                }
+        // Foreground
 
-                Text("|")
+        drawImage(
+            image = layoutSprite.fgImage,
+            srcSize = layoutSprite.size,
+            dstSize = size.toIntSize(),
+            filterQuality = FilterQuality.None,
+        )
 
-                Row(Modifier.weight(2f), Arrangement.Center) {
-                    toolkit.actionVector?.let { (start, end) ->
-                        Text("${wordList.start}: $start, ${wordList.end}: $end")
-                    }
-                }
 
-                Text("|")
+        // Hints and visual guides
 
-                Row(Modifier.weight(1f), Arrangement.Center) {
-                    toolkit.actionVector?.let { (start, end) ->
-                        val (w, h) = CanonicalCorners.fromTwoCoordinates(start, end).rect
-                        Text("${wordList.width}: $w, ${wordList.height}: $h")
-                    }
-                }
-            }
-        }
+        drawAreasOfEffects(images, map, options, grid, cellSize)
+
+        drawGrid(options, grid, nW, nH)
+
+        drawHoveredCellAndAxis(options, grid, cellSize, currCoordinate, hoveredColor)
     }
 }
 

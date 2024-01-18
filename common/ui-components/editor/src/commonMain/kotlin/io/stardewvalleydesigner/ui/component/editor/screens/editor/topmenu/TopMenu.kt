@@ -19,9 +19,7 @@ package io.stardewvalleydesigner.ui.component.editor.screens.editor.topmenu
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
@@ -29,24 +27,18 @@ import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.menus.MainOptionsMenu
 import io.stardewvalleydesigner.editor.menus.entityselection.*
 import io.stardewvalleydesigner.editor.modules.history.HistoryState
-import io.stardewvalleydesigner.editor.modules.map.MapState
 import io.stardewvalleydesigner.editor.modules.options.OptionsState
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.EntityType
-import io.stardewvalleydesigner.engine.layer.LayerType
 
 
 @Composable
 internal fun TopMenu(
-    map: MapState,
-    visibleLayers: Set<LayerType<*>>,
     history: HistoryState,
     disallowedTypes: Set<EntityType>,
     onEntitySelection: (Entity<*>) -> Unit,
     options: OptionsState,
-    snackbarHostState: SnackbarHostState,
     intentConsumer: (EditorIntent) -> Unit,
-    planPath: String?,
 ) {
     Row(
         modifier = Modifier
@@ -88,12 +80,10 @@ internal fun TopMenu(
             onEntitySelection = onEntitySelection,
         )
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            OptionsMenu(
-                options = options,
-                menu = MainOptionsMenu,
-                intentConsumer = intentConsumer
-            )
-        }
+        OptionsMenu(
+            options = options,
+            menu = MainOptionsMenu,
+            intentConsumer = intentConsumer
+        )
     }
 }

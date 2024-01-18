@@ -23,6 +23,7 @@ import org.lwjgl.PointerBuffer
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.util.tinyfd.TinyFileDialogs
 import java.io.File
+import kotlin.io.path.*
 
 
 internal object TinyFileDialogsWrapper {
@@ -32,15 +33,27 @@ internal object TinyFileDialogsWrapper {
         defaultPathAndFile: String? = null,
         extensions: List<String>? = null,
         extensionsDescription: String? = null,
-    ): String? = withContext(PlatformDispatcher.IO) {
+        bytes: ByteArray,
+    ): FileSaverResult? = withContext(PlatformDispatcher.IO) {
         catchingNativeCall {
-            MemoryStack.stackPush().use { stack ->
+            val path = MemoryStack.stackPush().use { stack ->
                 TinyFileDialogs.tinyfd_saveFileDialog(
                     title,
                     defaultPathAndFile,
                     extensions?.map { "*.$it" }?.putOn(stack),
                     extensionsDescription,
                 )
+            }
+
+            if (path != null) {
+                val absolutePath = Path(path)
+                    .normalize()
+                    .createParentDirectories()
+                    .apply { writeBytes(bytes) }
+                    .pathString
+                FileSaverResult(absolutePath)
+            } else {
+                null
             }
         }
     }

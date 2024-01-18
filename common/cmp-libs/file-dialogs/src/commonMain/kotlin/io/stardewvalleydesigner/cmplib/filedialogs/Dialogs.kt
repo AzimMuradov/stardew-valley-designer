@@ -25,7 +25,8 @@ expect fun FileSaver(
     defaultPathAndFile: String? = null,
     extensions: List<String>? = null,
     extensionsDescription: String? = null,
-    onPathProvided: (String?) -> Unit,
+    bytes: () -> ByteArray,
+    onFileSaved: (FileSaverResult?) -> Unit,
 )
 
 @Composable
@@ -36,6 +37,11 @@ expect fun FilePicker(
     extensionsDescription: String? = null,
     // multiSelect: Boolean = false, // TODO : Add support for multiple files?
     onFilePicked: (FilePickerResult?) -> Unit,
+)
+
+
+data class FileSaverResult(
+    val absolutePath: String?,
 )
 
 data class FilePickerResult(

@@ -25,6 +25,7 @@ import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.modules.map.MapState
 import io.stardewvalleydesigner.editor.modules.options.OptionsState
 import io.stardewvalleydesigner.editor.modules.toolkit.ToolkitState
+import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layer.LayerType
 
 
@@ -34,9 +35,15 @@ internal fun RowScope.MainPart(
     visibleLayers: Set<LayerType<*>>,
     toolkit: ToolkitState,
     options: OptionsState,
+    currCoordinate: Coordinate,
+    onCurrCoordinateChanged: (Coordinate) -> Unit,
     intentConsumer: (EditorIntent) -> Unit,
 ) {
     Box(Modifier.fillMaxHeight().weight(1f).padding(30.dp), Alignment.Center) {
-        EditorLayout(map, visibleLayers, toolkit, options, intentConsumer)
+        EditorLayout(
+            map, visibleLayers, toolkit, options,
+            currCoordinate, onCurrCoordinateChanged,
+            intentConsumer,
+        )
     }
 }

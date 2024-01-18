@@ -82,7 +82,7 @@ object ImageResourcesProvider {
     fun layoutSpriteBy(type: LayoutType): LayoutSprites = ImageResources.layouts.getValue(type)
 
 
-    internal fun flooringSpriteBy(image: ImageBitmap, fl: Flooring): Sprite.Image {
+    fun flooringSpriteBy(image: ImageBitmap, fl: Flooring): Sprite.Image {
         val flooringObjectSpriteSize = IntSize(width = 32, height = 32)
         val index = fl.n.toInt()
         val (i, j) = (index % 8) to (index / 8)
@@ -95,7 +95,7 @@ object ImageResourcesProvider {
         )
     }
 
-    internal fun wallpaperSpriteBy(image: ImageBitmap, wp: Wallpaper): Sprite.Image {
+    fun wallpaperSpriteBy(image: ImageBitmap, wp: Wallpaper): Sprite.Image {
         val wallpaperObjectSpriteSize = IntSize(width = 16, height = 48)
         val index = wp.n.toInt()
         val (i, j) = (index % 16) to (index / 16)
