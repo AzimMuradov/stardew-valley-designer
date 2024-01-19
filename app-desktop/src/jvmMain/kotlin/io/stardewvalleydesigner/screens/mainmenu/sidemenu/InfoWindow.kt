@@ -44,9 +44,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogWindow
 import androidx.compose.ui.window.rememberDialogState
 import io.stardewvalleydesigner.AppInfo
-import io.stardewvalleydesigner.kmplib.browser.Browser
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import io.stardewvalleydesigner.ui.component.themes.ternaryColor
+import io.stardewvalleydesigner.utils.Browser
 
 
 @Composable

@@ -27,11 +27,11 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.cmplib.group.GroupOption
 import io.stardewvalleydesigner.cmplib.group.ToggleButtonsGroup
+import io.stardewvalleydesigner.cmplib.tooltip.TooltipArea
+import io.stardewvalleydesigner.cmplib.tooltip.TooltipPlacement
 import io.stardewvalleydesigner.editor.EditorIntent
 import io.stardewvalleydesigner.editor.modules.toolkit.*
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
-import io.stardewvalleydesigner.ui.component.tooltip.TooltipArea
-import io.stardewvalleydesigner.ui.component.tooltip.TooltipPlacement
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 

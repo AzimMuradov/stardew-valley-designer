@@ -24,8 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import io.stardewvalleydesigner.ui.component.tooltip.TooltipArea
-import io.stardewvalleydesigner.ui.component.tooltip.TooltipPlacement
+import io.stardewvalleydesigner.cmplib.tooltip.TooltipArea
+import io.stardewvalleydesigner.cmplib.tooltip.TooltipPlacement
 
 
 @Composable

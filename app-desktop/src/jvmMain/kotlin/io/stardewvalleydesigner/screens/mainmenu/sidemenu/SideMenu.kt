@@ -37,11 +37,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.stardewvalleydesigner.ICON_RES_PATH
-import io.stardewvalleydesigner.kmplib.browser.Browser
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import io.stardewvalleydesigner.ui.component.themes.ternaryColor
-import io.stardewvalleydesigner.utils.LocalWindowSize
-import io.stardewvalleydesigner.utils.WindowSize
+import io.stardewvalleydesigner.utils.*
 
 
 @Composable

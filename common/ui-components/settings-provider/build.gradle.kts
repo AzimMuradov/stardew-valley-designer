@@ -18,9 +18,6 @@ kotlin {
             dependencies {
                 implementation(projects.common.components.settings)
 
-
-                // Compose Multiplatform
-
                 implementation(compose.runtime)
                 implementation(compose.foundation)
 

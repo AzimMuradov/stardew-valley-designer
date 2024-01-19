@@ -26,30 +26,4 @@ expect object Environment {
      * Get the environment variable with the given [name].
      */
     fun getVar(name: String): String?
-
-
-    /**
-     * Get the user's home directory.
-     */
-    fun getHomeDir(): String?
-
-    /**
-     * Get the user's documents directory.
-     */
-    fun getDocsDir(): String?
-
-    /**
-     * Get the user's pictures directory.
-     */
-    fun getPicsDir(): String?
-
-
-    fun getSvdImagesDir(): String?
-
-    fun getSvdSavesDir(): String?
-
-
-    fun relative(dir: String?, filename: String): String?
-
-    fun relativeIfExists(dir: String?, filename: String): String?
 }

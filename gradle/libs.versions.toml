@@ -95,11 +95,6 @@ xmlutil = [
     "xmlutil-serialization",
 ]
 
-fs = [
-    "kfswatch",
-    "directories",
-]
-
 
 [plugins]
 

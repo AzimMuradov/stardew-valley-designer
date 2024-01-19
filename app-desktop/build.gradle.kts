@@ -13,24 +13,22 @@ kotlin {
                 implementation(projects.common.entitiesMetadata)
                 implementation(projects.common.designFormat)
 
+                implementation(projects.common.kmpLibs.env)
+
                 implementation(projects.common.components.root)
                 implementation(projects.common.components.screenMainMenu)
                 implementation(projects.common.components.screenEditor)
-                // implementation(projects.common.components.screenSettings)
                 implementation(projects.common.components.settings)
+
+                implementation(projects.common.cmpLibs.fileDialogs)
+                implementation(projects.common.cmpLibs.tooltip)
 
                 implementation(projects.common.uiComponents.editor)
                 implementation(projects.common.uiComponents.editorMenus.savePlan)
                 implementation(projects.common.uiComponents.editorMenus.savePlanAs)
                 implementation(projects.common.uiComponents.editorMenus.savePlanImg)
-
                 implementation(projects.common.uiComponents.settingsProvider)
                 implementation(projects.common.uiComponents.themes)
-
-                implementation(projects.common.uiComponents.tooltip)
-
-
-                // Compose Multiplatform
 
                 if (System.getProperty("deploy")?.toBooleanStrictOrNull() == true) {
                     implementation(compose.desktop.linux_x64)
@@ -42,24 +40,12 @@ kotlin {
                 }
                 implementation(compose.materialIconsExtended)
 
-                implementation(projects.common.cmpLibs.buttonsGroup)
-                implementation(projects.common.cmpLibs.dropdownMenuModel)
-                implementation(projects.common.cmpLibs.dropdownMenu)
-                implementation(projects.common.cmpLibs.fileDialogs)
-                implementation(projects.common.cmpLibs.sideMenus)
-
-                implementation(projects.common.kmpLibs.browser)
-                implementation(projects.common.kmpLibs.clipboard)
-                implementation(projects.common.kmpLibs.env)
-
                 implementation(libs.kotlinx.coroutines.core)
 
                 implementation(libs.bundles.mvikotlin)
 
                 implementation(libs.directories)
                 implementation(libs.kfswatch)
-
-                implementation(libs.kotlinx.datetime)
 
 
                 // Meta-code

@@ -11,12 +11,4 @@ kotlin {
     wasmJs {
         browser()
     }
-
-    sourceSets {
-        jvmMain {
-            dependencies {
-                implementation(libs.directories)
-            }
-        }
-    }
 }

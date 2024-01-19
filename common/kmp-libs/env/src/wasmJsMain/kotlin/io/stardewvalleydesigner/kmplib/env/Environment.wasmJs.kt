@@ -27,37 +27,12 @@ actual object Environment {
      */
     actual fun getVar(name: String): String? = ENV[name]
 
+
     private val ENV: Map<String, String> = customEnv()
         .asList()
         .associate { entry -> entry[0].toString() to entry[1] }
         .filterValues { it != null }
         .mapValues { (_, value) -> value.toString() }
-
-
-    /**
-     * Returns null.
-     */
-    actual fun getHomeDir(): String? = null
-
-    /**
-     * Returns null.
-     */
-    actual fun getDocsDir(): String? = null
-
-    /**
-     * Returns null.
-     */
-    actual fun getPicsDir(): String? = null
-
-
-    actual fun getSvdImagesDir(): String? = null
-
-    actual fun getSvdSavesDir(): String? = null
-
-
-    actual fun relative(dir: String?, filename: String): String? = null
-
-    actual fun relativeIfExists(dir: String?, filename: String): String? = null
 }
 
 

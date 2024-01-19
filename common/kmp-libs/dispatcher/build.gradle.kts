@@ -16,9 +16,14 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.kotlinx.coroutines.core)
+
+
+                // Meta-code
+
+                implementation(projects.common.logger)
+                implementation(libs.kotlinlogging.common)
             }
         }
-
         jvmMain {
             dependencies {
                 implementation(libs.kotlinx.coroutines.swing)

@@ -38,9 +38,6 @@ kotlin {
                 implementation(projects.common.uiComponents.settingsProvider)
                 implementation(projects.common.uiComponents.themes)
 
-
-                // Compose Multiplatform
-
                 implementation(compose.runtime)
                 implementation(compose.ui)
                 implementation(compose.foundation)
@@ -49,23 +46,9 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.materialIconsExtended)
 
-                implementation(projects.common.cmpLibs.buttonsGroup)
-                implementation(projects.common.cmpLibs.dropdownMenuModel)
-                implementation(projects.common.cmpLibs.dropdownMenu)
-                implementation(projects.common.cmpLibs.fileDialogs)
-                implementation(projects.common.cmpLibs.sideMenus)
-
-                implementation(projects.common.kmpLibs.browser)
-                implementation(projects.common.kmpLibs.clipboard)
-                implementation(projects.common.kmpLibs.env)
-
                 implementation(libs.kotlinx.coroutines.core)
 
                 implementation(libs.bundles.mvikotlin)
-
-                // implementation(libs.kfswatch)
-
-                implementation(libs.kotlinx.datetime)
 
 
                 // Meta-code
