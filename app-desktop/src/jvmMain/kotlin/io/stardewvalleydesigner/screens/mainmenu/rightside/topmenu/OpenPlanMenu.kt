@@ -27,9 +27,9 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dev.dirs.UserDirectories
+import io.stardewvalleydesigner.component.mainmenu.MainMenuIntent
+import io.stardewvalleydesigner.component.mainmenu.MainMenuState
 import io.stardewvalleydesigner.engine.layout.LayoutsProvider.layoutOf
-import io.stardewvalleydesigner.mainmenu.MainMenuIntent
-import io.stardewvalleydesigner.mainmenu.MainMenuState
 import io.stardewvalleydesigner.screens.mainmenu.rightside.LayoutPreview
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import kotlin.io.path.Path

@@ -16,10 +16,10 @@
 
 package io.stardewvalleydesigner.settings.wordlists
 
-import io.stardewvalleydesigner.editor.menus.EntitySelectionRoot
-import io.stardewvalleydesigner.editor.menus.OptionsItemValue
-import io.stardewvalleydesigner.editor.modules.toolkit.ShapeType
-import io.stardewvalleydesigner.editor.modules.toolkit.ToolType
+import io.stardewvalleydesigner.component.editor.menus.EntitySelectionRoot
+import io.stardewvalleydesigner.component.editor.menus.OptionsItemValue
+import io.stardewvalleydesigner.component.editor.modules.toolkit.ShapeType
+import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolType
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layout.LayoutType

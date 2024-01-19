@@ -27,9 +27,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.unit.dp
+import io.stardewvalleydesigner.component.mainmenu.Wrapper
 import io.stardewvalleydesigner.engine.EditorEngineData
 import io.stardewvalleydesigner.engine.layout.LayoutsProvider.layoutOf
-import io.stardewvalleydesigner.mainmenu.Wrapper
 import io.stardewvalleydesigner.screens.mainmenu.rightside.LayoutPreview
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 

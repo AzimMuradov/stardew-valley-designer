@@ -88,7 +88,7 @@ fun BoxScope.LayoutPreview(
         }
 
         drawVisibleEntities(
-            images = images,
+            entityMaps = images,
             entities = entities,
             visibleLayers = LayerType.all,
             renderSpritesFully = true,

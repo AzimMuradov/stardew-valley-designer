@@ -18,12 +18,12 @@ package io.stardewvalleydesigner
 
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.CanvasBasedWindow
-import io.stardewvalleydesigner.editor.*
+import io.stardewvalleydesigner.component.editor.*
 import io.stardewvalleydesigner.engine.layout.LayoutType
 import io.stardewvalleydesigner.engine.layout.LayoutsProvider
 import io.stardewvalleydesigner.settings.Lang
+import io.stardewvalleydesigner.ui.component.editor.EditorScreen
 import io.stardewvalleydesigner.ui.component.editor.res.WithImageResources
-import io.stardewvalleydesigner.ui.component.editor.screens.EditorScreen
 import io.stardewvalleydesigner.ui.component.settings.WithSettings
 import io.stardewvalleydesigner.ui.component.themes.AppTheme
 import io.stardewvalleydesigner.ui.component.themes.ThemeVariant

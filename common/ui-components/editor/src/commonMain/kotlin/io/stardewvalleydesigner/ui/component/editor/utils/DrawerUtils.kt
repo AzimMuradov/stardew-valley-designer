@@ -65,26 +65,25 @@ object DrawerUtils {
         ).toIntOffset()
 
         when (sprite) {
-            is Sprite.Image -> drawImage(entityMaps, sprite, dstOffset, dstSize)
-            is Sprite.TintedImage -> drawTintedImage(entityMaps, sprite, dstOffset, dstSize)
+            is Sprite.Image -> drawImage(sprite, dstOffset, dstSize)
+            is Sprite.TintedImage -> drawTintedImage(sprite, dstOffset, dstSize)
         }
     }
 
     fun DrawScope.drawSpriteStretched(
-        images: Map<EntityPage, ImageBitmap>,
         sprite: Sprite,
         offset: IntOffset = IntOffset.Zero,
         layoutSize: IntSize,
         alpha: Float = 1.0f,
     ) {
         when (sprite) {
-            is Sprite.Image -> drawImage(images, sprite, dstOffset = offset, dstSize = layoutSize, alpha)
-            is Sprite.TintedImage -> drawTintedImage(images, sprite, dstOffset = offset, dstSize = layoutSize, alpha)
+            is Sprite.Image -> drawImage(sprite, dstOffset = offset, dstSize = layoutSize, alpha)
+            is Sprite.TintedImage -> drawTintedImage(sprite, dstOffset = offset, dstSize = layoutSize, alpha)
         }
     }
 
     fun DrawScope.drawEntityStretched(
-        images: Map<EntityPage, ImageBitmap>,
+        entityMaps: Map<EntityPage, ImageBitmap>,
         entity: PlacedEntity<*>,
         renderSpritesFully: Boolean,
         grid: CoordinateGrid,
@@ -93,7 +92,7 @@ object DrawerUtils {
     ) {
         val (e, place) = entity
 
-        val sprite = spriteBy(images, e).run {
+        val sprite = spriteBy(entityMaps, e).run {
             if (renderSpritesFully) {
                 this
             } else {
@@ -120,7 +119,6 @@ object DrawerUtils {
         val offsetBottomRight = grid[place.x + rect.w, place.y + e.size.h].toIntOffset() - padding
 
         drawSpriteStretched(
-            images,
             sprite = sprite,
             offset = offsetTopLeft,
             layoutSize = IntSize(offsetTopLeft, offsetBottomRight),
@@ -130,7 +128,7 @@ object DrawerUtils {
 
 
     fun DrawScope.drawVisibleEntities(
-        images: Map<EntityPage, ImageBitmap>,
+        entityMaps: Map<EntityPage, ImageBitmap>,
         entities: LayeredEntitiesData,
         visibleLayers: Set<LayerType<*>>,
         renderSpritesFully: Boolean,
@@ -139,13 +137,13 @@ object DrawerUtils {
         val sorted = visibleLayers.flatMap(entities::entitiesBy).sortedWith(placedEntityComparator)
 
         for (entity in sorted) {
-            drawEntityStretched(images, entity, renderSpritesFully, grid)
+            drawEntityStretched(entityMaps, entity, renderSpritesFully, grid)
         }
     }
 
 
     fun DrawScope.drawFlooring(
-        image: ImageBitmap,
+        wallsAndFloors: ImageBitmap,
         flooring: Flooring?,
         nW: Int, nH: Int,
         stepSize: Float,
@@ -153,7 +151,7 @@ object DrawerUtils {
         val xs = List(size = (nW + 1) / 2 + 1) { -stepSize + stepSize * 2 * it }.map { it.roundToInt() }
         val ys = List(size = (nH + 1) / 2) { stepSize * 2 * (it + 1) }.map { it.roundToInt() }
 
-        val sprite = flooringSpriteBy(image, flooring ?: Flooring.all().first())
+        val sprite = flooringSpriteBy(wallsAndFloors, flooring ?: Flooring.all().first())
 
         for ((left, right) in xs.zipWithNext()) {
             for ((top, bottom) in ys.zipWithNext()) {
@@ -170,7 +168,7 @@ object DrawerUtils {
     }
 
     fun DrawScope.drawWallpaper(
-        image: ImageBitmap,
+        wallsAndFloors: ImageBitmap,
         wallpaper: Wallpaper?,
         nW: Int,
         stepSize: Float,
@@ -180,7 +178,7 @@ object DrawerUtils {
         val bottom = (stepSize * 4).roundToInt()
         val height = bottom - top
 
-        val sprite = wallpaperSpriteBy(image, wallpaper ?: Wallpaper.all().first())
+        val sprite = wallpaperSpriteBy(wallsAndFloors, wallpaper ?: Wallpaper.all().first())
 
         for ((left, right) in xs.zipWithNext()) {
             drawImage(
@@ -196,13 +194,11 @@ object DrawerUtils {
 
 
     private fun DrawScope.drawImage(
-        images: Map<EntityPage, ImageBitmap>,
         sprite: Sprite.Image,
         dstOffset: IntOffset, dstSize: IntSize,
         alpha: Float = 1.0f,
     ) {
         drawSprite(
-            images,
             sprite, srcOffset = sprite.offset,
             dstOffset, dstSize,
             alpha = alpha
@@ -210,20 +206,17 @@ object DrawerUtils {
     }
 
     private fun DrawScope.drawTintedImage(
-        images: Map<EntityPage, ImageBitmap>,
         sprite: Sprite.TintedImage,
         dstOffset: IntOffset, dstSize: IntSize,
         alpha: Float = 1.0f,
     ) {
         drawSprite(
-            images,
             sprite, srcOffset = sprite.offset,
             dstOffset, dstSize,
             colorFilter = tint(sprite.tint),
             alpha
         )
         drawSprite(
-            images,
             sprite, srcOffset = sprite.coverOffset,
             dstOffset, dstSize,
             alpha = alpha
@@ -231,7 +224,6 @@ object DrawerUtils {
     }
 
     private fun DrawScope.drawSprite(
-        images: Map<EntityPage, ImageBitmap>,
         sprite: Sprite, srcOffset: IntOffset,
         dstOffset: IntOffset, dstSize: IntSize,
         colorFilter: ColorFilter? = null,
