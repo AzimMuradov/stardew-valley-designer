@@ -20,31 +20,25 @@ kotlin {
                 implementation(projects.common.entitiesMetadata)
                 implementation(projects.common.designFormat)
 
+                implementation(projects.common.kmpLibs.dispatcher)
+                implementation(projects.common.kmpLibs.fs)
+
                 implementation(projects.common.components.screenEditor)
                 implementation(projects.common.components.settings)
 
+                implementation(projects.common.cmpLibs.fileDialogs)
+
                 implementation(projects.common.uiComponents.editor)
                 implementation(projects.common.uiComponents.settingsProvider)
-
-
-                // Compose Multiplatform
 
                 implementation(compose.runtime)
                 implementation(compose.animation)
                 implementation(compose.ui)
                 implementation(compose.foundation)
                 implementation(compose.material)
-                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-                implementation(compose.components.resources)
                 implementation(compose.materialIconsExtended)
 
-                implementation(projects.common.cmpLibs.fileDialogs)
-
-                implementation(projects.common.kmpLibs.dispatcher)
-                implementation(projects.common.kmpLibs.env)
-
                 implementation(libs.kotlinx.coroutines.core)
-
                 implementation(libs.kotlinx.datetime)
 
 

@@ -37,15 +37,13 @@ include(
 include(":common:ui-components:settings-provider")
 include(":common:ui-components:themes")
 
-include(":common:ui-components:tooltip")
-
 
 // Custom Kotlin Multiplatform Libraries
 
-include(":common:kmp-libs:browser")
 include(":common:kmp-libs:clipboard")
 include(":common:kmp-libs:dispatcher")
 include(":common:kmp-libs:env")
+include(":common:kmp-libs:fs")
 include(":common:kmp-libs:png")
 
 
@@ -58,6 +56,7 @@ include(
 )
 include(":common:cmp-libs:file-dialogs")
 include(":common:cmp-libs:side-menus")
+include(":common:cmp-libs:tooltip")
 
 
 // Utilities

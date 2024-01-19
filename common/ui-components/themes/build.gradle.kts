@@ -18,9 +18,6 @@ kotlin {
             dependencies {
                 implementation(projects.common.components.settings)
 
-
-                // Compose Multiplatform
-
                 implementation(compose.runtime)
                 implementation(compose.animation)
                 implementation(compose.ui)
@@ -28,7 +25,6 @@ kotlin {
                 implementation(compose.material)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
-                implementation(compose.materialIconsExtended)
 
 
                 // Meta-code

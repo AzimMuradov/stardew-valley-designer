@@ -20,16 +20,19 @@ kotlin {
                 implementation(projects.common.entitiesMetadata)
                 implementation(projects.common.designFormat)
 
+                implementation(projects.common.kmpLibs.clipboard)
+
                 implementation(projects.common.components.screenEditor)
                 implementation(projects.common.components.settings)
 
+                implementation(projects.common.cmpLibs.buttonsGroup)
+                implementation(projects.common.cmpLibs.dropdownMenuModel)
+                implementation(projects.common.cmpLibs.dropdownMenu)
+                implementation(projects.common.cmpLibs.sideMenus)
+                implementation(projects.common.cmpLibs.tooltip)
+
                 implementation(projects.common.uiComponents.settingsProvider)
                 implementation(projects.common.uiComponents.themes)
-
-                implementation(projects.common.uiComponents.tooltip)
-
-
-                // Compose Multiplatform
 
                 implementation(compose.runtime)
                 implementation(compose.animation)
@@ -40,21 +43,9 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.materialIconsExtended)
 
-                implementation(projects.common.cmpLibs.buttonsGroup)
-                implementation(projects.common.cmpLibs.dropdownMenuModel)
-                implementation(projects.common.cmpLibs.dropdownMenu)
-                implementation(projects.common.cmpLibs.fileDialogs)
-                implementation(projects.common.cmpLibs.sideMenus)
-
-                implementation(projects.common.kmpLibs.browser)
-                implementation(projects.common.kmpLibs.clipboard)
-                implementation(projects.common.kmpLibs.env)
-
                 implementation(libs.kotlinx.coroutines.core)
 
                 implementation(libs.bundles.mvikotlin)
-
-                implementation(libs.kotlinx.datetime)
 
 
                 // Meta-code
