@@ -20,8 +20,8 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import io.stardewvalleydesigner.mainmenu.MainMenuIntent
-import io.stardewvalleydesigner.mainmenu.MainMenuState
+import io.stardewvalleydesigner.component.mainmenu.MainMenuIntent
+import io.stardewvalleydesigner.component.mainmenu.MainMenuState
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 

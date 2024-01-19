@@ -24,8 +24,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
-import io.stardewvalleydesigner.mainmenu.MainMenuIntent
-import io.stardewvalleydesigner.mainmenu.MainMenuState
+import io.stardewvalleydesigner.component.mainmenu.MainMenuIntent
+import io.stardewvalleydesigner.component.mainmenu.MainMenuState
 import io.stardewvalleydesigner.screens.mainmenu.rightside.topmenu.*
 
 

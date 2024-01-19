@@ -23,7 +23,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.mvikotlin.extensions.coroutines.states
-import io.stardewvalleydesigner.mainmenu.MainMenuComponent
+import io.stardewvalleydesigner.component.mainmenu.MainMenuComponent
 import io.stardewvalleydesigner.screens.mainmenu.rightside.RightSideMenu
 import io.stardewvalleydesigner.screens.mainmenu.sidemenu.SideMenu
 
