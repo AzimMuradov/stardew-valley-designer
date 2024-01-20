@@ -16,6 +16,7 @@
 
 package io.stardewvalleydesigner.ui.component.editor
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -31,6 +32,8 @@ import io.stardewvalleydesigner.ui.component.editor.screen.sidemenus.LeftSideMen
 import io.stardewvalleydesigner.ui.component.editor.screen.sidemenus.RightSideMenus
 import io.stardewvalleydesigner.ui.component.editor.screen.topmenu.TopMenu
 import io.stardewvalleydesigner.ui.component.editor.utils.UNDEFINED
+import io.stardewvalleydesigner.ui.component.windowsize.LocalWindowSize
+import io.stardewvalleydesigner.ui.component.windowsize.WindowSize
 
 
 @Composable
@@ -41,7 +44,7 @@ fun EditorScreen(
 ) {
     val store = component.store
     val state by store.states.collectAsState(component.store.state)
-    val (history, map, toolkit, palette, /* flavors, */ visLayers, /* clipboard, */ options, planPath) = state
+    val (history, map, toolkit, palette, visLayers, options) = state
 
     val snackbarHostState = remember { SnackbarHostState() }
     var currCoordinate by remember { mutableStateOf(UNDEFINED) }
@@ -55,7 +58,12 @@ fun EditorScreen(
             intentConsumer = store::accept,
         )
 
-        val menuWidth = 350.dp
+        val menuWidth by animateDpAsState(
+            when (LocalWindowSize.current) {
+                WindowSize.SMALL -> 300.dp
+                WindowSize.MEDIUM -> 350.dp
+            }
+        )
 
         Row(Modifier.fillMaxWidth().weight(1f)) {
             LeftSideMenus(

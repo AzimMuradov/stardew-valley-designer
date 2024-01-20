@@ -29,6 +29,7 @@ kotlin {
                 implementation(projects.common.uiComponents.editorMenus.savePlanImg)
                 implementation(projects.common.uiComponents.settingsProvider)
                 implementation(projects.common.uiComponents.themes)
+                implementation(projects.common.uiComponents.windowSizeProvider)
 
                 if (System.getProperty("deploy")?.toBooleanStrictOrNull() == true) {
                     implementation(compose.desktop.linux_x64)

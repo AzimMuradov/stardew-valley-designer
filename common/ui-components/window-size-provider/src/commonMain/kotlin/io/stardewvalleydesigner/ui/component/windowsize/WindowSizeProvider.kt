@@ -14,32 +14,28 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.utils
+package io.stardewvalleydesigner.ui.component.windowsize
 
 import androidx.compose.runtime.*
 
 
-enum class WindowSize {
-
-    SMALL,
-    MEDIUM;
-
-    companion object {
-
-        fun fromWindowWidth(width: Int): WindowSize = when {
-            width < 1400 -> SMALL
-            else -> MEDIUM
-        }
-    }
-}
-
 @Composable
-fun WithMeasuredWindow(
+fun WithMeasuredWindowSize(
     windowWidth: Int,
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
         LocalWindowSize provides WindowSize.fromWindowWidth(windowWidth),
+        content = content
+    )
+}
+
+@Composable
+fun WithDefaultWindowSize(
+    content: @Composable () -> Unit,
+) {
+    CompositionLocalProvider(
+        LocalWindowSize provides WindowSize.MEDIUM,
         content = content
     )
 }

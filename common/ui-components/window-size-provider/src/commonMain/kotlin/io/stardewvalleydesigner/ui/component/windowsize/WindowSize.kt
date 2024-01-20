@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.kmplib.clipboard
-
-import kotlinx.browser.window
+package io.stardewvalleydesigner.ui.component.windowsize
 
 
-// TODO : Handle promises as coroutines
+enum class WindowSize {
 
-actual object Clipboard {
+    SMALL,
+    MEDIUM;
 
-    actual fun copyToClipboard(text: String) {
-        window.navigator.clipboard.writeText(text)
+    companion object {
+
+        fun fromWindowWidth(width: Int): WindowSize = when {
+            width < 1400 -> SMALL
+            else -> MEDIUM
+        }
     }
-
-    actual fun pasteFromClipboard(): String? = TODO()
 }

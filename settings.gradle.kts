@@ -36,6 +36,7 @@ include(
 )
 include(":common:ui-components:settings-provider")
 include(":common:ui-components:themes")
+include(":common:ui-components:window-size-provider")
 
 
 // Custom Kotlin Multiplatform Libraries
