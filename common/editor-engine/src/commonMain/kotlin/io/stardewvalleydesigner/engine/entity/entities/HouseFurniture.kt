@@ -54,7 +54,7 @@ enum class HouseFurniture(override val size: Rect) : Entity<HouseFurnitureType> 
 
     companion object {
 
-        val all by lazy { HouseFurniture.values().toSet() }
+        val all by lazy { HouseFurniture.entries.toSet() }
     }
 }
 

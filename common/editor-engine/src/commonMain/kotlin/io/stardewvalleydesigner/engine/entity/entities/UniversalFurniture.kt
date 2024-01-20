@@ -241,7 +241,7 @@ sealed interface UniversalFurniture : Entity<UniversalFurnitureType> {
     companion object {
 
         val all by lazy {
-            UniversalFurniture.SimpleUniversalFurniture.values().toSet() + setOf(
+            UniversalFurniture.SimpleUniversalFurniture.entries.toSet() + setOf(
                 Chair.OakChair(),
                 Chair.WalnutChair(),
                 Chair.BirchChair(),

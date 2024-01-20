@@ -21,7 +21,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Save
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import io.stardewvalleydesigner.LoggerUtils
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
 import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
 import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.saveplan.DesignSaver
@@ -48,8 +47,6 @@ fun SavePlanButton(
         icon = Icons.Rounded.Save,
         enabled = designSaveAbsolutePath != null && File(designSaveAbsolutePath).run { exists() && isFile },
         onClick = {
-            LoggerUtils.logger.debug { "designSaveAbsolutePath: $designSaveAbsolutePath" }
-            LoggerUtils.logger.debug { "snackbarHostState: ${snackbarHostState.currentSnackbarData}" }
             if (designSaveAbsolutePath != null) {
                 scope.launch {
                     withContext(PlatformDispatcher.IO) {
