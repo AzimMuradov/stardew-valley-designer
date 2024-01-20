@@ -27,7 +27,7 @@ data class OptionsState(
 
         fun default() = OptionsState(
             toggleables = buildMap {
-                putAll(OptionsItemValue.Toggleable.values().associateWith { true })
+                putAll(OptionsItemValue.Toggleable.entries.associateWith { true })
                 putAll(
                     listOf(
                         OptionsItemValue.Toggleable.ShowScarecrowsAreaOfEffect,

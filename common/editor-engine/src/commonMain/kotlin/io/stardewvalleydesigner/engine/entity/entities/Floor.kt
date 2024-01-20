@@ -52,6 +52,6 @@ enum class Floor : Entity<FloorType> {
 
     companion object {
 
-        val all by lazy { Floor.values().toSet() }
+        val all by lazy { Floor.entries.toSet() }
     }
 }

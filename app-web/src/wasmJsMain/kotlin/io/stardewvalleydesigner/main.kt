@@ -22,20 +22,22 @@ import io.stardewvalleydesigner.component.editor.*
 import io.stardewvalleydesigner.engine.layout.LayoutType
 import io.stardewvalleydesigner.engine.layout.LayoutsProvider
 import io.stardewvalleydesigner.settings.Lang
+import io.stardewvalleydesigner.settings.SettingsInterpreter
 import io.stardewvalleydesigner.ui.component.editor.EditorScreen
 import io.stardewvalleydesigner.ui.component.editor.res.WithImageResources
 import io.stardewvalleydesigner.ui.component.settings.WithSettings
 import io.stardewvalleydesigner.ui.component.themes.AppTheme
 import io.stardewvalleydesigner.ui.component.themes.ThemeVariant
 import io.stardewvalleydesigner.ui.component.windowsize.WithDefaultWindowSize
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalResourceApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 fun main() {
-    CanvasBasedWindow("Stardew Valley Designer") {
+    val lang = Lang.EN
+
+    CanvasBasedWindow(title = SettingsInterpreter.wordList(lang).application) {
         AppTheme(themeVariant = ThemeVariant.LIGHT) {
-            WithSettings(lang = Lang.EN) {
+            WithSettings(lang) {
                 WithImageResources(themeVariant = ThemeVariant.LIGHT) {
                     WithDefaultWindowSize {
                         EditorScreen(

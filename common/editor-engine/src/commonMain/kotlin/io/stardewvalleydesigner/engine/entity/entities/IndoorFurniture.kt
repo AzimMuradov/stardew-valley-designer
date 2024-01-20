@@ -132,7 +132,7 @@ sealed interface IndoorFurniture : Entity<IndoorFurnitureType> {
     companion object {
 
         val all by lazy {
-            IndoorFurniture.SimpleIndoorFurniture.values().toSet() + setOf(
+            IndoorFurniture.SimpleIndoorFurniture.entries.toSet() + setOf(
                 Couch.BlueCouch(),
                 Couch.BrownCouch(),
                 Couch.GreenCouch(),

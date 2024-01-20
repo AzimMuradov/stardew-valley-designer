@@ -92,8 +92,8 @@ sealed interface FloorFurniture : Entity<FloorFurnitureType> {
     companion object {
 
         val all by lazy {
-            FloorFurniture.SimpleRug.values().toSet() +
-                    Rotations2.values().flatMapTo(mutableSetOf()) {
+            FloorFurniture.SimpleRug.entries.toSet() +
+                    Rotations2.entries.flatMapTo(mutableSetOf()) {
                         setOf(
                             RotatableRug.BambooMat(it),
                             RotatableRug.NauticalRug(it),
@@ -110,7 +110,7 @@ sealed interface FloorFurniture : Entity<FloorFurnitureType> {
                             RotatableRug.FruitSaladRug(it),
                         )
                     }
-            /* + FloorDivider.values().toSet() */
+            /* + FloorDivider.entries.toSet() */
         }
     }
 }
