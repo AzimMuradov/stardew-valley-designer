@@ -28,7 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.*
-import io.stardewvalleydesigner.utils.WithMeasuredWindow
+import io.stardewvalleydesigner.ui.component.windowsize.WithMeasuredWindowSize
 import kotlinx.coroutines.delay
 import java.awt.Dimension
 
@@ -53,7 +53,7 @@ fun Screen(
         resizable = true,
         onKeyEvent = onKeyEvent,
     ) {
-        WithMeasuredWindow(windowWidth = with(LocalDensity.current) { state.size.width.roundToPx() }) {
+        WithMeasuredWindowSize(windowWidth = with(LocalDensity.current) { state.size.width.roundToPx() }) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center

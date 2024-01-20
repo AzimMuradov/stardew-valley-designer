@@ -27,6 +27,7 @@ import io.stardewvalleydesigner.ui.component.editor.res.WithImageResources
 import io.stardewvalleydesigner.ui.component.settings.WithSettings
 import io.stardewvalleydesigner.ui.component.themes.AppTheme
 import io.stardewvalleydesigner.ui.component.themes.ThemeVariant
+import io.stardewvalleydesigner.ui.component.windowsize.WithDefaultWindowSize
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 
@@ -36,9 +37,11 @@ fun main() {
         AppTheme(themeVariant = ThemeVariant.LIGHT) {
             WithSettings(lang = Lang.EN) {
                 WithImageResources(themeVariant = ThemeVariant.LIGHT) {
-                    EditorScreen(
-                        component = EditorComponentImpl(EditorState.default(LayoutsProvider.layoutOf(LayoutType.BigShed)))
-                    )
+                    WithDefaultWindowSize {
+                        EditorScreen(
+                            component = EditorComponentImpl(EditorState.default(LayoutsProvider.layoutOf(LayoutType.BigShed)))
+                        )
+                    }
                 }
             }
         }

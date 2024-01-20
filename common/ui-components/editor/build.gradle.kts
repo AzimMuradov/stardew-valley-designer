@@ -33,6 +33,7 @@ kotlin {
 
                 implementation(projects.common.uiComponents.settingsProvider)
                 implementation(projects.common.uiComponents.themes)
+                implementation(projects.common.uiComponents.windowSizeProvider)
 
                 implementation(compose.runtime)
                 implementation(compose.animation)

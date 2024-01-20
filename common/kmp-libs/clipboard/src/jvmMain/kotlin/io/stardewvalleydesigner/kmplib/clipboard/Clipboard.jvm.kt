@@ -17,14 +17,27 @@
 package io.stardewvalleydesigner.kmplib.clipboard
 
 import java.awt.Toolkit
+import java.awt.datatransfer.DataFlavor
 import java.awt.datatransfer.StringSelection
 
 
 actual object Clipboard {
 
-    actual fun copyToClipboard(text: String) = Toolkit.getDefaultToolkit()
-        .systemClipboard
-        .setContents(StringSelection(text), null)
+    actual fun copyToClipboard(text: String) {
+        try {
+            val clipboard = Toolkit.getDefaultToolkit().systemClipboard
+            val selection = StringSelection(text)
+            clipboard.setContents(selection, null)
+        } catch (_: Exception) {
+        }
+    }
 
-    actual fun pasteFromClipboard(): String? = TODO()
+    actual fun pasteFromClipboard(): String? = try {
+        val clipboard = Toolkit.getDefaultToolkit().systemClipboard
+        val selection = clipboard.getContents(null) as? StringSelection
+        val data = selection?.getTransferData(DataFlavor.stringFlavor) as? String
+        data
+    } catch (_: Exception) {
+        null
+    }
 }

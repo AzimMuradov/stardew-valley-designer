@@ -39,7 +39,9 @@ import androidx.compose.ui.unit.sp
 import io.stardewvalleydesigner.ICON_RES_PATH
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import io.stardewvalleydesigner.ui.component.themes.ternaryColor
-import io.stardewvalleydesigner.utils.*
+import io.stardewvalleydesigner.ui.component.windowsize.LocalWindowSize
+import io.stardewvalleydesigner.ui.component.windowsize.WindowSize
+import io.stardewvalleydesigner.utils.Browser
 
 
 @Composable
