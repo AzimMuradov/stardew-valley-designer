@@ -69,7 +69,7 @@ Most of the sprites and icons used in this app, including the app icon, are from
 For the source code (without the resources).
 
 ```
-Copyright 2021-2023 Azim Muradov
+Copyright 2021-2024 Azim Muradov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
