@@ -31,9 +31,8 @@ import io.stardewvalleydesigner.cmplib.tooltip.TooltipArea
 import io.stardewvalleydesigner.cmplib.tooltip.TooltipPlacement
 import io.stardewvalleydesigner.component.editor.EditorIntent
 import io.stardewvalleydesigner.component.editor.modules.toolkit.*
+import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.rememberImageResource
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
-import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
 
 
 @Composable
@@ -139,7 +138,6 @@ internal fun Toolbar(
 }
 
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun ButtonContent(tooltip: String, resourcePath: String) {
     TooltipArea(
@@ -152,7 +150,7 @@ private fun ButtonContent(tooltip: String, resourcePath: String) {
         )
     ) {
         Icon(
-            painter = painterResource(resourcePath),
+            bitmap = rememberImageResource(resourcePath),
             contentDescription = null,
             modifier = Modifier.fillMaxSize().padding(8.dp),
         )

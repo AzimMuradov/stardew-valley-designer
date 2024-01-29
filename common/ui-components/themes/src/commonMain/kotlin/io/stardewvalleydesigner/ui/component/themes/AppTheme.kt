@@ -26,7 +26,7 @@ import androidx.compose.ui.text.platform.Font
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.resource
+import stardew_valley_designer.common.ui_components.themes.generated.resources.Res
 
 
 @Composable
@@ -214,7 +214,7 @@ private suspend fun Font(
     style: FontStyle = FontStyle.Normal,
 ) = Font(
     identity = "$name-$family",
-    data = resource("fonts/$family/$name.ttf").readBytes(),
+    data = Res.readBytes("files/fonts/$family/$name.ttf"),
     weight,
     style
 )
