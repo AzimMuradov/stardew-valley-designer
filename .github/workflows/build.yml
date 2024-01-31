@@ -21,4 +21,4 @@ jobs:
       - name: "Grant execute permission for gradlew"
         run: chmod +x gradlew
       - name: "Build desktop app"
-        run: ./gradlew :app-desktop:build --stacktrace
+        run: ./gradlew build --stacktrace

@@ -82,6 +82,10 @@ tasks.named("compileProductionExecutableKotlinWasmJs").configure {
     dependsOn(copyWebResources)
 }
 
+tasks.named("wasmJsJar").configure {
+    dependsOn(copyWebResources)
+}
+
 
 compose.experimental.web {
     application {}
