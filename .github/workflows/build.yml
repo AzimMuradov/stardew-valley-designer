@@ -24,5 +24,5 @@ jobs:
         run: >
           ./gradlew
           build
-          -Dorg.gradle.jvmargs=-Xmx2048m
+          "-Dorg.gradle.jvmargs=-Xmx2048m"
           --stacktrace
