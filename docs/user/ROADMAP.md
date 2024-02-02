@@ -11,7 +11,7 @@
 ### 0.2.0
 
 - History manager (undo, redo)
-- Working plan editor (for big shed only)
+- Working design editor (for big shed only)
 - Tools (hand, pen, eraser, select)
 - Shapes (point, rect, rect outline)
 - Toggleables (show grid, show coords)
@@ -41,7 +41,7 @@
 ### 0.7.0
 
 - Toggle preview
-- Save plan as an image
+- Save design as an image
 
 ### 0.8.0
 
@@ -57,8 +57,12 @@
 
 ### 0.10.0
 
-- Make the application multi-window
-- Experimental plan saves
+- Make the desktop application multi-window
+- Experimental design saves
+  - Design format and scheme
+  - "Open design" button
+  - "Save design" and "save design as..." buttons
+- Experimental web editor
 
 ### 0.11.0
 
@@ -72,7 +76,8 @@
 
 ## 1.0.0
 
-- Stable plan saves
+- Stable design saves
+- Stable web version
 
 ### 1.1.0
 
@@ -96,7 +101,6 @@
 
 ## Backlog
 
-- Web version
 - Better icons for toolbar and palette
 - Fully functional palette
 - Tooltips, Hotkeys, Cursors (Pointers) & Other PC Features, `shift` for NxN
@@ -113,3 +117,4 @@
 - Tappers, crab pots
 - Dark theme, OS theme
 - Stardew Valley mods support
+- "Open with..." feature

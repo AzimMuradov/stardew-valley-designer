@@ -8,21 +8,24 @@
 The goal of this project is to provide a finely tuned editor for designing your farm and
 the interior of all its buildings.
 
-## Installation
+## Desktop installation
 
 Latest release - https://azimmuradov.github.io/stardew-valley-designer/download.html.
 
-Currently supported platforms:
+**Currently supported platforms**:
 
 - Windows (x86-64)
-- Linux (x86-64)
-    - Debian family
+  - Windows 10 version 1709 ("Fall Creators Update", October 2017) or higher
+  - Windows Server 2019 LTSC or higher
+  - Windows Enterprise 2019 LTSC or higher
+  - Windows 11
+- Linux (x86-64, glibc 2.14+ (released 2011))
+  - Debian family
 
-## Stardew Valley version
-
-The app aims to support the latest version of Stardew Valley (**1.5.6**).
-
-_Other versions may have little or no support._
+> [!NOTE]
+> The app aims to support the latest version of Stardew Valley (**1.5.6**).
+>
+> Other versions may have little or no support.
 
 ## Features
 
@@ -32,18 +35,39 @@ _Other versions may have little or no support._
 - Furniture support
 - History manager (undo, redo)
 - Savedata import
-- Ability to save plan as an image
+- Ability to save design as an image
 
-_There are currently no way to save the plan for later modifications.
-It's currently the #1 priority._
+### Experimental features
+
+> [!WARNING]
+> These features are highly experimental and subject to change.
+
+#### Design saves
+
+Works on desktop with ability to save and restore them.
+
+> [!WARNING]
+> Design saves may be backward incompatible with subsequent releases.
+
+#### Experimental web version
+
+https://azimmuradov.github.io/stardew-valley-designer/svd/editor
+
+Currently missing functionality:
+
+- No layout selection
+- No savedata import
+- No ability to save design as an image
+
+## Screenshots
+
+### Desktop
 
 ![1.png](docs/user/imgs/1.png)
 
 ![2.png](docs/user/imgs/2.png)
 
 ![3.png](docs/user/imgs/3.png)
-
-![4.png](docs/user/imgs/4.png)
 
 ## Roadmap
 
