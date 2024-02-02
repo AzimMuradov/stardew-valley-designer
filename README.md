@@ -53,7 +53,17 @@ Works on desktop with ability to save and restore them.
 
 https://azimmuradov.github.io/stardew-valley-designer/svd/editor
 
-Currently missing functionality:
+**Currently supported browsers**:
+
+- Chrome 119 or higher
+- Firefox 120 or higher
+- Chromium based browsers (based on Chromium 119 or higher)
+  - Opera
+  - Brave
+  - Microsoft Edge
+  - ...
+
+**Currently missing functionality**:
 
 - No layout selection
 - No savedata import
