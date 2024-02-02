@@ -61,6 +61,32 @@ kotlin {
     }
 }
 
+
+// Resource management
+
+val copyWebResources by tasks.registering(Copy::class) {
+    from(
+        "../common/ui-components/editor/build/processedResources/wasmJs/main",
+        "../common/ui-components/themes/build/processedResources/wasmJs/main",
+    )
+    into("build/processedResources/wasmJs/main")
+
+    dependsOn(":app-web:wasmJsMainClasses")
+}
+
+tasks.named("compileDevelopmentExecutableKotlinWasmJs").configure {
+    dependsOn(copyWebResources)
+}
+
+tasks.named("compileProductionExecutableKotlinWasmJs").configure {
+    dependsOn(copyWebResources)
+}
+
+tasks.named("wasmJsJar").configure {
+    dependsOn(copyWebResources)
+}
+
+
 compose.experimental.web {
     application {}
 }

@@ -16,8 +16,9 @@
 
 package io.stardewvalleydesigner.ui.component.editor.res
 
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import io.stardewvalleydesigner.engine.Flooring
@@ -28,7 +29,9 @@ import io.stardewvalleydesigner.engine.layout.LayoutType
 import io.stardewvalleydesigner.metadata.*
 import io.stardewvalleydesigner.ui.component.editor.utils.toComposeColor
 import io.stardewvalleydesigner.ui.component.themes.ThemeVariant
-import org.jetbrains.compose.resources.*
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.skia.Image
+import stardew_valley_designer.common.ui_components.editor.generated.resources.Res
 
 
 object ImageResourcesProvider {
@@ -111,64 +114,74 @@ object ImageResourcesProvider {
 
     @Composable
     internal fun entitySpriteMaps(): Map<EntityPage, ImageBitmap> = mapOf(
-        EntityPage.CommonObjects to rememberSpriteResource("entities/common-objects.png"),
-        EntityPage.Craftables to rememberSpriteResource("entities/craftables.png"),
-        EntityPage.Furniture to rememberSpriteResource("entities/furniture.png"),
-        EntityPage.Flooring to rememberSpriteResource("entities/flooring.png"),
-        EntityPage.Crops to rememberSpriteResource("entities/crops.png"),
+        EntityPage.CommonObjects to rememberImageResource("entities/common-objects.png"),
+        EntityPage.Craftables to rememberImageResource("entities/craftables.png"),
+        EntityPage.Furniture to rememberImageResource("entities/furniture.png"),
+        EntityPage.Flooring to rememberImageResource("entities/flooring.png"),
+        EntityPage.Crops to rememberImageResource("entities/crops.png"),
 
-        EntityPage.Barn1 to rememberSpriteResource("buildings/barn.png"),
-        EntityPage.Barn2 to rememberSpriteResource("buildings/big-barn.png"),
-        EntityPage.Barn3 to rememberSpriteResource("buildings/deluxe-barn.png"),
+        EntityPage.Barn1 to rememberImageResource("buildings/barn.png"),
+        EntityPage.Barn2 to rememberImageResource("buildings/big-barn.png"),
+        EntityPage.Barn3 to rememberImageResource("buildings/deluxe-barn.png"),
 
-        EntityPage.Coop1 to rememberSpriteResource("buildings/coop.png"),
-        EntityPage.Coop2 to rememberSpriteResource("buildings/big-coop.png"),
-        EntityPage.Coop3 to rememberSpriteResource("buildings/deluxe-coop.png"),
+        EntityPage.Coop1 to rememberImageResource("buildings/coop.png"),
+        EntityPage.Coop2 to rememberImageResource("buildings/big-coop.png"),
+        EntityPage.Coop3 to rememberImageResource("buildings/deluxe-coop.png"),
 
-        EntityPage.Shed to rememberSpriteResource("buildings/shed.png"),
-        EntityPage.BigShed to rememberSpriteResource("buildings/big-shed.png"),
+        EntityPage.Shed to rememberImageResource("buildings/shed.png"),
+        EntityPage.BigShed to rememberImageResource("buildings/big-shed.png"),
 
-        EntityPage.StoneCabin to rememberSpriteResource("buildings/stone-cabin.png"),
-        EntityPage.PlankCabin to rememberSpriteResource("buildings/plank-cabin.png"),
-        EntityPage.LogCabin to rememberSpriteResource("buildings/log-cabin.png"),
+        EntityPage.StoneCabin to rememberImageResource("buildings/stone-cabin.png"),
+        EntityPage.PlankCabin to rememberImageResource("buildings/plank-cabin.png"),
+        EntityPage.LogCabin to rememberImageResource("buildings/log-cabin.png"),
 
-        EntityPage.EarthObelisk to rememberSpriteResource("buildings/earth-obelisk.png"),
-        EntityPage.WaterObelisk to rememberSpriteResource("buildings/water-obelisk.png"),
-        EntityPage.DesertObelisk to rememberSpriteResource("buildings/desert-obelisk.png"),
-        EntityPage.IslandObelisk to rememberSpriteResource("buildings/island-obelisk.png"),
-        EntityPage.JunimoHut to rememberSpriteResource("buildings/junimo-hut.png"),
-        EntityPage.GoldClock to rememberSpriteResource("buildings/gold-clock.png"),
+        EntityPage.EarthObelisk to rememberImageResource("buildings/earth-obelisk.png"),
+        EntityPage.WaterObelisk to rememberImageResource("buildings/water-obelisk.png"),
+        EntityPage.DesertObelisk to rememberImageResource("buildings/desert-obelisk.png"),
+        EntityPage.IslandObelisk to rememberImageResource("buildings/island-obelisk.png"),
+        EntityPage.JunimoHut to rememberImageResource("buildings/junimo-hut.png"),
+        EntityPage.GoldClock to rememberImageResource("buildings/gold-clock.png"),
 
-        EntityPage.Mill to rememberSpriteResource("buildings/mill.png"),
-        EntityPage.Silo to rememberSpriteResource("buildings/silo.png"),
-        EntityPage.Well to rememberSpriteResource("buildings/well.png"),
-        EntityPage.Stable to rememberSpriteResource("buildings/stable.png"),
-        EntityPage.FishPond to rememberSpriteResource("buildings/fish-pond.png"),
-        EntityPage.SlimeHutch to rememberSpriteResource("buildings/slime-hutch.png"),
-        EntityPage.ShippingBin to rememberSpriteResource("buildings/shipping-bin.png"),
+        EntityPage.Mill to rememberImageResource("buildings/mill.png"),
+        EntityPage.Silo to rememberImageResource("buildings/silo.png"),
+        EntityPage.Well to rememberImageResource("buildings/well.png"),
+        EntityPage.Stable to rememberImageResource("buildings/stable.png"),
+        EntityPage.FishPond to rememberImageResource("buildings/fish-pond.png"),
+        EntityPage.SlimeHutch to rememberImageResource("buildings/slime-hutch.png"),
+        EntityPage.ShippingBin to rememberImageResource("buildings/shipping-bin.png"),
     )
 
     @Composable
-    internal fun wallsAndFloorsSprite(): ImageBitmap = rememberSpriteResource("layouts/walls-and-floors.png")
+    internal fun wallsAndFloorsSprite(): ImageBitmap = rememberImageResource("layouts/walls-and-floors.png")
 
     @Composable
     internal fun layoutSprites(themeVariant: ThemeVariant): Map<LayoutType, LayoutSprites> = mapOf(
         LayoutType.Shed to LayoutSprites(
-            fgImage = rememberSpriteResource("layouts/shed-fg-light.png"),
-            bgImage = rememberSpriteResource("layouts/shed-bg-light.png"),
+            fgImage = rememberImageResource("layouts/shed-fg-light.png"),
+            bgImage = rememberImageResource("layouts/shed-bg-light.png"),
         ),
         LayoutType.BigShed to LayoutSprites(
-            fgImage = rememberSpriteResource("layouts/big-shed-fg-light.png"),
-            bgImage = rememberSpriteResource("layouts/big-shed-bg-light.png"),
+            fgImage = rememberImageResource("layouts/big-shed-fg-light.png"),
+            bgImage = rememberImageResource("layouts/big-shed-bg-light.png"),
         ),
         LayoutType.StandardFarm to LayoutSprites(
-            fgImage = rememberSpriteResource("layouts/standard-farm-fg-spring.png"),
-            bgImage = rememberSpriteResource("layouts/standard-farm-bg-spring.png"),
+            fgImage = rememberImageResource("layouts/standard-farm-fg-spring.png"),
+            bgImage = rememberImageResource("layouts/standard-farm-bg-spring.png"),
         ),
     )
 
 
+    private val emptyImageBitmap: ImageBitmap by lazy { ImageBitmap(1, 1) }
+
     @OptIn(ExperimentalResourceApi::class)
     @Composable
-    private fun rememberSpriteResource(path: String) = resource(path).rememberImageBitmap().orEmpty()
+    internal fun rememberImageResource(path: String): ImageBitmap {
+        var bytes: ByteArray? by remember { mutableStateOf(null) }
+        LaunchedEffect(path) {
+            bytes = Res.readBytes(path = "files/$path")
+        }
+        return bytes
+            ?.let(Image.Companion::makeFromEncoded)
+            ?.toComposeImageBitmap() ?: emptyImageBitmap
+    }
 }

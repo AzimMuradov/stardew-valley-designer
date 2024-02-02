@@ -37,9 +37,9 @@ import io.stardewvalleydesigner.component.editor.EditorIntent
 import io.stardewvalleydesigner.component.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.entity.Colors
+import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.rememberImageResource
 import io.stardewvalleydesigner.ui.component.editor.utils.*
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
-import org.jetbrains.compose.resources.*
 import androidx.compose.ui.graphics.Color as ComposeColor
 
 
@@ -154,9 +154,10 @@ private fun InUseCard(inUse: Entity<*>?) {
 }
 
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun ChestColorMenu(color: Colors.ChestColors, onColorChosen: (Colors.ChestColors) -> Unit) {
+    val defaultChestColor = rememberImageResource(path = "other/default-chest-color-chest-menu.png")
+
     ToggleButtonsGroup(
         buttonLabels = Colors.ChestColors.entries.map { GroupOption.Some(it) },
         rowSize = 7u,
@@ -179,9 +180,6 @@ private fun ChestColorMenu(color: Colors.ChestColors, onColorChosen: (Colors.Che
                         if (value != null) {
                             Modifier.background(value.toComposeColor())
                         } else {
-                            val defaultChestColor = resource("other/default-chest-color-chest-menu.png")
-                                .rememberImageBitmap()
-                                .orEmpty()
                             Modifier.drawBehind {
                                 drawImage(
                                     image = defaultChestColor,
