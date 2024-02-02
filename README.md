@@ -37,19 +37,14 @@ Latest release - https://azimmuradov.github.io/stardew-valley-designer/download.
 - Savedata import
 - Ability to save design as an image
 
-### Experimental features
+### Experimental design saves
 
-> [!WARNING]
-> These features are highly experimental and subject to change.
-
-#### Design saves
-
-Works on desktop with ability to save and restore them.
+Ability to save and import designs (currently only works on desktop).
 
 > [!WARNING]
 > Design saves may be backward incompatible with subsequent releases.
 
-#### Experimental web version
+### Experimental web version
 
 https://azimmuradov.github.io/stardew-valley-designer/svd/editor
 
