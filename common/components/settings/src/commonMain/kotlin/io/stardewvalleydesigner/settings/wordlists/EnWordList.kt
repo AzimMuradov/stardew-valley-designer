@@ -91,29 +91,29 @@ data object EnWordList : WordList {
     override val infoBugs: String = "If you encounter a bug or have any questions, please let me know."
 
 
-    override val buttonNewPlanText: String = "New plan"
+    override val buttonNewDesignText: String = "New design"
 
-    override val newPlanWindowTitle: String = "Create new plan"
+    override val newDesignWindowTitle: String = "Create new design"
 
 
-    override val buttonOpenPlanText: String = "Open plan"
+    override val buttonOpenDesignText: String = "Open design"
 
-    override val openPlanWindowTitle: String = "Open plan design"
+    override val openDesignWindowTitle: String = "Open design"
 
-    override val openPlanPlaceholder: String = "Load your plan design"
+    override val openDesignPlaceholder: String = "Load your design"
 
-    override val openPlanPlaceholderError: String = "Something went wrong, try again or choose another file"
+    override val openDesignPlaceholderError: String = "Something went wrong, try again or choose another file"
 
-    override val openPlanSelectPlanButton: String = "SELECT PLAN DESIGN"
+    override val openDesignSelectDesignButton: String = "SELECT DESIGN"
 
-    override val openPlanSelectPlanTitle: String = "Select plan design"
+    override val openDesignSelectDesignTitle: String = "Select design"
 
-    override val openPlanSelectPlanPlaceholder: String = "path to your plan design"
+    override val openDesignSelectDesignPlaceholder: String = "path to your design"
 
 
     override val buttonSaveImportText: String = "Import from save"
 
-    override val saveImportWindowTitle: String = "Import plan from save"
+    override val saveImportWindowTitle: String = "Import design from save"
 
     override val saveImportPlaceholder: String = "Load your save file and then choose from available layouts"
 
@@ -127,9 +127,6 @@ data object EnWordList : WordList {
 
 
     override val chooseLayout: String = "CHOOSE LAYOUT"
-
-
-    // TODO : override val buttonSearchForAPlanText: String = "Search for a plan"
 
 
     // Editor Screen
@@ -733,27 +730,27 @@ data object EnWordList : WordList {
     }.also { entities[e] = it }
 
 
-    override val buttonSavePlanAsImageTooltip: String = "Save plan as an image"
+    override val buttonSaveDesignAsImageTooltip: String = "Save design as an image"
 
-    override val savePlanAsImageTitle: String = "Provide path for the plan save"
+    override val saveDesignAsImageTitle: String = "Provide path for the design save"
 
-    override fun savePlanAsImageNotificationMessage(path: String?): String = if (path != null) {
+    override fun saveDesignAsImageNotificationMessage(path: String?): String = if (path != null) {
         "Saved to \"$path\""
     } else {
         "Saved"
     }
 
 
-    override val buttonSavePlanTooltip: String = "Save plan"
+    override val buttonSaveDesignTooltip: String = "Save design"
 
-    override val savePlanNotificationMessage: String = "Saved"
+    override val saveDesignNotificationMessage: String = "Saved"
 
 
-    override val buttonSavePlanAsTooltip: String = "Save plan as..."
+    override val buttonSaveDesignAsTooltip: String = "Save design as..."
 
-    override val savePlanAsTitle: String = "Provide path for the plan save"
+    override val saveDesignAsTitle: String = "Provide path for the design save"
 
-    override fun savePlanAsNotificationMessage(path: String?): String = if (path != null) {
+    override fun saveDesignAsNotificationMessage(path: String?): String = if (path != null) {
         "Saved to \"$path\""
     } else {
         "Saved"

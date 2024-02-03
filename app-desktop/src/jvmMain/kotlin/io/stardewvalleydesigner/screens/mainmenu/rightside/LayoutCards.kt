@@ -25,7 +25,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.dirs.UserDirectories
-import io.stardewvalleydesigner.designformat.PlanFormatConverter
+import io.stardewvalleydesigner.designformat.DesignFormatConverter
 import java.io.File
 import kotlin.io.path.Path
 import java.io.File.separator as sep
@@ -42,7 +42,7 @@ fun LayoutCards() {
         mutableStateOf(
             paths.mapNotNull { path ->
                 try {
-                    PlanFormatConverter.parse(File(path).readText())
+                    DesignFormatConverter.parse(File(path).readText())
                 } catch (e: Exception) {
                     null
                 }?.let {

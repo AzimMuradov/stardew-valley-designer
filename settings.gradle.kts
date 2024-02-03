@@ -30,9 +30,9 @@ include(":common:components:settings")
 
 include(":common:ui-components:editor")
 include(
-    ":common:ui-components:editor-menus:save-plan",
-    ":common:ui-components:editor-menus:save-plan-as",
-    ":common:ui-components:editor-menus:save-plan-img",
+    ":common:ui-components:editor-menus:save-design",
+    ":common:ui-components:editor-menus:save-design-as",
+    ":common:ui-components:editor-menus:save-design-img",
 )
 include(":common:ui-components:settings-provider")
 include(":common:ui-components:themes")

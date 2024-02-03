@@ -93,20 +93,20 @@ private fun Root(component: RootComponent, exitApplication: () -> Unit) {
                 EditorScreen(
                     editorComponent,
                     rightBottomMenus = { editorState, snackbarHostState ->
-                        var designSaveAbsolutePath: String? by remember { mutableStateOf(editorState.planPath) }
+                        var designSaveAbsolutePath: String? by remember { mutableStateOf(editorState.designPath) }
 
-                        SavePlanButton(
+                        SaveDesignButton(
                             map = editorState.map,
                             snackbarHostState = snackbarHostState,
                             designSaveAbsolutePath = designSaveAbsolutePath,
                         )
-                        SavePlanAsButton(
+                        SaveDesignAsButton(
                             map = editorState.map,
                             snackbarHostState = snackbarHostState,
                             designSaveAbsolutePath = designSaveAbsolutePath,
                             onDesignSaveAbsolutePathChanged = { designSaveAbsolutePath = it },
                         )
-                        SavePlanAsImageButton(
+                        SaveDesignAsImageButton(
                             map = editorState.map,
                             visibleLayers = editorState.visLayers,
                             snackbarHostState = snackbarHostState,
