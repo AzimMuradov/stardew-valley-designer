@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -68,6 +69,8 @@ internal fun Palette(
 
     val inUse = palette.inUse
 
+    val defaultChestColorImage = rememberImageResource(path = "other/default-chest-color-chest-menu.png")
+
     if (inUse is FlavoredEntity) {
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -77,7 +80,8 @@ internal fun Palette(
             is Colored.ColoredFishPond -> Unit // TODO
 
             is Colored.ColoredChest -> ChestColorMenu(
-                color = e.color,
+                chosenColor = e.color,
+                defaultChestColorImage = defaultChestColorImage,
                 onColorChosen = {
                     intentConsumer(
                         EditorIntent.Palette.AddToInUse(
@@ -155,14 +159,16 @@ private fun InUseCard(inUse: Entity<*>?) {
 
 
 @Composable
-private fun ChestColorMenu(color: Colors.ChestColors, onColorChosen: (Colors.ChestColors) -> Unit) {
-    val defaultChestColor = rememberImageResource(path = "other/default-chest-color-chest-menu.png")
-
+private fun ChestColorMenu(
+    chosenColor: Colors.ChestColors,
+    defaultChestColorImage: ImageBitmap,
+    onColorChosen: (Colors.ChestColors) -> Unit,
+) {
     ToggleButtonsGroup(
         buttonLabels = Colors.ChestColors.entries.map { GroupOption.Some(it) },
         rowSize = 7u,
         modifier = Modifier.fillMaxWidth(),
-        chosenLabel = color,
+        chosenLabel = chosenColor,
         onButtonClick = onColorChosen,
         spaceContent = {
             Icon(
@@ -182,7 +188,7 @@ private fun ChestColorMenu(color: Colors.ChestColors, onColorChosen: (Colors.Che
                         } else {
                             Modifier.drawBehind {
                                 drawImage(
-                                    image = defaultChestColor,
+                                    image = defaultChestColorImage,
                                     dstSize = size.toIntSize(),
                                     filterQuality = FilterQuality.None
                                 )
