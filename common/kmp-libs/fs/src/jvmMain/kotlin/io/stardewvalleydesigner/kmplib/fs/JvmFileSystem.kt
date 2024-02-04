@@ -55,7 +55,7 @@ fun JvmFileSystem.getSvdImagesDir(): String = relative(
     filename = "Stardew Valley Designer",
 )
 
-fun JvmFileSystem.getSvSavesDir() = run {
+fun JvmFileSystem.getSvSavesDir(): String {
     val os = System.getProperty("os.name").uppercase(Locale.ENGLISH)
     val dataPath = if ("WIN" in os) {
         System.getenv("APPDATA")
@@ -63,10 +63,10 @@ fun JvmFileSystem.getSvSavesDir() = run {
         "${getHomeDir()}${sep}.config"
     }
 
-    "$dataPath${sep}StardewValley${sep}Saves"
+    return "$dataPath${sep}StardewValley${sep}Saves"
 }
 
 
-fun String.endSep(): String = JvmFileSystem.relative(dir = this, filename = "")
+fun String.endSep(): String = "$this$sep"
 
 fun String.takeIfExists(): String? = takeIf { Path(it).exists() }
