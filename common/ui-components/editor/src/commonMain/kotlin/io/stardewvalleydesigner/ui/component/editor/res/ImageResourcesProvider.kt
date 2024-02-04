@@ -83,29 +83,29 @@ object ImageResourcesProvider {
     )
 
     @Composable
-    fun layoutSpriteBy(type: LayoutType): LayoutSprites = ImageResources.layouts.getValue(type)
+    fun layoutSpriteBy(type: LayoutType): LayoutSprite = ImageResources.layouts.getValue(type)
 
-    fun flooringSpriteBy(image: ImageBitmap, fl: Flooring): Sprite.Image {
+    fun flooringSpriteBy(wallsAndFloors: ImageBitmap, fl: Flooring): Sprite.Image {
         val flooringObjectSpriteSize = IntSize(width = 32, height = 32)
         val index = fl.n.toInt()
         val (i, j) = (index % 8) to (index / 8)
         val (w, h) = flooringObjectSpriteSize
 
         return Sprite.Image(
-            image = image,
+            image = wallsAndFloors,
             offset = IntOffset(x = i * w, y = 336 + j * h),
             size = flooringObjectSpriteSize,
         )
     }
 
-    fun wallpaperSpriteBy(image: ImageBitmap, wp: Wallpaper): Sprite.Image {
+    fun wallpaperSpriteBy(wallsAndFloors: ImageBitmap, wp: Wallpaper): Sprite.Image {
         val wallpaperObjectSpriteSize = IntSize(width = 16, height = 48)
         val index = wp.n.toInt()
         val (i, j) = (index % 16) to (index / 16)
         val (w, h) = wallpaperObjectSpriteSize
 
         return Sprite.Image(
-            image = image,
+            image = wallsAndFloors,
             offset = IntOffset(x = i * w, y = j * h),
             size = wallpaperObjectSpriteSize,
         )
@@ -158,16 +158,16 @@ object ImageResourcesProvider {
     )
 
     @Composable
-    internal fun layoutSprites(themeVariant: ThemeVariant): Map<LayoutType, LayoutSprites> = mapOf(
-        LayoutType.Shed to LayoutSprites(
+    internal fun layoutSprites(themeVariant: ThemeVariant): Map<LayoutType, LayoutSprite> = mapOf(
+        LayoutType.Shed to LayoutSprite(
             fgImage = rememberImageResource("layouts/shed-fg-light.png"),
             bgImage = rememberImageResource("layouts/shed-bg-light.png"),
         ),
-        LayoutType.BigShed to LayoutSprites(
+        LayoutType.BigShed to LayoutSprite(
             fgImage = rememberImageResource("layouts/big-shed-fg-light.png"),
             bgImage = rememberImageResource("layouts/big-shed-bg-light.png"),
         ),
-        LayoutType.StandardFarm to LayoutSprites(
+        LayoutType.StandardFarm to LayoutSprite(
             fgImage = rememberImageResource("layouts/standard-farm-fg-spring.png"),
             bgImage = rememberImageResource("layouts/standard-farm-bg-spring.png"),
         ),

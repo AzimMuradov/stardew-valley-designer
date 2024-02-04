@@ -29,7 +29,7 @@ object ImageResources {
 
     val entities: Map<EntityPage, ImageBitmap> @Composable get() = imagesResourcesData.entities
 
-    val layouts: Map<LayoutType, LayoutSprites> @Composable get() = imagesResourcesData.layouts
+    val layouts: Map<LayoutType, LayoutSprite> @Composable get() = imagesResourcesData.layouts
 
     val wallsAndFloors: ImageBitmap @Composable get() = imagesResourcesData.wallsAndFloors
 
@@ -58,7 +58,7 @@ fun WithImageResources(themeVariant: ThemeVariant, content: @Composable () -> Un
 
 private data class ImagesResourcesData(
     val entities: Map<EntityPage, ImageBitmap>,
-    val layouts: Map<LayoutType, LayoutSprites>,
+    val layouts: Map<LayoutType, LayoutSprite>,
     val wallsAndFloors: ImageBitmap,
     val tools: Map<ToolType, ImageBitmap>,
     val shapes: Map<ShapeType?, ImageBitmap>,

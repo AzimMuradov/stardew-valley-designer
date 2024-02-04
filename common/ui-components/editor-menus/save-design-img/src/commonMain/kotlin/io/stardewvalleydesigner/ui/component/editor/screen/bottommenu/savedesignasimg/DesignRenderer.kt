@@ -35,7 +35,7 @@ internal object DesignRenderer {
         visibleLayers: Set<LayerType<*>>,
         entityMaps: Map<EntityPage, ImageBitmap>,
         wallsAndFloors: ImageBitmap,
-        layoutSprite: LayoutSprites,
+        layoutSprite: LayoutSprite,
     ): ByteArray {
         val bitmap = render(map, visibleLayers, entityMaps, wallsAndFloors, layoutSprite)
         val pixels = IntArray(bitmap.width * bitmap.height).apply { bitmap.readPixels(buffer = this) }
@@ -50,7 +50,7 @@ internal object DesignRenderer {
         visibleLayers: Set<LayerType<*>>,
         entityMaps: Map<EntityPage, ImageBitmap>,
         wallsAndFloors: ImageBitmap,
-        layoutSprite: LayoutSprites,
+        layoutSprite: LayoutSprite,
     ): ImageBitmap {
         val layout = map.layout
         val (nW, nH) = layout.size
