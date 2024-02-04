@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.cmplib.group.GroupOption
@@ -31,7 +32,7 @@ import io.stardewvalleydesigner.cmplib.tooltip.TooltipArea
 import io.stardewvalleydesigner.cmplib.tooltip.TooltipPlacement
 import io.stardewvalleydesigner.component.editor.EditorIntent
 import io.stardewvalleydesigner.component.editor.modules.toolkit.*
-import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.rememberImageResource
+import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 
@@ -85,13 +86,7 @@ internal fun Toolbar(
         buttonContent = { toolType ->
             ButtonContent(
                 tooltip = wordList.tool(toolType),
-                resourcePath = when (toolType) {
-                    ToolType.Hand -> "tools/hand.png"
-                    ToolType.Pen -> "tools/pen.png"
-                    ToolType.Eraser -> "tools/eraser.png"
-                    ToolType.Select -> "tools/select.png"
-                    ToolType.EyeDropper -> "tools/eye-dropper.png"
-                }
+                image = ImageResourcesProvider.toolImageBy(toolType),
             )
         }
     )
@@ -121,16 +116,7 @@ internal fun Toolbar(
                 }
                 ButtonContent(
                     tooltip = "$shapeName$postfix",
-                    resourcePath = when (shapeType) {
-                        null -> "shapes/point.png"
-                        ShapeType.Rect -> "shapes/rect.png"
-                        ShapeType.RectOutline -> "shapes/rect-outline.png"
-                        ShapeType.Ellipse -> "shapes/ellipse.png"
-                        ShapeType.EllipseOutline -> "shapes/ellipse-outline.png"
-                        ShapeType.Diamond -> "shapes/diamond.png"
-                        ShapeType.DiamondOutline -> "shapes/diamond-outline.png"
-                        ShapeType.Line -> "shapes/line.png"
-                    }
+                    image = ImageResourcesProvider.shapeImageBy(shapeType),
                 )
             }
         )
@@ -139,7 +125,7 @@ internal fun Toolbar(
 
 
 @Composable
-private fun ButtonContent(tooltip: String, resourcePath: String) {
+private fun ButtonContent(tooltip: String, image: ImageBitmap) {
     TooltipArea(
         tooltip,
         delayMillis = 1000,
@@ -150,7 +136,7 @@ private fun ButtonContent(tooltip: String, resourcePath: String) {
         )
     ) {
         Icon(
-            bitmap = rememberImageResource(resourcePath),
+            bitmap = image,
             contentDescription = null,
             modifier = Modifier.fillMaxSize().padding(8.dp),
         )

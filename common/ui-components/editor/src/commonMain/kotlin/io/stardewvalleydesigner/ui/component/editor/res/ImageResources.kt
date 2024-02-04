@@ -18,6 +18,8 @@ package io.stardewvalleydesigner.ui.component.editor.res
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.ImageBitmap
+import io.stardewvalleydesigner.component.editor.modules.toolkit.ShapeType
+import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolType
 import io.stardewvalleydesigner.engine.layout.LayoutType
 import io.stardewvalleydesigner.metadata.EntityPage
 import io.stardewvalleydesigner.ui.component.themes.ThemeVariant
@@ -27,9 +29,13 @@ object ImageResources {
 
     val entities: Map<EntityPage, ImageBitmap> @Composable get() = imagesResourcesData.entities
 
+    val layouts: Map<LayoutType, LayoutSprite> @Composable get() = imagesResourcesData.layouts
+
     val wallsAndFloors: ImageBitmap @Composable get() = imagesResourcesData.wallsAndFloors
 
-    val layouts: Map<LayoutType, LayoutSprites> @Composable get() = imagesResourcesData.layouts
+    val tools: Map<ToolType, ImageBitmap> @Composable get() = imagesResourcesData.tools
+
+    val shapes: Map<ShapeType?, ImageBitmap> @Composable get() = imagesResourcesData.shapes
 
 
     private val imagesResourcesData: ImagesResourcesData @Composable get() = LocalImageResources.current
@@ -39,8 +45,10 @@ object ImageResources {
 fun WithImageResources(themeVariant: ThemeVariant, content: @Composable () -> Unit) {
     val data = ImagesResourcesData(
         entities = ImageResourcesProvider.entitySpriteMaps(),
-        wallsAndFloors = ImageResourcesProvider.wallsAndFloorsSprite(),
         layouts = ImageResourcesProvider.layoutSprites(themeVariant),
+        wallsAndFloors = ImageResourcesProvider.wallsAndFloorsSprite(),
+        tools = ImageResourcesProvider.toolImages(),
+        shapes = ImageResourcesProvider.shapeImages(),
     )
     CompositionLocalProvider(
         LocalImageResources provides data,
@@ -50,8 +58,10 @@ fun WithImageResources(themeVariant: ThemeVariant, content: @Composable () -> Un
 
 private data class ImagesResourcesData(
     val entities: Map<EntityPage, ImageBitmap>,
+    val layouts: Map<LayoutType, LayoutSprite>,
     val wallsAndFloors: ImageBitmap,
-    val layouts: Map<LayoutType, LayoutSprites>,
+    val tools: Map<ToolType, ImageBitmap>,
+    val shapes: Map<ShapeType?, ImageBitmap>,
 )
 
 private val LocalImageResources = staticCompositionLocalOf<ImagesResourcesData> {

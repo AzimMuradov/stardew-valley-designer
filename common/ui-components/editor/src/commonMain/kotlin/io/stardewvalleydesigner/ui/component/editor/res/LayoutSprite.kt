@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.IntSize
 
 
-data class LayoutSprites(
+data class LayoutSprite(
     val fgImage: ImageBitmap,
     val bgImage: ImageBitmap,
 ) {

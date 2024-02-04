@@ -21,6 +21,8 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
+import io.stardewvalleydesigner.component.editor.modules.toolkit.ShapeType
+import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolType
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.entity.Colors
@@ -80,36 +82,40 @@ object ImageResourcesProvider {
         size = size.let { (w, h) -> IntSize(w, h) },
     )
 
-
     @Composable
-    fun layoutSpriteBy(type: LayoutType): LayoutSprites = ImageResources.layouts.getValue(type)
+    fun layoutSpriteBy(type: LayoutType): LayoutSprite = ImageResources.layouts.getValue(type)
 
-
-    fun flooringSpriteBy(image: ImageBitmap, fl: Flooring): Sprite.Image {
+    fun flooringSpriteBy(wallsAndFloors: ImageBitmap, fl: Flooring): Sprite.Image {
         val flooringObjectSpriteSize = IntSize(width = 32, height = 32)
         val index = fl.n.toInt()
         val (i, j) = (index % 8) to (index / 8)
         val (w, h) = flooringObjectSpriteSize
 
         return Sprite.Image(
-            image = image,
+            image = wallsAndFloors,
             offset = IntOffset(x = i * w, y = 336 + j * h),
             size = flooringObjectSpriteSize,
         )
     }
 
-    fun wallpaperSpriteBy(image: ImageBitmap, wp: Wallpaper): Sprite.Image {
+    fun wallpaperSpriteBy(wallsAndFloors: ImageBitmap, wp: Wallpaper): Sprite.Image {
         val wallpaperObjectSpriteSize = IntSize(width = 16, height = 48)
         val index = wp.n.toInt()
         val (i, j) = (index % 16) to (index / 16)
         val (w, h) = wallpaperObjectSpriteSize
 
         return Sprite.Image(
-            image = image,
+            image = wallsAndFloors,
             offset = IntOffset(x = i * w, y = j * h),
             size = wallpaperObjectSpriteSize,
         )
     }
+
+    @Composable
+    fun toolImageBy(type: ToolType): ImageBitmap = ImageResources.tools.getValue(type)
+
+    @Composable
+    fun shapeImageBy(type: ShapeType?): ImageBitmap = ImageResources.shapes.getValue(type)
 
 
     @Composable
@@ -152,26 +158,45 @@ object ImageResourcesProvider {
     )
 
     @Composable
-    internal fun wallsAndFloorsSprite(): ImageBitmap = rememberImageResource("layouts/walls-and-floors.png")
-
-    @Composable
-    internal fun layoutSprites(themeVariant: ThemeVariant): Map<LayoutType, LayoutSprites> = mapOf(
-        LayoutType.Shed to LayoutSprites(
+    internal fun layoutSprites(themeVariant: ThemeVariant): Map<LayoutType, LayoutSprite> = mapOf(
+        LayoutType.Shed to LayoutSprite(
             fgImage = rememberImageResource("layouts/shed-fg-light.png"),
             bgImage = rememberImageResource("layouts/shed-bg-light.png"),
         ),
-        LayoutType.BigShed to LayoutSprites(
+        LayoutType.BigShed to LayoutSprite(
             fgImage = rememberImageResource("layouts/big-shed-fg-light.png"),
             bgImage = rememberImageResource("layouts/big-shed-bg-light.png"),
         ),
-        LayoutType.StandardFarm to LayoutSprites(
+        LayoutType.StandardFarm to LayoutSprite(
             fgImage = rememberImageResource("layouts/standard-farm-fg-spring.png"),
             bgImage = rememberImageResource("layouts/standard-farm-bg-spring.png"),
         ),
     )
 
+    @Composable
+    internal fun wallsAndFloorsSprite(): ImageBitmap = rememberImageResource("layouts/walls-and-floors.png")
 
-    private val emptyImageBitmap: ImageBitmap by lazy { ImageBitmap(1, 1) }
+    @Composable
+    internal fun toolImages(): Map<ToolType, ImageBitmap> = mapOf(
+        ToolType.Hand to rememberImageResource("tools/hand.png"),
+        ToolType.Pen to rememberImageResource("tools/pen.png"),
+        ToolType.Eraser to rememberImageResource("tools/eraser.png"),
+        ToolType.Select to rememberImageResource("tools/select.png"),
+        ToolType.EyeDropper to rememberImageResource("tools/eye-dropper.png"),
+    )
+
+    @Composable
+    internal fun shapeImages(): Map<ShapeType?, ImageBitmap> = mapOf(
+        null to rememberImageResource("shapes/point.png"),
+        ShapeType.Rect to rememberImageResource("shapes/rect.png"),
+        ShapeType.RectOutline to rememberImageResource("shapes/rect-outline.png"),
+        ShapeType.Ellipse to rememberImageResource("shapes/ellipse.png"),
+        ShapeType.EllipseOutline to rememberImageResource("shapes/ellipse-outline.png"),
+        ShapeType.Diamond to rememberImageResource("shapes/diamond.png"),
+        ShapeType.DiamondOutline to rememberImageResource("shapes/diamond-outline.png"),
+        ShapeType.Line to rememberImageResource("shapes/line.png"),
+    )
+
 
     @OptIn(ExperimentalResourceApi::class)
     @Composable
@@ -180,8 +205,16 @@ object ImageResourcesProvider {
         LaunchedEffect(path) {
             bytes = Res.readBytes(path = "files/$path")
         }
-        return bytes
-            ?.let(Image.Companion::makeFromEncoded)
-            ?.toComposeImageBitmap() ?: emptyImageBitmap
+        val image by remember(bytes) {
+            mutableStateOf(
+                bytes
+                    ?.let(Image.Companion::makeFromEncoded)
+                    ?.toComposeImageBitmap() ?: emptyImageBitmap
+            )
+        }
+
+        return image
     }
+
+    private val emptyImageBitmap: ImageBitmap by lazy { ImageBitmap(1, 1) }
 }
