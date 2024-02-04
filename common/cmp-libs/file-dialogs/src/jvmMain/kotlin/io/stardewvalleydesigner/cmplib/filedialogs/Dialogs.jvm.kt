@@ -79,7 +79,7 @@ actual fun FilePicker(
 
 
 private fun processDefaultPath(defaultPathAndFile: String?): String {
-    val pathString = (defaultPathAndFile ?: UserDirectories.get().homeDir) + sep
+    val pathString = defaultPathAndFile ?: ("${UserDirectories.get().homeDir}$sep")
 
     try {
         val path = Path(pathString)
