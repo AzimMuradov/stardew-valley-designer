@@ -35,14 +35,16 @@ expect object FileSystem {
     fun getPicsDir(): String?
 
 
-    // TODO : Probably should remove
-    fun getSvdImagesDir(): String?
-
-    // TODO : Probably should remove
-    fun getSvdSavesDir(): String?
-
-
     fun relative(dir: String?, filename: String): String?
-
-    fun relativeIfExists(dir: String?, filename: String): String?
 }
+
+
+fun FileSystem.getSvdSavesDir() = relative(
+    dir = getDocsDir(),
+    filename = "Stardew Valley Designer",
+)
+
+fun FileSystem.getSvdImagesDir() = relative(
+    dir = getPicsDir(),
+    filename = "Stardew Valley Designer",
+)

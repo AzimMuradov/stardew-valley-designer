@@ -16,71 +16,28 @@
 
 package io.stardewvalleydesigner.kmplib.fs
 
-import dev.dirs.UserDirectories
-import kotlin.io.path.Path
-import kotlin.io.path.exists
-import java.io.File.separator as sep
 
-
-/**
- * Execution environment.
- */
 actual object FileSystem {
 
     /**
      * Get the user's home directory.
      */
-    actual fun getHomeDir(): String? = UserDirectories.get().homeDir
+    actual fun getHomeDir(): String? = JvmFileSystem.getHomeDir()
 
     /**
      * Get the user's documents directory.
      */
-    actual fun getDocsDir(): String? = UserDirectories.get().documentDir
+    actual fun getDocsDir(): String? = JvmFileSystem.getDocsDir()
 
     /**
      * Get the user's pictures directory.
      */
-    actual fun getPicsDir(): String? = UserDirectories.get().pictureDir
-
-
-    actual fun getSvdImagesDir(): String? = relative(
-        dir = getPicsDir(),
-        filename = "Stardew Valley Designer",
-    )
-
-    actual fun getSvdSavesDir(): String? = relative(
-        dir = getDocsDir(),
-        filename = "Stardew Valley Designer",
-    )
+    actual fun getPicsDir(): String? = JvmFileSystem.getPicsDir()
 
 
     actual fun relative(dir: String?, filename: String): String? = if (dir != null) {
-        "$dir$sep$filename"
+        JvmFileSystem.relative(dir, filename)
     } else {
         null
     }
-
-    actual fun relativeIfExists(dir: String?, filename: String): String? = relative(dir, filename)?.takeIfExists()
-
-
-    private fun String.takeIfExists(): String? = takeIf { Path(it).exists() }
 }
-
-// fun Environment.getSdvSavesDir() = run {
-//     val os = System.getProperty("os.name").uppercase(Locale.getDefault())
-//     val dataPath = if ("WIN" in os) {
-//         System.getenv("APPDATA")
-//     } else {
-//         "${getHomeDir()}${sep}.config"
-//     }
-//
-//     "$dataPath${sep}StardewValley${sep}Saves${sep}"
-// }.takeIfExists()
-
-// suspend fun Environment.getOrCreateSvdDesignSavesDir() = withContext(Dispatchers.IO) {
-//     getDocsDir()?.let { docsDir ->
-//         "$docsDir${sep}Stardew Valley Designer${sep}"
-//     }?.let {
-//         Path(it).also { path -> path.createParentDirectories() }
-//     }
-// }

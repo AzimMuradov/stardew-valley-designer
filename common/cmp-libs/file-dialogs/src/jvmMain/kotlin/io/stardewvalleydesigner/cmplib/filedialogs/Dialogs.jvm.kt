@@ -42,18 +42,9 @@ actual fun FileSaver(
 ) {
     ModalDialog {
         val result = withContext(PlatformDispatcher.IO) {
-            val pathString = (defaultPathAndFile ?: UserDirectories.get().homeDir) + "$sep"
-
-            try {
-                val path = Path(pathString)
-                if (path.isDirectory()) path.createDirectories() else path.createParentDirectories()
-            } catch (e: IOException) {
-                logger.error(e) { "Can't create directories for '$pathString'" }
-            }
-
             TinyFileDialogsWrapper.createSaveFileDialog(
                 title,
-                defaultPathAndFile = pathString,
+                defaultPathAndFile = processDefaultPath(defaultPathAndFile),
                 extensions,
                 extensionsDescription,
                 bytes = bytes(),
@@ -74,18 +65,9 @@ actual fun FilePicker(
 ) {
     ModalDialog {
         val result = withContext(PlatformDispatcher.IO) {
-            val pathString = (defaultPathAndFile ?: UserDirectories.get().homeDir) + "$sep"
-
-            try {
-                val path = Path(pathString)
-                if (path.isDirectory()) path.createDirectories() else path.createParentDirectories()
-            } catch (e: IOException) {
-                logger.error(e) { "Can't create directories for '$pathString'" }
-            }
-
             TinyFileDialogsWrapper.createOpenFileDialog(
                 title,
-                defaultPathAndFile = pathString,
+                defaultPathAndFile = processDefaultPath(defaultPathAndFile),
                 extensions,
                 extensionsDescription,
             )
@@ -95,6 +77,19 @@ actual fun FilePicker(
     }
 }
 
+
+private fun processDefaultPath(defaultPathAndFile: String?): String {
+    val pathString = (defaultPathAndFile ?: UserDirectories.get().homeDir) + sep
+
+    try {
+        val path = Path(pathString)
+        if (path.isDirectory()) path.createDirectories() else path.createParentDirectories()
+    } catch (e: IOException) {
+        logger.error(e) { "Can't create directories for '$pathString'" }
+    }
+
+    return pathString
+}
 
 /**
  * Hack to make [FileSaver] and [FilePicker] modal.
