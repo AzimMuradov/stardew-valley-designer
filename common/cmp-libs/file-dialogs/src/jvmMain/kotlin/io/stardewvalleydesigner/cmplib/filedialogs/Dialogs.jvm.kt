@@ -21,7 +21,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.DialogState
 import androidx.compose.ui.window.DialogWindow
+import dev.dirs.UserDirectories
+import io.stardewvalleydesigner.LoggerUtils.logger
+import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.withContext
+import java.io.IOException
+import kotlin.io.path.*
 
 
 @Composable
@@ -34,13 +40,23 @@ actual fun FileSaver(
     onFileSaved: (FileSaverResult?) -> Unit,
 ) {
     ModalDialog {
-        val result = TinyFileDialogsWrapper.createSaveFileDialog(
-            title,
-            defaultPathAndFile = defaultPathAndFile ?: System.getProperty("user.dir"),
-            extensions,
-            extensionsDescription,
-            bytes = bytes(),
-        )
+        val result = withContext(PlatformDispatcher.IO) {
+            val path = Path(defaultPathAndFile ?: UserDirectories.get().homeDir)
+
+            try {
+                if (path.isDirectory()) path.createDirectories() else path.createParentDirectories()
+            } catch (e: IOException) {
+                logger.error(e) { "Can't create directories for '$path'" }
+            }
+
+            TinyFileDialogsWrapper.createSaveFileDialog(
+                title,
+                defaultPathAndFile = path.pathString,
+                extensions,
+                extensionsDescription,
+                bytes = bytes(),
+            )
+        }
 
         onFileSaved(result)
     }
@@ -55,12 +71,22 @@ actual fun FilePicker(
     onFilePicked: (FilePickerResult?) -> Unit,
 ) {
     ModalDialog {
-        val result = TinyFileDialogsWrapper.createOpenFileDialog(
-            title,
-            defaultPathAndFile = defaultPathAndFile ?: System.getProperty("user.dir"),
-            extensions,
-            extensionsDescription,
-        )
+        val result = withContext(PlatformDispatcher.IO) {
+            val path = Path(defaultPathAndFile ?: UserDirectories.get().homeDir)
+
+            try {
+                if (path.isDirectory()) path.createDirectories() else path.createParentDirectories()
+            } catch (e: IOException) {
+                logger.error(e) { "Can't create directories for '$path'" }
+            }
+
+            TinyFileDialogsWrapper.createOpenFileDialog(
+                title,
+                defaultPathAndFile = path.pathString,
+                extensions,
+                extensionsDescription,
+            )
+        }
 
         onFilePicked(result)
     }
