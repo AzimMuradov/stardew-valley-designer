@@ -21,20 +21,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FileOpen
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import dev.dirs.UserDirectories
+import io.github.irgaly.kfswatch.KfsDirectoryWatcher
 import io.stardewvalleydesigner.component.mainmenu.MainMenuIntent
 import io.stardewvalleydesigner.component.mainmenu.MainMenuState
 import io.stardewvalleydesigner.engine.layout.LayoutsProvider.layoutOf
+import io.stardewvalleydesigner.kmplib.fs.*
 import io.stardewvalleydesigner.screens.mainmenu.rightside.LayoutPreview
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
-import kotlin.io.path.Path
-import kotlin.io.path.exists
-import java.io.File.separator as sep
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 
 
 @Composable
@@ -43,6 +44,22 @@ fun RowScope.OpenDesignMenu(
     intentConsumer: (MainMenuIntent) -> Unit,
 ) {
     val wordList = GlobalSettings.strings
+
+    val scope = rememberCoroutineScope()
+    val watcher by remember(scope) {
+        mutableStateOf(KfsDirectoryWatcher(scope, dispatcher = Dispatchers.IO))
+    }
+
+    val docsDir: String by remember { mutableStateOf(JvmFileSystem.getDocsDir()) }
+
+    LaunchedEffect(watcher) {
+        watcher.add(docsDir)
+    }
+
+    val svdSavesPath by watcher.onEventFlow
+        .filter { it.path == "Stardew Valley Designer" }
+        .map { svdSavesPath() }
+        .collectAsState(initial = svdSavesPath())
 
     DialogWindowMenu(
         onCloseRequest = { intentConsumer(MainMenuIntent.OpenDesignMenu.Cancel) },
@@ -60,7 +77,7 @@ fun RowScope.OpenDesignMenu(
                 buttonText = wordList.openDesignSelectDesignButton,
                 filePickerTitle = wordList.openDesignSelectDesignTitle,
                 placeholderText = wordList.openDesignSelectDesignPlaceholder,
-                defaultPathAndFile = savePath,
+                defaultPathAndFile = svdSavesPath,
                 onFilePicked = { text, absolutePath ->
                     intentConsumer(MainMenuIntent.OpenDesignMenu.LoadDesign(text, absolutePath))
                 },
@@ -120,6 +137,4 @@ fun RowScope.OpenDesignMenu(
     )
 }
 
-private val savePath: String? = "${UserDirectories.get().documentDir}${sep}Stardew Valley Designer${sep}".takeIf {
-    Path(it).exists()
-}
+private fun svdSavesPath() = JvmFileSystem.getSvdSavesDir().endSep().takeIfExists()

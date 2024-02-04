@@ -24,6 +24,7 @@ import io.stardewvalleydesigner.cmplib.filedialogs.FileSaver
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
 import io.stardewvalleydesigner.component.editor.modules.vislayers.VisLayersState
 import io.stardewvalleydesigner.kmplib.fs.FileSystem
+import io.stardewvalleydesigner.kmplib.fs.getSvdImagesDir
 import io.stardewvalleydesigner.kmplib.png.PNG_FORMAT
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResources
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider

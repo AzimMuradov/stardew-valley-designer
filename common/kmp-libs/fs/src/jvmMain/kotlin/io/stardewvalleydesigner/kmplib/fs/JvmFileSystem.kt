@@ -16,35 +16,57 @@
 
 package io.stardewvalleydesigner.kmplib.fs
 
+import dev.dirs.UserDirectories
+import java.util.*
+import kotlin.io.path.Path
+import kotlin.io.path.exists
+import java.io.File.separator as sep
 
-expect object FileSystem {
+
+object JvmFileSystem {
 
     /**
      * Get the user's home directory.
      */
-    fun getHomeDir(): String?
+    fun getHomeDir(): String = UserDirectories.get().homeDir
 
     /**
      * Get the user's documents directory.
      */
-    fun getDocsDir(): String?
+    fun getDocsDir(): String = UserDirectories.get().documentDir
 
     /**
      * Get the user's pictures directory.
      */
-    fun getPicsDir(): String?
+    fun getPicsDir(): String = UserDirectories.get().pictureDir
 
 
-    fun relative(dir: String?, filename: String): String?
+    fun relative(dir: String, filename: String): String = "$dir$sep$filename"
 }
 
 
-fun FileSystem.getSvdSavesDir() = relative(
+fun JvmFileSystem.getSvdSavesDir(): String = relative(
     dir = getDocsDir(),
     filename = "Stardew Valley Designer",
 )
 
-fun FileSystem.getSvdImagesDir() = relative(
+fun JvmFileSystem.getSvdImagesDir(): String = relative(
     dir = getPicsDir(),
     filename = "Stardew Valley Designer",
 )
+
+fun JvmFileSystem.getSvSavesDir(): String {
+    val os = System.getProperty("os.name").uppercase(Locale.ENGLISH)
+    val dataPath = if ("WIN" in os) {
+        System.getenv("APPDATA")
+    } else {
+        "${getHomeDir()}${sep}.config"
+    }
+
+    return "$dataPath${sep}StardewValley${sep}Saves"
+}
+
+
+fun String.endSep(): String = "$this$sep"
+
+fun String.takeIfExists(): String? = takeIf { Path(it).exists() }

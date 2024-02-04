@@ -21,9 +21,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.DialogState
 import androidx.compose.ui.window.DialogWindow
-import dev.dirs.UserDirectories
 import io.stardewvalleydesigner.LoggerUtils.logger
 import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
+import io.stardewvalleydesigner.kmplib.fs.JvmFileSystem
+import io.stardewvalleydesigner.kmplib.fs.endSep
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -41,17 +42,9 @@ actual fun FileSaver(
 ) {
     ModalDialog {
         val result = withContext(PlatformDispatcher.IO) {
-            val path = Path(defaultPathAndFile ?: UserDirectories.get().homeDir)
-
-            try {
-                if (path.isDirectory()) path.createDirectories() else path.createParentDirectories()
-            } catch (e: IOException) {
-                logger.error(e) { "Can't create directories for '$path'" }
-            }
-
             TinyFileDialogsWrapper.createSaveFileDialog(
                 title,
-                defaultPathAndFile = path.pathString,
+                defaultPathAndFile = processDefaultPath(defaultPathAndFile),
                 extensions,
                 extensionsDescription,
                 bytes = bytes(),
@@ -72,17 +65,9 @@ actual fun FilePicker(
 ) {
     ModalDialog {
         val result = withContext(PlatformDispatcher.IO) {
-            val path = Path(defaultPathAndFile ?: UserDirectories.get().homeDir)
-
-            try {
-                if (path.isDirectory()) path.createDirectories() else path.createParentDirectories()
-            } catch (e: IOException) {
-                logger.error(e) { "Can't create directories for '$path'" }
-            }
-
             TinyFileDialogsWrapper.createOpenFileDialog(
                 title,
-                defaultPathAndFile = path.pathString,
+                defaultPathAndFile = processDefaultPath(defaultPathAndFile),
                 extensions,
                 extensionsDescription,
             )
@@ -92,6 +77,19 @@ actual fun FilePicker(
     }
 }
 
+
+private fun processDefaultPath(defaultPathAndFile: String?): String {
+    val pathString = defaultPathAndFile ?: JvmFileSystem.getHomeDir().endSep()
+
+    try {
+        val path = Path(pathString)
+        if (path.isDirectory()) path.createDirectories() else path.createParentDirectories()
+    } catch (e: IOException) {
+        logger.error(e) { "Can't create directories for '$pathString'" }
+    }
+
+    return pathString
+}
 
 /**
  * Hack to make [FileSaver] and [FilePicker] modal.

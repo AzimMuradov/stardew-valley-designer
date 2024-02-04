@@ -21,18 +21,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Save
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import io.stardewvalleydesigner.LoggerUtils.logger
 import io.stardewvalleydesigner.component.mainmenu.MainMenuIntent
 import io.stardewvalleydesigner.component.mainmenu.MainMenuState
+import io.stardewvalleydesigner.kmplib.fs.*
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
-import java.io.File
-import java.util.*
-import java.io.File.separator as sep
 
 
 @Composable
@@ -41,6 +38,8 @@ fun RowScope.SaveImportMenu(
     intentConsumer: (MainMenuIntent) -> Unit,
 ) {
     val wordList = GlobalSettings.strings
+
+    val svSavesPath by remember { mutableStateOf(JvmFileSystem.getSvSavesDir().endSep().takeIfExists()) }
 
     DialogWindowMenu(
         onCloseRequest = { intentConsumer(MainMenuIntent.SaveLoaderMenu.Cancel) },
@@ -58,7 +57,7 @@ fun RowScope.SaveImportMenu(
                 buttonText = wordList.saveImportSelectSaveFileButton,
                 filePickerTitle = wordList.saveImportSelectSaveFileTitle,
                 placeholderText = wordList.saveImportSelectSaveFilePlaceholder,
-                defaultPathAndFile = savePath,
+                defaultPathAndFile = svSavesPath,
                 onFilePicked = { text, absolutePath ->
                     intentConsumer(MainMenuIntent.SaveLoaderMenu.LoadSave(text, absolutePath))
                 },
@@ -109,19 +108,4 @@ fun RowScope.SaveImportMenu(
             )
         },
     )
-}
-
-
-private val savePath: String? = run {
-    val os = System.getProperty("os.name").uppercase(Locale.getDefault())
-    val dataPath = if ("WIN" in os) {
-        System.getenv("APPDATA")
-    } else {
-        "${System.getProperty("user.home")}${sep}.config"
-    }
-
-    "$dataPath${sep}StardewValley${sep}Saves${sep}".takeIf {
-        logger.debug { "Saves path: $it" }
-        File(it).exists()
-    }
 }

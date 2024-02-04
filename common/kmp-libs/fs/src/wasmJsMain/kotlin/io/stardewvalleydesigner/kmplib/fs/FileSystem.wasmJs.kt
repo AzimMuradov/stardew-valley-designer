@@ -26,12 +26,5 @@ actual object FileSystem {
     actual fun getPicsDir(): String? = null
 
 
-    actual fun getSvdImagesDir(): String? = null
-
-    actual fun getSvdSavesDir(): String? = null
-
-
     actual fun relative(dir: String?, filename: String): String? = null
-
-    actual fun relativeIfExists(dir: String?, filename: String): String? = null
 }

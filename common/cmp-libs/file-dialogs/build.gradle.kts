@@ -17,6 +17,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.common.kmpLibs.dispatcher)
+                implementation(projects.common.kmpLibs.fs)
 
                 implementation(compose.foundation)
                 implementation(compose.runtime)
@@ -63,9 +64,6 @@ kotlin {
                     runtimeOnly("${libs.lwjgl.asProvider().get()}:natives-$platform")
                     runtimeOnly("${libs.lwjgl.tinyfd.get()}:natives-$platform")
                 }
-
-
-                implementation(libs.directories)
             }
         }
     }

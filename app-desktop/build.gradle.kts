@@ -14,6 +14,7 @@ kotlin {
                 implementation(projects.common.designFormat)
 
                 implementation(projects.common.kmpLibs.env)
+                implementation(projects.common.kmpLibs.fs)
 
                 implementation(projects.common.components.root)
                 implementation(projects.common.components.screenMainMenu)
