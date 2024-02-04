@@ -66,7 +66,7 @@ fun FilePickerBar(
         if (showFilePicker) {
             FilePicker(
                 title = filePickerTitle,
-                defaultPathAndFile = pathString.takeIf(String::isNotBlank) ?: defaultPathAndFile ?: homePath,
+                defaultPathAndFile = pathString.takeIf(String::isNotBlank) ?: defaultPathAndFile,
                 extensions = fileFormat?.let(::listOf)
             ) { result ->
                 showFilePicker = false
@@ -102,4 +102,4 @@ fun FilePickerBar(
     }
 }
 
-private val homePath: String = "${UserDirectories.get().homeDir}${sep}."
+private val homePath: String = "${UserDirectories.get().homeDir}${sep}"

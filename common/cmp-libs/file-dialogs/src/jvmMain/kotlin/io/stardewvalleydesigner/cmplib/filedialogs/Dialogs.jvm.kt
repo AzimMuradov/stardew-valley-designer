@@ -42,17 +42,18 @@ actual fun FileSaver(
 ) {
     ModalDialog {
         val result = withContext(PlatformDispatcher.IO) {
-            val path = Path((defaultPathAndFile ?: UserDirectories.get().homeDir) + "${sep}.")
+            val pathString = (defaultPathAndFile ?: UserDirectories.get().homeDir) + "$sep"
 
             try {
+                val path = Path(pathString)
                 if (path.isDirectory()) path.createDirectories() else path.createParentDirectories()
             } catch (e: IOException) {
-                logger.error(e) { "Can't create directories for '$path'" }
+                logger.error(e) { "Can't create directories for '$pathString'" }
             }
 
             TinyFileDialogsWrapper.createSaveFileDialog(
                 title,
-                defaultPathAndFile = path.pathString,
+                defaultPathAndFile = pathString,
                 extensions,
                 extensionsDescription,
                 bytes = bytes(),
@@ -73,17 +74,18 @@ actual fun FilePicker(
 ) {
     ModalDialog {
         val result = withContext(PlatformDispatcher.IO) {
-            val path = Path(defaultPathAndFile ?: UserDirectories.get().homeDir)
+            val pathString = (defaultPathAndFile ?: UserDirectories.get().homeDir) + "$sep"
 
             try {
+                val path = Path(pathString)
                 if (path.isDirectory()) path.createDirectories() else path.createParentDirectories()
             } catch (e: IOException) {
-                logger.error(e) { "Can't create directories for '$path'" }
+                logger.error(e) { "Can't create directories for '$pathString'" }
             }
 
             TinyFileDialogsWrapper.createOpenFileDialog(
                 title,
-                defaultPathAndFile = path.pathString,
+                defaultPathAndFile = pathString,
                 extensions,
                 extensionsDescription,
             )
