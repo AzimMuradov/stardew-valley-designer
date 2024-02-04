@@ -113,7 +113,7 @@ fun RowScope.SaveImportMenu(
 
 
 private val savePath: String? = run {
-    val os = System.getProperty("os.name").uppercase(Locale.getDefault())
+    val os = System.getProperty("os.name").uppercase(Locale.ENGLISH)
     val dataPath = if ("WIN" in os) {
         System.getenv("APPDATA")
     } else {

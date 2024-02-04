@@ -120,6 +120,6 @@ fun RowScope.OpenDesignMenu(
     )
 }
 
-private val savePath: String? = "${UserDirectories.get().documentDir}${sep}Stardew Valley Designer${sep}".takeIf {
+private val savePath: String? = "${UserDirectories.get().documentDir}${sep}Stardew Valley Designer${sep}.".takeIf {
     Path(it).exists()
 }

@@ -28,6 +28,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import kotlin.io.path.*
+import java.io.File.separator as sep
 
 
 @Composable
@@ -41,7 +42,7 @@ actual fun FileSaver(
 ) {
     ModalDialog {
         val result = withContext(PlatformDispatcher.IO) {
-            val path = Path(defaultPathAndFile ?: UserDirectories.get().homeDir)
+            val path = Path((defaultPathAndFile ?: UserDirectories.get().homeDir) + "${sep}.")
 
             try {
                 if (path.isDirectory()) path.createDirectories() else path.createParentDirectories()
