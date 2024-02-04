@@ -14,25 +14,19 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.component.root
+package io.stardewvalleydesigner.designformat
 
-import io.stardewvalleydesigner.component.editor.EditorComponent
-import io.stardewvalleydesigner.component.mainmenu.MainMenuComponent
-import io.stardewvalleydesigner.engine.EditorEngineData
-import kotlinx.coroutines.flow.StateFlow
-
-
-interface RootComponent {
-
-    val children: StateFlow<Children>
-
-    class Children(
-        val mainMenuComponent: MainMenuComponent,
-        val editorComponents: List<EditorComponent>,
-    )
+import io.stardewvalleydesigner.designformat.models.Design
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 
-    fun createEditorComponent(data: EditorEngineData, designPath: String?)
+object DesignFormatConverter {
 
-    fun destroyEditorComponent(component: EditorComponent)
+    fun parse(text: String): Design = json.decodeFromString(text)
+
+    fun stringify(design: Design): String = json.encodeToString(design)
+
+
+    private val json = Json
 }

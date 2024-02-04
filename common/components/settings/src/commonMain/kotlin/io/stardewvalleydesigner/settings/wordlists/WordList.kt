@@ -96,24 +96,24 @@ sealed interface WordList {
     val infoBugs: String
 
 
-    val buttonNewPlanText: String
+    val buttonNewDesignText: String
 
-    val newPlanWindowTitle: String
+    val newDesignWindowTitle: String
 
 
-    val buttonOpenPlanText: String
+    val buttonOpenDesignText: String
 
-    val openPlanWindowTitle: String
+    val openDesignWindowTitle: String
 
-    val openPlanPlaceholder: String
+    val openDesignPlaceholder: String
 
-    val openPlanPlaceholderError: String
+    val openDesignPlaceholderError: String
 
-    val openPlanSelectPlanButton: String
+    val openDesignSelectDesignButton: String
 
-    val openPlanSelectPlanTitle: String
+    val openDesignSelectDesignTitle: String
 
-    val openPlanSelectPlanPlaceholder: String
+    val openDesignSelectDesignPlaceholder: String
 
 
     val buttonSaveImportText: String
@@ -134,7 +134,7 @@ sealed interface WordList {
     val chooseLayout: String
 
 
-    // TODO : val buttonSearchForAPlanText: String
+    // TODO : val buttonSearchForADesignText: String
 
 
     // Editor Screen
@@ -152,23 +152,23 @@ sealed interface WordList {
     fun entity(e: Entity<*>): String
 
 
-    val buttonSavePlanAsImageTooltip: String
+    val buttonSaveDesignAsImageTooltip: String
 
-    val savePlanAsImageTitle: String
+    val saveDesignAsImageTitle: String
 
-    fun savePlanAsImageNotificationMessage(path: String?): String
-
-
-    val buttonSavePlanTooltip: String
-
-    val savePlanNotificationMessage: String
+    fun saveDesignAsImageNotificationMessage(path: String?): String
 
 
-    val buttonSavePlanAsTooltip: String
+    val buttonSaveDesignTooltip: String
 
-    val savePlanAsTitle: String
+    val saveDesignNotificationMessage: String
 
-    fun savePlanAsNotificationMessage(path: String?): String
+
+    val buttonSaveDesignAsTooltip: String
+
+    val saveDesignAsTitle: String
+
+    fun saveDesignAsNotificationMessage(path: String?): String
 
 
     /**

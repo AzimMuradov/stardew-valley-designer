@@ -43,11 +43,11 @@ private class RootComponentImpl : RootComponent {
     override val children: StateFlow<Children> = _children
 
 
-    override fun createEditorComponent(data: EditorEngineData, planPath: String?) = _children.update { children ->
+    override fun createEditorComponent(data: EditorEngineData, designPath: String?) = _children.update { children ->
         Children(
             mainMenuComponent = children.mainMenuComponent,
             editorComponents = children.editorComponents + EditorComponentImpl(
-                initialState = EditorState.from(data.generateEngine(), planPath),
+                initialState = EditorState.from(data.generateEngine(), designPath),
             ),
         )
     }

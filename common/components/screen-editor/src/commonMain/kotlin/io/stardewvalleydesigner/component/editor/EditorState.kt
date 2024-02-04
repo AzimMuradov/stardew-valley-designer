@@ -33,7 +33,7 @@ data class EditorState(
     val palette: PaletteState,
     val visLayers: VisLayersState,
     val options: OptionsState,
-    val planPath: String?,
+    val designPath: String?,
 ) {
 
     companion object {
@@ -45,17 +45,17 @@ data class EditorState(
             palette = PaletteState.default(),
             visLayers = VisLayersState.default(),
             options = OptionsState.default(),
-            planPath = null,
+            designPath = null,
         )
 
-        fun from(engine: EditorEngine, planPath: String?) = EditorState(
+        fun from(engine: EditorEngine, designPath: String?) = EditorState(
             history = HistoryState.default(),
             map = MapState.from(engine),
             toolkit = ToolkitState.default(),
             palette = PaletteState.default(),
             visLayers = VisLayersState.default(),
             options = OptionsState.default(),
-            planPath = planPath,
+            designPath = designPath,
         )
     }
 }

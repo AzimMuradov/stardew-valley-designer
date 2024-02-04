@@ -14,17 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.component.root.children
-
-import io.stardewvalleydesigner.LoggerUtils.createLoggerAwareStoreFactory
-import io.stardewvalleydesigner.component.mainmenu.MainMenuComponent
-import io.stardewvalleydesigner.component.mainmenu.MainMenuStoreFactory
-import io.stardewvalleydesigner.engine.EditorEngineData
+package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesignas
 
 
-internal class MainMenuComponentImpl(
-    override val onEditorScreenCall: (EditorEngineData, designPath: String?) -> Unit,
-) : MainMenuComponent {
-
-    override val store = MainMenuStoreFactory(createLoggerAwareStoreFactory()).create(onEditorScreenCall)
-}
+internal const val JSON_FORMAT: String = "json"

@@ -23,23 +23,23 @@ sealed interface MainMenuState {
 
     data object Idle : MainMenuState
 
-    sealed interface NewPlanMenu : MainMenuState {
+    sealed interface NewDesignMenu : MainMenuState {
 
         data class Idle(
             val availableLayouts: List<Wrapper<EditorEngineData>>,
             val chosenLayout: Wrapper<EditorEngineData>,
-        ) : NewPlanMenu
+        ) : NewDesignMenu
     }
 
-    sealed interface OpenPlanMenu : MainMenuState {
+    sealed interface OpenDesignMenu : MainMenuState {
 
-        data object Empty : OpenPlanMenu
+        data object Empty : OpenDesignMenu
 
-        data object Loading : OpenPlanMenu
+        data object Loading : OpenDesignMenu
 
-        data class Loaded(val layout: Wrapper<EditorEngineData>, val planPath: String?) : OpenPlanMenu
+        data class Loaded(val layout: Wrapper<EditorEngineData>, val absolutePath: String?) : OpenDesignMenu
 
-        data object Error : OpenPlanMenu
+        data object Error : OpenDesignMenu
     }
 
     sealed interface SaveLoaderMenu : MainMenuState {

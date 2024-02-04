@@ -51,8 +51,8 @@ fun RowScope.RightSideMenu(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            NewPlanMenu(state, intentConsumer)
-            OpenPlanMenu(state, intentConsumer)
+            NewDesignMenu(state, intentConsumer)
+            OpenDesignMenu(state, intentConsumer)
             SaveImportMenu(state, intentConsumer)
         }
         LayoutCards()

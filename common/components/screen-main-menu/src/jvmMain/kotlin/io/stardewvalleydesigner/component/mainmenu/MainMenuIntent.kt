@@ -21,29 +21,29 @@ import io.stardewvalleydesigner.engine.EditorEngineData
 
 sealed interface MainMenuIntent {
 
-    sealed interface NewPlanMenu : MainMenuIntent {
+    sealed interface NewDesignMenu : MainMenuIntent {
 
-        data object OpenMenu : NewPlanMenu
+        data object OpenMenu : NewDesignMenu
 
-        data class ChooseLayout(val layout: Wrapper<EditorEngineData>) : NewPlanMenu
+        data class ChooseLayout(val layout: Wrapper<EditorEngineData>) : NewDesignMenu
 
-        data object AcceptChosen : NewPlanMenu
+        data object AcceptChosen : NewDesignMenu
 
-        data object Cancel : NewPlanMenu
+        data object Cancel : NewDesignMenu
     }
 
-    sealed interface OpenPlanMenu : MainMenuIntent {
+    sealed interface OpenDesignMenu : MainMenuIntent {
 
-        data object OpenMenu : OpenPlanMenu
+        data object OpenMenu : OpenDesignMenu
 
-        data class LoadPlan(val text: String, val absolutePath: String) : OpenPlanMenu {
+        data class LoadDesign(val text: String, val absolutePath: String) : OpenDesignMenu {
 
-            override fun toString(): String = "LoadPlan(text='${text.take(n = 100)}', absolutePath='$absolutePath')"
+            override fun toString(): String = "LoadDesign(text='${text.take(n = 100)}', absolutePath='$absolutePath')"
         }
 
-        data object Accept : OpenPlanMenu
+        data object Accept : OpenDesignMenu
 
-        data object Cancel : OpenPlanMenu
+        data object Cancel : OpenDesignMenu
     }
 
     sealed interface SaveLoaderMenu : MainMenuIntent {
