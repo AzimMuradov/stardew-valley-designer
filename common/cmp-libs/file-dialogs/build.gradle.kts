@@ -63,6 +63,9 @@ kotlin {
                     runtimeOnly("${libs.lwjgl.asProvider().get()}:natives-$platform")
                     runtimeOnly("${libs.lwjgl.tinyfd.get()}:natives-$platform")
                 }
+
+
+                implementation(libs.directories)
             }
         }
     }

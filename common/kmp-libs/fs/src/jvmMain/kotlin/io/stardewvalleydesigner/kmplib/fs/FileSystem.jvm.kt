@@ -43,12 +43,12 @@ actual object FileSystem {
     actual fun getPicsDir(): String? = UserDirectories.get().pictureDir
 
 
-    actual fun getSvdImagesDir(): String? = relativeIfExists(
+    actual fun getSvdImagesDir(): String? = relative(
         dir = getPicsDir(),
         filename = "Stardew Valley Designer",
     )
 
-    actual fun getSvdSavesDir(): String? = relativeIfExists(
+    actual fun getSvdSavesDir(): String? = relative(
         dir = getDocsDir(),
         filename = "Stardew Valley Designer",
     )

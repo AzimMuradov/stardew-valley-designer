@@ -17,8 +17,6 @@
 package io.stardewvalleydesigner.cmplib.filedialogs
 
 import io.stardewvalleydesigner.LoggerUtils.logger
-import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
-import kotlinx.coroutines.withContext
 import org.lwjgl.PointerBuffer
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.util.tinyfd.TinyFileDialogs
@@ -28,60 +26,56 @@ import kotlin.io.path.*
 
 internal object TinyFileDialogsWrapper {
 
-    suspend fun createSaveFileDialog(
+    fun createSaveFileDialog(
         title: String? = null,
         defaultPathAndFile: String? = null,
         extensions: List<String>? = null,
         extensionsDescription: String? = null,
         bytes: ByteArray,
-    ): FileSaverResult? = withContext(PlatformDispatcher.IO) {
-        catchingNativeCall {
-            val path = MemoryStack.stackPush().use { stack ->
-                TinyFileDialogs.tinyfd_saveFileDialog(
-                    title,
-                    defaultPathAndFile,
-                    extensions?.map { "*.$it" }?.putOn(stack),
-                    extensionsDescription,
-                )
-            }
+    ): FileSaverResult? = catchingNativeCall {
+        val path = MemoryStack.stackPush().use { stack ->
+            TinyFileDialogs.tinyfd_saveFileDialog(
+                title,
+                defaultPathAndFile,
+                extensions?.map { "*.$it" }?.putOn(stack),
+                extensionsDescription,
+            )
+        }
 
-            if (path != null) {
-                val absolutePath = Path(path)
-                    .normalize()
-                    .createParentDirectories()
-                    .apply { writeBytes(bytes) }
-                    .pathString
-                FileSaverResult(absolutePath)
-            } else {
-                null
-            }
+        if (path != null) {
+            val absolutePath = Path(path)
+                .normalize()
+                .createParentDirectories()
+                .apply { writeBytes(bytes) }
+                .pathString
+            FileSaverResult(absolutePath)
+        } else {
+            null
         }
     }
 
-    suspend fun createOpenFileDialog(
+    fun createOpenFileDialog(
         title: String? = null,
         defaultPathAndFile: String? = null,
         extensions: List<String>? = null,
         extensionsDescription: String? = null,
-    ): FilePickerResult? = withContext(PlatformDispatcher.IO) {
-        catchingNativeCall {
-            val path = MemoryStack.stackPush().use { stack ->
-                val multiSelect = false
-                TinyFileDialogs.tinyfd_openFileDialog(
-                    title,
-                    defaultPathAndFile,
-                    extensions?.map { "*.$it" }?.putOn(stack),
-                    extensionsDescription,
-                    multiSelect,
-                )?.split('|')?.firstOrNull()
-            }
+    ): FilePickerResult? = catchingNativeCall {
+        val path = MemoryStack.stackPush().use { stack ->
+            val multiSelect = false
+            TinyFileDialogs.tinyfd_openFileDialog(
+                title,
+                defaultPathAndFile,
+                extensions?.map { "*.$it" }?.putOn(stack),
+                extensionsDescription,
+                multiSelect,
+            )?.split('|')?.firstOrNull()
+        }
 
-            if (path != null) {
-                val file = File(path)
-                FilePickerResult(file.readText(), file.absolutePath)
-            } else {
-                null
-            }
+        if (path != null) {
+            val file = File(path)
+            FilePickerResult(file.readText(), file.absolutePath)
+        } else {
+            null
         }
     }
 
