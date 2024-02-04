@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import dev.dirs.UserDirectories
 import io.github.irgaly.kfswatch.KfsDirectoryWatcher
 import io.stardewvalleydesigner.component.mainmenu.MainMenuIntent
 import io.stardewvalleydesigner.component.mainmenu.MainMenuState
@@ -51,7 +50,7 @@ fun RowScope.OpenDesignMenu(
         mutableStateOf(KfsDirectoryWatcher(scope, dispatcher = Dispatchers.IO))
     }
 
-    val docsDir: String by remember { mutableStateOf(UserDirectories.get().documentDir) }
+    val docsDir: String by remember { mutableStateOf(JvmFileSystem.getDocsDir()) }
 
     LaunchedEffect(watcher) {
         watcher.add(docsDir)

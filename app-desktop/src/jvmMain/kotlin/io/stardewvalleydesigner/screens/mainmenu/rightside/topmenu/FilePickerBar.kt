@@ -30,9 +30,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.dirs.UserDirectories
 import io.stardewvalleydesigner.cmplib.filedialogs.FilePicker
-import java.io.File.separator as sep
 
 
 @Composable
@@ -101,5 +99,3 @@ fun FilePickerBar(
         }
     }
 }
-
-private val homePath: String = "${UserDirectories.get().homeDir}${sep}"

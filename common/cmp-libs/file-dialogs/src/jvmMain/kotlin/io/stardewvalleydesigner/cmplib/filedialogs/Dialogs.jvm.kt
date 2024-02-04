@@ -21,14 +21,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.DialogState
 import androidx.compose.ui.window.DialogWindow
-import dev.dirs.UserDirectories
 import io.stardewvalleydesigner.LoggerUtils.logger
 import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
+import io.stardewvalleydesigner.kmplib.fs.JvmFileSystem
+import io.stardewvalleydesigner.kmplib.fs.endSep
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import kotlin.io.path.*
-import java.io.File.separator as sep
 
 
 @Composable
@@ -79,7 +79,7 @@ actual fun FilePicker(
 
 
 private fun processDefaultPath(defaultPathAndFile: String?): String {
-    val pathString = defaultPathAndFile ?: ("${UserDirectories.get().homeDir}$sep")
+    val pathString = defaultPathAndFile ?: JvmFileSystem.getHomeDir().endSep()
 
     try {
         val path = Path(pathString)
