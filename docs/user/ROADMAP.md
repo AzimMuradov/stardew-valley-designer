@@ -1,101 +1,47 @@
 # Roadmap
 
-## 0.0.0
+## 0.12.0
 
-- Initial state
-
-### 0.1.0
-
-- Initial engine and setup
-
-### 0.2.0
-
-- History manager (undo, redo)
-- Working design editor (for big shed only)
-- Tools (hand, pen, eraser, select)
-- Shapes (point, rect, rect outline)
-- Toggleables (show grid, show coords)
-- Layers visibility
-- Entities (various furniture, equipment, floor, etc)
-- Big shed layout
-
-### 0.3.0
-
-- Limited API for savedata import
-
-### 0.4.0
-
-- Main menu
-- Expanded API for savedata import
-
-### 0.5.0
-
-- Toolkit icons
-- Wallpapers and flooring menus
-
-### 0.6.0
-
-- New layouts (shed, standard farm)
-- Window resizing
-
-### 0.7.0
-
-- Toggle preview
-- Save design as an image
-
-### 0.8.0
-
-- Update entity placement restrictions for standard farm
-- New toggleable hints - show various areas of effect (scarecrows, sprinklers, bee houses, junimo huts)
-- New shapes (ellipse, ellipse outline, diamond, diamond outline, line)
-- New toggleable hints - show various functional info (current coordinates, shape size, object count, etc.)
-
-### 0.9.0
-
-- New tool (eye dropper)
-- Chest color menu
-
-### 0.10.0
-
-- Make the desktop application multi-window
-- Experimental design saves
-  - Design format and scheme
-  - "Open design" button
-  - "Save design" and "save design as..." buttons
-- Experimental web editor
-
-### 0.11.0
+### Desktop & Web
 
 - Support greenhouse and farmhouse
 - Better "toggle preview"
 
-### 0.12.0
+## 0.13.0
+
+### Desktop & Web
 
 - Fish pond color menu and flower color menu
 - Rotation menu
 
 ## 1.0.0
 
+### Desktop & Web
+
 - Stable design saves
+- New site
+
+### Web
+
 - Stable web version
 
-### 1.1.0
+## 1.1.0
 
 - Modified sprinklers
 - Trees and fruit trees
 
-### 1.2.0
+## 1.2.0
 
 - New layouts (riverland farm, forest farm, hill-top farm, wilderness farm)
 
-### 1.3.0
+## 1.3.0
 
 - Map resize
 - Expandable tool windows
 - Support for different window sizes
 - More layout flexibility
 
-### 1.4.0
+## 1.4.0
 
 - Settings menu (with ability to store and restore settings)
 
@@ -112,7 +58,6 @@
 - Building paintings
 - Render (in every season)
 - Search fields for various types of items
-- Import various metadata (player name, etc.)
 - Add new languages
 - Tappers, crab pots
 - Dark theme, OS theme

@@ -74,7 +74,9 @@ https://azimmuradov.github.io/stardew-valley-designer/svd/editor
 
 ![3.png](docs/user/imgs/3.png)
 
-## Roadmap
+## Changelog & Roadmap
+
+[CHANGELOG](docs/user/CHANGELOG.md)
 
 [ROADMAP](docs/user/ROADMAP.md)
 
