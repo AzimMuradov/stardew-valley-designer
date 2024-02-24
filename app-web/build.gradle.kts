@@ -35,6 +35,8 @@ kotlin {
                 implementation(projects.common.components.settings)
 
                 implementation(projects.common.uiComponents.editor)
+                implementation(projects.common.uiComponents.editorMenus.saveDesignAs)
+                implementation(projects.common.uiComponents.editorMenus.saveDesignImg)
                 implementation(projects.common.uiComponents.settingsProvider)
                 implementation(projects.common.uiComponents.themes)
                 implementation(projects.common.uiComponents.windowSizeProvider)

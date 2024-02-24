@@ -25,6 +25,8 @@ import io.stardewvalleydesigner.settings.Lang
 import io.stardewvalleydesigner.settings.SettingsInterpreter
 import io.stardewvalleydesigner.ui.component.editor.EditorScreen
 import io.stardewvalleydesigner.ui.component.editor.res.WithImageResources
+import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.SaveDesignAsButton
+import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.SaveDesignAsImageButton
 import io.stardewvalleydesigner.ui.component.settings.WithSettings
 import io.stardewvalleydesigner.ui.component.themes.AppTheme
 import io.stardewvalleydesigner.ui.component.themes.ThemeVariant
@@ -36,12 +38,31 @@ fun main() {
     val lang = Lang.EN
 
     CanvasBasedWindow(title = SettingsInterpreter.wordList(lang).application) {
+        val initialState = EditorState.default(LayoutsProvider.layoutOf(LayoutType.BigShed))
+
         AppTheme(themeVariant = ThemeVariant.LIGHT) {
             WithSettings(lang) {
                 WithImageResources(themeVariant = ThemeVariant.LIGHT) {
                     WithDefaultWindowSize {
                         EditorScreen(
-                            component = EditorComponentImpl(EditorState.default(LayoutsProvider.layoutOf(LayoutType.BigShed)))
+                            component = EditorComponentImpl(initialState),
+                            rightBottomMenus = { editorState, snackbarHostState ->
+                                SaveDesignAsButton(
+                                    map = editorState.map,
+                                    playerName = editorState.playerName,
+                                    farmName = editorState.farmName,
+                                    palette = editorState.palette,
+                                    options = editorState.options,
+                                    snackbarHostState = snackbarHostState,
+                                    designSaveAbsolutePath = null,
+                                    onDesignSaveAbsolutePathChanged = {},
+                                )
+                                SaveDesignAsImageButton(
+                                    map = editorState.map,
+                                    visibleLayers = editorState.visLayers,
+                                    snackbarHostState = snackbarHostState,
+                                )
+                            }
                         )
                     }
                 }
