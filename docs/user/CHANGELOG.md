@@ -1,13 +1,13 @@
-# Changelog
+# :memo: Changelog
 
 All notable changes to this project will be documented in this file.
 
 The format is _loosely_ based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project _tries_ to adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-I should note that versions before [0.8.0](#080---2023-07-08) don't have proper changelog.
+I should note that versions before [0.8.0](#rocket-080---2023-07-08) don't have proper changelog.
 
-## [Unreleased] (0.11.0) - 2024-XX-XX
+## :rocket: [Unreleased] (0.11.0) - 2024-XX-XX
 
 _Supported Stardew Valley version - 1.5.6_
 
@@ -15,31 +15,37 @@ _Supported Stardew Valley version - 1.5.6_
 
 #### Added
 
-- Add player name and farm name text fields :tada:
+- :sparkles: Add player name and farm name text fields
 
 #### Changed
 
-- Include player name and farm name in the design format :sparkles:
-- Include palette and options in design format :sparkles:
+- :sparkles: Include player name and farm name in the design format
+- :sparkles: Include palette and options in design format
+- :nail_care: Add animation for the object counter widget
+
+#### Fixed
+
+- :wrench: Fix a bug due to which a "shaped eraser" didn't take into account invisible layers
+- :wrench: Fix spacing bug in the palette
 
 ### Desktop
 
 #### Added
 
-- Add user designs gallery in the main menu :tada:
+- :sparkles: Add user designs gallery in the main menu
 
 ### Web
 
 #### Added
 
-- Support design format :tada:
+- :sparkles: Support design format
   - Add "open design" button
   - Add "save design as..." button
-- Add "new design" button :tada:
-- Add "open save" button :tada:
-- Add "save design as an image" button :tada:
+- :sparkles: Add "new design" button
+- :sparkles: Add "import from save" button
+- :sparkles: Add "save design as an image" button
 
-## [0.10.2] - 2024-02-04
+## :rocket: [0.10.2] - 2024-02-04
 
 _Supported Stardew Valley version - 1.5.6_
 
@@ -47,9 +53,9 @@ _Supported Stardew Valley version - 1.5.6_
 
 #### Fixed
 
-- Fix file picker and file saver bugs :wrench:
+- :wrench: Fix file picker and file saver bugs
 
-## [0.10.1] - 2024-02-04
+## :rocket: [0.10.1] - 2024-02-04
 
 _Supported Stardew Valley version - 1.5.6_
 
@@ -57,19 +63,19 @@ _Supported Stardew Valley version - 1.5.6_
 
 #### Changed
 
-- Rename "plan" to "design" :nail_care:
+- :nail_care: Rename "plan" to "design"
 
 #### Fixed
 
-- Fix resources performance :zap:
+- :zap: Fix resources performance
 
 ### Desktop
 
 #### Fixed
 
-- Fix file picker and file saver defaults :wrench:
+- :wrench: Fix file picker and file saver defaults
 
-## [0.10.0] - 2024-02-02
+## :rocket: [0.10.0] - 2024-02-02
 
 _Supported Stardew Valley version - 1.5.6_
 
@@ -77,59 +83,38 @@ _Supported Stardew Valley version - 1.5.6_
 
 #### Added
 
-- Add experimental design saves :tada:
+- :sparkles: Add experimental design saves
   - Add design format API
 
 #### Changed
 
-- Change Ctrl+Z and Ctrl+Y behavior to be active while pressing :sparkles:
-- Improve editor info at the bottom of the screen :nail_care:
+- :sparkles: Change Ctrl+Z and Ctrl+Y behavior to be active while pressing
+- :nail_care: Improve editor info at the bottom of the screen
 
 ### Desktop
 
 #### Added
 
-- Make the desktop application multi-window :tada:
-- Add experimental design saves :tada:
+- :sparkles: Make the desktop application multi-window
+- :sparkles: Add experimental design saves
   - Add "open design" button
   - Add "save design" and "save design as..." buttons
 
 #### Changed
 
-- Refactor "save design as an image" button :sparkles:
+- :sparkles: Refactor "save design as an image" button
 
 #### Removed
 
-- Remove splash screen :nail_care:
+- :nail_care: Remove splash screen
 
 ### Web
 
 #### Added
 
-- Introduce experimental web editor :tada:
+- :sparkles: Introduce experimental web editor
 
-## [0.9.1] - 2023-09-11
-
-_Supported Stardew Valley version - 1.5.6_
-
-### Desktop
-
-#### Added
-
-- Show a notification when image is saved :sparkles:
-
-#### Changed
-
-- Use the native file picker instead of the custom one :sparkles:
-- Adjust menus design :nail_care:
-- Use the native file saver for "save design as an image" button :sparkles:
-
-#### Fixed
-
-- Make file dialogs modal :wrench:
-- Make "save design as an image" button asynchronous (improves performance) :zap:
-
-## [0.9.0] - 2023-08-19
+## :rocket: [0.9.1] - 2023-09-11
 
 _Supported Stardew Valley version - 1.5.6_
 
@@ -137,40 +122,20 @@ _Supported Stardew Valley version - 1.5.6_
 
 #### Added
 
-- Add "eye dropper" tool :tada:
-- Support chest colors :tada:
+- :sparkles: Show a notification when image is saved
 
 #### Changed
 
-- Update info window :sparkles:
+- :sparkles: Use the native file picker instead of the custom one
+- :nail_care: Adjust menus design
+- :sparkles: Use the native file saver for "save design as an image" button
 
 #### Fixed
 
-- Fix wallpaper and flooring deserialization :wrench:
-- Fix deserialization bug with chest type objects :wrench:
-- Refactor and fix menus in the editor screen :wrench:
+- :wrench: Make file dialogs modal
+- :zap: Make "save design as an image" button asynchronous (improves performance)
 
-## [0.8.2] - 2023-08-13
-
-_Supported Stardew Valley version - 1.5.6_
-
-### Desktop
-
-#### Changed
-
-- Update configs :sparkles:
-
-## [0.8.1] - 2023-07-10
-
-_Supported Stardew Valley version - 1.5.6_
-
-### Desktop
-
-#### Fixed
-
-- Fix objects order on layout :wrench:
-
-## [0.8.0] - 2023-07-08
+## :rocket: [0.9.0] - 2023-08-19
 
 _Supported Stardew Valley version - 1.5.6_
 
@@ -178,24 +143,65 @@ _Supported Stardew Valley version - 1.5.6_
 
 #### Added
 
-- Add "area of effect" hints for scarecrows, sprinklers, bee houses, and junimo huts :tada:
-- Add more shapes (ellipse, ellipse outline, diamond, diamond outline, line) :tada:
-- Add various functional information to the editor :tada:
+- :sparkles: Add "eye dropper" tool
+- :sparkles: Support chest colors
+
+#### Changed
+
+- :sparkles: Update info window
+
+#### Fixed
+
+- :wrench: Fix wallpaper and flooring deserialization
+- :wrench: Fix deserialization bug with chest type objects
+- :wrench: Refactor and fix menus in the editor screen
+
+## :rocket: [0.8.2] - 2023-08-13
+
+_Supported Stardew Valley version - 1.5.6_
+
+### Desktop
+
+#### Changed
+
+- :sparkles: Update configs
+
+## :rocket: [0.8.1] - 2023-07-10
+
+_Supported Stardew Valley version - 1.5.6_
+
+### Desktop
+
+#### Fixed
+
+- :wrench: Fix objects order on layout
+
+## :rocket: [0.8.0] - 2023-07-08
+
+_Supported Stardew Valley version - 1.5.6_
+
+### Desktop
+
+#### Added
+
+- :sparkles: Add "area of effect" hints for scarecrows, sprinklers, bee houses, and junimo huts
+- :sparkles: Add more shapes (ellipse, ellipse outline, diamond, diamond outline, line)
+- :sparkles: Add various functional information to the editor
   - Add object counter and option for it
   - Add current coordinates and shape size info and option for them
 
 #### Changed
 
-- Change grid and axis design :nail_care:
-- Use "pen" as a default tool :sparkles:
-- Hide "shapes" menu when using "hand" tool and update "point" image :nail_care:
+- :nail_care: Change grid and axis design
+- :sparkles: Use "pen" as a default tool
+- :nail_care: Hide "shapes" menu when using "hand" tool and update "point" image
 
 #### Fixed
 
-- Update entity placement restrictions for standard farm layout :wrench:
-- Update save data importer to skip invalid objects :wrench:
-- Align pixels in the editor (removes periodic white lines between grid of objects) :nail_care:
-- Improve performance by using `Sequence` variants for various functions :zap:
+- :wrench: Update entity placement restrictions for standard farm layout
+- :wrench: Update save data importer to skip invalid objects
+- :nail_care: Align pixels in the editor (removes periodic white lines between grid of objects)
+- :zap: Improve performance by using `Sequence` variants for various functions
 
 ## [0.7.4] - 2023-06-13
 

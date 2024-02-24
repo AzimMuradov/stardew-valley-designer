@@ -27,7 +27,7 @@ object AppInfo {
 
     const val REPOSITORY_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer"
 
-    const val CHANGELOG_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer/releases"
+    const val CHANGELOG_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer/blob/master/docs/user/CHANGELOG.md"
 
     const val BUG_TRACKER_URL: String = "https://github.com/AzimMuradov/stardew-valley-designer/issues"
 }
