@@ -61,7 +61,7 @@ private fun Root(component: RootComponent, exitApplication: () -> Unit) {
 
     Screen(
         title = wordList.screenTitle(wordList.mainMenuTitle),
-        initialSize = DpSize(width = 1000.dp, height = 700.dp),
+        initialSize = DpSize(width = 900.dp, height = 600.dp),
         onCloseRequest = exitApplication,
     ) {
         MainMenuScreen(rootChildren.mainMenuComponent)
@@ -72,7 +72,7 @@ private fun Root(component: RootComponent, exitApplication: () -> Unit) {
             val layoutType = editorComponent.store.state.map.layout.type
             Screen(
                 title = wordList.screenTitle(wordList.layout(layoutType)),
-                initialSize = DpSize(width = 1366.dp, height = 768.dp),
+                initialSize = DpSize(width = 1200.dp, height = 750.dp),
                 onCloseRequest = { component.destroyEditorComponent(editorComponent) },
                 onKeyEvent = {
                     when {

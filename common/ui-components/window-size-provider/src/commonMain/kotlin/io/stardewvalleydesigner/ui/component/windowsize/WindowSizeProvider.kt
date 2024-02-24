@@ -35,7 +35,7 @@ fun WithDefaultWindowSize(
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
-        LocalWindowSize provides WindowSize.MEDIUM,
+        LocalWindowSize provides WindowSize.LARGE,
         content = content
     )
 }

@@ -29,7 +29,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -50,15 +49,17 @@ fun RowScope.SideMenu() {
 
     val menuWidth by animateDpAsState(
         when (LocalWindowSize.current) {
-            WindowSize.SMALL -> 240.dp
-            WindowSize.MEDIUM -> 300.dp
+            WindowSize.EXPANDED -> 240.dp
+            WindowSize.LARGE -> 280.dp
+            WindowSize.EXTRA_LARGE -> 320.dp
         }
     )
 
     val appNameTextStyle by animateValueAsState(
         targetValue = when (LocalWindowSize.current) {
-            WindowSize.SMALL -> MaterialTheme.typography.h5
-            WindowSize.MEDIUM -> MaterialTheme.typography.h4
+            WindowSize.EXPANDED -> MaterialTheme.typography.h5
+            WindowSize.LARGE -> MaterialTheme.typography.h5
+            WindowSize.EXTRA_LARGE -> MaterialTheme.typography.h4
         },
         typeConverter = TwoWayConverter(
             convertToVector = {
@@ -78,10 +79,6 @@ fun RowScope.SideMenu() {
         modifier = Modifier
             .fillMaxHeight()
             .width(menuWidth)
-            .shadow(
-                elevation = 4.dp,
-                shape = MaterialTheme.shapes.large
-            )
             .background(MaterialTheme.colors.secondary)
             .padding(16.dp),
         verticalArrangement = Arrangement.SpaceBetween

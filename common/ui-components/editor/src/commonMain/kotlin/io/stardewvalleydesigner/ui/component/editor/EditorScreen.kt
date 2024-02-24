@@ -59,8 +59,9 @@ fun EditorScreen(
 
         val menuWidth by animateDpAsState(
             when (LocalWindowSize.current) {
-                WindowSize.SMALL -> 300.dp
-                WindowSize.MEDIUM -> 350.dp
+                WindowSize.EXPANDED -> 250.dp
+                WindowSize.LARGE -> 300.dp
+                WindowSize.EXTRA_LARGE -> 350.dp
             }
         )
 
