@@ -22,6 +22,6 @@ import io.stardewvalleydesigner.save.models.PlayerChoiceColor
 import io.stardewvalleydesigner.save.models.Position
 
 
-fun Position.toCoordinate() = xy(x = x.toInt(), y = y.toInt())
+internal fun Position.toCoordinate() = xy(x = x.toInt(), y = y.toInt())
 
-fun PlayerChoiceColor.toColor() = Color(r = r.toUByte(), g = g.toUByte(), b = b.toUByte())
+internal fun PlayerChoiceColor.toColor() = Color(r = r.toUByte(), g = g.toUByte(), b = b.toUByte())

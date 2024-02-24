@@ -23,7 +23,7 @@ import nl.adaptivity.xmlutil.serialization.XmlSerialName
 
 
 @Serializable
-data class TerrainFeature(
+internal data class TerrainFeature(
     @XmlSerialName(value = "type", XMLConstants.XSI_NS_URI, XMLConstants.XSI_PREFIX)
     @XmlElement(false)
     val typeAttr: String,

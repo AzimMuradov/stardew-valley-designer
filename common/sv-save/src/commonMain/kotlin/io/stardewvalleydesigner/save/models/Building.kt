@@ -22,7 +22,7 @@ import nl.adaptivity.xmlutil.serialization.XmlChildrenName
 
 
 @Serializable
-data class Building(
+internal data class Building(
     val buildingType: String,
     val indoors: Indoors? = null,
     val tileX: Int, val tileY: Int,
@@ -31,7 +31,7 @@ data class Building(
 
 
 @Serializable
-data class Indoors(
+internal data class Indoors(
     @XmlChildrenName("item", "", "") val objects: List<Item<Vector2Wrapper, ObjectWrapper>>,
     @XmlChildrenName("Furniture", "", "") val furniture: List<Furniture>,
     @XmlChildrenName("item", "", "") val terrainFeatures: List<Item<Vector2Wrapper, TerrainFeatureWrapper>>,
@@ -51,30 +51,30 @@ data class Indoors(
 }
 
 @Serializable
-data class AppliedWallpaper(
+internal data class AppliedWallpaper(
     @SerialName("SerializableDictionaryOfStringString")
     @XmlChildrenName("item", "", "")
     val dict: List<Item<StringWrapper, StringWrapper>>,
 )
 
 @Serializable
-data class AppliedFloor(
+internal data class AppliedFloor(
     @SerialName("SerializableDictionaryOfStringString")
     @XmlChildrenName("item", "", "")
     val dict: List<Item<StringWrapper, StringWrapper>>,
 )
 
 @Serializable
-data class Vector2Wrapper(@SerialName("Vector2") val pos: Position)
+internal data class Vector2Wrapper(@SerialName("Vector2") val pos: Position)
 
 @Serializable
-data class ObjectWrapper(@SerialName("Object") val obj: Object)
+internal data class ObjectWrapper(@SerialName("Object") val obj: Object)
 
 @Serializable
-data class TerrainFeatureWrapper(@SerialName("TerrainFeature") val tf: TerrainFeature)
+internal data class TerrainFeatureWrapper(@SerialName("TerrainFeature") val tf: TerrainFeature)
 
 @Serializable
-data class IntWrapper(val int: Int? = null)
+internal data class IntWrapper(val int: Int? = null)
 
 @Serializable
-data class StringWrapper(val string: String? = null)
+internal data class StringWrapper(val string: String? = null)

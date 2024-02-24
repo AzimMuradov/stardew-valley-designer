@@ -21,7 +21,7 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class SourceRect(
+internal data class SourceRect(
     @SerialName("X") val x: Int,
     @SerialName("Y") val y: Int,
     @SerialName("Width") val width: Int,

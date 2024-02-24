@@ -20,6 +20,6 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class Crop(
+internal data class Crop(
     val rowInSpriteSheet: Int? = null,
 )

@@ -28,7 +28,7 @@ import io.stardewvalleydesigner.save.models.Building
 import io.stardewvalleydesigner.engine.entity.Building as BuildingEntity
 
 
-fun Object.toPlacedEntityOrNull(): PlacedEntity<*>? {
+internal fun Object.toPlacedEntityOrNull(): PlacedEntity<*>? {
     val entityId = EntityId(
         page = when {
             type == "Crafting" && typeAttr != "Fence" -> EntityPage.Craftables
@@ -60,7 +60,7 @@ fun Object.toPlacedEntityOrNull(): PlacedEntity<*>? {
     return entityById[entityId]?.placeIt(there = tileLocation.toCoordinate())
 }
 
-fun Furniture.toPlacedEntityOrNull(): PlacedEntity<*>? {
+internal fun Furniture.toPlacedEntityOrNull(): PlacedEntity<*>? {
     val rotation = when (rotations) {
         2 -> when (currentRotation) {
             1 -> Rotations.Rotations2.R1
@@ -88,7 +88,7 @@ fun Furniture.toPlacedEntityOrNull(): PlacedEntity<*>? {
     return entityById[entityId]?.placeIt(there = tileLocation.toCoordinate())
 }
 
-fun Item<Vector2Wrapper, TerrainFeatureWrapper>.toPlacedEntityOrNull(): PlacedEntity<*>? {
+internal fun Item<Vector2Wrapper, TerrainFeatureWrapper>.toPlacedEntityOrNull(): PlacedEntity<*>? {
     val (v2, tfw) = this
     val entity = when (tfw.tf.typeAttr) {
         "Flooring" -> entityById[
@@ -114,7 +114,7 @@ fun Item<Vector2Wrapper, TerrainFeatureWrapper>.toPlacedEntityOrNull(): PlacedEn
     return entity?.placeIt(there = v2.pos.toCoordinate())
 }
 
-fun Building.toPlacedEntityOrNull(): PlacedEntity<*>? {
+internal fun Building.toPlacedEntityOrNull(): PlacedEntity<*>? {
     val entity = when (buildingType) {
         "Barn" -> BuildingEntity.SimpleBuilding.Barn1
         "Big Barn" -> BuildingEntity.SimpleBuilding.Barn2
