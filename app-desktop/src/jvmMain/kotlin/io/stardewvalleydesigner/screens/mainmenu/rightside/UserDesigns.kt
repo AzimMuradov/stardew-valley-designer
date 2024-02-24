@@ -35,8 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
-import androidx.compose.ui.window.DialogWindow
-import androidx.compose.ui.window.rememberDialogState
+import androidx.compose.ui.window.DialogProperties
 import io.github.irgaly.kfswatch.KfsDirectoryWatcher
 import io.github.irgaly.kfswatch.KfsEvent
 import io.stardewvalleydesigner.LoggerUtils.logger
@@ -262,43 +261,39 @@ private fun DesignCard(
                 )
 
                 if (showDeleteDialog) {
-                    DialogWindow(
-                        onCloseRequest = { showDeleteDialog = false },
-                        state = rememberDialogState(
-                            size = DpSize(400.dp, 200.dp),
-                        ),
-                        title = wordList.designCardDeleteDialogTitle,
-                        resizable = false,
-                    ) {
-                        Column(Modifier.fillMaxSize().padding(16.dp)) {
-                            Text(
-                                text = wordList.designCardDeleteDialogText,
-                                style = MaterialTheme.typography.h6,
-                            )
-                            Spacer(Modifier.weight(1f))
-                            Row(Modifier.fillMaxWidth(), Arrangement.SpaceEvenly) {
-                                Button(
-                                    onClick = {
-                                        deleteDesign()
-                                        showDeleteDialog = false
-                                    },
-                                    modifier = Modifier.width(90.dp),
-                                    colors = ButtonDefaults.buttonColors(
-                                        backgroundColor = Color(red = 0.5f, green = 0.1f, blue = 0.1f),
-                                        contentColor = Color.White,
-                                    ),
-                                ) {
-                                    Text(wordList.delete)
-                                }
-                                Button(
-                                    onClick = { showDeleteDialog = false },
-                                    modifier = Modifier.width(90.dp),
-                                ) {
-                                    Text(wordList.no)
-                                }
+                    AlertDialog(
+                        onDismissRequest = { showDeleteDialog = false },
+                        confirmButton = {
+                            Button(
+                                onClick = {
+                                    deleteDesign()
+                                    showDeleteDialog = false
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = Color(red = 0.5f, green = 0.1f, blue = 0.1f),
+                                    contentColor = Color.White,
+                                ),
+                            ) {
+                                Text(text = wordList.delete, fontSize = 12.sp)
                             }
-                        }
-                    }
+                        },
+                        modifier = Modifier,
+                        dismissButton = {
+                            Button(onClick = { showDeleteDialog = false }) {
+                                Text(wordList.no, fontSize = 12.sp)
+                            }
+                        },
+                        title = {
+                            Text(wordList.designCardDeleteDialogTitle)
+                        },
+                        text = {
+                            Text(wordList.designCardDeleteDialogText)
+                        },
+                        shape = MaterialTheme.shapes.medium,
+                        backgroundColor = MaterialTheme.colors.surface,
+                        contentColor = MaterialTheme.colors.onSurface,
+                        properties = DialogProperties(),
+                    )
                 }
             }
             SelectionContainer {
