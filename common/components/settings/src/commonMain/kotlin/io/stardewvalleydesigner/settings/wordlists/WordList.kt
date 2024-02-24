@@ -152,6 +152,11 @@ sealed interface WordList {
     fun entity(e: Entity<*>): String
 
 
+    val playerNamePlaceholder: String
+
+    val farmNamePlaceholder: String
+
+
     val buttonSaveDesignAsImageTooltip: String
 
     val saveDesignAsImageTitle: String

@@ -39,6 +39,14 @@ sealed interface EditorIntent {
         data object End : Engine
     }
 
+    sealed interface PlayerName : EditorIntent {
+        data class Change(val name: String) : PlayerName
+    }
+
+    sealed interface FarmName : EditorIntent {
+        data class Change(val name: String) : FarmName
+    }
+
     sealed interface Toolkit : EditorIntent {
         data class ChooseTool(val type: ToolType) : Toolkit
         data class ChooseShape(val type: ShapeType?) : Toolkit

@@ -56,6 +56,8 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
     private sealed interface Msg {
         data class UpdateHistory(val state: HistoryState) : Msg
         data class UpdateMap(val state: MapState) : Msg
+        data class UpdatePlayerName(val state: String) : Msg
+        data class UpdateFarmName(val state: String) : Msg
         data class UpdateToolkit(val state: ToolkitState) : Msg
         data class UpdatePalette(val state: PaletteState) : Msg
         data class UpdateVisLayers(val state: VisLayersState) : Msg
@@ -131,6 +133,10 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
                     }
                 }
 
+                is Intent.PlayerName.Change -> dispatch(Msg.UpdatePlayerName(intent.name))
+
+                is Intent.FarmName.Change -> dispatch(Msg.UpdateFarmName(intent.name))
+
                 is Intent.Toolkit -> {
                     dispatch(Msg.UpdateToolkit(state().toolkit.reduce(intent)))
                     state().toolkit.run { toolkit.setTool(tool, shape) }
@@ -170,6 +176,8 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
         when (msg) {
             is Msg.UpdateHistory -> copy(history = msg.state)
             is Msg.UpdateMap -> copy(map = msg.state)
+            is Msg.UpdatePlayerName -> copy(playerName = msg.state)
+            is Msg.UpdateFarmName -> copy(farmName = msg.state)
             is Msg.UpdateToolkit -> copy(toolkit = msg.state)
             is Msg.UpdatePalette -> copy(palette = msg.state)
             is Msg.UpdateVisLayers -> copy(visLayers = msg.state)

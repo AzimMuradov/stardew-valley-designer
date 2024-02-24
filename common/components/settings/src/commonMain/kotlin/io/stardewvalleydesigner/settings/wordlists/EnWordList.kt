@@ -730,6 +730,11 @@ data object EnWordList : WordList {
     }.also { entities[e] = it }
 
 
+    override val playerNamePlaceholder: String = "Player Name"
+
+    override val farmNamePlaceholder: String = "Farm Name"
+
+
     override val buttonSaveDesignAsImageTooltip: String = "Save design as an image"
 
     override val saveDesignAsImageTitle: String = "Provide path for the design save"
