@@ -45,7 +45,7 @@ class EraserShape(private val engine: EditorEngine, private val shape: ShapeType
 
         val placedShape = shape.projectTo(start, coordinate)
 
-        entitiesToDelete = engine.getAll(placedShape.coordinates).flatten()
+        entitiesToDelete = engine.getAll(placedShape.coordinates, visLayers).flatten()
 
         return ActionReturn(
             toolkit = ToolkitState.Eraser.Shape.Acting(
@@ -65,7 +65,7 @@ class EraserShape(private val engine: EditorEngine, private val shape: ShapeType
     ): ActionReturn {
         val placedShape = shape.projectTo(start, coordinate)
 
-        entitiesToDelete = engine.getAll(placedShape.coordinates).flatten()
+        entitiesToDelete = engine.getAll(placedShape.coordinates, visLayers).flatten()
 
         return ActionReturn(
             toolkit = ToolkitState.Eraser.Shape.Acting(
