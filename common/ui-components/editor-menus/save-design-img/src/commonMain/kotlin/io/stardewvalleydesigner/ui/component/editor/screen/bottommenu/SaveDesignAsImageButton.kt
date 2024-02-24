@@ -20,6 +20,7 @@ import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Image
 import androidx.compose.runtime.*
+import io.stardewvalleydesigner.LoggerUtils.logger
 import io.stardewvalleydesigner.cmplib.filedialogs.FileSaver
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
 import io.stardewvalleydesigner.component.editor.modules.vislayers.VisLayersState
@@ -58,6 +59,7 @@ fun SaveDesignAsImageButton(
                     val filename = "design-${Clock.System.nowFormatted()}.${PNG_FORMAT}"
                     FileSystem.relative(FileSystem.getSvdImagesDir(), filename) ?: filename
                 }
+                logger.debug { pathname }
                 showFileSaver = true
             }
         }
