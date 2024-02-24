@@ -23,6 +23,7 @@ import androidx.compose.runtime.*
 import io.stardewvalleydesigner.cmplib.filedialogs.FileSaver
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
 import io.stardewvalleydesigner.component.editor.modules.vislayers.VisLayersState
+import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
 import io.stardewvalleydesigner.kmplib.fs.FileSystem
 import io.stardewvalleydesigner.kmplib.fs.getSvdImagesDir
 import io.stardewvalleydesigner.kmplib.png.PNG_FORMAT
@@ -32,6 +33,7 @@ import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesign
 import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesignasimg.nowFormatted
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 
 
@@ -54,7 +56,7 @@ fun SaveDesignAsImageButton(
             if (!showFileSaver) {
                 pathname = run {
                     val filename = "design-${Clock.System.nowFormatted()}.${PNG_FORMAT}"
-                    FileSystem.relative(FileSystem.getSvdImagesDir(), filename)
+                    FileSystem.relative(FileSystem.getSvdImagesDir(), filename) ?: filename
                 }
                 showFileSaver = true
             }
@@ -67,24 +69,36 @@ fun SaveDesignAsImageButton(
     val wallsAndFloors = ImageResources.wallsAndFloors
     val layoutSprite = ImageResourcesProvider.layoutSpriteBy(map.layout.type)
 
-    if (showFileSaver) {
-        FileSaver(
-            title = wordList.saveDesignAsImageTitle,
-            defaultPathAndFile = pathname,
-            extensions = listOf(PNG_FORMAT),
-            bytes = {
+    var bytes: ByteArray? by remember(showFileSaver) { mutableStateOf(null) }
+
+    LaunchedEffect(showFileSaver) {
+        bytes = if (showFileSaver) {
+            withContext(PlatformDispatcher.IO) {
                 DesignRenderer.generateDesignAsPngBytes(
                     map, visibleLayers.visibleLayers,
                     entities, wallsAndFloors, layoutSprite,
                 )
-            },
-        ) { result ->
-            showFileSaver = false
+            }
+        } else {
+            null
+        }
+    }
 
-            if (result != null) {
-                scope.launch {
-                    snackbarHostState.currentSnackbarData?.dismiss()
-                    snackbarHostState.showSnackbar(message = wordList.saveDesignAsImageNotificationMessage(result.absolutePath))
+    if (showFileSaver) {
+        bytes?.let { processedBytes ->
+            FileSaver(
+                title = wordList.saveDesignAsImageTitle,
+                defaultPathAndFile = pathname,
+                extensions = listOf(PNG_FORMAT),
+                bytes = processedBytes,
+            ) { result ->
+                showFileSaver = false
+
+                if (result != null) {
+                    scope.launch {
+                        snackbarHostState.currentSnackbarData?.dismiss()
+                        snackbarHostState.showSnackbar(message = wordList.saveDesignAsImageNotificationMessage(result.absolutePath))
+                    }
                 }
             }
         }

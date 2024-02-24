@@ -30,7 +30,7 @@ import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils
 
 internal object DesignRenderer {
 
-    fun generateDesignAsPngBytes(
+    suspend fun generateDesignAsPngBytes(
         map: MapState,
         visibleLayers: Set<LayerType<*>>,
         entityMaps: Map<EntityPage, ImageBitmap>,

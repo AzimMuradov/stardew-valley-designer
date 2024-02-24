@@ -29,7 +29,7 @@ actual fun FileSaver(
     defaultPathAndFile: String?,
     extensions: List<String>?,
     extensionsDescription: String?,
-    bytes: () -> ByteArray,
+    bytes: ByteArray,
     onFileSaved: (FileSaverResult?) -> Unit,
 ) {
     if (title != null) logger.info { "`title` was ignored" }
@@ -38,7 +38,7 @@ actual fun FileSaver(
 
     document.downloadFileToDisk(
         filename = defaultPathAndFile,
-        content = bytes(),
+        content = bytes,
     )
 
     onFileSaved(null)

@@ -37,7 +37,7 @@ actual fun FileSaver(
     defaultPathAndFile: String?,
     extensions: List<String>?,
     extensionsDescription: String?,
-    bytes: () -> ByteArray,
+    bytes: ByteArray,
     onFileSaved: (FileSaverResult?) -> Unit,
 ) {
     ModalDialog {
@@ -47,7 +47,7 @@ actual fun FileSaver(
                 defaultPathAndFile = processDefaultPath(defaultPathAndFile),
                 extensions,
                 extensionsDescription,
-                bytes = bytes(),
+                bytes = bytes,
             )
         }
 

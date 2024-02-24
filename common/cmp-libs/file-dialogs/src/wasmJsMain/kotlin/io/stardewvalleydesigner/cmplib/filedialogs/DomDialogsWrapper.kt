@@ -16,6 +16,8 @@
 
 package io.stardewvalleydesigner.cmplib.filedialogs
 
+import org.khronos.webgl.Uint8Array
+import org.khronos.webgl.set
 import org.w3c.dom.*
 import org.w3c.files.*
 
@@ -26,7 +28,13 @@ internal object DomDialogsWrapper {
         filename: String?,
         content: ByteArray,
     ) {
-        val array = JsArray<JsAny?>().apply { set(0, content.decodeToString().toJsString()) }
+        val array = JsArray<JsAny?>().apply {
+            set(0, Uint8Array(content.size).apply {
+                for ((i, b) in content.withIndex()) {
+                    set(i, b)
+                }
+            })
+        }
         val blob = Blob(array)
 
         saveAs(blob, filename?.toJsString())

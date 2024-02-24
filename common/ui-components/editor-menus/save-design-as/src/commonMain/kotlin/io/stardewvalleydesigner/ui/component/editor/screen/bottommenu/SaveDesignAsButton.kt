@@ -24,11 +24,13 @@ import io.stardewvalleydesigner.cmplib.filedialogs.FileSaver
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
 import io.stardewvalleydesigner.designformat.models.Options
 import io.stardewvalleydesigner.designformat.models.Palette
+import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
 import io.stardewvalleydesigner.kmplib.fs.FileSystem
 import io.stardewvalleydesigner.kmplib.fs.getSvdSavesDir
 import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesignas.*
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 
 
@@ -67,12 +69,11 @@ fun SaveDesignAsButton(
 
     val scope = rememberCoroutineScope()
 
-    if (showFileSaver) {
-        FileSaver(
-            title = wordList.saveDesignAsTitle,
-            defaultPathAndFile = pathname,
-            extensions = listOf(JSON_FORMAT),
-            bytes = {
+    var bytes: ByteArray? by remember(showFileSaver) { mutableStateOf(null) }
+
+    LaunchedEffect(showFileSaver) {
+        bytes = if (showFileSaver) {
+            withContext(PlatformDispatcher.IO) {
                 DesignSaver.serializeDesignToBytes(
                     map,
                     playerName,
@@ -80,16 +81,29 @@ fun SaveDesignAsButton(
                     palette,
                     options,
                 )
-            },
-        ) { result ->
-            showFileSaver = false
+            }
+        } else {
+            null
+        }
+    }
 
-            if (result != null) {
-                onDesignSaveAbsolutePathChanged(result.absolutePath)
+    if (showFileSaver) {
+        bytes?.let { processedBytes ->
+            FileSaver(
+                title = wordList.saveDesignAsTitle,
+                defaultPathAndFile = pathname,
+                extensions = listOf(JSON_FORMAT),
+                bytes = processedBytes,
+            ) { result ->
+                showFileSaver = false
 
-                scope.launch {
-                    snackbarHostState.currentSnackbarData?.dismiss()
-                    snackbarHostState.showSnackbar(message = wordList.saveDesignAsNotificationMessage(result.absolutePath))
+                if (result != null) {
+                    onDesignSaveAbsolutePathChanged(result.absolutePath)
+
+                    scope.launch {
+                        snackbarHostState.currentSnackbarData?.dismiss()
+                        snackbarHostState.showSnackbar(message = wordList.saveDesignAsNotificationMessage(result.absolutePath))
+                    }
                 }
             }
         }

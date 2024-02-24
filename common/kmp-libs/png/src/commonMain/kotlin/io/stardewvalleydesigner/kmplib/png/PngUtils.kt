@@ -19,7 +19,7 @@ package io.stardewvalleydesigner.kmplib.png
 
 expect object PngUtils {
 
-    fun generatePngBytes(argbBytes: IntArray, width: Int, height: Int): ByteArray
+    suspend fun generatePngBytes(argbBytes: IntArray, width: Int, height: Int): ByteArray
 }
 
 const val PNG_FORMAT: String = "png"
