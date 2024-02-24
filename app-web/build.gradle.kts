@@ -20,6 +20,12 @@ kotlin {
                     args.plusAssign(listOf("--env", "debug=$value"))
                 }
             }
+
+            webpackTask {
+                System.getProperty("debug")?.let { value ->
+                    args.plusAssign(listOf("--env", "debug=$value"))
+                }
+            }
         }
         binaries.executable()
     }
