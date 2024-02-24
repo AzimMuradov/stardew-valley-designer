@@ -2,11 +2,9 @@
 
 kotlin = "1.9.21"
 
-compose = "1.6.0-beta01"
+compose = "1.6.0-beta02"
 
 lwjgl = "3.3.3"
-
-#decompose = "2.1.0-beta-01"
 
 mvikotlin = "4.0.0-alpha02"
 
@@ -39,11 +37,6 @@ log4j = "2.22.0"
 
 lwjgl = { module = "org.lwjgl:lwjgl", version.ref = "lwjgl" }
 lwjgl-tinyfd = { module = "org.lwjgl:lwjgl-tinyfd", version.ref = "lwjgl" }
-
-# Decompose
-
-#decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
-#decompose-extensions-composejb = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose" }
 
 # MVIKotlin
 
