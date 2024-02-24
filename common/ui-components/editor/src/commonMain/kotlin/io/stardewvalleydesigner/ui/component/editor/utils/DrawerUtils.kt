@@ -40,7 +40,17 @@ import kotlin.math.roundToInt
 
 object DrawerUtils {
 
-    fun DrawScope.drawEntityContained(
+    val placedEntityComparator: Comparator<PlacedEntity<*>> =
+        compareBy<PlacedEntity<*>> { (e, _) -> e.type.toLayerType().ordinal }
+            .thenBy { (_, place) -> place.y }
+
+    fun tint(color: Color) = ColorFilter.tint(
+        color = color,
+        blendMode = BlendMode.Modulate
+    )
+
+
+    internal fun DrawScope.drawEntityContained(
         entityMaps: Map<EntityPage, ImageBitmap>,
         entity: Entity<*>,
         offset: IntOffset = IntOffset.Zero,
@@ -70,7 +80,7 @@ object DrawerUtils {
         }
     }
 
-    fun DrawScope.drawSpriteStretched(
+    internal fun DrawScope.drawSpriteStretched(
         sprite: Sprite,
         offset: IntOffset = IntOffset.Zero,
         layoutSize: IntSize,
@@ -82,7 +92,7 @@ object DrawerUtils {
         }
     }
 
-    fun DrawScope.drawEntityStretched(
+    internal fun DrawScope.drawEntityStretched(
         entityMaps: Map<EntityPage, ImageBitmap>,
         entity: PlacedEntity<*>,
         renderSpritesFully: Boolean,
@@ -127,7 +137,7 @@ object DrawerUtils {
     }
 
 
-    fun DrawScope.drawVisibleEntities(
+    internal fun DrawScope.drawVisibleEntities(
         entityMaps: Map<EntityPage, ImageBitmap>,
         entities: LayeredEntitiesData,
         visibleLayers: Set<LayerType<*>>,
@@ -141,8 +151,7 @@ object DrawerUtils {
         }
     }
 
-
-    fun DrawScope.drawFlooring(
+    internal fun DrawScope.drawFlooring(
         wallsAndFloors: ImageBitmap,
         flooring: Flooring?,
         nW: Int, nH: Int,
@@ -167,7 +176,7 @@ object DrawerUtils {
         }
     }
 
-    fun DrawScope.drawWallpaper(
+    internal fun DrawScope.drawWallpaper(
         wallsAndFloors: ImageBitmap,
         wallpaper: Wallpaper?,
         nW: Int,
@@ -242,14 +251,4 @@ object DrawerUtils {
             }
         )
     }
-
-
-    val placedEntityComparator: Comparator<PlacedEntity<*>> =
-        compareBy<PlacedEntity<*>> { (e, _) -> e.type.toLayerType().ordinal }
-            .thenBy { (_, place) -> place.y }
-
-    fun tint(color: Color) = ColorFilter.tint(
-        color = color,
-        blendMode = BlendMode.Modulate
-    )
 }

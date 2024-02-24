@@ -11,9 +11,12 @@ kotlin {
                 implementation(projects.common.editorEngine)
                 implementation(projects.common.entitiesMetadata)
                 implementation(projects.common.designFormat)
-                implementation(projects.common.svSave)
 
                 implementation(projects.common.kmpLibs.fs)
+
+                implementation(projects.common.components.dialogNewDesign)
+                implementation(projects.common.components.dialogOpenDesign)
+                implementation(projects.common.components.dialogOpenSvSave)
 
                 implementation(libs.kotlinx.coroutines.swing)
 

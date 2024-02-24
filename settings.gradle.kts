@@ -23,6 +23,11 @@ include(
     ":common:components:screen-editor",
     // ":common:components:screen-settings",
 )
+include(
+    ":common:components:dialog-new-design",
+    ":common:components:dialog-open-design",
+    ":common:components:dialog-open-sv-save",
+)
 include(":common:components:settings")
 
 
@@ -30,10 +35,14 @@ include(":common:components:settings")
 
 include(":common:ui-components:editor")
 include(
+    ":common:ui-components:editor-menus:new-design",
+    ":common:ui-components:editor-menus:open-design",
+    ":common:ui-components:editor-menus:open-sv-save",
     ":common:ui-components:editor-menus:save-design",
     ":common:ui-components:editor-menus:save-design-as",
     ":common:ui-components:editor-menus:save-design-img",
 )
+include(":common:ui-components:design-dialogs")
 include(":common:ui-components:settings-provider")
 include(":common:ui-components:themes")
 include(":common:ui-components:window-size-provider")

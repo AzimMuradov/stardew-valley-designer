@@ -16,6 +16,9 @@
 
 package io.stardewvalleydesigner.component.mainmenu
 
+import io.stardewvalleydesigner.component.dialog.newdesign.NewDesignComponent
+import io.stardewvalleydesigner.component.dialog.opendesign.OpenDesignComponent
+import io.stardewvalleydesigner.component.dialog.opensvsave.OpenSvSaveComponent
 import io.stardewvalleydesigner.designformat.models.Design
 
 
@@ -23,5 +26,11 @@ interface MainMenuComponent {
 
     val store: MainMenuStore
 
-    val onEditorScreenCall: (Design, planPath: String?) -> Unit
+    val newDesignComponent: NewDesignComponent
+
+    val openDesignComponent: OpenDesignComponent
+
+    val openSvSaveComponent: OpenSvSaveComponent
+
+    val onEditorScreenCall: (Design, designPath: String?) -> Unit
 }

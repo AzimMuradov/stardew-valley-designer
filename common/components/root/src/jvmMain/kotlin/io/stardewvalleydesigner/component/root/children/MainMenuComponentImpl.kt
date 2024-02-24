@@ -17,6 +17,9 @@
 package io.stardewvalleydesigner.component.root.children
 
 import io.stardewvalleydesigner.LoggerUtils.createLoggerAwareStoreFactory
+import io.stardewvalleydesigner.component.dialog.newdesign.NewDesignComponentImpl
+import io.stardewvalleydesigner.component.dialog.opendesign.OpenDesignComponentImpl
+import io.stardewvalleydesigner.component.dialog.opensvsave.OpenSvSaveComponentImpl
 import io.stardewvalleydesigner.component.mainmenu.MainMenuComponent
 import io.stardewvalleydesigner.component.mainmenu.MainMenuStoreFactory
 import io.stardewvalleydesigner.designformat.models.Design
@@ -27,4 +30,10 @@ internal class MainMenuComponentImpl(
 ) : MainMenuComponent {
 
     override val store = MainMenuStoreFactory(createLoggerAwareStoreFactory()).create(onEditorScreenCall)
+
+    override val newDesignComponent = NewDesignComponentImpl(onEditorScreenCall)
+
+    override val openDesignComponent = OpenDesignComponentImpl(onEditorScreenCall)
+
+    override val openSvSaveComponent = OpenSvSaveComponentImpl(onEditorScreenCall)
 }

@@ -21,50 +21,6 @@ import io.stardewvalleydesigner.designformat.models.Design
 
 sealed interface MainMenuIntent {
 
-    sealed interface NewDesignMenu : MainMenuIntent {
-
-        data object OpenMenu : NewDesignMenu
-
-        data class ChooseLayout(val layout: Wrapper<Design>) : NewDesignMenu
-
-        data object AcceptChosen : NewDesignMenu
-
-        data object Cancel : NewDesignMenu
-    }
-
-    sealed interface OpenDesignMenu : MainMenuIntent {
-
-        data object OpenMenu : OpenDesignMenu
-
-        data class LoadDesign(val text: String, val absolutePath: String) : OpenDesignMenu {
-
-            override fun toString(): String = "LoadDesign(text='${text.take(n = 100)}', absolutePath='$absolutePath')"
-        }
-
-        data object Accept : OpenDesignMenu
-
-        data object Cancel : OpenDesignMenu
-    }
-
-    sealed interface SaveLoaderMenu : MainMenuIntent {
-
-        data object OpenMenu : SaveLoaderMenu
-
-        data class LoadSave(
-            val text: String,
-            val absolutePath: String,
-        ) : SaveLoaderMenu {
-
-            override fun toString(): String = "LoadSave(text='${text.take(n = 100)}', absolutePath='$absolutePath')"
-        }
-
-        data class ChooseLayout(val layout: Wrapper<Design>) : SaveLoaderMenu
-
-        data object AcceptChosen : SaveLoaderMenu
-
-        data object Cancel : SaveLoaderMenu
-    }
-
     sealed interface UserDesignsMenu : MainMenuIntent {
 
         data class OpenDesign(

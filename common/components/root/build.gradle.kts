@@ -13,6 +13,9 @@ kotlin {
 
                 implementation(projects.common.components.screenMainMenu)
                 implementation(projects.common.components.screenEditor)
+                implementation(projects.common.components.dialogNewDesign)
+                implementation(projects.common.components.dialogOpenDesign)
+                implementation(projects.common.components.dialogOpenSvSave)
 
                 implementation(libs.kotlinx.coroutines.core)
 
