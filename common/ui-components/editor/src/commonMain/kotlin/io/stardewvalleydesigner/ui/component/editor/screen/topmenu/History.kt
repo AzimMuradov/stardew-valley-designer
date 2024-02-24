@@ -18,8 +18,8 @@ package io.stardewvalleydesigner.ui.component.editor.screen.topmenu
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.ArrowForward
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,13 +39,13 @@ internal fun History(
         verticalAlignment = Alignment.CenterVertically
     ) {
         MenuIconButton(
-            icon = Icons.Rounded.ArrowBack,
+            icon = Icons.AutoMirrored.Rounded.ArrowBack,
             enabled = history.canGoBack,
             onClick = { intentConsumer(EditorIntent.History.GoBack) }
         )
         Spacer(Modifier.size(4.dp))
         MenuIconButton(
-            icon = Icons.Rounded.ArrowForward,
+            icon = Icons.AutoMirrored.Rounded.ArrowForward,
             enabled = history.canGoForward,
             onClick = { intentConsumer(EditorIntent.History.GoForward) }
         )

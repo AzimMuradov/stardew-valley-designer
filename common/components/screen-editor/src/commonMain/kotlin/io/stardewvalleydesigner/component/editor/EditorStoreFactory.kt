@@ -144,7 +144,7 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
 
                 is Intent.Palette -> dispatch(Msg.UpdatePalette(state().palette.reduce(intent)))
 
-                is Intent.VisLayers -> dispatch(Msg.UpdateVisLayers(state().visLayers.reduce(intent)))
+                is Intent.VisLayers.ChangeVisibility -> dispatch(Msg.UpdateVisLayers(state().visLayers.reduce(intent)))
 
                 is Intent.WallpaperAndFlooring -> {
                     dispatch(
@@ -165,7 +165,7 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
                     dispatch(Msg.UpdateHistory(history.state))
                 }
 
-                is Intent.Options -> dispatch(Msg.UpdateOptions(state().options.reduce(intent)))
+                is Intent.Options.Toggle -> dispatch(Msg.UpdateOptions(state().options.reduce(intent)))
             }
         }
 
