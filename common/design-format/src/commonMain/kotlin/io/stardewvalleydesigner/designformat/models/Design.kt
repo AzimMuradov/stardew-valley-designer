@@ -16,17 +16,21 @@
 
 package io.stardewvalleydesigner.designformat.models
 
+import io.stardewvalleydesigner.designformat.serializers.*
+import io.stardewvalleydesigner.engine.Flooring
+import io.stardewvalleydesigner.engine.Wallpaper
+import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layout.LayoutType
 import kotlinx.serialization.Serializable
 
 
 @Serializable
 data class Design(
-    val version: DesignVersion = DesignVersion.VERSION_0_9_0,
+    val version: DesignVersion = DesignVersion.VERSION_0_11_0,
     val playerName: String,
     val farmName: String,
     val layout: LayoutType,
-    val entities: EntitiesPacked,
-    val wallpaper: WallpaperPacked? = null,
-    val flooring: FlooringPacked? = null,
+    val entities: @Serializable(with = LayeredEntitiesDataSerializer::class) LayeredEntitiesData,
+    val wallpaper: @Serializable(with = WallpaperSerializer::class) Wallpaper? = null,
+    val flooring: @Serializable(with = FlooringSerializer::class) Flooring? = null,
 )

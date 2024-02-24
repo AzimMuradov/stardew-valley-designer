@@ -14,40 +14,27 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.designformat.models
+package io.stardewvalleydesigner.designformat.serializers
 
-import io.stardewvalleydesigner.engine.entity.Color
+import io.stardewvalleydesigner.engine.Flooring
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 
-internal typealias ColorPacked = @Serializable(with = ColorSerializer::class) Color
-
-private class ColorSerializer : KSerializer<Color> {
+internal object FlooringSerializer : KSerializer<Flooring> {
 
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
-        serialName = "io.stardewvalleydesigner.engine.entity.Color",
-        kind = PrimitiveKind.INT
+        serialName = "io.stardewvalleydesigner.engine.Flooring",
+        kind = PrimitiveKind.INT,
     )
 
-    override fun serialize(encoder: Encoder, value: Color) {
-        encoder.encodeInt(value.pack())
+    override fun serialize(encoder: Encoder, value: Flooring) {
+        encoder.encodeInt(value.n.toInt())
     }
 
-    override fun deserialize(decoder: Decoder): Color {
-        return decoder.decodeInt().unpack()
+    override fun deserialize(decoder: Decoder): Flooring {
+        return Flooring(decoder.decodeInt().toUByte())
     }
 }
-
-@Suppress("NOTHING_TO_INLINE")
-private inline fun Color.pack(): Int = (r.toInt() shl 16) or (g.toInt() shl 8) or (b.toInt())
-
-@Suppress("NOTHING_TO_INLINE")
-private inline fun Int.unpack(): Color = Color(
-    r = shr(16).toUByte(),
-    g = shr(8).toUByte(),
-    b = toUByte(),
-)

@@ -14,25 +14,22 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.designformat.models
+package io.stardewvalleydesigner.designformat.serializers
 
 import io.stardewvalleydesigner.engine.*
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.geometry.xy
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 
-internal typealias CoordinatePacked = @Serializable(with = CoordinateSerializer::class) Coordinate
-
-private object CoordinateSerializer : KSerializer<Coordinate> {
+internal object CoordinateSerializer : KSerializer<Coordinate> {
 
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
-        serialName = "io.stardewvalleydesigner.designformat.models.CoordinateSerializer",
-        kind = PrimitiveKind.LONG
+        serialName = "io.stardewvalleydesigner.engine.geometry.Coordinate",
+        kind = PrimitiveKind.LONG,
     )
 
     override fun serialize(encoder: Encoder, value: Coordinate) {

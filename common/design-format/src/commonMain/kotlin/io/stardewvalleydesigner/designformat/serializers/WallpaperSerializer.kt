@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.designformat.models
+package io.stardewvalleydesigner.designformat.serializers
 
 import io.stardewvalleydesigner.engine.Wallpaper
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 
-internal typealias WallpaperPacked = @Serializable(with = WallpaperSerializer::class) Wallpaper
-
-private object WallpaperSerializer : KSerializer<Wallpaper> {
+internal object WallpaperSerializer : KSerializer<Wallpaper> {
 
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
         serialName = "io.stardewvalleydesigner.engine.Wallpaper",
-        kind = PrimitiveKind.INT
+        kind = PrimitiveKind.INT,
     )
 
     override fun serialize(encoder: Encoder, value: Wallpaper) {
