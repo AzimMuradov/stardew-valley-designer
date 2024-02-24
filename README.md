@@ -8,9 +8,14 @@
 The goal of this project is to provide a finely tuned editor for designing your farm and
 the interior of all its buildings.
 
+> [!NOTE]
+> The app aims to support the latest version of Stardew Valley (**1.5.6**).
+>
+> Other versions may have little or no support.
+
 ## :package: Desktop installation
 
-Latest release - https://azimmuradov.github.io/stardew-valley-designer/download.html.
+Latest release: https://azimmuradov.github.io/stardew-valley-designer/download.html.
 
 **Currently supported platforms**:
 
@@ -22,10 +27,22 @@ Latest release - https://azimmuradov.github.io/stardew-valley-designer/download.
 - Linux (x86-64, glibc 2.14+ (released 2011))
   - Debian family
 
-> [!NOTE]
-> The app aims to support the latest version of Stardew Valley (**1.5.6**).
->
-> Other versions may have little or no support.
+## :globe_with_meridians: Web editor
+
+Online editor: https://azimmuradov.github.io/stardew-valley-designer/svd/editor.
+
+> [!WARNING]
+> Web version is experimental and may contain bugs.
+
+**Currently supported browsers**:
+
+- Chrome 119 or higher
+- Firefox 120 or higher
+- Chromium based browsers (based on Chromium 119 or higher)
+  - Opera
+  - Brave
+  - Microsoft Edge
+  - ...
 
 ## :sparkles: Features
 
@@ -55,23 +72,9 @@ Ability to save and import designs.
 > [!WARNING]
 > Design saves may be backward incompatible with subsequent releases.
 
-### :construction: Experimental web version
-
-:browser: https://azimmuradov.github.io/stardew-valley-designer/svd/editor
-
-**Currently supported browsers**:
-
-- Chrome 119 or higher
-- Firefox 120 or higher
-- Chromium based browsers (based on Chromium 119 or higher)
-  - Opera
-  - Brave
-  - Microsoft Edge
-  - ...
-
 ## :camera: Screenshots
 
-### Desktop
+### :desktop_computer: Desktop
 
 ![1.png](docs/user/imgs/1.png)
 
@@ -79,28 +82,30 @@ Ability to save and import designs.
 
 ![3.png](docs/user/imgs/3.png)
 
+### :globe_with_meridians: Web
+
 ## :memo: Changelog & Roadmap
 
 [CHANGELOG](docs/user/CHANGELOG.md)
 
 [ROADMAP](docs/user/ROADMAP.md)
 
-## Support
+## :speech_balloon: Support
 
 If you encounter a bug or have any questions,
 please let me know - https://github.com/AzimMuradov/stardew-valley-designer/issues.
 
-## Acknowledgements
+## :star2: Acknowledgements
 
 Stardew Valley is developed by **ConcernedApe** and self-published on most platforms.
 
 Most of the sprites and icons used in this app, including the app icon, are from the original game.
 
-## Authors
+## :busts_in_silhouette: Authors
 
 - [@AzimMuradov](https://www.github.com/AzimMuradov)
 
-## License
+## :scroll: License
 
 For the source code (without the resources).
 
