@@ -49,7 +49,7 @@ import kotlin.io.path.*
 
 
 @Composable
-fun LayoutCards(
+fun UserDesigns(
     onDesignOpenClicked: (Design, String) -> Unit,
     onDesignDeleteClicked: (String) -> Unit,
 ) {
@@ -135,7 +135,7 @@ fun LayoutCards(
                     filename = "${designData.metadata.filename}.json",
                 )
 
-                LayoutCard(
+                DesignCard(
                     designData = designData,
                     openDesign = {
                         onDesignOpenClicked(designData.design, designPath)
@@ -161,7 +161,7 @@ fun LayoutCards(
 
 
 @Composable
-private fun LayoutCard(
+private fun DesignCard(
     designData: DesignData,
     openDesign: () -> Unit,
     deleteDesign: () -> Unit,

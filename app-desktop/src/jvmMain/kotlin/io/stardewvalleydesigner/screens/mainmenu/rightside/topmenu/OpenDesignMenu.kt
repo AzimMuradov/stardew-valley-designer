@@ -101,6 +101,7 @@ fun RowScope.OpenDesignMenu(
                     }
 
                     is MainMenuState.OpenDesignMenu.Loaded -> {
+                        // TODO : Use playerName, farmName
                         val (_, playerName, farmName, layoutType, entities, wallpaper, flooring) = state.layout.value
                         LayoutPreview(
                             layout = layoutOf(layoutType),

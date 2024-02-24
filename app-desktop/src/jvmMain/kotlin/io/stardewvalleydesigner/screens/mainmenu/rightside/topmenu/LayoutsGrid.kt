@@ -65,6 +65,7 @@ fun LayoutsGrid(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // TODO : Use playerName, farmName
                 val (_, playerName, farmName, layoutType, entities, wallpaper, flooring) = design.value
                 Box {
                     LayoutPreview(
