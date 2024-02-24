@@ -17,7 +17,7 @@
 package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesign
 
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
-import io.stardewvalleydesigner.designformat.DesignFormatConverter
+import io.stardewvalleydesigner.designformat.DesignFormatSerializer
 import io.stardewvalleydesigner.designformat.models.*
 
 
@@ -29,7 +29,7 @@ internal object DesignSaver {
         farmName: String,
         palette: Palette,
         options: Options,
-    ): String = DesignFormatConverter.stringify(
+    ): String = DesignFormatSerializer.serialize(
         design = convertToDesign(map, playerName, farmName, palette, options),
     )
 

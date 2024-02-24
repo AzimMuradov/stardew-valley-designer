@@ -20,7 +20,7 @@ import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.stardewvalleydesigner.LoggerUtils.logger
-import io.stardewvalleydesigner.designformat.DesignFormatConverter
+import io.stardewvalleydesigner.designformat.DesignFormatSerializer
 import io.stardewvalleydesigner.designformat.models.*
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layout.LayoutType
@@ -100,7 +100,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                     scope.launch {
                         val parsed = try {
                             withContext(Dispatchers.IO) {
-                                DesignFormatConverter.parse(text = intent.text).wrapped()
+                                DesignFormatSerializer.deserialize(intent.text).wrapped()
                             }
                         } catch (e: Exception) {
                             logger.warn { e.stackTraceToString() }
