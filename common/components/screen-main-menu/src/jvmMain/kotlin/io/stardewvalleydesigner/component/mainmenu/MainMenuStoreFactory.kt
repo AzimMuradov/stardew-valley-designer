@@ -27,6 +27,8 @@ import io.stardewvalleydesigner.engine.layout.LayoutType
 import io.stardewvalleydesigner.save.SaveDataParser
 import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing
+import java.nio.file.Files
+import kotlin.io.path.Path
 import io.stardewvalleydesigner.component.mainmenu.MainMenuIntent as Intent
 import io.stardewvalleydesigner.component.mainmenu.MainMenuLabel as Label
 import io.stardewvalleydesigner.component.mainmenu.MainMenuState as State
@@ -160,6 +162,19 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 }
 
                 Intent.SaveLoaderMenu.Cancel -> dispatch(Msg.ToMainMenu)
+
+
+                is Intent.UserDesignsMenu.OpenDesign -> {
+                    onEditorScreenCall(intent.design, intent.designPath)
+                }
+
+                is Intent.UserDesignsMenu.DeleteDesign -> {
+                    scope.launch {
+                        withContext(Dispatchers.IO) {
+                            Files.deleteIfExists(Path(intent.designPath))
+                        }
+                    }
+                }
             }
         }
 

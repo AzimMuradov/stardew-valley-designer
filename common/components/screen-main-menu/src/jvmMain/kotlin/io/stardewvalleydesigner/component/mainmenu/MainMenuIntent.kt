@@ -64,4 +64,16 @@ sealed interface MainMenuIntent {
 
         data object Cancel : SaveLoaderMenu
     }
+
+    sealed interface UserDesignsMenu : MainMenuIntent {
+
+        data class OpenDesign(
+            val design: Design,
+            val designPath: String,
+        ) : UserDesignsMenu
+
+        data class DeleteDesign(
+            val designPath: String,
+        ) : UserDesignsMenu
+    }
 }

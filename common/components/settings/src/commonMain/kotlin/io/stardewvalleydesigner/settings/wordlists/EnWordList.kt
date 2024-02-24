@@ -39,6 +39,12 @@ data object EnWordList : WordList {
 
     override val ok: String = "OK"
 
+    override val yes: String = "YES"
+
+    override val no: String = "NO"
+
+    override val delete: String = "DELETE"
+
     override fun layout(type: LayoutType): String = when (type) {
         LayoutType.Shed -> "Shed"
         LayoutType.BigShed -> "Big Shed"
@@ -127,6 +133,24 @@ data object EnWordList : WordList {
 
 
     override val chooseLayout: String = "CHOOSE LAYOUT"
+
+
+    override val designCardFilename: String = "Filename"
+
+    override val designCardDate: String = "Date"
+
+    override val designCardPlayerName: String = "Player name"
+
+    override val designCardFarmName: String = "Farm name"
+
+    override val designCardLayout: String = "Layout"
+
+    override val designCardOpen: String = "OPEN"
+
+    override val designCardDeleteDialogTitle: String = "Delete the design from your computer?"
+
+    override val designCardDeleteDialogText: String =
+        "It will delete the design from your computer. The action cannot be undone."
 
 
     // Editor Screen

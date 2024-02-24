@@ -55,6 +55,17 @@ fun RowScope.RightSideMenu(
             OpenDesignMenu(state, intentConsumer)
             SaveImportMenu(state, intentConsumer)
         }
-        LayoutCards()
+        LayoutCards(
+            onDesignOpenClicked = { design, designPath ->
+                intentConsumer(
+                    MainMenuIntent.UserDesignsMenu.OpenDesign(design, designPath)
+                )
+            },
+            onDesignDeleteClicked = { designPath ->
+                intentConsumer(
+                    MainMenuIntent.UserDesignsMenu.DeleteDesign(designPath)
+                )
+            }
+        )
     }
 }
