@@ -72,27 +72,29 @@ internal fun Palette(
     val defaultChestColorImage = rememberImageResource(path = "other/default-chest-color-chest-menu.png")
 
     if (inUse is FlavoredEntity) {
-        Spacer(modifier = Modifier.height(8.dp))
-
         when (val e = inUse as FlavoredEntity) {
             is Rotatable -> Unit // TODO
 
             is Colored.ColoredFishPond -> Unit // TODO
 
-            is Colored.ColoredChest -> ChestColorMenu(
-                chosenColor = e.color,
-                defaultChestColorImage = defaultChestColorImage,
-                onColorChosen = {
-                    intentConsumer(
-                        EditorIntent.Palette.AddToInUse(
-                            when (e) {
-                                is Equipment.Chest -> e.copy(color = it)
-                                is Equipment.StoneChest -> e.copy(color = it)
-                            }
+            is Colored.ColoredChest -> {
+                Spacer(modifier = Modifier.height(8.dp))
+
+                ChestColorMenu(
+                    chosenColor = e.color,
+                    defaultChestColorImage = defaultChestColorImage,
+                    onColorChosen = {
+                        intentConsumer(
+                            EditorIntent.Palette.AddToInUse(
+                                when (e) {
+                                    is Equipment.Chest -> e.copy(color = it)
+                                    is Equipment.StoneChest -> e.copy(color = it)
+                                }
+                            )
                         )
-                    )
-                }
-            )
+                    }
+                )
+            }
 
             is TripleColoredFarmBuilding -> Unit // TODO
         }
