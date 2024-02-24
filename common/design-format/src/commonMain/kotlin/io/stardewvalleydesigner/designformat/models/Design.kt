@@ -27,10 +27,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Design(
     val version: DesignVersion = DesignVersion.VERSION_0_11_0,
-    val playerName: String,
-    val farmName: String,
+    val playerName: String = "",
+    val farmName: String = "",
     val layout: LayoutType,
-    val entities: @Serializable(with = LayeredEntitiesDataSerializer::class) LayeredEntitiesData,
+    val entities: @Serializable(with = LayeredEntitiesDataSerializer::class) LayeredEntitiesData = LayeredEntitiesData(),
     val wallpaper: @Serializable(with = WallpaperSerializer::class) Wallpaper? = null,
     val flooring: @Serializable(with = FlooringSerializer::class) Flooring? = null,
+    val palette: Palette = Palette.default(),
+    val options: Options = Options.default(),
 )

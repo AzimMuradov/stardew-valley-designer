@@ -21,12 +21,14 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 
-object DesignFormatConverter {
+object DesignFormatSerializer {
 
-    fun parse(text: String): Design = json.decodeFromString(text)
+    fun serialize(design: Design): String = json.encodeToString(design)
 
-    fun stringify(design: Design): String = json.encodeToString(design)
+    fun deserialize(string: String): Design = json.decodeFromString(string)
 
 
-    private val json = Json { encodeDefaults = true }
+    private val json: Json = Json {
+        encodeDefaults = true
+    }
 }

@@ -22,6 +22,8 @@ import androidx.compose.material.icons.rounded.SaveAs
 import androidx.compose.runtime.*
 import io.stardewvalleydesigner.cmplib.filedialogs.FileSaver
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
+import io.stardewvalleydesigner.designformat.models.Options
+import io.stardewvalleydesigner.designformat.models.Palette
 import io.stardewvalleydesigner.kmplib.fs.FileSystem
 import io.stardewvalleydesigner.kmplib.fs.getSvdSavesDir
 import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesignas.*
@@ -35,6 +37,8 @@ fun SaveDesignAsButton(
     map: MapState,
     playerName: String,
     farmName: String,
+    palette: Palette,
+    options: Options,
     snackbarHostState: SnackbarHostState,
     designSaveAbsolutePath: String?,
     onDesignSaveAbsolutePathChanged: (String?) -> Unit,
@@ -68,7 +72,15 @@ fun SaveDesignAsButton(
             title = wordList.saveDesignAsTitle,
             defaultPathAndFile = pathname,
             extensions = listOf(JSON_FORMAT),
-            bytes = { DesignSaver.serializeDesignToBytes(map, playerName, farmName) },
+            bytes = {
+                DesignSaver.serializeDesignToBytes(
+                    map,
+                    playerName,
+                    farmName,
+                    palette,
+                    options,
+                )
+            },
         ) { result ->
             showFileSaver = false
 

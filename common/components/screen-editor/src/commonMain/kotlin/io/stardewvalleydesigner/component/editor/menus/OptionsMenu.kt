@@ -18,33 +18,13 @@ package io.stardewvalleydesigner.component.editor.menus
 
 import io.stardewvalleydesigner.cmplib.menu.Menu
 import io.stardewvalleydesigner.cmplib.menu.menu
+import io.stardewvalleydesigner.designformat.models.OptionsItemValue
 
 
-typealias OptionsMenu = Menu<OptionsRoot, Nothing, OptionsItemValue>
+typealias OptionsMenu = Menu<Unit, Nothing, OptionsItemValue>
 
 
-enum class OptionsRoot {
-    Options,
-}
-
-sealed interface OptionsItemValue {
-
-    enum class Toggleable : OptionsItemValue {
-        ShowAxis,
-        ShowGrid,
-        ShowObjectCounter,
-        ShowCurrentCoordinatesAnsShapeSize,
-        ShowSpritesFully,
-
-        ShowScarecrowsAreaOfEffect,
-        ShowSprinklersAreaOfEffect,
-        ShowBeeHousesAreaOfEffect,
-        ShowJunimoHutsAreaOfEffect,
-    }
-}
-
-
-val MainOptionsMenu: OptionsMenu = menu(root = OptionsRoot.Options) {
+val MainOptionsMenu: OptionsMenu = menu(root = Unit) {
     items(
         OptionsItemValue.Toggleable.ShowAxis,
         OptionsItemValue.Toggleable.ShowGrid,

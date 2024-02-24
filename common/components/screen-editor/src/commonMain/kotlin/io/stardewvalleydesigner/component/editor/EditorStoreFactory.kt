@@ -22,13 +22,13 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.stardewvalleydesigner.component.editor.EditorState
 import io.stardewvalleydesigner.component.editor.modules.history.*
 import io.stardewvalleydesigner.component.editor.modules.map.*
-import io.stardewvalleydesigner.component.editor.modules.options.OptionsState
 import io.stardewvalleydesigner.component.editor.modules.options.reduce
-import io.stardewvalleydesigner.component.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.component.editor.modules.palette.reduce
 import io.stardewvalleydesigner.component.editor.modules.toolkit.*
 import io.stardewvalleydesigner.component.editor.modules.vislayers.VisLayersState
 import io.stardewvalleydesigner.component.editor.modules.vislayers.reduce
+import io.stardewvalleydesigner.designformat.models.Options
+import io.stardewvalleydesigner.designformat.models.Palette
 import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
 import io.stardewvalleydesigner.component.editor.EditorIntent as Intent
 import io.stardewvalleydesigner.component.editor.EditorLabel as Label
@@ -59,9 +59,9 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
         data class UpdatePlayerName(val state: String) : Msg
         data class UpdateFarmName(val state: String) : Msg
         data class UpdateToolkit(val state: ToolkitState) : Msg
-        data class UpdatePalette(val state: PaletteState) : Msg
+        data class UpdatePalette(val state: Palette) : Msg
         data class UpdateVisLayers(val state: VisLayersState) : Msg
-        data class UpdateOptions(val state: OptionsState) : Msg
+        data class UpdateOptions(val state: Options) : Msg
     }
 
     private class BootstrapperImpl : CoroutineBootstrapper<Action>() {

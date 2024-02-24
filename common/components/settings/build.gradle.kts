@@ -16,6 +16,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.common.editorEngine)
+                implementation(projects.common.designFormat)
 
                 implementation(projects.common.components.screenEditor)
 

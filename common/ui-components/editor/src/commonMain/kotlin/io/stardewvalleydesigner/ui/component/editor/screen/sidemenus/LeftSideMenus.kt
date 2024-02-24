@@ -22,10 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.cmplib.sidemenus.FixedSideMenus
-import io.stardewvalleydesigner.component.editor.menus.OptionsItemValue.Toggleable
-import io.stardewvalleydesigner.component.editor.modules.options.OptionsState
-import io.stardewvalleydesigner.component.editor.modules.palette.PaletteState
+import io.stardewvalleydesigner.designformat.models.Palette
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolkitState
+import io.stardewvalleydesigner.designformat.models.Options
+import io.stardewvalleydesigner.designformat.models.OptionsItemValue.Toggleable
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layers.isEmpty
 import io.stardewvalleydesigner.component.editor.EditorIntent as Intent
@@ -34,9 +34,9 @@ import io.stardewvalleydesigner.component.editor.EditorIntent as Intent
 @Composable
 internal fun LeftSideMenus(
     toolkit: ToolkitState,
-    palette: PaletteState,
+    palette: Palette,
     entities: LayeredEntitiesData,
-    options: OptionsState,
+    options: Options,
     width: Dp,
     intentConsumer: (Intent) -> Unit,
 ) {

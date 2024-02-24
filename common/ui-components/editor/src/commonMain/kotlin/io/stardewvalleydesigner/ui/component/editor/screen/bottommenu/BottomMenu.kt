@@ -25,8 +25,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -38,7 +37,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.component.editor.EditorState
-import io.stardewvalleydesigner.component.editor.menus.OptionsItemValue
+import io.stardewvalleydesigner.designformat.models.OptionsItemValue
 import io.stardewvalleydesigner.engine.geometry.*
 import io.stardewvalleydesigner.settings.wordlists.WordList
 import io.stardewvalleydesigner.ui.component.editor.utils.UNDEFINED
@@ -70,12 +69,12 @@ internal fun BottomMenu(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             NameField(
-                name = editorState.playerName,
+                initName = editorState.playerName,
                 placeholder = wordList.playerNamePlaceholder,
                 onNameChanged = onPlayerNameChanged
             )
             NameField(
-                name = editorState.farmName,
+                initName = editorState.farmName,
                 placeholder = wordList.farmNamePlaceholder,
                 onNameChanged = onFarmNameChanged,
             )
@@ -104,7 +103,7 @@ internal fun BottomMenu(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun RowScope.NameField(
-    name: String,
+    initName: String,
     placeholder: String,
     onNameChanged: (String) -> Unit,
 ) {
@@ -119,10 +118,13 @@ private fun RowScope.NameField(
     )
     val textFieldInteractionSource = remember { MutableInteractionSource() }
 
+    var name by remember { mutableStateOf(initName) }
+
     BasicTextField(
         value = name,
         onValueChange = {
             if (it.length <= name.length || it.length <= 35) {
+                name = it
                 onNameChanged(it)
             }
         },
@@ -142,7 +144,7 @@ private fun RowScope.NameField(
         interactionSource = textFieldInteractionSource,
         decorationBox = @Composable { innerTextField ->
             TextFieldDefaults.OutlinedTextFieldDecorationBox(
-                value = name,
+                value = initName,
                 visualTransformation = VisualTransformation.None,
                 innerTextField = innerTextField,
                 placeholder = {
@@ -176,6 +178,7 @@ private fun RowScope.NameField(
                                     ).value
                                 )
                             ) {
+                                name = ""
                                 onNameChanged("")
                             }
                     )

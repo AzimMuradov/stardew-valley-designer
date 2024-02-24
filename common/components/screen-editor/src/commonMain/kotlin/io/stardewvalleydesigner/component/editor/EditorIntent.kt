@@ -16,9 +16,9 @@
 
 package io.stardewvalleydesigner.component.editor
 
-import io.stardewvalleydesigner.component.editor.menus.OptionsItemValue
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ShapeType
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolType
+import io.stardewvalleydesigner.designformat.models.OptionsItemValue
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.entity.Entity

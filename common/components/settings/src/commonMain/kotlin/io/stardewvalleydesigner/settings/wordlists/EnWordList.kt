@@ -17,9 +17,9 @@
 package io.stardewvalleydesigner.settings.wordlists
 
 import io.stardewvalleydesigner.component.editor.menus.EntitySelectionRoot
-import io.stardewvalleydesigner.component.editor.menus.OptionsItemValue
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ShapeType
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolType
+import io.stardewvalleydesigner.designformat.models.OptionsItemValue
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layout.LayoutType

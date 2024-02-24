@@ -17,10 +17,11 @@
 package io.stardewvalleydesigner.component.editor.modules.options
 
 import io.stardewvalleydesigner.component.editor.utils.Reduce
+import io.stardewvalleydesigner.designformat.models.Options
 import io.stardewvalleydesigner.component.editor.EditorIntent.Options as OptionsIntent
 
 
-val reduce: Reduce<OptionsState, OptionsIntent> = { intent ->
+val reduce: Reduce<Options, OptionsIntent> = { intent ->
     when (intent) {
         is OptionsIntent.Toggle -> copy(
             toggleables = toggleables.toMutableMap().apply {

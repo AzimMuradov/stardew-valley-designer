@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.component.editor.modules.palette
+package io.stardewvalleydesigner.designformat.models
 
+import io.stardewvalleydesigner.designformat.serializers.EntitySerializer
+import io.stardewvalleydesigner.designformat.serializers.ListOfNullableEntitySerializer
 import io.stardewvalleydesigner.engine.entity.Entity
+import kotlinx.serialization.Serializable
 
 
-data class PaletteState(
-    val inUse: Entity<*>?,
-    val hotbar: List<Entity<*>?>,
+@Serializable
+data class Palette(
+    val inUse: @Serializable(with = EntitySerializer::class) Entity<*>?,
+    val hotbar: @Serializable(with = ListOfNullableEntitySerializer::class) List<Entity<*>?>,
 ) {
 
     companion object {
 
-        fun default() = PaletteState(
+        fun default() = Palette(
             inUse = null,
             hotbar = List(size = 10) { null },
         )

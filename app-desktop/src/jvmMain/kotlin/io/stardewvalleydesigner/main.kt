@@ -99,6 +99,8 @@ private fun Root(component: RootComponent, exitApplication: () -> Unit) {
                             map = editorState.map,
                             playerName = editorState.playerName,
                             farmName = editorState.farmName,
+                            palette = editorState.palette,
+                            options = editorState.options,
                             snackbarHostState = snackbarHostState,
                             designSaveAbsolutePath = designSaveAbsolutePath,
                         )
@@ -106,6 +108,8 @@ private fun Root(component: RootComponent, exitApplication: () -> Unit) {
                             map = editorState.map,
                             playerName = editorState.playerName,
                             farmName = editorState.farmName,
+                            palette = editorState.palette,
+                            options = editorState.options,
                             snackbarHostState = snackbarHostState,
                             designSaveAbsolutePath = designSaveAbsolutePath,
                             onDesignSaveAbsolutePathChanged = { designSaveAbsolutePath = it },

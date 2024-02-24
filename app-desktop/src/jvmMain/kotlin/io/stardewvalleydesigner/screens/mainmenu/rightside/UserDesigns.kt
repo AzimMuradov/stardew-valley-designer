@@ -40,7 +40,7 @@ import io.github.irgaly.kfswatch.KfsDirectoryWatcher
 import io.github.irgaly.kfswatch.KfsEvent
 import io.stardewvalleydesigner.LoggerUtils.logger
 import io.stardewvalleydesigner.cmplib.tooltip.TooltipArea
-import io.stardewvalleydesigner.designformat.DesignFormatConverter
+import io.stardewvalleydesigner.designformat.DesignFormatSerializer
 import io.stardewvalleydesigner.designformat.models.Design
 import io.stardewvalleydesigner.engine.layout.LayoutsProvider
 import io.stardewvalleydesigner.kmplib.fs.JvmFileSystem
@@ -375,7 +375,7 @@ private fun getDesignsData(dir: String): List<DesignData> {
     return files.mapNotNull { file ->
         try {
             DesignData(
-                DesignFormatConverter.parse(file.readText()),
+                DesignFormatSerializer.deserialize(file.readText()),
                 DesignMetadata(
                     filename = file.toPath().nameWithoutExtension,
                     date = Instant.ofEpochMilli(file.lastModified())

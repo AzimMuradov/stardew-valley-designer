@@ -17,8 +17,8 @@
 package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesign
 
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
-import io.stardewvalleydesigner.designformat.DesignFormatConverter
-import io.stardewvalleydesigner.designformat.models.Design
+import io.stardewvalleydesigner.designformat.DesignFormatSerializer
+import io.stardewvalleydesigner.designformat.models.*
 
 
 internal object DesignSaver {
@@ -27,8 +27,10 @@ internal object DesignSaver {
         map: MapState,
         playerName: String,
         farmName: String,
-    ): String = DesignFormatConverter.stringify(
-        design = convertToDesign(map, playerName, farmName),
+        palette: Palette,
+        options: Options,
+    ): String = DesignFormatSerializer.serialize(
+        design = convertToDesign(map, playerName, farmName, palette, options),
     )
 
 
@@ -36,6 +38,8 @@ internal object DesignSaver {
         map: MapState,
         playerName: String,
         farmName: String,
+        palette: Palette,
+        options: Options,
     ): Design = Design(
         playerName = playerName,
         farmName = farmName,
@@ -43,5 +47,7 @@ internal object DesignSaver {
         entities = map.entities,
         wallpaper = map.wallpaper,
         flooring = map.flooring,
+        palette = palette,
+        options = options,
     )
 }
