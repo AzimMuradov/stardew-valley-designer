@@ -33,10 +33,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.pointer.*
 import io.stardewvalleydesigner.component.editor.EditorIntent
-import io.stardewvalleydesigner.component.editor.menus.OptionsItemValue.Toggleable
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
-import io.stardewvalleydesigner.component.editor.modules.options.OptionsState
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolkitState
+import io.stardewvalleydesigner.designformat.models.Options
+import io.stardewvalleydesigner.designformat.models.OptionsItemValue.Toggleable
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.geometry.*
 import io.stardewvalleydesigner.engine.geometry.shapes.*
@@ -62,7 +62,7 @@ internal fun EditorLayout(
     map: MapState,
     visibleLayers: Set<LayerType<*>>,
     toolkit: ToolkitState,
-    options: OptionsState,
+    options: Options,
     currCoordinate: Coordinate,
     onCurrCoordinateChanged: (Coordinate) -> Unit,
     intentConsumer: (EditorIntent) -> Unit,
@@ -188,7 +188,7 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
     entityMaps: Map<EntityPage, ImageBitmap>,
     map: MapState,
     toolkit: ToolkitState,
-    options: OptionsState,
+    options: Options,
     grid: CoordinateGrid,
     cellSize: Size,
 ) {
@@ -247,7 +247,7 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
 
 private fun DrawScope.drawAreasOfEffects(
     map: MapState,
-    options: OptionsState,
+    options: Options,
     grid: CoordinateGrid,
     cellSize: Size,
 ) {
@@ -356,7 +356,7 @@ private fun DrawScope.drawAreasOfEffects(
 }
 
 private fun DrawScope.drawGrid(
-    options: OptionsState,
+    options: Options,
     grid: CoordinateGrid,
     nW: Int, nH: Int,
 ) {
@@ -381,7 +381,7 @@ private fun DrawScope.drawGrid(
 }
 
 private fun DrawScope.drawHoveredCellAndAxis(
-    options: OptionsState,
+    options: Options,
     grid: CoordinateGrid,
     cellSize: Size,
     currCoordinate: Coordinate,

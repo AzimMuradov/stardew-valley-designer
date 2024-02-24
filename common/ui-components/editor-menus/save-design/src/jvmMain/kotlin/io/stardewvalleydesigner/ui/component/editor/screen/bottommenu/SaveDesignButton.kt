@@ -22,6 +22,7 @@ import androidx.compose.material.icons.rounded.Save
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
+import io.stardewvalleydesigner.designformat.models.Options
 import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
 import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesign.DesignSaver
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
@@ -37,6 +38,7 @@ fun SaveDesignButton(
     map: MapState,
     playerName: String,
     farmName: String,
+    options: Options,
     snackbarHostState: SnackbarHostState,
     designSaveAbsolutePath: String?,
 ) {
@@ -54,7 +56,12 @@ fun SaveDesignButton(
                     withContext(PlatformDispatcher.IO) {
                         Files.createDirectories(Path.of(designSaveAbsolutePath).parent)
                         File(designSaveAbsolutePath).writeText(
-                            text = DesignSaver.serializeDesignToString(map, playerName, farmName),
+                            text = DesignSaver.serializeDesignToString(
+                                map,
+                                playerName,
+                                farmName,
+                                options,
+                            ),
                         )
                     }
 

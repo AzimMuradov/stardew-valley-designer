@@ -27,7 +27,7 @@ import io.stardewvalleydesigner.component.editor.EditorIntent
 import io.stardewvalleydesigner.component.editor.menus.MainOptionsMenu
 import io.stardewvalleydesigner.component.editor.menus.entityselection.*
 import io.stardewvalleydesigner.component.editor.modules.history.HistoryState
-import io.stardewvalleydesigner.component.editor.modules.options.OptionsState
+import io.stardewvalleydesigner.designformat.models.Options
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.EntityType
 
@@ -37,7 +37,7 @@ internal fun TopMenu(
     history: HistoryState,
     disallowedTypes: Set<EntityType>,
     onEntitySelection: (Entity<*>) -> Unit,
-    options: OptionsState,
+    options: Options,
     intentConsumer: (EditorIntent) -> Unit,
 ) {
     Row(

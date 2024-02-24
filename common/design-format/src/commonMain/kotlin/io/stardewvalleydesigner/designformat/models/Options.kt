@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.component.editor.modules.options
+package io.stardewvalleydesigner.designformat.models
 
-import io.stardewvalleydesigner.component.editor.menus.OptionsItemValue
+import kotlinx.serialization.Serializable
 
 
-data class OptionsState(
+@Serializable
+data class Options(
     val toggleables: Map<OptionsItemValue.Toggleable, Boolean>,
 ) {
 
     companion object {
 
-        fun default() = OptionsState(
+        fun default() = Options(
             toggleables = buildMap {
                 putAll(OptionsItemValue.Toggleable.entries.associateWith { true })
                 putAll(
@@ -38,5 +39,22 @@ data class OptionsState(
                 )
             }
         )
+    }
+}
+
+
+sealed interface OptionsItemValue {
+
+    enum class Toggleable : OptionsItemValue {
+        ShowAxis,
+        ShowGrid,
+        ShowObjectCounter,
+        ShowCurrentCoordinatesAnsShapeSize,
+        ShowSpritesFully,
+
+        ShowScarecrowsAreaOfEffect,
+        ShowSprinklersAreaOfEffect,
+        ShowBeeHousesAreaOfEffect,
+        ShowJunimoHutsAreaOfEffect,
     }
 }

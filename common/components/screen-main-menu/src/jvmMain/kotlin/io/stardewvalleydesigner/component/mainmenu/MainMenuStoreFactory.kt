@@ -22,6 +22,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.stardewvalleydesigner.LoggerUtils.logger
 import io.stardewvalleydesigner.designformat.DesignFormatConverter
 import io.stardewvalleydesigner.designformat.models.Design
+import io.stardewvalleydesigner.designformat.models.Options
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layout.LayoutType
 import io.stardewvalleydesigner.save.SaveDataParser
@@ -192,6 +193,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                         entities = LayeredEntitiesData(),
                         wallpaper = null,
                         flooring = null,
+                        options = Options.default(),
                     )
                 }.map(Design::wrapped)
 

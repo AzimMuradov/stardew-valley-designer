@@ -38,7 +38,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.component.editor.EditorState
-import io.stardewvalleydesigner.component.editor.menus.OptionsItemValue
+import io.stardewvalleydesigner.designformat.models.OptionsItemValue
 import io.stardewvalleydesigner.engine.geometry.*
 import io.stardewvalleydesigner.settings.wordlists.WordList
 import io.stardewvalleydesigner.ui.component.editor.utils.UNDEFINED

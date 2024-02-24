@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.component.editor.EditorIntent
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
-import io.stardewvalleydesigner.component.editor.modules.options.OptionsState
+import io.stardewvalleydesigner.designformat.models.Options
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolkitState
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layer.LayerType
@@ -34,7 +34,7 @@ internal fun RowScope.MainPart(
     map: MapState,
     visibleLayers: Set<LayerType<*>>,
     toolkit: ToolkitState,
-    options: OptionsState,
+    options: Options,
     currCoordinate: Coordinate,
     onCurrCoordinateChanged: (Coordinate) -> Unit,
     intentConsumer: (EditorIntent) -> Unit,

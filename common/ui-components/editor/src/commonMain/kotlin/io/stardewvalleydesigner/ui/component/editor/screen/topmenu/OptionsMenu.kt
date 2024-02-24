@@ -34,15 +34,15 @@ import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.cmplib.menu.DropdownMenuStyle
 import io.stardewvalleydesigner.cmplib.menu.HoverableDropdownMenu
 import io.stardewvalleydesigner.component.editor.EditorIntent
-import io.stardewvalleydesigner.component.editor.menus.OptionsItemValue
 import io.stardewvalleydesigner.component.editor.menus.OptionsMenu
-import io.stardewvalleydesigner.component.editor.modules.options.OptionsState
+import io.stardewvalleydesigner.designformat.models.Options
+import io.stardewvalleydesigner.designformat.models.OptionsItemValue
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 
 @Composable
 internal fun RowScope.OptionsMenu(
-    options: OptionsState,
+    options: Options,
     menu: OptionsMenu,
     intentConsumer: (EditorIntent.Options) -> Unit,
 ) {

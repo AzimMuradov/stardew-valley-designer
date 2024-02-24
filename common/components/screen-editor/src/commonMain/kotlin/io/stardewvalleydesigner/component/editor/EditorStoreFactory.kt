@@ -22,7 +22,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.stardewvalleydesigner.component.editor.EditorState
 import io.stardewvalleydesigner.component.editor.modules.history.*
 import io.stardewvalleydesigner.component.editor.modules.map.*
-import io.stardewvalleydesigner.component.editor.modules.options.OptionsState
+import io.stardewvalleydesigner.designformat.models.Options
 import io.stardewvalleydesigner.component.editor.modules.options.reduce
 import io.stardewvalleydesigner.component.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.component.editor.modules.palette.reduce
@@ -61,7 +61,7 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
         data class UpdateToolkit(val state: ToolkitState) : Msg
         data class UpdatePalette(val state: PaletteState) : Msg
         data class UpdateVisLayers(val state: VisLayersState) : Msg
-        data class UpdateOptions(val state: OptionsState) : Msg
+        data class UpdateOptions(val state: Options) : Msg
     }
 
     private class BootstrapperImpl : CoroutineBootstrapper<Action>() {

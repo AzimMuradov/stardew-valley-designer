@@ -19,6 +19,7 @@ package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesig
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
 import io.stardewvalleydesigner.designformat.DesignFormatConverter
 import io.stardewvalleydesigner.designformat.models.Design
+import io.stardewvalleydesigner.designformat.models.Options
 
 
 internal object DesignSaver {
@@ -27,8 +28,9 @@ internal object DesignSaver {
         map: MapState,
         playerName: String,
         farmName: String,
+        options: Options,
     ): String = DesignFormatConverter.stringify(
-        design = convertToDesign(map, playerName, farmName),
+        design = convertToDesign(map, playerName, farmName, options),
     )
 
 
@@ -36,6 +38,7 @@ internal object DesignSaver {
         map: MapState,
         playerName: String,
         farmName: String,
+        options: Options,
     ): Design = Design(
         playerName = playerName,
         farmName = farmName,
@@ -43,5 +46,6 @@ internal object DesignSaver {
         entities = map.entities,
         wallpaper = map.wallpaper,
         flooring = map.flooring,
+        options = options,
     )
 }
