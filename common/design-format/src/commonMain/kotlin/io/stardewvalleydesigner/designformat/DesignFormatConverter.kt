@@ -28,5 +28,5 @@ object DesignFormatConverter {
     fun stringify(design: Design): String = json.encodeToString(design)
 
 
-    private val json = Json
+    private val json = Json { encodeDefaults = true }
 }
