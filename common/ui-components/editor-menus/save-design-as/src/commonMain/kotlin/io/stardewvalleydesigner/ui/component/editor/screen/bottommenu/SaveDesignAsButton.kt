@@ -58,7 +58,7 @@ fun SaveDesignAsButton(
                     designSaveAbsolutePath
                 } else {
                     val filename = "design-${Clock.System.nowFormatted()}.$JSON_FORMAT"
-                    FileSystem.relative(FileSystem.getSvdSavesDir(), filename)
+                    FileSystem.relative(FileSystem.getSvdSavesDir(), filename) ?: filename
                 }
                 showFileSaver = true
             }

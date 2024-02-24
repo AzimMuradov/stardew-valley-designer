@@ -17,29 +17,20 @@
 package io.stardewvalleydesigner.cmplib.filedialogs
 
 import org.w3c.dom.*
-import org.w3c.files.File
-import org.w3c.files.FileReader
+import org.w3c.files.*
 
 
 internal object DomDialogsWrapper {
 
-    // fun Document.downloadFileToDisk(
-    //     filename: String,
-    //     type: String,
-    //     content: String,
-    // ) {
-    //     val snapshotBlob = Blob(arrayOf(content), BlobPropertyBag(type))
-    //     val url = DomURL.createObjectURL(snapshotBlob)
-    //     val tempAnchor = (createElement("a") as HTMLAnchorElement).apply {
-    //         style.display = "none"
-    //         href = url
-    //         download = filename
-    //     }
-    //     document.body!!.append(tempAnchor)
-    //     tempAnchor.click()
-    //     DomURL.revokeObjectURL(url)
-    //     tempAnchor.remove()
-    // }
+    fun Document.downloadFileToDisk(
+        filename: String?,
+        content: ByteArray,
+    ) {
+        val array = JsArray<JsAny?>().apply { set(0, content.decodeToString().toJsString()) }
+        val blob = Blob(array)
+
+        saveAs(blob, filename?.toJsString())
+    }
 
     fun Document.loadFileFromDisk(
         extensionsString: String,
@@ -70,6 +61,10 @@ internal object DomDialogsWrapper {
         tempInput.remove()
     }
 }
+
+
+@JsModule("file-saver")
+private external fun saveAs(blob: Blob, filename: JsString?)
 
 
 private fun targetFiles(target: JsAny): ItemArrayLike<File> = js("target.files")

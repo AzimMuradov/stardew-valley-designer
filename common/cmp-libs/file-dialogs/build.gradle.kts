@@ -66,5 +66,10 @@ kotlin {
                 }
             }
         }
+        val wasmJsMain by getting {
+            dependencies {
+                implementation(npm(name = "file-saver", version = "2.0.5"))
+            }
+        }
     }
 }
