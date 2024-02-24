@@ -8,7 +8,7 @@
 The goal of this project is to provide a finely tuned editor for designing your farm and
 the interior of all its buildings.
 
-## Desktop installation
+## :package: Desktop installation
 
 Latest release - https://azimmuradov.github.io/stardew-valley-designer/download.html.
 
@@ -27,26 +27,37 @@ Latest release - https://azimmuradov.github.io/stardew-valley-designer/download.
 >
 > Other versions may have little or no support.
 
-## Features
+## :sparkles: Features
 
-- Working layout editor (currently for shed, big shed and standard farm only)
-- Basic editor tools (hand, pen, eraser, select, eye dropper)
-- Layers support
-- Furniture support
-- History manager (undo, redo)
+- Working editor for various layouts
+  - standard farm
+  - shed
+  - big shed
 - Savedata import
 - Ability to save design as an image
+- Basic editor tools (hand, pen, eraser, select, eye dropper)
+- Various shapes for pen, eraser and select
+  - rectangle, rectangle outline
+  - ellipse, ellipse outline
+  - diamond, diamond outline
+  - line
+- History manager (undo, redo)
+- Layers support
+- Furniture support
+- Wallpapers and flooring support
+- Chest colors support
+- Toggleable "area of effect" hints for scarecrows, sprinklers, bee houses, and junimo huts
 
-### Experimental design saves
+### :construction: Experimental design saves
 
-Ability to save and import designs (currently only works on desktop).
+Ability to save and import designs.
 
 > [!WARNING]
 > Design saves may be backward incompatible with subsequent releases.
 
-### Experimental web version
+### :construction: Experimental web version
 
-https://azimmuradov.github.io/stardew-valley-designer/svd/editor
+:browser: https://azimmuradov.github.io/stardew-valley-designer/svd/editor
 
 **Currently supported browsers**:
 
@@ -58,13 +69,7 @@ https://azimmuradov.github.io/stardew-valley-designer/svd/editor
   - Microsoft Edge
   - ...
 
-**Currently missing functionality**:
-
-- No layout selection
-- No savedata import
-- No ability to save design as an image
-
-## Screenshots
+## :camera: Screenshots
 
 ### Desktop
 
@@ -74,7 +79,7 @@ https://azimmuradov.github.io/stardew-valley-designer/svd/editor
 
 ![3.png](docs/user/imgs/3.png)
 
-## Changelog & Roadmap
+## :memo: Changelog & Roadmap
 
 [CHANGELOG](docs/user/CHANGELOG.md)
 
