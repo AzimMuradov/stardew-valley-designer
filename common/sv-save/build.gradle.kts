@@ -18,6 +18,7 @@ kotlin {
             dependencies {
                 implementation(projects.common.editorEngine)
                 implementation(projects.common.entitiesMetadata)
+                implementation(projects.common.designFormat)
 
                 implementation(libs.bundles.xmlutil)
 

@@ -44,7 +44,7 @@ fun EditorScreen(
 ) {
     val store = component.store
     val state by store.states.collectAsState(component.store.state)
-    val (history, map, toolkit, palette, visLayers, options) = state
+    val (history, map, playerName, farmName, toolkit, palette, visLayers, options) = state
 
     val snackbarHostState = remember { SnackbarHostState() }
     var currCoordinate by remember { mutableStateOf(UNDEFINED) }

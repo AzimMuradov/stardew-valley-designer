@@ -97,11 +97,15 @@ private fun Root(component: RootComponent, exitApplication: () -> Unit) {
 
                         SaveDesignButton(
                             map = editorState.map,
+                            playerName = editorState.playerName,
+                            farmName = editorState.farmName,
                             snackbarHostState = snackbarHostState,
                             designSaveAbsolutePath = designSaveAbsolutePath,
                         )
                         SaveDesignAsButton(
                             map = editorState.map,
+                            playerName = editorState.playerName,
+                            farmName = editorState.farmName,
                             snackbarHostState = snackbarHostState,
                             designSaveAbsolutePath = designSaveAbsolutePath,
                             onDesignSaveAbsolutePathChanged = { designSaveAbsolutePath = it },

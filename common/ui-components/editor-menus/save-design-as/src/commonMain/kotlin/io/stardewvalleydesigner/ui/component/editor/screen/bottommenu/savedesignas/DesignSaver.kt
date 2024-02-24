@@ -19,19 +19,29 @@ package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesig
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
 import io.stardewvalleydesigner.designformat.DesignFormatConverter
 import io.stardewvalleydesigner.designformat.models.Design
-import io.stardewvalleydesigner.engine.layers.flatten
 
 
 internal object DesignSaver {
 
-    fun serializeDesignToBytes(map: MapState): ByteArray =
-        DesignFormatConverter.stringify(map.toDesign()).encodeToByteArray()
+    fun serializeDesignToBytes(
+        map: MapState,
+        playerName: String,
+        farmName: String,
+    ): ByteArray = DesignFormatConverter.stringify(
+        design = convertToDesign(map, playerName, farmName),
+    ).encodeToByteArray()
 
 
-    private fun MapState.toDesign(): Design = Design(
-        entities = entities.flatten(),
-        wallpaper = wallpaper,
-        flooring = flooring,
-        layout = layout.type,
+    private fun convertToDesign(
+        map: MapState,
+        playerName: String,
+        farmName: String,
+    ): Design = Design(
+        playerName = playerName,
+        farmName = farmName,
+        layout = map.layout.type,
+        entities = map.entities,
+        wallpaper = map.wallpaper,
+        flooring = map.flooring,
     )
 }

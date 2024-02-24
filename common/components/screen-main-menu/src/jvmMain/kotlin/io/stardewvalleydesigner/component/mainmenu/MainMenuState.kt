@@ -16,7 +16,7 @@
 
 package io.stardewvalleydesigner.component.mainmenu
 
-import io.stardewvalleydesigner.engine.EditorEngineData
+import io.stardewvalleydesigner.designformat.models.Design
 
 
 sealed interface MainMenuState {
@@ -26,8 +26,8 @@ sealed interface MainMenuState {
     sealed interface NewDesignMenu : MainMenuState {
 
         data class Idle(
-            val availableLayouts: List<Wrapper<EditorEngineData>>,
-            val chosenLayout: Wrapper<EditorEngineData>,
+            val availableLayouts: List<Wrapper<Design>>,
+            val chosenLayout: Wrapper<Design>,
         ) : NewDesignMenu
     }
 
@@ -37,7 +37,10 @@ sealed interface MainMenuState {
 
         data object Loading : OpenDesignMenu
 
-        data class Loaded(val layout: Wrapper<EditorEngineData>, val absolutePath: String?) : OpenDesignMenu
+        data class Loaded(
+            val layout: Wrapper<Design>,
+            val absolutePath: String?,
+        ) : OpenDesignMenu
 
         data object Error : OpenDesignMenu
     }
@@ -49,8 +52,8 @@ sealed interface MainMenuState {
         data object Loading : SaveLoaderMenu
 
         data class Loaded(
-            val availableLayouts: List<Wrapper<EditorEngineData>>,
-            val chosenLayout: Wrapper<EditorEngineData>,
+            val availableLayouts: List<Wrapper<Design>>,
+            val chosenLayout: Wrapper<Design>,
         ) : SaveLoaderMenu
 
         data object Error : SaveLoaderMenu

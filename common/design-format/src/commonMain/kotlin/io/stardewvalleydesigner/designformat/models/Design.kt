@@ -23,8 +23,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Design(
     val version: DesignVersion = DesignVersion.VERSION_0_9_0,
-    val entities: List<PlacedEntityPacked>,
+    val playerName: String,
+    val farmName: String,
+    val layout: LayoutType,
+    val entities: EntitiesPacked,
     val wallpaper: WallpaperPacked? = null,
     val flooring: FlooringPacked? = null,
-    val layout: LayoutType,
 )

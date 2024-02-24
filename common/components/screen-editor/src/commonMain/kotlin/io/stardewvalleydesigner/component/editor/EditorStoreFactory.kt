@@ -29,8 +29,6 @@ import io.stardewvalleydesigner.component.editor.modules.palette.reduce
 import io.stardewvalleydesigner.component.editor.modules.toolkit.*
 import io.stardewvalleydesigner.component.editor.modules.vislayers.VisLayersState
 import io.stardewvalleydesigner.component.editor.modules.vislayers.reduce
-import io.stardewvalleydesigner.engine.EditorEngine
-import io.stardewvalleydesigner.engine.generateEngine
 import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
 import io.stardewvalleydesigner.component.editor.EditorIntent as Intent
 import io.stardewvalleydesigner.component.editor.EditorLabel as Label
@@ -48,7 +46,7 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
         name = "EditorStore",
         initialState = initialState,
         bootstrapper = BootstrapperImpl(),
-        executorFactory = { ExecutorImpl(initialState.map.toEngineData().generateEngine()) },
+        executorFactory = { ExecutorImpl(initialState) },
         reducer = reducer
     ) {}
 
@@ -70,14 +68,23 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
     }
 
     private class ExecutorImpl(
-        engine: EditorEngine,
-    ) : CoroutineExecutor<Intent, Action, State, Msg, Label>(mainContext = PlatformDispatcher.Main) {
+        initialState: EditorState,
+    ) : CoroutineExecutor<Intent, Action, State, Msg, Label>(
+        mainContext = PlatformDispatcher.Main,
+    ) {
 
-        private val history = HistoryManagerImpl(MapState.from(engine))
+        private val history = HistoryManagerImpl(
+            initialMapState = initialState.map,
+        )
 
-        private val engine = EditorEngineImpl(engine)
+        private val engine = EditorEngineImpl(
+            engine = initialState.map.generateEngine(),
+        )
 
-        private val toolkit = ToolkitImpl(engine, ToolkitState.default())
+        private val toolkit = ToolkitImpl(
+            engine = engine,
+            initialState = initialState.toolkit
+        )
 
 
         override fun executeIntent(intent: Intent) {
@@ -104,7 +111,7 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
                 }
 
                 is Intent.Engine -> {
-                    val actionReturn = state().let { (_, map, _, palette, visLayers) ->
+                    val actionReturn = state().let { (_, map, _, _, _, palette, visLayers) ->
                         toolkit.runAction(
                             action = intent,
                             currentEntity = palette.inUse,

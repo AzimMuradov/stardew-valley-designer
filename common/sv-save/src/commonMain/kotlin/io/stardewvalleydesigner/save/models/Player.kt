@@ -22,4 +22,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class Player(
     val name: String,
+    val farmName: String,
 )

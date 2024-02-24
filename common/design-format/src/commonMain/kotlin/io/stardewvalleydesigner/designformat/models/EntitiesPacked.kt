@@ -20,14 +20,38 @@ import io.stardewvalleydesigner.designformat.mappers.toEntityFlavor
 import io.stardewvalleydesigner.designformat.mappers.toEntityFlavorModel
 import io.stardewvalleydesigner.engine.entity.PlacedEntity
 import io.stardewvalleydesigner.engine.layer.placeIt
+import io.stardewvalleydesigner.engine.layers.*
 import io.stardewvalleydesigner.metadata.*
 import kotlinx.serialization.*
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 
-internal typealias PlacedEntityPacked = @Serializable(with = PlacedEntitySerializer::class) PlacedEntity<*>
+internal typealias EntitiesPacked = @Serializable(with = LayeredEntitiesDataSerializer::class) LayeredEntitiesData
+
+private object LayeredEntitiesDataSerializer : KSerializer<LayeredEntitiesData> {
+
+    private val delegateSerializer = ListSerializer(PlacedEntitySerializer)
+
+    @OptIn(ExperimentalSerializationApi::class)
+    override val descriptor: SerialDescriptor = SerialDescriptor(
+        serialName = "io.stardewvalleydesigner.engine.layers",
+        original = delegateSerializer.descriptor,
+    )
+
+    override fun serialize(encoder: Encoder, value: LayeredEntitiesData) {
+        delegateSerializer.serialize(
+            encoder,
+            value = value.flatten(),
+        )
+    }
+
+    override fun deserialize(decoder: Decoder): LayeredEntitiesData {
+        return delegateSerializer.deserialize(decoder).layeredData()
+    }
+}
 
 private object PlacedEntitySerializer : KSerializer<PlacedEntity<*>> {
 
