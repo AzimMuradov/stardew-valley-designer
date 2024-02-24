@@ -70,19 +70,21 @@ Online editor: https://azimmuradov.github.io/stardew-valley-designer/svd/editor.
 Ability to save and import designs.
 
 > [!WARNING]
-> Design saves may be backward incompatible with subsequent releases.
+> Currently, design saves may be backward incompatible with subsequent releases.
 
-## :camera: Screenshots
+## :framed_picture: Screenshots
 
 ### :desktop_computer: Desktop
 
-![1.png](docs/user/imgs/1.png)
+![desktop-1.png](docs/user/imgs/desktop-1.png)
 
-![2.png](docs/user/imgs/2.png)
+![desktop-2.png](docs/user/imgs/desktop-2.png)
 
-![3.png](docs/user/imgs/3.png)
+![desktop-3.png](docs/user/imgs/desktop-3.png)
 
 ### :globe_with_meridians: Web
+
+![web-1.png](docs/user/imgs/web-1.png)
 
 ## :memo: Changelog & Roadmap
 
