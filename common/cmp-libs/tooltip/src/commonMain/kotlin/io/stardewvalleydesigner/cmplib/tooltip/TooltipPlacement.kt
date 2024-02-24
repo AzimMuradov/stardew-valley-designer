@@ -24,13 +24,13 @@ sealed interface TooltipPlacement {
 
     data class CursorPoint(
         internal val offset: DpOffset = DpOffset.Zero,
-        internal val alignment: Alignment = Alignment.BottomEnd,
+        internal val alignment: Alignment = Alignment.TopEnd,
         internal val windowMargin: Dp = 4.dp,
     ) : TooltipPlacement
 
     data class ComponentRect(
         internal val anchor: Alignment = Alignment.BottomCenter,
-        internal val alignment: Alignment = Alignment.BottomCenter,
+        internal val alignment: Alignment = Alignment.TopCenter,
         internal val offset: DpOffset = DpOffset.Zero,
     ) : TooltipPlacement
 }
