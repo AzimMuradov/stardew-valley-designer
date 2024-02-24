@@ -16,28 +16,38 @@
 
 package io.stardewvalleydesigner.screens.mainmenu.rightside
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.lazy.grid.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.*
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.DialogWindow
 import androidx.compose.ui.window.rememberDialogState
 import io.github.irgaly.kfswatch.KfsDirectoryWatcher
 import io.github.irgaly.kfswatch.KfsEvent
 import io.stardewvalleydesigner.LoggerUtils.logger
+import io.stardewvalleydesigner.cmplib.tooltip.TooltipArea
 import io.stardewvalleydesigner.designformat.DesignFormatConverter
 import io.stardewvalleydesigner.designformat.models.Design
 import io.stardewvalleydesigner.engine.layout.LayoutsProvider
 import io.stardewvalleydesigner.kmplib.fs.JvmFileSystem
 import io.stardewvalleydesigner.kmplib.fs.getSvdSavesDir
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
+import io.stardewvalleydesigner.ui.component.windowsize.LocalWindowSize
+import io.stardewvalleydesigner.ui.component.windowsize.WindowSize
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.withContext
@@ -119,15 +129,23 @@ fun UserDesigns(
             .background(MaterialTheme.colors.surface)
             .padding(8.dp)
     ) {
-        val lazyListState = rememberLazyListState()
+        val lazyGridState = rememberLazyGridState()
 
-        LazyColumn(
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(
+                count = when (LocalWindowSize.current) {
+                    WindowSize.EXPANDED -> 1
+                    WindowSize.LARGE -> 2
+                    WindowSize.EXTRA_LARGE -> 3
+                }
+            ),
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colors.surface),
-            state = lazyListState,
+            state = lazyGridState,
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             items(designsData) { designData ->
                 val designPath = JvmFileSystem.relative(
@@ -154,12 +172,13 @@ fun UserDesigns(
             style = defaultScrollbarStyle().let {
                 it.copy(unhoverColor = it.hoverColor)
             },
-            adapter = rememberScrollbarAdapter(scrollState = lazyListState),
+            adapter = rememberScrollbarAdapter(scrollState = lazyGridState),
         )
     }
 }
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun DesignCard(
     designData: DesignData,
@@ -182,74 +201,87 @@ private fun DesignCard(
         elevation = 4.dp
     ) {
         Row(
-            modifier = Modifier.fillMaxSize().padding(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier.fillMaxSize().padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Box(Modifier.fillMaxHeight().width(250.dp)) {
-                LayoutPreview(
-                    layout = LayoutsProvider.layoutOf(design.layout),
-                    entities = design.entities,
-                    wallpaper = design.wallpaper,
-                    flooring = design.flooring
-                )
-            }
-            Column(
-                modifier = Modifier.fillMaxHeight().weight(1f),
-                verticalArrangement = Arrangement.SpaceEvenly,
-            ) {
-                InfoLine(wordList.designCardFilename, filename)
-                InfoLine(wordList.designCardDate, dateFormatted)
-                InfoLine(wordList.designCardPlayerName, design.playerName)
-                InfoLine(wordList.designCardFarmName, design.farmName)
-                InfoLine(wordList.designCardLayout, wordList.layout(design.layout))
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .widthIn(min = 100.dp, max = 300.dp)
-                    .width(IntrinsicSize.Min)
-                    .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Button(
-                    onClick = openDesign,
-                    modifier = Modifier.height(50.dp).fillMaxWidth()
+            Box(contentAlignment = Alignment.TopEnd) {
+                Box(
+                    modifier = Modifier
+                        .clip(MaterialTheme.shapes.medium)
+                        .clickable(onClick = openDesign)
+                        .padding(8.dp)
+                        .pointerHoverIcon(PointerIcon.Hand),
                 ) {
-                    Text(wordList.designCardOpen)
+                    LayoutPreview(
+                        layout = LayoutsProvider.layoutOf(design.layout),
+                        entities = design.entities,
+                        wallpaper = design.wallpaper,
+                        flooring = design.flooring
+                    )
                 }
+
 
                 var showDeleteDialog by remember { mutableStateOf(false) }
+                var hovered by remember { mutableStateOf(false) }
 
-                Button(
-                    onClick = { showDeleteDialog = true },
-                    modifier = Modifier.height(50.dp).fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(red = 0.5f, green = 0.1f, blue = 0.1f),
-                        contentColor = Color.White,
-                    ),
-                ) {
-                    Text(wordList.delete)
-                }
+                val rotation by animateFloatAsState(if (hovered) 180f else 0f)
+
+                Icon(
+                    imageVector = Icons.Filled.Cancel,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .absoluteOffset(x = 6.dp, y = (-6).dp)
+                        .padding(6.dp)
+                        .border(
+                            width = Dp.Hairline,
+                            color = Color(red = 0.4f, green = 0.1f, blue = 0.1f),
+                            shape = CircleShape,
+                        )
+                        .background(
+                            color = Color.White,
+                            shape = CircleShape,
+                        )
+                        .clickable(
+                            interactionSource = remember(::MutableInteractionSource),
+                            indication = rememberRipple(bounded = false, radius = 24.dp)
+                        ) {
+                            showDeleteDialog = true
+                        }
+                        .pointerHoverIcon(PointerIcon.Hand)
+                        .onPointerEvent(PointerEventType.Enter) {
+                            hovered = true
+                        }
+                        .onPointerEvent(PointerEventType.Exit) {
+                            hovered = false
+                        }
+                        .clip(CircleShape)
+                        .size(28.dp)
+                        .rotate(rotation),
+                    tint = Color(red = 0.4f, green = 0.1f, blue = 0.1f)
+                )
 
                 if (showDeleteDialog) {
                     DialogWindow(
                         onCloseRequest = { showDeleteDialog = false },
                         state = rememberDialogState(
-                            size = DpSize(500.dp, 200.dp),
+                            size = DpSize(400.dp, 200.dp),
                         ),
                         title = wordList.designCardDeleteDialogTitle,
                         resizable = false,
                     ) {
-                        Column(Modifier.fillMaxSize().padding(20.dp)) {
+                        Column(Modifier.fillMaxSize().padding(16.dp)) {
                             Text(
                                 text = wordList.designCardDeleteDialogText,
-                                style = MaterialTheme.typography.h5,
+                                style = MaterialTheme.typography.h6,
                             )
                             Spacer(Modifier.weight(1f))
                             Row(Modifier.fillMaxWidth(), Arrangement.SpaceEvenly) {
                                 Button(
-                                    onClick = deleteDesign,
-                                    modifier = Modifier.width(100.dp),
+                                    onClick = {
+                                        deleteDesign()
+                                        showDeleteDialog = false
+                                    },
+                                    modifier = Modifier.width(90.dp),
                                     colors = ButtonDefaults.buttonColors(
                                         backgroundColor = Color(red = 0.5f, green = 0.1f, blue = 0.1f),
                                         contentColor = Color.White,
@@ -259,7 +291,7 @@ private fun DesignCard(
                                 }
                                 Button(
                                     onClick = { showDeleteDialog = false },
-                                    modifier = Modifier.width(100.dp),
+                                    modifier = Modifier.width(90.dp),
                                 ) {
                                     Text(wordList.no)
                                 }
@@ -268,12 +300,26 @@ private fun DesignCard(
                     }
                 }
             }
+            Column(
+                modifier = Modifier.fillMaxHeight().weight(1f),
+                verticalArrangement = Arrangement.SpaceEvenly,
+            ) {
+                InfoLine(wordList.designCardFilename, filename, hasTooltip = true)
+                InfoLine(wordList.designCardDate, dateFormatted, hasTooltip = true)
+                InfoLine(wordList.designCardPlayerName, design.playerName)
+                InfoLine(wordList.designCardFarmName, design.farmName)
+                InfoLine(wordList.designCardLayout, wordList.layout(design.layout))
+            }
         }
     }
 }
 
 @Composable
-private fun InfoLine(header: String, value: String) {
+private fun InfoLine(
+    header: String,
+    value: String,
+    hasTooltip: Boolean = false,
+) {
     Row(
         modifier = Modifier.height(IntrinsicSize.Max),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -289,15 +335,17 @@ private fun InfoLine(header: String, value: String) {
                 style = MaterialTheme.typography.h6,
             )
         }
-        Box(
-            modifier = Modifier.weight(6f).alignByBaseline(),
-            contentAlignment = Alignment.TopEnd,
-        ) {
-            Text(
-                text = value,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-            )
+        TooltipArea(tooltip = value, enabled = hasTooltip) {
+            Box(
+                modifier = Modifier.weight(6f).alignByBaseline(),
+                contentAlignment = Alignment.TopEnd,
+            ) {
+                Text(
+                    text = value,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                )
+            }
         }
     }
 }
