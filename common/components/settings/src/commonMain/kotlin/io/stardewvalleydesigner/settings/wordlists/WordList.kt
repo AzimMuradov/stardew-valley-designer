@@ -56,6 +56,8 @@ sealed interface WordList {
 
     val delete: String
 
+    val farm: String
+
     fun layout(type: LayoutType): String
 
 

@@ -35,6 +35,7 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.component.editor.EditorState
 import io.stardewvalleydesigner.component.editor.menus.OptionsItemValue
@@ -147,6 +148,8 @@ private fun RowScope.NameField(
                 placeholder = {
                     Text(
                         text = placeholder,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
                         style = MaterialTheme.typography.body1,
                     )
                 },

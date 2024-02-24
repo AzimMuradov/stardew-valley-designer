@@ -22,6 +22,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
@@ -300,15 +301,23 @@ private fun DesignCard(
                     }
                 }
             }
-            Column(
-                modifier = Modifier.fillMaxHeight().weight(1f),
-                verticalArrangement = Arrangement.SpaceEvenly,
-            ) {
-                InfoLine(wordList.designCardFilename, filename, hasTooltip = true)
-                InfoLine(wordList.designCardDate, dateFormatted, hasTooltip = true)
-                InfoLine(wordList.designCardPlayerName, design.playerName)
-                InfoLine(wordList.designCardFarmName, design.farmName)
-                InfoLine(wordList.designCardLayout, wordList.layout(design.layout))
+            SelectionContainer {
+                Column(
+                    modifier = Modifier.fillMaxHeight().weight(1f),
+                    verticalArrangement = Arrangement.SpaceEvenly,
+                ) {
+                    InfoLine(wordList.designCardFilename, filename, hasTooltip = true)
+                    InfoLine(wordList.designCardDate, dateFormatted, hasTooltip = true)
+                    InfoLine(
+                        wordList.designCardPlayerName,
+                        value = design.playerName.takeIf { it.isNotBlank() } ?: "??",
+                    )
+                    InfoLine(
+                        wordList.designCardFarmName,
+                        value = design.farmName.takeIf { it.isNotBlank() } ?: "??",
+                    )
+                    InfoLine(wordList.designCardLayout, wordList.layout(design.layout))
+                }
             }
         }
     }

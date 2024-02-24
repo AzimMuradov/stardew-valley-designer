@@ -45,6 +45,8 @@ data object EnWordList : WordList {
 
     override val delete: String = "DELETE"
 
+    override val farm: String = "farm"
+
     override fun layout(type: LayoutType): String = when (type) {
         LayoutType.Shed -> "Shed"
         LayoutType.BigShed -> "Big Shed"
