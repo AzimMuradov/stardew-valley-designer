@@ -33,5 +33,6 @@ data class Design(
     val entities: @Serializable(with = LayeredEntitiesDataSerializer::class) LayeredEntitiesData = LayeredEntitiesData(),
     val wallpaper: @Serializable(with = WallpaperSerializer::class) Wallpaper? = null,
     val flooring: @Serializable(with = FlooringSerializer::class) Flooring? = null,
+    val palette: Palette = Palette.default(),
     val options: Options = Options.default(),
 )

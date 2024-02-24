@@ -18,10 +18,11 @@ package io.stardewvalleydesigner.component.editor.modules.palette
 
 import io.stardewvalleydesigner.component.editor.utils.Reduce
 import io.stardewvalleydesigner.component.editor.utils.replace
+import io.stardewvalleydesigner.designformat.models.Palette
 import io.stardewvalleydesigner.component.editor.EditorIntent.Palette as PaletteIntent
 
 
-val reduce: Reduce<PaletteState, PaletteIntent> = { intent ->
+val reduce: Reduce<Palette, PaletteIntent> = { intent ->
     when (intent) {
         is PaletteIntent.AddToInUse -> copy(inUse = intent.entity)
         is PaletteIntent.AddToHotbar -> copy(hotbar = hotbar.replace(intent.i.toInt(), intent.entity))

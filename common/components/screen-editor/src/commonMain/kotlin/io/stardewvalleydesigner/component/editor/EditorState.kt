@@ -18,11 +18,9 @@ package io.stardewvalleydesigner.component.editor
 
 import io.stardewvalleydesigner.component.editor.modules.history.HistoryState
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
-import io.stardewvalleydesigner.component.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolkitState
 import io.stardewvalleydesigner.component.editor.modules.vislayers.VisLayersState
-import io.stardewvalleydesigner.designformat.models.Design
-import io.stardewvalleydesigner.designformat.models.Options
+import io.stardewvalleydesigner.designformat.models.*
 import io.stardewvalleydesigner.engine.layout.Layout
 
 
@@ -32,7 +30,7 @@ data class EditorState(
     val playerName: String,
     val farmName: String,
     val toolkit: ToolkitState,
-    val palette: PaletteState,
+    val palette: Palette,
     val visLayers: VisLayersState,
     val options: Options,
     val designPath: String?,
@@ -46,7 +44,7 @@ data class EditorState(
             playerName = "",
             farmName = "",
             toolkit = ToolkitState.default(),
-            palette = PaletteState.default(),
+            palette = Palette.default(),
             visLayers = VisLayersState.default(),
             options = Options.default(),
             designPath = null,
@@ -58,7 +56,7 @@ data class EditorState(
             playerName = design.playerName,
             farmName = design.farmName,
             toolkit = ToolkitState.default(),
-            palette = PaletteState.default(),
+            palette = design.palette,
             visLayers = VisLayersState.default(),
             options = design.options,
             designPath = designPath,

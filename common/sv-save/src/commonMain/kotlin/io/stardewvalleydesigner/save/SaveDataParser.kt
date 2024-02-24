@@ -17,8 +17,7 @@
 package io.stardewvalleydesigner.save
 
 import io.stardewvalleydesigner.LoggerUtils.logger
-import io.stardewvalleydesigner.designformat.models.Design
-import io.stardewvalleydesigner.designformat.models.Options
+import io.stardewvalleydesigner.designformat.models.*
 import io.stardewvalleydesigner.engine.*
 import io.stardewvalleydesigner.engine.layers.entities
 import io.stardewvalleydesigner.engine.layout.*
@@ -94,6 +93,7 @@ object SaveDataParser {
                 entities = engine.layers.entities,
                 wallpaper = engine.wallpaper,
                 flooring = engine.flooring,
+                palette = Palette.default(),
                 options = Options.default(),
             )
         }

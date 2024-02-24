@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.cmplib.group.GroupOption
 import io.stardewvalleydesigner.cmplib.group.ToggleButtonsGroup
 import io.stardewvalleydesigner.component.editor.EditorIntent
-import io.stardewvalleydesigner.component.editor.modules.palette.PaletteState
+import io.stardewvalleydesigner.designformat.models.Palette
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.entity.Colors
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.rememberImageResource
@@ -46,7 +46,7 @@ import androidx.compose.ui.graphics.Color as ComposeColor
 
 @Composable
 internal fun Palette(
-    palette: PaletteState,
+    palette: Palette,
     intentConsumer: (EditorIntent.Palette) -> Unit,
 ) {
     // TODO : hotbar feature (val hotbar = palette.hotbar)
