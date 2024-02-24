@@ -18,9 +18,8 @@ package io.stardewvalleydesigner.screens
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.arkivanov.mvikotlin.extensions.coroutines.states
 import io.stardewvalleydesigner.component.mainmenu.MainMenuComponent
 import io.stardewvalleydesigner.screens.mainmenu.rightside.RightSideMenu
 import io.stardewvalleydesigner.screens.mainmenu.sidemenu.SideMenu
@@ -28,11 +27,13 @@ import io.stardewvalleydesigner.screens.mainmenu.sidemenu.SideMenu
 
 @Composable
 fun MainMenuScreen(component: MainMenuComponent) {
-    val store = component.store
-    val state by store.states.collectAsState(component.store.state)
-
     Row(modifier = Modifier.fillMaxSize()) {
         SideMenu()
-        RightSideMenu(state, intentConsumer = store::accept)
+        RightSideMenu(
+            intentConsumer = component.store::accept,
+            newDesignComponent = component.newDesignComponent,
+            openDesignComponent = component.openDesignComponent,
+            openSvSaveComponent = component.openSvSaveComponent,
+        )
     }
 }

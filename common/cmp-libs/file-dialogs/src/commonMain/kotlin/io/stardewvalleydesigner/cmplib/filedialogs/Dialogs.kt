@@ -25,7 +25,7 @@ expect fun FileSaver(
     defaultPathAndFile: String? = null,
     extensions: List<String>? = null,
     extensionsDescription: String? = null,
-    bytes: () -> ByteArray,
+    bytes: ByteArray,
     onFileSaved: (FileSaverResult?) -> Unit,
 )
 

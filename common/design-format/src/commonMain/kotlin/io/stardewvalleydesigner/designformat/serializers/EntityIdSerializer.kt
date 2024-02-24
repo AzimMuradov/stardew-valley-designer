@@ -28,9 +28,9 @@ import kotlinx.serialization.encoding.*
 internal object EntityIdSerializer : KSerializer<EntityId> {
 
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor(serialName = "EntityIdSurrogate") {
-        element<EntityPage>(elementName = "page")
+        element<String>(elementName = "page")
         element<Int>(elementName = "localId")
-        element<EntityFlavor?>(elementName = "flavor", isOptional = true)
+        element<EntityFlavorSurrogate?>(elementName = "flavor", isOptional = true)
     }
 
     override fun serialize(encoder: Encoder, value: EntityId) = encoder.encodeStructure(descriptor) {

@@ -24,7 +24,7 @@ import javax.imageio.ImageIO
 
 actual object PngUtils {
 
-    actual fun generatePngBytes(argbBytes: IntArray, width: Int, height: Int): ByteArray {
+    actual suspend fun generatePngBytes(argbBytes: IntArray, width: Int, height: Int): ByteArray {
         val sampleModel = run {
             val bitMasks = run {
                 val a = 0xff shl 24

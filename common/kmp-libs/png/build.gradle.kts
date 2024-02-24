@@ -15,6 +15,9 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(libs.kotlinx.coroutines.core)
+
+
                 // Meta-code
 
                 implementation(projects.common.logger)

@@ -26,30 +26,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import io.stardewvalleydesigner.component.mainmenu.MainMenuIntent
-import io.stardewvalleydesigner.component.mainmenu.MainMenuState
+import com.arkivanov.mvikotlin.extensions.coroutines.states
+import io.stardewvalleydesigner.component.dialog.opensvsave.*
 import io.stardewvalleydesigner.kmplib.fs.*
+import io.stardewvalleydesigner.ui.component.designdialogs.*
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 
 @Composable
-fun RowScope.SaveImportMenu(
-    state: MainMenuState,
-    intentConsumer: (MainMenuIntent) -> Unit,
-) {
+fun RowScope.SaveImportMenu(component: OpenSvSaveComponent) {
+    val store = component.store
+    val observedState by store.states.collectAsState(component.store.state)
+    val state = observedState
+
     val wordList = GlobalSettings.strings
 
     val svSavesPath by remember { mutableStateOf(JvmFileSystem.getSvSavesDir().endSep().takeIfExists()) }
 
     DialogWindowMenu(
-        onCloseRequest = { intentConsumer(MainMenuIntent.SaveLoaderMenu.Cancel) },
-        visible = state is MainMenuState.SaveLoaderMenu,
+        onCloseRequest = { store.accept(OpenSvSaveIntent.CloseMenu) },
+        visible = state !is OpenSvSaveState.NotOpened,
         title = wordList.saveImportWindowTitle,
         topMenuButton = {
             TopMenuButton(
                 text = wordList.buttonSaveImportText,
                 icon = Icons.Filled.Save,
-                onClick = { intentConsumer(MainMenuIntent.SaveLoaderMenu.OpenMenu) }
+                onClick = { store.accept(OpenSvSaveIntent.OpenMenu) }
             )
         },
         filePickerBar = {
@@ -59,48 +61,48 @@ fun RowScope.SaveImportMenu(
                 placeholderText = wordList.saveImportSelectSaveFilePlaceholder,
                 defaultPathAndFile = svSavesPath,
                 onFilePicked = { text, absolutePath ->
-                    intentConsumer(MainMenuIntent.SaveLoaderMenu.LoadSave(text, absolutePath))
+                    store.accept(OpenSvSaveIntent.LoadSave(text, absolutePath))
                 },
             )
         },
         mainPart = {
-            if (state is MainMenuState.SaveLoaderMenu) {
-                when (state) {
-                    MainMenuState.SaveLoaderMenu.Empty -> {
-                        Text(
-                            text = wordList.saveImportPlaceholder,
-                            modifier = Modifier.padding(20.dp),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.h6,
-                        )
-                    }
-
-                    MainMenuState.SaveLoaderMenu.Loading -> {
-                        CircularProgressIndicator(strokeCap = StrokeCap.Round)
-                    }
-
-                    is MainMenuState.SaveLoaderMenu.Loaded -> {
-                        LayoutsGrid(
-                            layouts = state.availableLayouts,
-                            chosenLayout = state.chosenLayout,
-                            onChoose = { intentConsumer(MainMenuIntent.SaveLoaderMenu.ChooseLayout(it)) },
-                        )
-                    }
-
-                    MainMenuState.SaveLoaderMenu.Error -> {
-                        Text(
-                            text = wordList.saveImportPlaceholderError,
-                            modifier = Modifier.padding(20.dp),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.h6,
-                        )
-                    }
+            when (state) {
+                OpenSvSaveState.Empty -> {
+                    Text(
+                        text = wordList.saveImportPlaceholder,
+                        modifier = Modifier.padding(20.dp),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.h6,
+                    )
                 }
+
+                OpenSvSaveState.Loading -> {
+                    CircularProgressIndicator(strokeCap = StrokeCap.Round)
+                }
+
+                is OpenSvSaveState.Loaded -> {
+                    DesignsGrid(
+                        designs = state.availableLayouts,
+                        chosenDesign = state.chosenLayout,
+                        onChoose = { store.accept(OpenSvSaveIntent.ChooseDesign(it)) },
+                    )
+                }
+
+                OpenSvSaveState.Error -> {
+                    Text(
+                        text = wordList.saveImportPlaceholderError,
+                        modifier = Modifier.padding(20.dp),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.h6,
+                    )
+                }
+
+                OpenSvSaveState.NotOpened -> Unit
             }
         },
         acceptLayoutBar = {
-            AcceptLayoutBar(
-                textFieldText = if (state is MainMenuState.SaveLoaderMenu.Loaded) {
+            AcceptDesignBar(
+                textFieldText = if (state is OpenSvSaveState.Loaded) {
                     val (_, playerName, farmName, layoutType) = state.chosenLayout.value
                     val playerNameWithDefault = playerName.takeIf { it.isNotBlank() } ?: "??"
                     val farmNameWithDefault = farmName.takeIf { it.isNotBlank() } ?: "??"
@@ -109,9 +111,9 @@ fun RowScope.SaveImportMenu(
                     ""
                 },
                 buttonText = wordList.chooseLayout,
-                buttonEnabled = state is MainMenuState.SaveLoaderMenu.Loaded,
+                buttonEnabled = state is OpenSvSaveState.Loaded,
                 placeholderText = "",
-                onClick = { intentConsumer(MainMenuIntent.SaveLoaderMenu.AcceptChosen) },
+                onClick = { store.accept(OpenSvSaveIntent.AcceptChosen) },
             )
         },
     )

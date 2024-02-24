@@ -20,6 +20,12 @@ kotlin {
                     args.plusAssign(listOf("--env", "debug=$value"))
                 }
             }
+
+            webpackTask {
+                System.getProperty("debug")?.let { value ->
+                    args.plusAssign(listOf("--env", "debug=$value"))
+                }
+            }
         }
         binaries.executable()
     }
@@ -32,9 +38,17 @@ kotlin {
                 implementation(projects.common.designFormat)
 
                 implementation(projects.common.components.screenEditor)
+                implementation(projects.common.components.dialogNewDesign)
+                implementation(projects.common.components.dialogOpenDesign)
+                implementation(projects.common.components.dialogOpenSvSave)
                 implementation(projects.common.components.settings)
 
                 implementation(projects.common.uiComponents.editor)
+                implementation(projects.common.uiComponents.editorMenus.newDesign)
+                implementation(projects.common.uiComponents.editorMenus.openDesign)
+                implementation(projects.common.uiComponents.editorMenus.openSvSave)
+                implementation(projects.common.uiComponents.editorMenus.saveDesignAs)
+                implementation(projects.common.uiComponents.editorMenus.saveDesignImg)
                 implementation(projects.common.uiComponents.settingsProvider)
                 implementation(projects.common.uiComponents.themes)
                 implementation(projects.common.uiComponents.windowSizeProvider)

@@ -16,13 +16,15 @@
 
 package io.stardewvalleydesigner.screens.mainmenu.rightside.topmenu
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.*
+import androidx.compose.ui.window.DialogWindow
+import androidx.compose.ui.window.rememberDialogState
+import io.stardewvalleydesigner.ui.component.designdialogs.DialogWindowMenuContent
 
 
 @Composable
@@ -37,34 +39,18 @@ fun DialogWindowMenu(
 ) {
     topMenuButton()
 
-    val dialogState = rememberDialogState(size = DialogWindowDefaults.size)
-
-    LaunchedEffect(visible) {
-        if (visible) {
-            dialogState.position = WindowPosition(Alignment.Center)
-        }
-    }
-
     DialogWindow(
         onCloseRequest = onCloseRequest,
-        state = rememberDialogState(size = DialogWindowDefaults.size),
+        state = rememberDialogState(size = DpSize(width = 800.dp, height = 600.dp)),
         visible = visible,
         title = title,
-        resizable = false
+        resizable = false,
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            filePickerBar?.invoke()
-
-            Spacer(Modifier.size(16.dp))
-
-            Column(modifier = Modifier.fillMaxSize()) {
-                Box(
-                    modifier = Modifier.fillMaxWidth().weight(1f).padding(horizontal = 16.dp),
-                    contentAlignment = Alignment.Center,
-                    content = mainPart,
-                )
-                acceptLayoutBar()
-            }
-        }
+        DialogWindowMenuContent(
+            modifier = Modifier.fillMaxSize(),
+            filePickerBar,
+            mainPart,
+            acceptLayoutBar,
+        )
     }
 }

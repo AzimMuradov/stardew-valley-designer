@@ -23,15 +23,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.stardewvalleydesigner.component.dialog.newdesign.NewDesignComponent
+import io.stardewvalleydesigner.component.dialog.opendesign.OpenDesignComponent
+import io.stardewvalleydesigner.component.dialog.opensvsave.OpenSvSaveComponent
 import io.stardewvalleydesigner.component.mainmenu.MainMenuIntent
-import io.stardewvalleydesigner.component.mainmenu.MainMenuState
 import io.stardewvalleydesigner.screens.mainmenu.rightside.topmenu.*
 
 
 @Composable
 fun RowScope.RightSideMenu(
-    state: MainMenuState,
     intentConsumer: (MainMenuIntent) -> Unit,
+    newDesignComponent: NewDesignComponent,
+    openDesignComponent: OpenDesignComponent,
+    openSvSaveComponent: OpenSvSaveComponent,
 ) {
     Column(
         modifier = Modifier
@@ -46,9 +50,9 @@ fun RowScope.RightSideMenu(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            NewDesignMenu(state, intentConsumer)
-            OpenDesignMenu(state, intentConsumer)
-            SaveImportMenu(state, intentConsumer)
+            NewDesignMenu(newDesignComponent)
+            OpenDesignMenu(openDesignComponent)
+            SaveImportMenu(openSvSaveComponent)
         }
         UserDesigns(
             onDesignOpenClicked = { design, designPath ->

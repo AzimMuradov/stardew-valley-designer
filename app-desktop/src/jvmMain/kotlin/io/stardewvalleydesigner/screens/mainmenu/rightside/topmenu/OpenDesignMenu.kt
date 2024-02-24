@@ -26,12 +26,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.arkivanov.mvikotlin.extensions.coroutines.states
 import io.github.irgaly.kfswatch.KfsDirectoryWatcher
-import io.stardewvalleydesigner.component.mainmenu.MainMenuIntent
-import io.stardewvalleydesigner.component.mainmenu.MainMenuState
+import io.stardewvalleydesigner.component.dialog.opendesign.*
 import io.stardewvalleydesigner.engine.layout.LayoutsProvider.layoutOf
 import io.stardewvalleydesigner.kmplib.fs.*
-import io.stardewvalleydesigner.screens.mainmenu.rightside.LayoutPreview
+import io.stardewvalleydesigner.ui.component.designdialogs.AcceptDesignBar
+import io.stardewvalleydesigner.ui.component.designdialogs.FilePickerBar
+import io.stardewvalleydesigner.ui.component.editor.screen.LayoutPreview
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filter
@@ -39,10 +41,11 @@ import kotlinx.coroutines.flow.map
 
 
 @Composable
-fun RowScope.OpenDesignMenu(
-    state: MainMenuState,
-    intentConsumer: (MainMenuIntent) -> Unit,
-) {
+fun RowScope.OpenDesignMenu(component: OpenDesignComponent) {
+    val store = component.store
+    val observedState by store.states.collectAsState(component.store.state)
+    val state = observedState
+
     val wordList = GlobalSettings.strings
 
     val scope = rememberCoroutineScope()
@@ -62,14 +65,14 @@ fun RowScope.OpenDesignMenu(
         .collectAsState(initial = svdSavesPath())
 
     DialogWindowMenu(
-        onCloseRequest = { intentConsumer(MainMenuIntent.OpenDesignMenu.Cancel) },
-        visible = state is MainMenuState.OpenDesignMenu,
+        onCloseRequest = { store.accept(OpenDesignIntent.CloseMenu) },
+        visible = state !is OpenDesignState.NotOpened,
         title = wordList.openDesignWindowTitle,
         topMenuButton = {
             TopMenuButton(
                 text = wordList.buttonOpenDesignText,
                 icon = Icons.Filled.FileOpen,
-                onClick = { intentConsumer(MainMenuIntent.OpenDesignMenu.OpenMenu) }
+                onClick = { store.accept(OpenDesignIntent.OpenMenu) }
             )
         },
         filePickerBar = {
@@ -79,15 +82,14 @@ fun RowScope.OpenDesignMenu(
                 placeholderText = wordList.openDesignSelectDesignPlaceholder,
                 defaultPathAndFile = svdSavesPath,
                 onFilePicked = { text, absolutePath ->
-                    intentConsumer(MainMenuIntent.OpenDesignMenu.LoadDesign(text, absolutePath))
+                    store.accept(OpenDesignIntent.LoadDesign(text, absolutePath))
                 },
                 fileFormat = "json"
             )
         },
         mainPart = {
-            if (state is MainMenuState.OpenDesignMenu) {
                 when (state) {
-                    MainMenuState.OpenDesignMenu.Empty -> {
+                    OpenDesignState.Empty -> {
                         Text(
                             text = wordList.openDesignPlaceholder,
                             modifier = Modifier.padding(20.dp),
@@ -96,11 +98,11 @@ fun RowScope.OpenDesignMenu(
                         )
                     }
 
-                    MainMenuState.OpenDesignMenu.Loading -> {
+                    OpenDesignState.Loading -> {
                         CircularProgressIndicator(strokeCap = StrokeCap.Round)
                     }
 
-                    is MainMenuState.OpenDesignMenu.Loaded -> {
+                    is OpenDesignState.Loaded -> {
                         val (_, _, _, layoutType, entities, wallpaper, flooring) = state.layout.value
                         LayoutPreview(
                             layout = layoutOf(layoutType),
@@ -110,7 +112,7 @@ fun RowScope.OpenDesignMenu(
                         )
                     }
 
-                    MainMenuState.OpenDesignMenu.Error -> {
+                    OpenDesignState.Error -> {
                         Text(
                             text = wordList.openDesignPlaceholderError,
                             modifier = Modifier.padding(20.dp),
@@ -118,12 +120,13 @@ fun RowScope.OpenDesignMenu(
                             style = MaterialTheme.typography.h6
                         )
                     }
-                }
+
+                    OpenDesignState.NotOpened -> Unit
             }
         },
         acceptLayoutBar = {
-            AcceptLayoutBar(
-                textFieldText = if (state is MainMenuState.OpenDesignMenu.Loaded) {
+            AcceptDesignBar(
+                textFieldText = if (state is OpenDesignState.Loaded) {
                     val (_, playerName, farmName, layoutType) = state.layout.value
                     val playerNameWithDefault = playerName.takeIf { it.isNotBlank() } ?: "??"
                     val farmNameWithDefault = farmName.takeIf { it.isNotBlank() } ?: "??"
@@ -132,9 +135,9 @@ fun RowScope.OpenDesignMenu(
                     ""
                 },
                 buttonText = wordList.ok,
-                buttonEnabled = state is MainMenuState.OpenDesignMenu.Loaded,
+                buttonEnabled = state is OpenDesignState.Loaded,
                 placeholderText = "",
-                onClick = { intentConsumer(MainMenuIntent.OpenDesignMenu.Accept) }
+                onClick = { store.accept(OpenDesignIntent.Accept) }
             )
         },
     )

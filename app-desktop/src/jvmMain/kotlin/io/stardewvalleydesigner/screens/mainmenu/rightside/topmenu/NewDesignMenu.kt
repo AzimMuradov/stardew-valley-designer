@@ -19,50 +19,53 @@ package io.stardewvalleydesigner.screens.mainmenu.rightside.topmenu
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
-import io.stardewvalleydesigner.component.mainmenu.MainMenuIntent
-import io.stardewvalleydesigner.component.mainmenu.MainMenuState
+import androidx.compose.runtime.*
+import com.arkivanov.mvikotlin.extensions.coroutines.states
+import io.stardewvalleydesigner.component.dialog.newdesign.*
+import io.stardewvalleydesigner.ui.component.designdialogs.AcceptDesignBar
+import io.stardewvalleydesigner.ui.component.designdialogs.DesignsGrid
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 
 @Composable
-fun RowScope.NewDesignMenu(
-    state: MainMenuState,
-    intentConsumer: (MainMenuIntent) -> Unit,
-) {
+fun RowScope.NewDesignMenu(component: NewDesignComponent) {
+    val store = component.store
+    val observedState by store.states.collectAsState(component.store.state)
+    val state = observedState
+
     val wordList = GlobalSettings.strings
 
     DialogWindowMenu(
-        onCloseRequest = { intentConsumer(MainMenuIntent.NewDesignMenu.Cancel) },
-        visible = state is MainMenuState.NewDesignMenu.Idle,
+        onCloseRequest = { store.accept(NewDesignIntent.CloseMenu) },
+        visible = state is NewDesignState.Opened,
         title = wordList.newDesignWindowTitle,
         topMenuButton = {
             TopMenuButton(
                 text = wordList.buttonNewDesignText,
                 icon = Icons.Filled.Add,
-                onClick = { intentConsumer(MainMenuIntent.NewDesignMenu.OpenMenu) }
+                onClick = { store.accept(NewDesignIntent.OpenMenu) }
             )
         },
         filePickerBar = null,
         mainPart = {
-            if (state is MainMenuState.NewDesignMenu.Idle) {
-                LayoutsGrid(
-                    layouts = state.availableLayouts,
-                    chosenLayout = state.chosenLayout,
-                    onChoose = { intentConsumer(MainMenuIntent.NewDesignMenu.ChooseLayout(it)) }
+            if (state is NewDesignState.Opened) {
+                DesignsGrid(
+                    designs = state.availableDesigns,
+                    chosenDesign = state.chosenDesign,
+                    onChoose = { store.accept(NewDesignIntent.ChooseDesign(it)) }
                 )
             }
         },
         acceptLayoutBar = {
-            AcceptLayoutBar(
-                textFieldText = if (state is MainMenuState.NewDesignMenu.Idle) {
-                    wordList.layout(state.chosenLayout.value.layout)
+            AcceptDesignBar(
+                textFieldText = if (state is NewDesignState.Opened) {
+                    wordList.layout(state.chosenDesign.value.layout)
                 } else {
                     ""
                 },
                 buttonText = wordList.chooseLayout,
                 placeholderText = "",
-                onClick = { intentConsumer(MainMenuIntent.NewDesignMenu.AcceptChosen) },
+                onClick = { store.accept(NewDesignIntent.AcceptChosen) },
             )
         },
     )

@@ -18,6 +18,7 @@ package io.stardewvalleydesigner.cmplib.filedialogs
 
 import androidx.compose.runtime.Composable
 import io.stardewvalleydesigner.LoggerUtils.logger
+import io.stardewvalleydesigner.cmplib.filedialogs.DomDialogsWrapper.downloadFileToDisk
 import io.stardewvalleydesigner.cmplib.filedialogs.DomDialogsWrapper.loadFileFromDisk
 import kotlinx.browser.document
 
@@ -28,14 +29,19 @@ actual fun FileSaver(
     defaultPathAndFile: String?,
     extensions: List<String>?,
     extensionsDescription: String?,
-    bytes: () -> ByteArray,
+    bytes: ByteArray,
     onFileSaved: (FileSaverResult?) -> Unit,
 ) {
     if (title != null) logger.info { "`title` was ignored" }
-    if (defaultPathAndFile != null) logger.info { "`defaultPathAndFile` was ignored" }
+    if (extensions != null) logger.info { "`extensions` was ignored" }
     if (extensionsDescription != null) logger.info { "`extensionsDescription` was ignored" }
 
-    TODO()
+    document.downloadFileToDisk(
+        filename = defaultPathAndFile,
+        content = bytes,
+    )
+
+    onFileSaved(null)
 }
 
 @Composable
