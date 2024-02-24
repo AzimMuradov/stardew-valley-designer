@@ -16,6 +16,7 @@
 
 package io.stardewvalleydesigner.ui.component.editor.screen.sidemenus
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -71,8 +72,10 @@ internal fun Palette(
 
     val defaultChestColorImage = rememberImageResource(path = "other/default-chest-color-chest-menu.png")
 
-    if (inUse is FlavoredEntity) {
-        when (val e = inUse as FlavoredEntity) {
+    AnimatedVisibility(inUse is FlavoredEntity) {
+        when (val e = inUse as? FlavoredEntity) {
+            null -> Unit
+
             is Rotatable -> Unit // TODO
 
             is Colored.ColoredFishPond -> Unit // TODO
