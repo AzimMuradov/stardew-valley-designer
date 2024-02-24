@@ -39,12 +39,11 @@ import io.stardewvalleydesigner.ui.component.windowsize.WindowSize
 @Composable
 fun EditorScreen(
     component: EditorComponent,
-    leftBottomMenus: @Composable RowScope.(EditorState, SnackbarHostState) -> Unit = { _, _ -> },
     rightBottomMenus: @Composable RowScope.(EditorState, SnackbarHostState) -> Unit = { _, _ -> },
 ) {
     val store = component.store
     val state by store.states.collectAsState(component.store.state)
-    val (history, map, toolkit, palette, visLayers, options) = state
+    val (history, map, _, _, toolkit, palette, visLayers, options) = state
 
     val snackbarHostState = remember { SnackbarHostState() }
     var currCoordinate by remember { mutableStateOf(UNDEFINED) }
@@ -60,8 +59,9 @@ fun EditorScreen(
 
         val menuWidth by animateDpAsState(
             when (LocalWindowSize.current) {
-                WindowSize.SMALL -> 300.dp
-                WindowSize.MEDIUM -> 350.dp
+                WindowSize.EXPANDED -> 250.dp
+                WindowSize.LARGE -> 300.dp
+                WindowSize.EXTRA_LARGE -> 350.dp
             }
         )
 
@@ -98,7 +98,12 @@ fun EditorScreen(
             editorState = state,
             snackbarHostState = snackbarHostState,
             currCoordinate = currCoordinate,
-            leftBottomMenus = leftBottomMenus,
+            onPlayerNameChanged = { name ->
+                store.accept(EditorIntent.PlayerName.Change(name))
+            },
+            onFarmNameChanged = { name ->
+                store.accept(EditorIntent.FarmName.Change(name))
+            },
             rightBottomMenus = rightBottomMenus,
         )
     }

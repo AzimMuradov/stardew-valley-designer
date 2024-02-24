@@ -22,7 +22,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.component.mainmenu.MainMenuIntent
 import io.stardewvalleydesigner.component.mainmenu.MainMenuState
@@ -38,10 +37,6 @@ fun RowScope.RightSideMenu(
         modifier = Modifier
             .fillMaxHeight()
             .weight(1f)
-            .shadow(
-                elevation = 4.dp,
-                shape = MaterialTheme.shapes.large
-            )
             .background(MaterialTheme.colors.secondaryVariant)
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -55,6 +50,17 @@ fun RowScope.RightSideMenu(
             OpenDesignMenu(state, intentConsumer)
             SaveImportMenu(state, intentConsumer)
         }
-        LayoutCards()
+        UserDesigns(
+            onDesignOpenClicked = { design, designPath ->
+                intentConsumer(
+                    MainMenuIntent.UserDesignsMenu.OpenDesign(design, designPath)
+                )
+            },
+            onDesignDeleteClicked = { designPath ->
+                intentConsumer(
+                    MainMenuIntent.UserDesignsMenu.DeleteDesign(designPath)
+                )
+            }
+        )
     }
 }

@@ -22,13 +22,15 @@ import io.stardewvalleydesigner.component.editor.modules.options.OptionsState
 import io.stardewvalleydesigner.component.editor.modules.palette.PaletteState
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolkitState
 import io.stardewvalleydesigner.component.editor.modules.vislayers.VisLayersState
-import io.stardewvalleydesigner.engine.EditorEngine
+import io.stardewvalleydesigner.designformat.models.Design
 import io.stardewvalleydesigner.engine.layout.Layout
 
 
 data class EditorState(
     val history: HistoryState,
     val map: MapState,
+    val playerName: String,
+    val farmName: String,
     val toolkit: ToolkitState,
     val palette: PaletteState,
     val visLayers: VisLayersState,
@@ -41,6 +43,8 @@ data class EditorState(
         fun default(layout: Layout) = EditorState(
             history = HistoryState.default(),
             map = MapState.default(layout),
+            playerName = "",
+            farmName = "",
             toolkit = ToolkitState.default(),
             palette = PaletteState.default(),
             visLayers = VisLayersState.default(),
@@ -48,9 +52,11 @@ data class EditorState(
             designPath = null,
         )
 
-        fun from(engine: EditorEngine, designPath: String?) = EditorState(
+        fun from(design: Design, designPath: String?) = EditorState(
             history = HistoryState.default(),
-            map = MapState.from(engine),
+            map = MapState.from(design),
+            playerName = design.playerName,
+            farmName = design.farmName,
             toolkit = ToolkitState.default(),
             palette = PaletteState.default(),
             visLayers = VisLayersState.default(),

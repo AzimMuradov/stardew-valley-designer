@@ -17,10 +17,12 @@
 package io.stardewvalleydesigner.component.editor.modules.map
 
 import io.stardewvalleydesigner.component.editor.utils.toState
+import io.stardewvalleydesigner.designformat.models.Design
 import io.stardewvalleydesigner.engine.*
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
-import io.stardewvalleydesigner.engine.layers.entities
+import io.stardewvalleydesigner.engine.layers.toLayeredEntities
 import io.stardewvalleydesigner.engine.layout.Layout
+import io.stardewvalleydesigner.engine.layout.LayoutsProvider
 
 
 data class MapState(
@@ -41,20 +43,21 @@ data class MapState(
             layout = layout.toState(),
         )
 
-        fun from(engine: EditorEngine) = MapState(
-            entities = engine.layers.entities,
+        fun from(design: Design) = MapState(
+            entities = design.entities,
             selectedEntities = LayeredEntitiesData(),
-            wallpaper = engine.wallpaper,
-            flooring = engine.flooring,
-            layout = engine.layout.toState(),
+            wallpaper = design.wallpaper,
+            flooring = design.flooring,
+            layout = LayoutsProvider.layoutOf(design.layout).toState(),
         )
     }
 }
 
 
-fun MapState.toEngineData(): EditorEngineData = EditorEngineData(
-    layoutType = layout.type,
-    layeredEntitiesData = entities,
-    wallpaper = wallpaper,
-    flooring = flooring,
-)
+fun MapState.generateEngine(): EditorEngine = editorEngineOf(
+    layout = LayoutsProvider.layoutOf(layout.type),
+).apply {
+    putAll(this@generateEngine.entities.toLayeredEntities())
+    wallpaper = this@generateEngine.wallpaper
+    flooring = this@generateEngine.flooring
+}

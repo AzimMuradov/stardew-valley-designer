@@ -19,14 +19,16 @@ package io.stardewvalleydesigner.ui.component.windowsize
 
 enum class WindowSize {
 
-    SMALL,
-    MEDIUM;
+    EXPANDED,
+    LARGE,
+    EXTRA_LARGE;
 
     companion object {
 
         fun fromWindowWidth(width: Int): WindowSize = when {
-            width < 1400 -> SMALL
-            else -> MEDIUM
+            width < 1200 -> EXPANDED
+            width < 1600 -> LARGE
+            else -> EXTRA_LARGE
         }
     }
 }

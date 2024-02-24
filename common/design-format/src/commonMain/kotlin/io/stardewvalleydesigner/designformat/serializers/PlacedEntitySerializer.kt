@@ -14,38 +14,34 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.designformat.models
+package io.stardewvalleydesigner.designformat.serializers
 
-import io.stardewvalleydesigner.designformat.mappers.toEntityFlavor
-import io.stardewvalleydesigner.designformat.mappers.toEntityFlavorModel
 import io.stardewvalleydesigner.engine.entity.PlacedEntity
+import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layer.placeIt
-import io.stardewvalleydesigner.metadata.*
+import io.stardewvalleydesigner.metadata.EntityDataProvider
+import io.stardewvalleydesigner.metadata.EntityId
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 
-internal typealias PlacedEntityPacked = @Serializable(with = PlacedEntitySerializer::class) PlacedEntity<*>
+internal object PlacedEntitySerializer : KSerializer<PlacedEntity<*>> {
 
-private object PlacedEntitySerializer : KSerializer<PlacedEntity<*>> {
-
-    private val delegateSerializer = PlacedEntityModel.serializer()
+    private val delegateSerializer = PlacedEntitySurrogate.serializer()
 
     @OptIn(ExperimentalSerializationApi::class)
     override val descriptor: SerialDescriptor = SerialDescriptor(
         serialName = "io.stardewvalleydesigner.engine.entity.PlacedEntity",
-        original = delegateSerializer.descriptor
+        original = delegateSerializer.descriptor,
     )
 
     override fun serialize(encoder: Encoder, value: PlacedEntity<*>) {
         delegateSerializer.serialize(
             encoder,
-            value = PlacedEntityModel(
-                id = EntityDataProvider.entityToId.getValue(value.rectObject).let { (page, localId, flavor) ->
-                    EntityIdModel(page, localId, flavor = flavor?.toEntityFlavorModel())
-                },
+            value = PlacedEntitySurrogate(
+                id = EntityDataProvider.entityToId.getValue(value.rectObject),
                 place = value.place
             )
         )
@@ -53,21 +49,13 @@ private object PlacedEntitySerializer : KSerializer<PlacedEntity<*>> {
 
     override fun deserialize(decoder: Decoder): PlacedEntity<*> {
         val (id, place) = delegateSerializer.deserialize(decoder)
-        return EntityDataProvider.entityById.getValue(id.let { (page, localId, flavor) ->
-            EntityId(page, localId, flavor = flavor?.toEntityFlavor())
-        }).placeIt(place)
+        return EntityDataProvider.entityById.getValue(id).placeIt(place)
     }
 }
 
-@Serializable
-private data class PlacedEntityModel(
-    val id: EntityIdModel,
-    val place: CoordinatePacked,
-)
 
 @Serializable
-private data class EntityIdModel(
-    val page: EntityPage,
-    val localId: Int,
-    val flavor: EntityFlavorPacked? = null,
+private data class PlacedEntitySurrogate(
+    val id: @Serializable(with = EntityIdSerializer::class) EntityId,
+    val place: @Serializable(with = CoordinateSerializer::class) Coordinate,
 )

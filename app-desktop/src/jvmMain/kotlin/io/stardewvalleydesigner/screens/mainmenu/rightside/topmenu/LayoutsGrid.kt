@@ -28,7 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.component.mainmenu.Wrapper
-import io.stardewvalleydesigner.engine.EditorEngineData
+import io.stardewvalleydesigner.designformat.models.Design
 import io.stardewvalleydesigner.engine.layout.LayoutsProvider.layoutOf
 import io.stardewvalleydesigner.screens.mainmenu.rightside.LayoutPreview
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
@@ -36,9 +36,9 @@ import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 @Composable
 fun LayoutsGrid(
-    layouts: List<Wrapper<EditorEngineData>>,
-    chosenLayout: Wrapper<EditorEngineData>?,
-    onChoose: (Wrapper<EditorEngineData>) -> Unit,
+    layouts: List<Wrapper<Design>>,
+    chosenLayout: Wrapper<Design>?,
+    onChoose: (Wrapper<Design>) -> Unit,
 ) {
     val wordList = GlobalSettings.strings
 
@@ -48,7 +48,7 @@ fun LayoutsGrid(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        items(items = layouts) { engine ->
+        items(items = layouts) { design ->
             val chosenColor = MaterialTheme.colors.primary.copy(alpha = 0.3f)
 
             Column(
@@ -56,20 +56,20 @@ fun LayoutsGrid(
                     .clip(MaterialTheme.shapes.medium)
                     .drawWithContent {
                         drawContent()
-                        if (chosenLayout == engine) {
+                        if (chosenLayout == design) {
                             drawRect(chosenColor)
                         }
                     }
-                    .clickable(onClick = { onChoose(engine) })
+                    .clickable(onClick = { onChoose(design) })
                     .padding(8.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val (layoutType, layeredEntitiesData, wallpaper, flooring) = engine.value
+                val (_, _, _, layoutType, entities, wallpaper, flooring) = design.value
                 Box {
                     LayoutPreview(
                         layout = layoutOf(layoutType),
-                        entities = layeredEntitiesData,
+                        entities = entities,
                         wallpaper = wallpaper,
                         flooring = flooring,
                     )

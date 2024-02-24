@@ -20,7 +20,7 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class Item<Key, Value>(
+internal data class Item<Key, Value>(
     val key: Key,
     val value: Value,
 )

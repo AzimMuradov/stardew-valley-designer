@@ -19,5 +19,5 @@ package io.stardewvalleydesigner.designformat.models
 
 enum class DesignVersion {
 
-    VERSION_0_9_0,
+    VERSION_0_11_0,
 }

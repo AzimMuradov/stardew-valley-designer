@@ -101,10 +101,10 @@ fun RowScope.OpenDesignMenu(
                     }
 
                     is MainMenuState.OpenDesignMenu.Loaded -> {
-                        val (layoutType, layeredEntitiesData, wallpaper, flooring) = state.layout.value
+                        val (_, _, _, layoutType, entities, wallpaper, flooring) = state.layout.value
                         LayoutPreview(
                             layout = layoutOf(layoutType),
-                            entities = layeredEntitiesData,
+                            entities = entities,
                             wallpaper = wallpaper,
                             flooring = flooring,
                         )
@@ -124,7 +124,10 @@ fun RowScope.OpenDesignMenu(
         acceptLayoutBar = {
             AcceptLayoutBar(
                 textFieldText = if (state is MainMenuState.OpenDesignMenu.Loaded) {
-                    wordList.layout(state.layout.value.layoutType)
+                    val (_, playerName, farmName, layoutType) = state.layout.value
+                    val playerNameWithDefault = playerName.takeIf { it.isNotBlank() } ?: "??"
+                    val farmNameWithDefault = farmName.takeIf { it.isNotBlank() } ?: "??"
+                    "$playerNameWithDefault, $farmNameWithDefault ${wordList.farm}, ${wordList.layout(layoutType)}"
                 } else {
                     ""
                 },

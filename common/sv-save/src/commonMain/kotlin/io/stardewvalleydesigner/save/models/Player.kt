@@ -20,6 +20,7 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class Player(
+internal data class Player(
     val name: String,
+    val farmName: String,
 )

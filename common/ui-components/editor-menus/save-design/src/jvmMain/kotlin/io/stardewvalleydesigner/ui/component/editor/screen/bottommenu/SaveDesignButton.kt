@@ -35,6 +35,8 @@ import java.nio.file.Path
 @Composable
 fun SaveDesignButton(
     map: MapState,
+    playerName: String,
+    farmName: String,
     snackbarHostState: SnackbarHostState,
     designSaveAbsolutePath: String?,
 ) {
@@ -51,7 +53,9 @@ fun SaveDesignButton(
                 scope.launch {
                     withContext(PlatformDispatcher.IO) {
                         Files.createDirectories(Path.of(designSaveAbsolutePath).parent)
-                        File(designSaveAbsolutePath).writeText(DesignSaver.serializeDesignToString(map))
+                        File(designSaveAbsolutePath).writeText(
+                            text = DesignSaver.serializeDesignToString(map, playerName, farmName),
+                        )
                     }
 
                     snackbarHostState.currentSnackbarData?.dismiss()

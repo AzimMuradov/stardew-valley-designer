@@ -22,7 +22,7 @@ import nl.adaptivity.xmlutil.serialization.*
 
 
 @Serializable
-data class GameLocation(
+internal data class GameLocation(
     @XmlSerialName(value = "type", XMLConstants.XSI_NS_URI, XMLConstants.XSI_PREFIX)
     @XmlElement(false)
     val type: String? = null,

@@ -21,13 +21,14 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.stardewvalleydesigner.LoggerUtils.logger
 import io.stardewvalleydesigner.designformat.DesignFormatConverter
-import io.stardewvalleydesigner.engine.EditorEngineData
+import io.stardewvalleydesigner.designformat.models.Design
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
-import io.stardewvalleydesigner.engine.layers.layeredData
 import io.stardewvalleydesigner.engine.layout.LayoutType
 import io.stardewvalleydesigner.save.SaveDataParser
 import kotlinx.coroutines.*
 import kotlinx.coroutines.swing.Swing
+import java.nio.file.Files
+import kotlin.io.path.Path
 import io.stardewvalleydesigner.component.mainmenu.MainMenuIntent as Intent
 import io.stardewvalleydesigner.component.mainmenu.MainMenuLabel as Label
 import io.stardewvalleydesigner.component.mainmenu.MainMenuState as State
@@ -39,7 +40,7 @@ internal typealias MainMenuStore = Store<Intent, State, Label>
 class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
 
     fun create(
-        onEditorScreenCall: (EditorEngineData, designPath: String?) -> Unit,
+        onEditorScreenCall: (Design, designPath: String?) -> Unit,
     ): MainMenuStore = object : MainMenuStore by storeFactory.create(
         name = "MainMenuStore",
         initialState = State.default(),
@@ -54,18 +55,18 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
     private sealed interface Msg {
         data object ToMainMenu : Msg
         data object OpenNewDesignMenu : Msg
-        data class ChooseLayoutFromNewDesignMenu(val layout: Wrapper<EditorEngineData>) : Msg
+        data class ChooseLayoutFromNewDesignMenu(val layout: Wrapper<Design>) : Msg
 
         data object OpenOpenDesignMenu : Msg
         data object ShowLoadingInOpenDesignMenu : Msg
-        data class ShowSuccessInOpenDesignMenu(val layout: Wrapper<EditorEngineData>, val absolutePath: String?) : Msg
+        data class ShowSuccessInOpenDesignMenu(val layout: Wrapper<Design>, val absolutePath: String?) : Msg
         data object ShowErrorInOpenDesignMenu : Msg
 
         data object OpenSaveLoaderMenu : Msg
         data object ShowLoadingInSaveLoaderMenu : Msg
-        data class ShowSuccessInSaveLoaderMenu(val layouts: List<Wrapper<EditorEngineData>>) : Msg
+        data class ShowSuccessInSaveLoaderMenu(val layouts: List<Wrapper<Design>>) : Msg
         data object ShowErrorInSaveLoaderMenu : Msg
-        data class ChooseLayoutFromSaveLoaderMenu(val layout: Wrapper<EditorEngineData>) : Msg
+        data class ChooseLayoutFromSaveLoaderMenu(val layout: Wrapper<Design>) : Msg
     }
 
     private class BootstrapperImpl : CoroutineBootstrapper<Action>() {
@@ -74,7 +75,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
     }
 
     private class ExecutorImpl(
-        private val onEditorScreenCall: (EditorEngineData, designPath: String?) -> Unit,
+        private val onEditorScreenCall: (Design, designPath: String?) -> Unit,
     ) : CoroutineExecutor<Intent, Action, State, Msg, Label>(mainContext = Dispatchers.Swing) {
 
         override fun executeIntent(intent: Intent) {
@@ -99,15 +100,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                     scope.launch {
                         val parsed = try {
                             withContext(Dispatchers.IO) {
-                                val (_, entities, wallpaper, flooring, layout) = DesignFormatConverter.parse(
-                                    text = intent.text
-                                )
-                                return@withContext EditorEngineData(
-                                    layoutType = layout,
-                                    layeredEntitiesData = entities.layeredData(),
-                                    wallpaper = wallpaper,
-                                    flooring = flooring
-                                ).wrapped()
+                                DesignFormatConverter.parse(text = intent.text).wrapped()
                             }
                         } catch (e: Exception) {
                             logger.warn { e.stackTraceToString() }
@@ -143,7 +136,7 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                     scope.launch {
                         val parsed = try {
                             withContext(Dispatchers.IO) {
-                                SaveDataParser.parse(intent.text).map(EditorEngineData::wrapped)
+                                SaveDataParser.parse(intent.text).map(Design::wrapped)
                             }
                         } catch (e: Exception) {
                             logger.warn { e.stackTraceToString() }
@@ -169,6 +162,19 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
                 }
 
                 Intent.SaveLoaderMenu.Cancel -> dispatch(Msg.ToMainMenu)
+
+
+                is Intent.UserDesignsMenu.OpenDesign -> {
+                    onEditorScreenCall(intent.design, intent.designPath)
+                }
+
+                is Intent.UserDesignsMenu.DeleteDesign -> {
+                    scope.launch {
+                        withContext(Dispatchers.IO) {
+                            Files.deleteIfExists(Path(intent.designPath))
+                        }
+                    }
+                }
             }
         }
 
@@ -179,13 +185,15 @@ class MainMenuStoreFactory(private val storeFactory: StoreFactory) {
         when (msg) {
             Msg.OpenNewDesignMenu -> {
                 val availableLayouts = LayoutType.entries.map { layoutType ->
-                    EditorEngineData(
-                        layoutType = layoutType,
-                        layeredEntitiesData = LayeredEntitiesData(),
+                    Design(
+                        playerName = "",
+                        farmName = "",
+                        layout = layoutType,
+                        entities = LayeredEntitiesData(),
                         wallpaper = null,
                         flooring = null,
                     )
-                }.map(EditorEngineData::wrapped)
+                }.map(Design::wrapped)
 
                 State.NewDesignMenu.Idle(
                     availableLayouts = availableLayouts,

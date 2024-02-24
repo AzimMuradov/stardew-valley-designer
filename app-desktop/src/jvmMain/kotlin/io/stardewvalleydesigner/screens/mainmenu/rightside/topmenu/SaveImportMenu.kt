@@ -100,7 +100,14 @@ fun RowScope.SaveImportMenu(
         },
         acceptLayoutBar = {
             AcceptLayoutBar(
-                textFieldText = "",
+                textFieldText = if (state is MainMenuState.SaveLoaderMenu.Loaded) {
+                    val (_, playerName, farmName, layoutType) = state.chosenLayout.value
+                    val playerNameWithDefault = playerName.takeIf { it.isNotBlank() } ?: "??"
+                    val farmNameWithDefault = farmName.takeIf { it.isNotBlank() } ?: "??"
+                    "$playerNameWithDefault, $farmNameWithDefault ${wordList.farm}, ${wordList.layout(layoutType)}"
+                } else {
+                    ""
+                },
                 buttonText = wordList.chooseLayout,
                 buttonEnabled = state is MainMenuState.SaveLoaderMenu.Loaded,
                 placeholderText = "",

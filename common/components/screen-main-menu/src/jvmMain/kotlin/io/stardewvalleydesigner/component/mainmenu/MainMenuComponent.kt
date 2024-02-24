@@ -16,12 +16,12 @@
 
 package io.stardewvalleydesigner.component.mainmenu
 
-import io.stardewvalleydesigner.engine.EditorEngineData
+import io.stardewvalleydesigner.designformat.models.Design
 
 
 interface MainMenuComponent {
 
     val store: MainMenuStore
 
-    val onEditorScreenCall: (EditorEngineData, planPath: String?) -> Unit
+    val onEditorScreenCall: (Design, planPath: String?) -> Unit
 }

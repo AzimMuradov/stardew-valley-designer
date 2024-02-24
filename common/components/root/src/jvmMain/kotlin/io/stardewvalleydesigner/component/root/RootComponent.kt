@@ -18,7 +18,7 @@ package io.stardewvalleydesigner.component.root
 
 import io.stardewvalleydesigner.component.editor.EditorComponent
 import io.stardewvalleydesigner.component.mainmenu.MainMenuComponent
-import io.stardewvalleydesigner.engine.EditorEngineData
+import io.stardewvalleydesigner.designformat.models.Design
 import kotlinx.coroutines.flow.StateFlow
 
 
@@ -32,7 +32,7 @@ interface RootComponent {
     )
 
 
-    fun createEditorComponent(data: EditorEngineData, designPath: String?)
+    fun createEditorComponent(design: Design, designPath: String?)
 
     fun destroyEditorComponent(component: EditorComponent)
 }

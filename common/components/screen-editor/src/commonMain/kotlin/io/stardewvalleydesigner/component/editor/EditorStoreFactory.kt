@@ -29,8 +29,6 @@ import io.stardewvalleydesigner.component.editor.modules.palette.reduce
 import io.stardewvalleydesigner.component.editor.modules.toolkit.*
 import io.stardewvalleydesigner.component.editor.modules.vislayers.VisLayersState
 import io.stardewvalleydesigner.component.editor.modules.vislayers.reduce
-import io.stardewvalleydesigner.engine.EditorEngine
-import io.stardewvalleydesigner.engine.generateEngine
 import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
 import io.stardewvalleydesigner.component.editor.EditorIntent as Intent
 import io.stardewvalleydesigner.component.editor.EditorLabel as Label
@@ -48,7 +46,7 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
         name = "EditorStore",
         initialState = initialState,
         bootstrapper = BootstrapperImpl(),
-        executorFactory = { ExecutorImpl(initialState.map.toEngineData().generateEngine()) },
+        executorFactory = { ExecutorImpl(initialState) },
         reducer = reducer
     ) {}
 
@@ -58,6 +56,8 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
     private sealed interface Msg {
         data class UpdateHistory(val state: HistoryState) : Msg
         data class UpdateMap(val state: MapState) : Msg
+        data class UpdatePlayerName(val state: String) : Msg
+        data class UpdateFarmName(val state: String) : Msg
         data class UpdateToolkit(val state: ToolkitState) : Msg
         data class UpdatePalette(val state: PaletteState) : Msg
         data class UpdateVisLayers(val state: VisLayersState) : Msg
@@ -70,14 +70,23 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
     }
 
     private class ExecutorImpl(
-        engine: EditorEngine,
-    ) : CoroutineExecutor<Intent, Action, State, Msg, Label>(mainContext = PlatformDispatcher.Main) {
+        initialState: EditorState,
+    ) : CoroutineExecutor<Intent, Action, State, Msg, Label>(
+        mainContext = PlatformDispatcher.Main,
+    ) {
 
-        private val history = HistoryManagerImpl(MapState.from(engine))
+        private val history = HistoryManagerImpl(
+            initialMapState = initialState.map,
+        )
 
-        private val engine = EditorEngineImpl(engine)
+        private val engine = EditorEngineImpl(
+            engine = initialState.map.generateEngine(),
+        )
 
-        private val toolkit = ToolkitImpl(engine, ToolkitState.default())
+        private val toolkit = ToolkitImpl(
+            engine = engine,
+            initialState = initialState.toolkit
+        )
 
 
         override fun executeIntent(intent: Intent) {
@@ -104,7 +113,7 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
                 }
 
                 is Intent.Engine -> {
-                    val actionReturn = state().let { (_, map, _, palette, visLayers) ->
+                    val actionReturn = state().let { (_, map, _, _, _, palette, visLayers) ->
                         toolkit.runAction(
                             action = intent,
                             currentEntity = palette.inUse,
@@ -124,6 +133,10 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
                     }
                 }
 
+                is Intent.PlayerName.Change -> dispatch(Msg.UpdatePlayerName(intent.name))
+
+                is Intent.FarmName.Change -> dispatch(Msg.UpdateFarmName(intent.name))
+
                 is Intent.Toolkit -> {
                     dispatch(Msg.UpdateToolkit(state().toolkit.reduce(intent)))
                     state().toolkit.run { toolkit.setTool(tool, shape) }
@@ -131,7 +144,7 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
 
                 is Intent.Palette -> dispatch(Msg.UpdatePalette(state().palette.reduce(intent)))
 
-                is Intent.VisLayers -> dispatch(Msg.UpdateVisLayers(state().visLayers.reduce(intent)))
+                is Intent.VisLayers.ChangeVisibility -> dispatch(Msg.UpdateVisLayers(state().visLayers.reduce(intent)))
 
                 is Intent.WallpaperAndFlooring -> {
                     dispatch(
@@ -152,7 +165,7 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
                     dispatch(Msg.UpdateHistory(history.state))
                 }
 
-                is Intent.Options -> dispatch(Msg.UpdateOptions(state().options.reduce(intent)))
+                is Intent.Options.Toggle -> dispatch(Msg.UpdateOptions(state().options.reduce(intent)))
             }
         }
 
@@ -163,6 +176,8 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
         when (msg) {
             is Msg.UpdateHistory -> copy(history = msg.state)
             is Msg.UpdateMap -> copy(map = msg.state)
+            is Msg.UpdatePlayerName -> copy(playerName = msg.state)
+            is Msg.UpdateFarmName -> copy(farmName = msg.state)
             is Msg.UpdateToolkit -> copy(toolkit = msg.state)
             is Msg.UpdatePalette -> copy(palette = msg.state)
             is Msg.UpdateVisLayers -> copy(visLayers = msg.state)

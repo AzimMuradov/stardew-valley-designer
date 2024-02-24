@@ -55,7 +55,11 @@ fun RowScope.NewDesignMenu(
         },
         acceptLayoutBar = {
             AcceptLayoutBar(
-                textFieldText = "",
+                textFieldText = if (state is MainMenuState.NewDesignMenu.Idle) {
+                    wordList.layout(state.chosenLayout.value.layout)
+                } else {
+                    ""
+                },
                 buttonText = wordList.chooseLayout,
                 placeholderText = "",
                 onClick = { intentConsumer(MainMenuIntent.NewDesignMenu.AcceptChosen) },

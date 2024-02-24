@@ -50,6 +50,14 @@ sealed interface WordList {
 
     val ok: String
 
+    val yes: String
+
+    val no: String
+
+    val delete: String
+
+    val farm: String
+
     fun layout(type: LayoutType): String
 
 
@@ -134,6 +142,23 @@ sealed interface WordList {
     val chooseLayout: String
 
 
+    val designCardFilename: String
+
+    val designCardDate: String
+
+    val designCardPlayerName: String
+
+    val designCardFarmName: String
+
+    val designCardLayout: String
+
+    val designCardOpen: String
+
+    val designCardDeleteDialogTitle: String
+
+    val designCardDeleteDialogText: String
+
+
     // TODO : val buttonSearchForADesignText: String
 
 
@@ -150,6 +175,11 @@ sealed interface WordList {
      * Get entity name.
      */
     fun entity(e: Entity<*>): String
+
+
+    val playerNamePlaceholder: String
+
+    val farmNamePlaceholder: String
 
 
     val buttonSaveDesignAsImageTooltip: String

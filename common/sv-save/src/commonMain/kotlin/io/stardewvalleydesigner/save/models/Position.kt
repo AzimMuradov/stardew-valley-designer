@@ -21,7 +21,7 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class Position(
+internal data class Position(
     @SerialName("X") val x: UInt,
     @SerialName("Y") val y: UInt,
 )

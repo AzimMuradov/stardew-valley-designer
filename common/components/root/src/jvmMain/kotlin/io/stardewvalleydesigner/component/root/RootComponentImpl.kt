@@ -21,8 +21,7 @@ import io.stardewvalleydesigner.component.editor.EditorState
 import io.stardewvalleydesigner.component.root.RootComponent.Children
 import io.stardewvalleydesigner.component.root.children.EditorComponentImpl
 import io.stardewvalleydesigner.component.root.children.MainMenuComponentImpl
-import io.stardewvalleydesigner.engine.EditorEngineData
-import io.stardewvalleydesigner.engine.generateEngine
+import io.stardewvalleydesigner.designformat.models.Design
 import kotlinx.coroutines.flow.*
 
 
@@ -43,11 +42,11 @@ private class RootComponentImpl : RootComponent {
     override val children: StateFlow<Children> = _children
 
 
-    override fun createEditorComponent(data: EditorEngineData, designPath: String?) = _children.update { children ->
+    override fun createEditorComponent(design: Design, designPath: String?) = _children.update { children ->
         Children(
             mainMenuComponent = children.mainMenuComponent,
             editorComponents = children.editorComponents + EditorComponentImpl(
-                initialState = EditorState.from(data.generateEngine(), designPath),
+                initialState = EditorState.from(design, designPath),
             ),
         )
     }

@@ -33,6 +33,8 @@ import kotlinx.datetime.Clock
 @Composable
 fun SaveDesignAsButton(
     map: MapState,
+    playerName: String,
+    farmName: String,
     snackbarHostState: SnackbarHostState,
     designSaveAbsolutePath: String?,
     onDesignSaveAbsolutePathChanged: (String?) -> Unit,
@@ -66,7 +68,7 @@ fun SaveDesignAsButton(
             title = wordList.saveDesignAsTitle,
             defaultPathAndFile = pathname,
             extensions = listOf(JSON_FORMAT),
-            bytes = { DesignSaver.serializeDesignToBytes(map) },
+            bytes = { DesignSaver.serializeDesignToBytes(map, playerName, farmName) },
         ) { result ->
             showFileSaver = false
 

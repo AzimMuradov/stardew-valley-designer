@@ -16,7 +16,7 @@
 
 package io.stardewvalleydesigner.component.mainmenu
 
-import io.stardewvalleydesigner.engine.EditorEngineData
+import io.stardewvalleydesigner.designformat.models.Design
 
 
 sealed interface MainMenuIntent {
@@ -25,7 +25,7 @@ sealed interface MainMenuIntent {
 
         data object OpenMenu : NewDesignMenu
 
-        data class ChooseLayout(val layout: Wrapper<EditorEngineData>) : NewDesignMenu
+        data class ChooseLayout(val layout: Wrapper<Design>) : NewDesignMenu
 
         data object AcceptChosen : NewDesignMenu
 
@@ -50,15 +50,30 @@ sealed interface MainMenuIntent {
 
         data object OpenMenu : SaveLoaderMenu
 
-        data class LoadSave(val text: String, val absolutePath: String) : SaveLoaderMenu {
+        data class LoadSave(
+            val text: String,
+            val absolutePath: String,
+        ) : SaveLoaderMenu {
 
             override fun toString(): String = "LoadSave(text='${text.take(n = 100)}', absolutePath='$absolutePath')"
         }
 
-        data class ChooseLayout(val layout: Wrapper<EditorEngineData>) : SaveLoaderMenu
+        data class ChooseLayout(val layout: Wrapper<Design>) : SaveLoaderMenu
 
         data object AcceptChosen : SaveLoaderMenu
 
         data object Cancel : SaveLoaderMenu
+    }
+
+    sealed interface UserDesignsMenu : MainMenuIntent {
+
+        data class OpenDesign(
+            val design: Design,
+            val designPath: String,
+        ) : UserDesignsMenu
+
+        data class DeleteDesign(
+            val designPath: String,
+        ) : UserDesignsMenu
     }
 }

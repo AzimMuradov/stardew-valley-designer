@@ -17,7 +17,9 @@
 package io.stardewvalleydesigner.save
 
 import io.stardewvalleydesigner.LoggerUtils.logger
+import io.stardewvalleydesigner.designformat.models.Design
 import io.stardewvalleydesigner.engine.*
+import io.stardewvalleydesigner.engine.layers.entities
 import io.stardewvalleydesigner.engine.layout.*
 import io.stardewvalleydesigner.save.mappers.toPlacedEntityOrNull
 import io.stardewvalleydesigner.save.models.SaveGame
@@ -27,7 +29,7 @@ import nl.adaptivity.xmlutil.serialization.XML
 
 object SaveDataParser {
 
-    fun parse(text: String): List<EditorEngineData> {
+    fun parse(text: String): List<Design> {
         val xml = XML {
             indent = 2
             customPolicy()
@@ -83,7 +85,18 @@ object SaveDataParser {
             }
         }
 
-        return (listOf(farmEngine) + buildingsEngines).map { it.exportData() }
+        val designs = (listOf(farmEngine) + buildingsEngines).map { engine ->
+            Design(
+                playerName = save.player.name,
+                farmName = save.player.farmName,
+                layout = engine.layout.type,
+                entities = engine.layers.entities,
+                wallpaper = engine.wallpaper,
+                flooring = engine.flooring,
+            )
+        }
+
+        return designs
     }
 
     private val buildingsByType = mapOf(

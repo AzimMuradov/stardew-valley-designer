@@ -21,7 +21,7 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class PlayerChoiceColor(
+internal data class PlayerChoiceColor(
     @SerialName("R") val r: Int,
     @SerialName("G") val g: Int,
     @SerialName("B") val b: Int,
