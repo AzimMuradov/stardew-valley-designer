@@ -77,7 +77,7 @@ sealed interface Crop : Entity<CropType> {
 
         val all by lazy {
             buildSet {
-                addAll(SimpleCrop.values())
+                addAll(SimpleCrop.entries)
             }
         }
     }

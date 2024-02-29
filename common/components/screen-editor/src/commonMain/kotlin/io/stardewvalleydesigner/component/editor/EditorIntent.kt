@@ -24,6 +24,7 @@ import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layer.LayerType
+import io.stardewvalleydesigner.metadata.Season
 
 
 sealed interface EditorIntent {
@@ -45,6 +46,10 @@ sealed interface EditorIntent {
 
     sealed interface FarmName : EditorIntent {
         data class Change(val name: String) : FarmName
+    }
+
+    sealed interface SeasonMenu : EditorIntent {
+        data class Change(val season: Season) : SeasonMenu
     }
 
     sealed interface Toolkit : EditorIntent {

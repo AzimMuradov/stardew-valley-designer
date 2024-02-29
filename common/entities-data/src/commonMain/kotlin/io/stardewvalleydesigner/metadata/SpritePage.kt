@@ -20,12 +20,17 @@ import io.stardewvalleydesigner.engine.geometry.Rect
 import io.stardewvalleydesigner.engine.geometry.rectOf
 
 
-enum class EntityPage(val width: Int, val height: Int, val grain: Rect = rectOf(1, 1)) {
+enum class SpritePage(val width: Int, val height: Int, val grain: Rect = rectOf(1, 1)) {
 
     CommonObjects(width = 384, height = 624),
     Craftables(width = 128, height = 1152, grain = rectOf(1, 2)),
     Furniture(width = 512, height = 1488),
     Flooring(width = 256, height = 256),
+    FlooringWinter(width = 256, height = 256),
+    Fence1(width = 48, height = 352, grain = rectOf(1, 2)),
+    Fence2(width = 48, height = 352, grain = rectOf(1, 2)),
+    Fence3(width = 48, height = 352, grain = rectOf(1, 2)),
+    Fence5(width = 48, height = 352, grain = rectOf(1, 2)),
     Crops(width = 32, height = 768, grain = rectOf(1, 2)),
 
     // Buildings
@@ -49,7 +54,7 @@ enum class EntityPage(val width: Int, val height: Int, val grain: Rect = rectOf(
     WaterObelisk(width = 48, height = 128),
     DesertObelisk(width = 48, height = 128),
     IslandObelisk(width = 48, height = 128),
-    JunimoHut(width = 48, height = 64),
+    JunimoHut(width = 256, height = 64),
     GoldClock(width = 48, height = 80),
 
     Mill(width = 64, height = 128),

@@ -28,6 +28,7 @@ import io.stardewvalleydesigner.designformat.models.Options
 import io.stardewvalleydesigner.designformat.models.OptionsItemValue.Toggleable
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layers.isEmpty
+import io.stardewvalleydesigner.metadata.Season
 import io.stardewvalleydesigner.component.editor.EditorIntent as Intent
 
 
@@ -36,16 +37,17 @@ internal fun LeftSideMenus(
     toolkit: ToolkitState,
     palette: Palette,
     entities: LayeredEntitiesData,
+    season: Season,
     options: Options,
     width: Dp,
     intentConsumer: (Intent) -> Unit,
 ) {
     FixedSideMenus(width) {
         menu { Toolbar(toolkit, intentConsumer) }
-        menu { Palette(palette, intentConsumer) }
+        menu { Palette(palette, season, intentConsumer) }
         if (options.toggleables.getValue(Toggleable.ShowObjectCounter) && !entities.isEmpty()) {
             menu(modifier = Modifier.heightIn(max = 300.dp)) {
-                ObjectCounter(entities)
+                ObjectCounter(entities, season)
             }
         }
     }

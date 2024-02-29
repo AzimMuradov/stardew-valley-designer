@@ -21,13 +21,13 @@ import androidx.compose.ui.graphics.ImageBitmap
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ShapeType
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolType
 import io.stardewvalleydesigner.engine.layout.LayoutType
-import io.stardewvalleydesigner.metadata.EntityPage
+import io.stardewvalleydesigner.metadata.SpritePage
 import io.stardewvalleydesigner.ui.component.themes.ThemeVariant
 
 
 object ImageResources {
 
-    val entities: Map<EntityPage, ImageBitmap> @Composable get() = imagesResourcesData.entities
+    val entities: Map<SpritePage, ImageBitmap> @Composable get() = imagesResourcesData.entities
 
     val layouts: Map<LayoutType, LayoutSprite> @Composable get() = imagesResourcesData.layouts
 
@@ -57,7 +57,7 @@ fun WithImageResources(themeVariant: ThemeVariant, content: @Composable () -> Un
 }
 
 private data class ImagesResourcesData(
-    val entities: Map<EntityPage, ImageBitmap>,
+    val entities: Map<SpritePage, ImageBitmap>,
     val layouts: Map<LayoutType, LayoutSprite>,
     val wallsAndFloors: ImageBitmap,
     val tools: Map<ToolType, ImageBitmap>,

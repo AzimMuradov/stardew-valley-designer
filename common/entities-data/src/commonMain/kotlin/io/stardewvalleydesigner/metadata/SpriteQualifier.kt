@@ -17,9 +17,28 @@
 package io.stardewvalleydesigner.metadata
 
 
-data class EntitySize(val w: Int, val h: Int)
+sealed interface SpriteQualifier {
 
+    data class SeasonQualifier(
+        val season: Season,
+    ) : SpriteQualifier
 
-operator fun EntitySize.times(multiplier: Int) = EntitySize(w = w * multiplier, h = h * multiplier)
+    data class FenceQualifier(
+        val variant: FenceVariant,
+    ) : SpriteQualifier
 
-operator fun EntitySize.div(divider: Int) = EntitySize(w = w / divider, h = h / divider)
+    data class FloorQualifier(
+        val variant: FloorVariant,
+        val isNotWinter: Boolean,
+    ) : SpriteQualifier
+
+    data class TubOFlowersQualifier(
+        val isBlooming: Boolean,
+    ) : SpriteQualifier
+
+    data class SteppingStonePathQualifier(
+        val isNotWinter: Boolean,
+    ) : SpriteQualifier
+
+    data object None : SpriteQualifier
+}

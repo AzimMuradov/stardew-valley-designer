@@ -22,6 +22,7 @@ import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolkitState
 import io.stardewvalleydesigner.component.editor.modules.vislayers.VisLayersState
 import io.stardewvalleydesigner.designformat.models.*
 import io.stardewvalleydesigner.engine.layout.Layout
+import io.stardewvalleydesigner.metadata.Season
 
 
 data class EditorState(
@@ -29,6 +30,7 @@ data class EditorState(
     val map: MapState,
     val playerName: String,
     val farmName: String,
+    val season: Season,
     val toolkit: ToolkitState,
     val palette: Palette,
     val visLayers: VisLayersState,
@@ -43,6 +45,7 @@ data class EditorState(
             map = MapState.default(layout),
             playerName = "",
             farmName = "",
+            season = Season.Spring,
             toolkit = ToolkitState.default(),
             palette = Palette.default(),
             visLayers = VisLayersState.default(),
@@ -55,6 +58,7 @@ data class EditorState(
             map = MapState.from(design),
             playerName = design.playerName,
             farmName = design.farmName,
+            season = design.season,
             toolkit = ToolkitState.default(),
             palette = design.palette,
             visLayers = VisLayersState.default(),

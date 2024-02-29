@@ -215,6 +215,7 @@ private fun DesignCard(
                 ) {
                     LayoutPreview(
                         layout = LayoutsProvider.layoutOf(design.layout),
+                        season = design.season,
                         entities = design.entities,
                         wallpaper = design.wallpaper,
                         flooring = design.flooring

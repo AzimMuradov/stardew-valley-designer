@@ -24,17 +24,17 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
-import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.PlacedEntity
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.toLayerType
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
-import io.stardewvalleydesigner.metadata.EntityPage
-import io.stardewvalleydesigner.metadata.EntityPage.Companion.UNIT
+import io.stardewvalleydesigner.metadata.Season
+import io.stardewvalleydesigner.metadata.SpritePage
+import io.stardewvalleydesigner.metadata.SpritePage.Companion.UNIT
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.flooringSpriteBy
-import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.spriteBy
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.wallpaperSpriteBy
 import io.stardewvalleydesigner.ui.component.editor.res.Sprite
+import io.stardewvalleydesigner.ui.component.editor.res.SpriteUtils
 import kotlin.math.roundToInt
 
 
@@ -51,12 +51,10 @@ object DrawerUtils {
 
 
     internal fun DrawScope.drawEntityContained(
-        entityMaps: Map<EntityPage, ImageBitmap>,
-        entity: Entity<*>,
+        sprite: Sprite,
         offset: IntOffset = IntOffset.Zero,
         layoutSize: Size,
     ) {
-        val sprite = spriteBy(entityMaps, entity)
         val (spriteW, spriteH) = sprite.size
         val (layoutW, layoutH) = layoutSize
 
@@ -76,7 +74,7 @@ object DrawerUtils {
 
         when (sprite) {
             is Sprite.Image -> drawImage(sprite, dstOffset, dstSize)
-            is Sprite.TintedImage -> drawTintedImage(sprite, dstOffset, dstSize)
+            is Sprite.ChestImage -> drawChestImage(sprite, dstOffset, dstSize)
         }
     }
 
@@ -88,13 +86,13 @@ object DrawerUtils {
     ) {
         when (sprite) {
             is Sprite.Image -> drawImage(sprite, dstOffset = offset, dstSize = layoutSize, alpha)
-            is Sprite.TintedImage -> drawTintedImage(sprite, dstOffset = offset, dstSize = layoutSize, alpha)
+            is Sprite.ChestImage -> drawChestImage(sprite, dstOffset = offset, dstSize = layoutSize, alpha)
         }
     }
 
     internal fun DrawScope.drawEntityStretched(
-        entityMaps: Map<EntityPage, ImageBitmap>,
         entity: PlacedEntity<*>,
+        sprite: Sprite,
         renderSpritesFully: Boolean,
         grid: CoordinateGrid,
         paddingInPx: UInt = 0u,
@@ -102,7 +100,7 @@ object DrawerUtils {
     ) {
         val (e, place) = entity
 
-        val sprite = spriteBy(entityMaps, e).run {
+        val sprite2 = sprite.run {
             if (renderSpritesFully) {
                 this
             } else {
@@ -112,7 +110,7 @@ object DrawerUtils {
                         size = e.size.toIntSize() * UNIT
                     )
 
-                    is Sprite.TintedImage -> copy(
+                    is Sprite.ChestImage -> copy(
                         offset = offset.copy(y = offset.y + (size.height - e.size.h * UNIT)),
                         coverOffset = coverOffset.copy(y = coverOffset.y + (size.height - e.size.h * UNIT)),
                         size = e.size.toIntSize() * UNIT
@@ -121,7 +119,7 @@ object DrawerUtils {
             }
         }
 
-        val rect = (sprite.size / UNIT).toRect()
+        val rect = (sprite2.size / UNIT).toRect()
 
         val padding = IntOffset(paddingInPx.toInt(), paddingInPx.toInt())
 
@@ -129,7 +127,7 @@ object DrawerUtils {
         val offsetBottomRight = grid[place.x + rect.w, place.y + e.size.h].toIntOffset() - padding
 
         drawSpriteStretched(
-            sprite = sprite,
+            sprite = sprite2,
             offset = offsetTopLeft,
             layoutSize = IntSize(offsetTopLeft, offsetBottomRight),
             alpha = alpha,
@@ -138,16 +136,17 @@ object DrawerUtils {
 
 
     internal fun DrawScope.drawVisibleEntities(
-        entityMaps: Map<EntityPage, ImageBitmap>,
+        entityMaps: Map<SpritePage, ImageBitmap>,
         entities: LayeredEntitiesData,
+        season: Season,
         visibleLayers: Set<LayerType<*>>,
         renderSpritesFully: Boolean,
         grid: CoordinateGrid,
     ) {
-        val sorted = visibleLayers.flatMap(entities::entitiesBy).sortedWith(placedEntityComparator)
+        val spriteMaps = SpriteUtils.calculateSprite(entityMaps, entities, visibleLayers, season)
 
-        for (entity in sorted) {
-            drawEntityStretched(entityMaps, entity, renderSpritesFully, grid)
+        for ((entity, sprite) in spriteMaps) {
+            drawEntityStretched(entity, sprite, renderSpritesFully, grid)
         }
     }
 
@@ -214,8 +213,8 @@ object DrawerUtils {
         )
     }
 
-    private fun DrawScope.drawTintedImage(
-        sprite: Sprite.TintedImage,
+    private fun DrawScope.drawChestImage(
+        sprite: Sprite.ChestImage,
         dstOffset: IntOffset, dstSize: IntSize,
         alpha: Float = 1.0f,
     ) {

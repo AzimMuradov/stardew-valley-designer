@@ -30,11 +30,13 @@ import io.stardewvalleydesigner.component.editor.modules.history.HistoryState
 import io.stardewvalleydesigner.designformat.models.Options
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.EntityType
+import io.stardewvalleydesigner.metadata.Season
 
 
 @Composable
 internal fun TopMenu(
     history: HistoryState,
+    season: Season,
     disallowedTypes: Set<EntityType>,
     onEntitySelection: (Entity<*>) -> Unit,
     options: Options,
@@ -51,30 +53,35 @@ internal fun TopMenu(
         History(history, intentConsumer)
 
         EntitySelectionMenu(
+            season,
             menu = BuildingsMenu,
             disallowedTypes = disallowedTypes,
             onEntitySelection = onEntitySelection,
         )
 
         EntitySelectionMenu(
+            season,
             menu = CommonEquipmentMenu,
             disallowedTypes = disallowedTypes,
             onEntitySelection = onEntitySelection,
         )
 
         EntitySelectionMenu(
+            season,
             menu = FurnitureMenu,
             disallowedTypes = disallowedTypes,
             onEntitySelection = onEntitySelection,
         )
 
         EntitySelectionMenu(
+            season,
             menu = FarmElementsMenu,
             disallowedTypes = disallowedTypes,
             onEntitySelection = onEntitySelection,
         )
 
         EntitySelectionMenu(
+            season,
             menu = TerrainElementsMenu,
             disallowedTypes = disallowedTypes,
             onEntitySelection = onEntitySelection,

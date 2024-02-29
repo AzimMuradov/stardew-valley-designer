@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.ui.component.editor.utils
+package io.stardewvalleydesigner.metadata
 
-import io.stardewvalleydesigner.engine.entity.Color
-import androidx.compose.ui.graphics.Color as ComposeColor
+import io.stardewvalleydesigner.engine.entity.Entity
 
 
-internal fun Color.toComposeColor(): ComposeColor = ComposeColor(
-    red = r.toInt(),
-    green = g.toInt(),
-    blue = b.toInt(),
+data class QualifiedEntity<E : Entity<*>>(
+    val entity: E,
+    val qualifier: SpriteQualifier = SpriteQualifier.None,
 )

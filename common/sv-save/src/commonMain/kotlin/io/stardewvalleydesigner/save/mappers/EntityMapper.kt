@@ -36,11 +36,11 @@ internal fun Object.toPlacedEntityOrNull(): PlacedEntity<*>? {
         },
         localId = when (typeAttr) {
             "Fence" -> when (name) {
-                "Wood Fence" -> entityToId[Equipment.SimpleEquipment.WoodFence]?.localId
-                "Stone Fence" -> entityToId[Equipment.SimpleEquipment.StoneFence]?.localId
-                "Iron Fence" -> entityToId[Equipment.SimpleEquipment.IronFence]?.localId
-                "Gate" -> entityToId[Equipment.SimpleEquipment.Gate]?.localId
-                "Hardwood Fence" -> entityToId[Equipment.SimpleEquipment.HardwoodFence]?.localId
+                "Wood Fence" -> entityToId(Equipment.SimpleEquipment.WoodFence).localId
+                "Stone Fence" -> entityToId(Equipment.SimpleEquipment.StoneFence).localId
+                "Iron Fence" -> entityToId(Equipment.SimpleEquipment.IronFence).localId
+                "Gate" -> entityToId(Equipment.SimpleEquipment.Gate).localId
+                "Hardwood Fence" -> entityToId(Equipment.SimpleEquipment.HardwoodFence).localId
                 else -> null
             } ?: return null
 
@@ -57,7 +57,7 @@ internal fun Object.toPlacedEntityOrNull(): PlacedEntity<*>? {
             else -> null
         },
     )
-    return entityById[entityId]?.placeIt(there = tileLocation.toCoordinate())
+    return entityById(entityId)?.placeIt(there = tileLocation.toCoordinate())
 }
 
 internal fun Furniture.toPlacedEntityOrNull(): PlacedEntity<*>? {
@@ -85,29 +85,29 @@ internal fun Furniture.toPlacedEntityOrNull(): PlacedEntity<*>? {
         flavor = rotation
     )
 
-    return entityById[entityId]?.placeIt(there = tileLocation.toCoordinate())
+    return entityById(entityId)?.placeIt(there = tileLocation.toCoordinate())
 }
 
 internal fun Item<Vector2Wrapper, TerrainFeatureWrapper>.toPlacedEntityOrNull(): PlacedEntity<*>? {
     val (v2, tfw) = this
     val entity = when (tfw.tf.typeAttr) {
-        "Flooring" -> entityById[
+        "Flooring" -> entityById(
             EntityId(
                 page = EntityPage.Flooring,
                 localId = tfw.tf.whichFloor!!
             )
-        ]
+        )
 
         "Grass" -> Floor.Grass
 
         "Tree" -> null
 
-        "HoeDirt" -> entityById[
+        "HoeDirt" -> entityById(
             EntityId(
                 page = EntityPage.Crops,
                 localId = tfw.tf.crop?.rowInSpriteSheet ?: return null
             )
-        ]
+        )
 
         else -> null
     }

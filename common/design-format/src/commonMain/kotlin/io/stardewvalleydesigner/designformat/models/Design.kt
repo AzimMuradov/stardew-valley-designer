@@ -21,6 +21,7 @@ import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layout.LayoutType
+import io.stardewvalleydesigner.metadata.Season
 import kotlinx.serialization.Serializable
 
 
@@ -29,6 +30,7 @@ data class Design(
     val version: DesignVersion = DesignVersion.VERSION_0_11_0,
     val playerName: String = "",
     val farmName: String = "",
+    val season: Season,
     val layout: LayoutType,
     val entities: @Serializable(with = LayeredEntitiesDataSerializer::class) LayeredEntitiesData = LayeredEntitiesData(),
     val wallpaper: @Serializable(with = WallpaperSerializer::class) Wallpaper? = null,

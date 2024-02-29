@@ -17,9 +17,9 @@
 package io.stardewvalleydesigner.metadata
 
 
-data class EntityOffset(val x: Int, val y: Int)
-
-
-operator fun EntityOffset.times(multiplier: Int) = EntityOffset(x = x * multiplier, y = y * multiplier)
-
-operator fun EntityOffset.div(divider: Int) = EntityOffset(x = x / divider, y = y / divider)
+enum class Season {
+    Spring,
+    Summer,
+    Fall,
+    Winter,
+}

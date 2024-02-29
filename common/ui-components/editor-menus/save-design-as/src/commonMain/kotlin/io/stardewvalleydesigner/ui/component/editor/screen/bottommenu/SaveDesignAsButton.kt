@@ -28,6 +28,7 @@ import io.stardewvalleydesigner.designformat.models.Palette
 import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
 import io.stardewvalleydesigner.kmplib.fs.FileSystem
 import io.stardewvalleydesigner.kmplib.fs.getSvdSavesDir
+import io.stardewvalleydesigner.metadata.Season
 import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesignas.*
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import kotlinx.coroutines.launch
@@ -40,6 +41,7 @@ fun SaveDesignAsButton(
     map: MapState,
     playerName: String,
     farmName: String,
+    season: Season,
     palette: Palette,
     options: Options,
     snackbarHostState: SnackbarHostState,
@@ -80,6 +82,7 @@ fun SaveDesignAsButton(
                     map,
                     playerName,
                     farmName,
+                    season,
                     palette,
                     options,
                 )

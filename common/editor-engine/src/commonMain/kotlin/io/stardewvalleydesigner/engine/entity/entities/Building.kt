@@ -81,35 +81,35 @@ sealed interface Building : Entity<BuildingType> {
     sealed class ColoredFarmBuilding(override val size: Rect) : Building, TripleColoredFarmBuilding()
 
     data class Barn3(
-        override var farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
+        override val farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
     ) : ColoredFarmBuilding(barnSize)
 
     data class Coop3(
-        override var farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
+        override val farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
     ) : ColoredFarmBuilding(coopSize)
 
     data class Shed2(
-        override var farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
+        override val farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
     ) : ColoredFarmBuilding(shedSize)
 
     data class Stable(
-        override var farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
+        override val farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
     ) : ColoredFarmBuilding(size = rectOf(w = 4, h = 2))
 
     data class StoneCabin3(
-        override var farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
+        override val farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
     ) : ColoredFarmBuilding(cabinSize)
 
     data class PlankCabin3(
-        override var farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
+        override val farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
     ) : ColoredFarmBuilding(cabinSize)
 
     data class LogCabin3(
-        override var farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
+        override val farmBuildingColors: FarmBuildingColors = FarmBuildingColors(),
     ) : ColoredFarmBuilding(cabinSize)
 
     data class FishPond(
-        override var color: FishPondColors = Default,
+        override val color: FishPondColors = Default,
     ) : Building, ColoredFishPond() {
 
         override val size: Rect = rectOf(w = 5, h = 5)
@@ -123,7 +123,7 @@ sealed interface Building : Entity<BuildingType> {
 
         val all by lazy {
             buildSet {
-                addAll(SimpleBuilding.values())
+                addAll(SimpleBuilding.entries)
                 add(Barn3())
                 add(Coop3())
                 add(Shed2())

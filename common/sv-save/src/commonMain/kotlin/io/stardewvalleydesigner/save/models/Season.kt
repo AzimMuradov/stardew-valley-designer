@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata
+package io.stardewvalleydesigner.save.models
 
 
-data class EntityMetadata(
-    val id: EntityId,
-    val sourceOffset: EntityOffset,
-    val sourceSize: EntitySize,
-) {
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is EntityMetadata) return false
-
-        return id == other.id
-    }
-
-    override fun hashCode(): Int = id.hashCode()
+enum class Season {
+    spring,
+    summer,
+    fall,
+    winter,
 }

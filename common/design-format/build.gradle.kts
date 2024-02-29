@@ -17,7 +17,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.common.editorEngine)
-                implementation(projects.common.entitiesMetadata)
+                implementation(projects.common.entitiesData)
 
                 implementation(libs.kotlinx.serialization.json)
 

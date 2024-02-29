@@ -41,7 +41,7 @@ internal object PlacedEntitySerializer : KSerializer<PlacedEntity<*>> {
         delegateSerializer.serialize(
             encoder,
             value = PlacedEntitySurrogate(
-                id = EntityDataProvider.entityToId.getValue(value.rectObject),
+                id = EntityDataProvider.entityToId(value.rectObject),
                 place = value.place
             )
         )
@@ -49,7 +49,7 @@ internal object PlacedEntitySerializer : KSerializer<PlacedEntity<*>> {
 
     override fun deserialize(decoder: Decoder): PlacedEntity<*> {
         val (id, place) = delegateSerializer.deserialize(decoder)
-        return EntityDataProvider.entityById.getValue(id).placeIt(place)
+        return EntityDataProvider.entityById(id)?.placeIt(place) ?: error("can't find $id")
     }
 }
 

@@ -16,11 +16,25 @@
 
 package io.stardewvalleydesigner.metadata
 
-import io.stardewvalleydesigner.engine.entity.Entity
+import io.stardewvalleydesigner.engine.entity.Color
+import io.stardewvalleydesigner.metadata.SpritePage.Companion.UNIT
 
 
-data class EntityFullData(
-    val entity: Entity<*>,
-    val metadata: EntityMetadata,
-    // val flavor
-)
+sealed interface SpriteId {
+
+    data class RegularSprite(
+        val page: SpritePage,
+        val size: SpriteSize,
+        val offset: SpriteOffset,
+    ) : SpriteId
+
+    data class ChestSprite(
+        val tint: Color,
+        val offset: SpriteOffset,
+        val coverOffset: SpriteOffset,
+    ) : SpriteId {
+
+        val page = SpritePage.Craftables
+        val size = SpriteSize(w = 1, h = 2) * UNIT
+    }
+}

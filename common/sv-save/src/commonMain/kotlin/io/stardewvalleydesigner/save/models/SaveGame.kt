@@ -24,5 +24,6 @@ import nl.adaptivity.xmlutil.serialization.XmlChildrenName
 internal data class SaveGame(
     val player: Player,
     @XmlChildrenName("GameLocation", "", "") val locations: List<GameLocation>,
+    val currentSeason: Season,
     val gameVersion: String,
 )

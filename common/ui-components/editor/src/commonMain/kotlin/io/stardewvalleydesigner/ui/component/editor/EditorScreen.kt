@@ -43,7 +43,7 @@ fun EditorScreen(
 ) {
     val store = component.store
     val state by store.states.collectAsState(component.store.state)
-    val (history, map, _, _, toolkit, palette, visLayers, options) = state
+    val (history, map, _, _, season, toolkit, palette, visLayers, options) = state
 
     val snackbarHostState = remember { SnackbarHostState() }
     var currCoordinate by remember { mutableStateOf(UNDEFINED) }
@@ -51,6 +51,7 @@ fun EditorScreen(
     Column(Modifier.fillMaxSize()) {
         TopMenu(
             history = history,
+            season = season,
             disallowedTypes = map.layout.disallowedTypes,
             onEntitySelection = { component.store.accept(EditorIntent.Palette.AddToInUse(it)) },
             options = options,
@@ -70,12 +71,14 @@ fun EditorScreen(
                 toolkit = toolkit,
                 palette = palette,
                 entities = map.entities,
+                season = season,
                 options = options,
                 width = menuWidth,
                 intentConsumer = store::accept
             )
             MainPart(
                 map = map,
+                season = season,
                 visibleLayers = visLayers.visibleLayers,
                 toolkit = toolkit,
                 options = options,
@@ -87,6 +90,10 @@ fun EditorScreen(
                 visibleLayers = visLayers.visibleLayers,
                 onVisibilityChange = { layerType, visible ->
                     store.accept(EditorIntent.VisLayers.ChangeVisibility(layerType, visible))
+                },
+                chosenSeason = season,
+                onSeasonChosen = {
+                    store.accept(EditorIntent.SeasonMenu.Change(it))
                 },
                 layout = map.layout,
                 width = menuWidth,

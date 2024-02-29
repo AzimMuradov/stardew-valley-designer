@@ -33,6 +33,7 @@ import io.stardewvalleydesigner.engine.geometry.*
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layout.Layout
+import io.stardewvalleydesigner.metadata.Season
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResources
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.layoutSpriteBy
 import io.stardewvalleydesigner.ui.component.editor.utils.CoordinateGrid
@@ -45,6 +46,7 @@ import kotlin.math.roundToInt
 @Composable
 fun BoxScope.LayoutPreview(
     layout: Layout,
+    season: Season,
     entities: LayeredEntitiesData,
     wallpaper: Wallpaper?,
     flooring: Flooring?,
@@ -90,6 +92,7 @@ fun BoxScope.LayoutPreview(
 
         drawVisibleEntities(
             entityMaps = images,
+            season = season,
             entities = entities,
             visibleLayers = LayerType.all,
             renderSpritesFully = true,

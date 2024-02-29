@@ -23,8 +23,10 @@ import io.stardewvalleydesigner.engine.layers.entities
 import io.stardewvalleydesigner.engine.layout.*
 import io.stardewvalleydesigner.save.mappers.toPlacedEntityOrNull
 import io.stardewvalleydesigner.save.models.SaveGame
+import io.stardewvalleydesigner.save.models.Season
 import kotlinx.serialization.decodeFromString
 import nl.adaptivity.xmlutil.serialization.XML
+import io.stardewvalleydesigner.metadata.Season as SeasonData
 
 
 object SaveDataParser {
@@ -89,6 +91,12 @@ object SaveDataParser {
             Design(
                 playerName = save.player.name,
                 farmName = save.player.farmName,
+                season = when (save.currentSeason) {
+                    Season.spring -> SeasonData.Spring
+                    Season.summer -> SeasonData.Summer
+                    Season.fall -> SeasonData.Fall
+                    Season.winter -> SeasonData.Winter
+                },
                 layout = engine.layout.type,
                 entities = engine.layers.entities,
                 wallpaper = engine.wallpaper,

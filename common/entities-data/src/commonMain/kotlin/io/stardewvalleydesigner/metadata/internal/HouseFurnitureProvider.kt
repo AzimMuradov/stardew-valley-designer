@@ -17,9 +17,10 @@
 package io.stardewvalleydesigner.metadata.internal
 
 import io.stardewvalleydesigner.engine.entity.HouseFurniture
-import io.stardewvalleydesigner.metadata.EntityMetadata
+import io.stardewvalleydesigner.metadata.QualifiedEntity
+import io.stardewvalleydesigner.metadata.QualifiedEntityData
 
 
-internal fun houseFurniture(entity: HouseFurniture): EntityMetadata = when (entity) {
-    else -> TODO()
+internal fun houseFurniture(qe: QualifiedEntity<HouseFurniture>): QualifiedEntityData {
+    TODO()
 }
