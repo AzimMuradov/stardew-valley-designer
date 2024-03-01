@@ -64,6 +64,7 @@ Online editor: https://azimmuradov.github.io/stardew-valley-designer/svd/editor.
 - Wallpapers and flooring support
 - Chest colors support
 - Toggleable "area of effect" hints for scarecrows, sprinklers, bee houses, and junimo huts
+- Accurate real-time rendering
 
 ### :construction: Experimental design saves
 
@@ -72,19 +73,34 @@ Ability to save and import designs.
 > [!WARNING]
 > Currently, design saves may be backward incompatible with subsequent releases.
 
-## :framed_picture: Screenshots
+## :framed_picture: Screenshot gallery
 
 ### :desktop_computer: Desktop
 
-![desktop-1.png](docs/user/imgs/desktop-1.png)
-
-![desktop-2.png](docs/user/imgs/desktop-2.png)
-
-![desktop-3.png](docs/user/imgs/desktop-3.png)
+![desktop-01.png](docs/user/gallery/desktop-01.png)
+![desktop-02.png](docs/user/gallery/desktop-02.png)
+![desktop-03.png](docs/user/gallery/desktop-03.png)
+![desktop-04.png](docs/user/gallery/desktop-04.png)
+![desktop-05.png](docs/user/gallery/desktop-05.png)
+![desktop-06.png](docs/user/gallery/desktop-06.png)
+![desktop-07.png](docs/user/gallery/desktop-07.png)
+![desktop-08.png](docs/user/gallery/desktop-08.png)
+![desktop-09.png](docs/user/gallery/desktop-09.png)
+![desktop-10.png](docs/user/gallery/desktop-10.png)
+![desktop-11.png](docs/user/gallery/desktop-11.png)
+![desktop-12.png](docs/user/gallery/desktop-12.png)
+![desktop-13.png](docs/user/gallery/desktop-13.png)
 
 ### :globe_with_meridians: Web
 
-![web-1.png](docs/user/imgs/web-1.png)
+![web-01.png](docs/user/gallery/web-01.png)
+![web-02.png](docs/user/gallery/web-02.png)
+![web-03.png](docs/user/gallery/web-03.png)
+![web-04.png](docs/user/gallery/web-04.png)
+![web-05.png](docs/user/gallery/web-05.png)
+![web-06.png](docs/user/gallery/web-06.png)
+![web-07.png](docs/user/gallery/web-07.png)
+![web-08.png](docs/user/gallery/web-08.png)
 
 ## :memo: Changelog & Roadmap
 
