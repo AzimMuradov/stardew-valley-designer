@@ -1,14 +1,14 @@
 [versions]
 
-kotlin = "1.9.21"
+kotlin = "1.9.22"
 
-compose = "1.6.0-beta02"
+compose = "1.6.0"
 
 lwjgl = "3.3.3"
 
 mvikotlin = "4.0.0-alpha02"
 
-kotlinx-coroutines = "1.8.0-RC2"
+kotlinx-coroutines = "1.8.0"
 
 # File System
 
@@ -17,8 +17,8 @@ directories = "26"
 
 # Serialization
 
-kotlinx-serialization-plugin = "1.9.21"
-kotlinx-serialization-json = "1.6.2"
+kotlinx-serialization-plugin = "1.9.22"
+kotlinx-serialization-json = "1.6.3"
 xmlutil = "0.86.3"
 
 # Date & Time
