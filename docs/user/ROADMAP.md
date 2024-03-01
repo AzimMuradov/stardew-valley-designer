@@ -5,7 +5,7 @@
 ### Desktop & Web
 
 - Support greenhouse and farmhouse
-- Better "toggle preview"
+- Better view options for the editor
 
 ## 0.13.0
 
@@ -63,3 +63,4 @@
 - Dark theme, OS theme
 - Stardew Valley mods support
 - "Open with..." feature
+- Support stepping stone path variants
