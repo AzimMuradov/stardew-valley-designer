@@ -13,6 +13,8 @@ I should note that versions before [0.8.0](#rocket-080---2023-07-08) don't have 
 
 _Supported Stardew Valley version - 1.5.6_
 
+Because the design format is still experimental, v0.10.* and v0.11.* formats are incompatible.
+
 ### Desktop & Web
 
 #### Added
@@ -267,7 +269,8 @@ _Supported Stardew Valley version - 1.5.6_
 - Initial state
 
 
-[unreleased]: https://github.com/AzimMuradov/stardew-valley-designer/compare/v0.10.2...HEAD
+[unreleased]: https://github.com/AzimMuradov/stardew-valley-designer/compare/v0.11.0...HEAD
+[0.10.2]: https://github.com/AzimMuradov/stardew-valley-designer/compare/v0.10.2...v0.11.0
 [0.10.2]: https://github.com/AzimMuradov/stardew-valley-designer/compare/v0.10.1...v0.10.2
 [0.10.1]: https://github.com/AzimMuradov/stardew-valley-designer/compare/v0.10.0...v0.10.1
 [0.10.0]: https://github.com/AzimMuradov/stardew-valley-designer/compare/v0.9.1...v0.10.0
