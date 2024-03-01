@@ -19,8 +19,26 @@ package io.stardewvalleydesigner.metadata.internal
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.Rotations
 import io.stardewvalleydesigner.metadata.*
+import io.stardewvalleydesigner.metadata.SpritePage.CommonObjects
 import io.stardewvalleydesigner.metadata.SpritePage.Companion.UNIT
+import io.stardewvalleydesigner.metadata.SpritePage.Furniture
 
+
+internal fun common(
+    entity: Entity<*>,
+    id: Int,
+) = QualifiedEntityData(
+    qualifiedEntity = QualifiedEntity(entity),
+    entityId = EntityId(EntityPage.CommonObjects, id),
+    spriteId = SpriteId.RegularSprite(
+        page = CommonObjects,
+        offset = SpriteOffset(
+            x = id % (CommonObjects.width / UNIT),
+            y = id / (CommonObjects.width / UNIT),
+        ) * UNIT,
+        size = SpriteSize(w = 1, h = 1) * UNIT,
+    )
+)
 
 internal fun furniture(
     entity: Entity<*>,
@@ -29,16 +47,16 @@ internal fun furniture(
     w: Int, h: Int,
     r: Rotations,
 ) = QualifiedEntityData(
-    qualifiedEntity = QualifiedEntity(entity, SpriteQualifier.None),
+    qualifiedEntity = QualifiedEntity(entity),
     entityId = EntityId(
         page = EntityPage.Furniture,
         localId = id,
         flavor = r,
     ),
     spriteId = SpriteId.RegularSprite(
-        page = SpritePage.Furniture,
+        page = Furniture,
         offset = SpriteOffset(x, y) * UNIT,
-        size = SpriteSize(w, h) * UNIT
+        size = SpriteSize(w, h) * UNIT,
     ),
 )
 
@@ -47,15 +65,14 @@ internal fun furniture(
     x: Int, y: Int,
     w: Int, h: Int,
 ) = QualifiedEntityData(
-    qualifiedEntity = QualifiedEntity(entity, SpriteQualifier.None),
+    qualifiedEntity = QualifiedEntity(entity),
     entityId = EntityId(
         page = EntityPage.Furniture,
-        localId = (SpritePage.Furniture.width / UNIT) * y + x,
-        flavor = null,
+        localId = (Furniture.width / UNIT) * y + x,
     ),
     spriteId = SpriteId.RegularSprite(
-        page = SpritePage.Furniture,
+        page = Furniture,
         offset = SpriteOffset(x, y) * UNIT,
-        size = SpriteSize(w, h) * UNIT
+        size = SpriteSize(w, h) * UNIT,
     ),
 )

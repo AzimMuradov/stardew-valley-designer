@@ -20,7 +20,13 @@ import io.stardewvalleydesigner.engine.entity.Rotations
 import io.stardewvalleydesigner.engine.entity.Rotations.Rotations2
 import io.stardewvalleydesigner.engine.entity.Rotations.Rotations4
 import io.stardewvalleydesigner.engine.entity.UniversalFurniture
-import io.stardewvalleydesigner.engine.entity.UniversalFurniture.*
+import io.stardewvalleydesigner.engine.entity.UniversalFurniture.Bench.*
+import io.stardewvalleydesigner.engine.entity.UniversalFurniture.Chair.*
+import io.stardewvalleydesigner.engine.entity.UniversalFurniture.CoffeeTable
+import io.stardewvalleydesigner.engine.entity.UniversalFurniture.LongTable.*
+import io.stardewvalleydesigner.engine.entity.UniversalFurniture.SimpleUniversalFurniture.*
+import io.stardewvalleydesigner.engine.entity.UniversalFurniture.StoneSlab
+import io.stardewvalleydesigner.engine.entity.UniversalFurniture.WoodenEndTable.*
 import io.stardewvalleydesigner.metadata.QualifiedEntity
 import io.stardewvalleydesigner.metadata.QualifiedEntityData
 
@@ -35,267 +41,267 @@ internal fun universalFurniture(qe: QualifiedEntity<UniversalFurniture>): Qualif
         furniture(entity, id, x, y, w, h, r)
 
     return when (entity) {
-        SimpleUniversalFurniture.GreenOfficeStool -> furniture(x = 30, y = 0, w = 1, h = 2)
-        SimpleUniversalFurniture.OrangeOfficeStool -> furniture(x = 31, y = 0, w = 1, h = 2)
-        SimpleUniversalFurniture.GreenStool -> furniture(x = 30, y = 2, w = 1, h = 2)
-        SimpleUniversalFurniture.BlueStool -> furniture(x = 31, y = 2, w = 1, h = 2)
+        GreenOfficeStool -> furniture(x = 30, y = 0, w = 1, h = 2)
+        OrangeOfficeStool -> furniture(x = 31, y = 0, w = 1, h = 2)
+        GreenStool -> furniture(x = 30, y = 2, w = 1, h = 2)
+        BlueStool -> furniture(x = 31, y = 2, w = 1, h = 2)
 
-        SimpleUniversalFurniture.OakTable -> furniture(x = 0, y = 35, w = 2, h = 3)
-        SimpleUniversalFurniture.OakTeaTable -> furniture(x = 0, y = 38, w = 2, h = 2)
-        SimpleUniversalFurniture.BirchTable -> furniture(x = 4, y = 35, w = 2, h = 3)
-        SimpleUniversalFurniture.BirchTeaTable -> furniture(x = 4, y = 38, w = 2, h = 2)
-        SimpleUniversalFurniture.MahoganyTable -> furniture(x = 6, y = 35, w = 2, h = 3)
-        SimpleUniversalFurniture.MahoganyTeaTable -> furniture(x = 6, y = 38, w = 2, h = 2)
-        SimpleUniversalFurniture.WalnutTable -> furniture(x = 2, y = 35, w = 2, h = 3)
-        SimpleUniversalFurniture.WalnutTeaTable -> furniture(x = 2, y = 38, w = 2, h = 2)
-        SimpleUniversalFurniture.ModernTable -> furniture(x = 12, y = 35, w = 2, h = 3)
-        SimpleUniversalFurniture.ModernTeaTable -> furniture(x = 8, y = 38, w = 2, h = 2)
-        SimpleUniversalFurniture.ModernEndTable -> furniture(x = 23, y = 43, w = 1, h = 2)
-        SimpleUniversalFurniture.PuzzleTable -> furniture(x = 22, y = 35, w = 2, h = 3)
-        SimpleUniversalFurniture.SunTable -> furniture(x = 8, y = 35, w = 2, h = 3)
-        SimpleUniversalFurniture.MoonTable -> furniture(x = 10, y = 35, w = 2, h = 3)
-        SimpleUniversalFurniture.LuxuryTable -> furniture(x = 16, y = 35, w = 2, h = 3)
-        SimpleUniversalFurniture.DivinerTable -> furniture(x = 18, y = 35, w = 2, h = 3)
-        SimpleUniversalFurniture.GrandmotherEndTable -> furniture(x = 24, y = 43, w = 1, h = 2)
-        SimpleUniversalFurniture.PubTable -> furniture(x = 14, y = 35, w = 2, h = 3)
-        SimpleUniversalFurniture.LuauTable -> furniture(x = 28, y = 35, w = 2, h = 3)
-        SimpleUniversalFurniture.DarkTable -> furniture(x = 30, y = 35, w = 2, h = 3)
-        SimpleUniversalFurniture.CandyTable -> furniture(x = 26, y = 35, w = 2, h = 3)
-        SimpleUniversalFurniture.WinterTable -> furniture(x = 24, y = 35, w = 2, h = 3)
-        SimpleUniversalFurniture.WinterEndTable -> furniture(x = 25, y = 43, w = 1, h = 2)
-        SimpleUniversalFurniture.NeolithicTable -> furniture(x = 20, y = 35, w = 2, h = 3)
+        OakTable -> furniture(x = 0, y = 35, w = 2, h = 3)
+        OakTeaTable -> furniture(x = 0, y = 38, w = 2, h = 2)
+        BirchTable -> furniture(x = 4, y = 35, w = 2, h = 3)
+        BirchTeaTable -> furniture(x = 4, y = 38, w = 2, h = 2)
+        MahoganyTable -> furniture(x = 6, y = 35, w = 2, h = 3)
+        MahoganyTeaTable -> furniture(x = 6, y = 38, w = 2, h = 2)
+        WalnutTable -> furniture(x = 2, y = 35, w = 2, h = 3)
+        WalnutTeaTable -> furniture(x = 2, y = 38, w = 2, h = 2)
+        ModernTable -> furniture(x = 12, y = 35, w = 2, h = 3)
+        ModernTeaTable -> furniture(x = 8, y = 38, w = 2, h = 2)
+        ModernEndTable -> furniture(x = 23, y = 43, w = 1, h = 2)
+        PuzzleTable -> furniture(x = 22, y = 35, w = 2, h = 3)
+        SunTable -> furniture(x = 8, y = 35, w = 2, h = 3)
+        MoonTable -> furniture(x = 10, y = 35, w = 2, h = 3)
+        LuxuryTable -> furniture(x = 16, y = 35, w = 2, h = 3)
+        DivinerTable -> furniture(x = 18, y = 35, w = 2, h = 3)
+        GrandmotherEndTable -> furniture(x = 24, y = 43, w = 1, h = 2)
+        PubTable -> furniture(x = 14, y = 35, w = 2, h = 3)
+        LuauTable -> furniture(x = 28, y = 35, w = 2, h = 3)
+        DarkTable -> furniture(x = 30, y = 35, w = 2, h = 3)
+        CandyTable -> furniture(x = 26, y = 35, w = 2, h = 3)
+        WinterTable -> furniture(x = 24, y = 35, w = 2, h = 3)
+        WinterEndTable -> furniture(x = 25, y = 43, w = 1, h = 2)
+        NeolithicTable -> furniture(x = 20, y = 35, w = 2, h = 3)
 
-        SimpleUniversalFurniture.HousePlant1 -> furniture(x = 0, y = 43, w = 1, h = 2)
-        SimpleUniversalFurniture.HousePlant2 -> furniture(x = 1, y = 43, w = 1, h = 2)
-        SimpleUniversalFurniture.HousePlant3 -> furniture(x = 2, y = 43, w = 1, h = 2)
-        SimpleUniversalFurniture.HousePlant4 -> furniture(x = 3, y = 43, w = 1, h = 2)
-        SimpleUniversalFurniture.HousePlant5 -> furniture(x = 4, y = 43, w = 1, h = 2)
-        SimpleUniversalFurniture.HousePlant6 -> furniture(x = 5, y = 43, w = 1, h = 2)
-        SimpleUniversalFurniture.HousePlant7 -> furniture(x = 6, y = 43, w = 1, h = 2)
-        SimpleUniversalFurniture.HousePlant8 -> furniture(x = 7, y = 43, w = 1, h = 2)
-        SimpleUniversalFurniture.HousePlant9 -> furniture(x = 8, y = 43, w = 1, h = 2)
-        SimpleUniversalFurniture.HousePlant10 -> furniture(x = 9, y = 43, w = 1, h = 2)
-        SimpleUniversalFurniture.HousePlant11 -> furniture(x = 10, y = 43, w = 1, h = 2)
-        SimpleUniversalFurniture.HousePlant12 -> furniture(x = 11, y = 43, w = 1, h = 2)
-        SimpleUniversalFurniture.HousePlant13 -> furniture(x = 12, y = 43, w = 1, h = 2)
-        SimpleUniversalFurniture.HousePlant14 -> furniture(x = 13, y = 43, w = 1, h = 2)
-        SimpleUniversalFurniture.HousePlant15 -> furniture(x = 14, y = 43, w = 1, h = 2)
+        HousePlant1 -> furniture(x = 0, y = 43, w = 1, h = 2)
+        HousePlant2 -> furniture(x = 1, y = 43, w = 1, h = 2)
+        HousePlant3 -> furniture(x = 2, y = 43, w = 1, h = 2)
+        HousePlant4 -> furniture(x = 3, y = 43, w = 1, h = 2)
+        HousePlant5 -> furniture(x = 4, y = 43, w = 1, h = 2)
+        HousePlant6 -> furniture(x = 5, y = 43, w = 1, h = 2)
+        HousePlant7 -> furniture(x = 6, y = 43, w = 1, h = 2)
+        HousePlant8 -> furniture(x = 7, y = 43, w = 1, h = 2)
+        HousePlant9 -> furniture(x = 8, y = 43, w = 1, h = 2)
+        HousePlant10 -> furniture(x = 9, y = 43, w = 1, h = 2)
+        HousePlant11 -> furniture(x = 10, y = 43, w = 1, h = 2)
+        HousePlant12 -> furniture(x = 11, y = 43, w = 1, h = 2)
+        HousePlant13 -> furniture(x = 12, y = 43, w = 1, h = 2)
+        HousePlant14 -> furniture(x = 13, y = 43, w = 1, h = 2)
+        HousePlant15 -> furniture(x = 14, y = 43, w = 1, h = 2)
 
-        SimpleUniversalFurniture.DriedSunflowers -> furniture(x = 27, y = 40, w = 1, h = 2)
-        SimpleUniversalFurniture.BonsaiTree -> furniture(x = 20, y = 54, w = 1, h = 2)
-        SimpleUniversalFurniture.SmallPine -> furniture(x = 19, y = 54, w = 1, h = 2)
-        SimpleUniversalFurniture.TreeColumn -> furniture(x = 16, y = 54, w = 1, h = 3)
-        SimpleUniversalFurniture.SmallPlant -> furniture(x = 18, y = 42, w = 1, h = 1)
-        SimpleUniversalFurniture.TablePlant -> furniture(x = 19, y = 42, w = 1, h = 1)
-        SimpleUniversalFurniture.DeluxeTree -> furniture(x = 29, y = 30, w = 3, h = 5)
-        SimpleUniversalFurniture.ExoticTree -> furniture(x = 26, y = 30, w = 3, h = 5)
-        SimpleUniversalFurniture.IndoorPalm -> furniture(x = 14, y = 40, w = 1, h = 3)
-        SimpleUniversalFurniture.TopiaryTree -> furniture(x = 17, y = 40, w = 1, h = 3)
-        SimpleUniversalFurniture.ManicuredPine -> furniture(x = 16, y = 40, w = 1, h = 3)
-        SimpleUniversalFurniture.TreeOfTheWinterStar -> furniture(x = 0, y = 45, w = 3, h = 5)
-        SimpleUniversalFurniture.LongCactus -> furniture(x = 24, y = 30, w = 1, h = 3)
-        SimpleUniversalFurniture.LongPalm -> furniture(x = 25, y = 30, w = 1, h = 4)
+        DriedSunflowers -> furniture(x = 27, y = 40, w = 1, h = 2)
+        BonsaiTree -> furniture(x = 20, y = 54, w = 1, h = 2)
+        SmallPine -> furniture(x = 19, y = 54, w = 1, h = 2)
+        TreeColumn -> furniture(x = 16, y = 54, w = 1, h = 3)
+        SmallPlant -> furniture(x = 18, y = 42, w = 1, h = 1)
+        TablePlant -> furniture(x = 19, y = 42, w = 1, h = 1)
+        DeluxeTree -> furniture(x = 29, y = 30, w = 3, h = 5)
+        ExoticTree -> furniture(x = 26, y = 30, w = 3, h = 5)
+        IndoorPalm -> furniture(x = 14, y = 40, w = 1, h = 3)
+        TopiaryTree -> furniture(x = 17, y = 40, w = 1, h = 3)
+        ManicuredPine -> furniture(x = 16, y = 40, w = 1, h = 3)
+        TreeOfTheWinterStar -> furniture(x = 0, y = 45, w = 3, h = 5)
+        LongCactus -> furniture(x = 24, y = 30, w = 1, h = 3)
+        LongPalm -> furniture(x = 25, y = 30, w = 1, h = 4)
 
-        SimpleUniversalFurniture.JungleTorch -> furniture(x = 27, y = 72, w = 1, h = 2)
-        SimpleUniversalFurniture.PlainTorch -> furniture(x = 29, y = 74, w = 1, h = 2)
-        SimpleUniversalFurniture.StumpTorch -> furniture(x = 30, y = 74, w = 1, h = 2)
+        JungleTorch -> furniture(x = 27, y = 72, w = 1, h = 2)
+        PlainTorch -> furniture(x = 29, y = 74, w = 1, h = 2)
+        StumpTorch -> furniture(x = 30, y = 74, w = 1, h = 2)
 
-        SimpleUniversalFurniture.CeramicPillar -> furniture(x = 11, y = 40, w = 1, h = 3)
-        SimpleUniversalFurniture.GoldPillar -> furniture(x = 12, y = 40, w = 1, h = 3)
-        SimpleUniversalFurniture.TotemPole -> furniture(x = 15, y = 40, w = 1, h = 3)
-        SimpleUniversalFurniture.DecorativeBowl -> furniture(x = 20, y = 42, w = 1, h = 1)
-        SimpleUniversalFurniture.DecorativeLantern -> furniture(x = 25, y = 42, w = 1, h = 1)
-        SimpleUniversalFurniture.Globe -> furniture(x = 22, y = 42, w = 1, h = 1)
-        SimpleUniversalFurniture.ModelShip -> furniture(x = 23, y = 42, w = 1, h = 1)
-        SimpleUniversalFurniture.SmallCrystal -> furniture(x = 24, y = 42, w = 1, h = 1)
-        SimpleUniversalFurniture.FutanBear -> furniture(x = 21, y = 42, w = 1, h = 1)
-        SimpleUniversalFurniture.DecorativeTrashCan -> furniture(x = 27, y = 75, w = 1, h = 2)
+        CeramicPillar -> furniture(x = 11, y = 40, w = 1, h = 3)
+        GoldPillar -> furniture(x = 12, y = 40, w = 1, h = 3)
+        TotemPole -> furniture(x = 15, y = 40, w = 1, h = 3)
+        DecorativeBowl -> furniture(x = 20, y = 42, w = 1, h = 1)
+        DecorativeLantern -> furniture(x = 25, y = 42, w = 1, h = 1)
+        Globe -> furniture(x = 22, y = 42, w = 1, h = 1)
+        ModelShip -> furniture(x = 23, y = 42, w = 1, h = 1)
+        SmallCrystal -> furniture(x = 24, y = 42, w = 1, h = 1)
+        FutanBear -> furniture(x = 21, y = 42, w = 1, h = 1)
+        DecorativeTrashCan -> furniture(x = 27, y = 75, w = 1, h = 2)
 
-        SimpleUniversalFurniture.BearStatue -> furniture(x = 7, y = 52, w = 2, h = 4)
-        SimpleUniversalFurniture.ChickenStatue -> furniture(x = 25, y = 40, w = 1, h = 2)
-        SimpleUniversalFurniture.LgFutanBear -> furniture(x = 5, y = 52, w = 2, h = 2)
-        SimpleUniversalFurniture.ObsidianVase -> furniture(x = 19, y = 40, w = 1, h = 2)
-        SimpleUniversalFurniture.SkeletonStatue -> furniture(x = 24, y = 40, w = 1, h = 2)
-        SimpleUniversalFurniture.SlothSkeletonL -> furniture(x = 21, y = 40, w = 1, h = 2)
-        SimpleUniversalFurniture.SlothSkeletonM -> furniture(x = 22, y = 40, w = 1, h = 2)
-        SimpleUniversalFurniture.SlothSkeletonR -> furniture(x = 23, y = 40, w = 1, h = 2)
-        SimpleUniversalFurniture.StandingGeode -> furniture(x = 18, y = 40, w = 1, h = 2)
-        SimpleUniversalFurniture.ButterflyHutch -> furniture(x = 19, y = 61, w = 2, h = 3)
-        SimpleUniversalFurniture.LeahSculpture -> furniture(x = 26, y = 40, w = 1, h = 2)
-        SimpleUniversalFurniture.SamBoombox -> furniture(x = 29, y = 40, w = 1, h = 2)
-        SimpleUniversalFurniture.FutanRabbit -> furniture(x = 4, y = 55, w = 1, h = 1)
-        SimpleUniversalFurniture.SmallJunimoPlush1 -> furniture(x = 0, y = 55, w = 1, h = 1)
-        SimpleUniversalFurniture.SmallJunimoPlush2 -> furniture(x = 1, y = 55, w = 1, h = 1)
-        SimpleUniversalFurniture.SmallJunimoPlush3 -> furniture(x = 2, y = 55, w = 1, h = 1)
-        SimpleUniversalFurniture.SmallJunimoPlush4 -> furniture(x = 3, y = 55, w = 1, h = 1)
-        SimpleUniversalFurniture.GreenSerpentStatue -> furniture(x = 31, y = 45, w = 1, h = 3)
-        SimpleUniversalFurniture.PurpleSerpentStatue -> furniture(x = 31, y = 42, w = 1, h = 3)
-        SimpleUniversalFurniture.BoboStatue -> furniture(x = 29, y = 42, w = 2, h = 3)
-        SimpleUniversalFurniture.WumbusStatue -> furniture(x = 27, y = 42, w = 2, h = 3)
-        SimpleUniversalFurniture.JunimoPlush -> furniture(x = 5, y = 54, w = 2, h = 2)
-        SimpleUniversalFurniture.GourmandStatue -> furniture(x = 28, y = 72, w = 2, h = 2)
-        SimpleUniversalFurniture.IridiumKrobus -> furniture(x = 28, y = 74, w = 1, h = 3)
-        SimpleUniversalFurniture.SquirrelFigurine -> furniture(x = 30, y = 87, w = 1, h = 1)
+        BearStatue -> furniture(x = 7, y = 52, w = 2, h = 4)
+        ChickenStatue -> furniture(x = 25, y = 40, w = 1, h = 2)
+        LgFutanBear -> furniture(x = 5, y = 52, w = 2, h = 2)
+        ObsidianVase -> furniture(x = 19, y = 40, w = 1, h = 2)
+        SkeletonStatue -> furniture(x = 24, y = 40, w = 1, h = 2)
+        SlothSkeletonL -> furniture(x = 21, y = 40, w = 1, h = 2)
+        SlothSkeletonM -> furniture(x = 22, y = 40, w = 1, h = 2)
+        SlothSkeletonR -> furniture(x = 23, y = 40, w = 1, h = 2)
+        StandingGeode -> furniture(x = 18, y = 40, w = 1, h = 2)
+        ButterflyHutch -> furniture(x = 19, y = 61, w = 2, h = 3)
+        LeahSculpture -> furniture(x = 26, y = 40, w = 1, h = 2)
+        SamBoombox -> furniture(x = 29, y = 40, w = 1, h = 2)
+        FutanRabbit -> furniture(x = 4, y = 55, w = 1, h = 1)
+        SmallJunimoPlush1 -> furniture(x = 0, y = 55, w = 1, h = 1)
+        SmallJunimoPlush2 -> furniture(x = 1, y = 55, w = 1, h = 1)
+        SmallJunimoPlush3 -> furniture(x = 2, y = 55, w = 1, h = 1)
+        SmallJunimoPlush4 -> furniture(x = 3, y = 55, w = 1, h = 1)
+        GreenSerpentStatue -> furniture(x = 31, y = 45, w = 1, h = 3)
+        PurpleSerpentStatue -> furniture(x = 31, y = 42, w = 1, h = 3)
+        BoboStatue -> furniture(x = 29, y = 42, w = 2, h = 3)
+        WumbusStatue -> furniture(x = 27, y = 42, w = 2, h = 3)
+        JunimoPlush -> furniture(x = 5, y = 54, w = 2, h = 2)
+        GourmandStatue -> furniture(x = 28, y = 72, w = 2, h = 2)
+        IridiumKrobus -> furniture(x = 28, y = 74, w = 1, h = 3)
+        SquirrelFigurine -> furniture(x = 30, y = 87, w = 1, h = 1)
 
-        SimpleUniversalFurniture.Catalogue -> furniture(x = 28, y = 40, w = 1, h = 2)
-        SimpleUniversalFurniture.FurnitureCatalogue -> furniture(x = 10, y = 38, w = 2, h = 2)
+        Catalogue -> furniture(x = 28, y = 40, w = 1, h = 2)
+        FurnitureCatalogue -> furniture(x = 10, y = 38, w = 2, h = 2)
 
 
-        is Chair.OakChair -> when (entity.rotation) {
+        is OakChair -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 0, x = 0, y = 0, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.WalnutChair -> when (entity.rotation) {
+        is WalnutChair -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 3, x = 3, y = 0, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.BirchChair -> when (entity.rotation) {
+        is BirchChair -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 6, x = 6, y = 0, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.MahoganyChair -> when (entity.rotation) {
+        is MahoganyChair -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 9, x = 9, y = 0, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.RedDinerChair -> when (entity.rotation) {
+        is RedDinerChair -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 12, x = 12, y = 0, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.BlueDinerChair -> when (entity.rotation) {
+        is BlueDinerChair -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 15, x = 15, y = 0, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.CountryChair -> when (entity.rotation) {
+        is CountryChair -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 18, x = 18, y = 0, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.BreakfastChair -> when (entity.rotation) {
+        is BreakfastChair -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 21, x = 21, y = 0, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.PinkOfficeChair -> when (entity.rotation) {
+        is PinkOfficeChair -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 24, x = 24, y = 0, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.PurpleOfficeChair -> when (entity.rotation) {
+        is PurpleOfficeChair -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 27, x = 27, y = 0, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.DarkThrone -> when (entity.rotation) {
+        is DarkThrone -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 64, x = 0, y = 2, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.DiningChairYellow -> when (entity.rotation) {
+        is DiningChairYellow -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 67, x = 3, y = 2, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.DiningChairRed -> when (entity.rotation) {
+        is DiningChairRed -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 70, x = 6, y = 2, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.GreenPlushSeat -> when (entity.rotation) {
+        is GreenPlushSeat -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 73, x = 9, y = 2, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.PinkPlushSeat -> when (entity.rotation) {
+        is PinkPlushSeat -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 76, x = 12, y = 2, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.WinterChair -> when (entity.rotation) {
+        is WinterChair -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 79, x = 15, y = 2, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.GroovyChair -> when (entity.rotation) {
+        is GroovyChair -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 82, x = 18, y = 2, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.CuteChair -> when (entity.rotation) {
+        is CuteChair -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 85, x = 21, y = 2, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.StumpSeat -> when (entity.rotation) {
+        is StumpSeat -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 88, x = 24, y = 2, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.MetalChair -> when (entity.rotation) {
+        is MetalChair -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 91, x = 27, y = 2, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.KingChair -> when (entity.rotation) {
+        is KingChair -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 128, x = 0, y = 4, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.CrystalChair -> when (entity.rotation) {
+        is CrystalChair -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 131, x = 3, y = 4, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Chair.TropicalChair -> when (entity.rotation) {
+        is TropicalChair -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 134, x = 6, y = 4, w = 1, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
@@ -303,35 +309,35 @@ internal fun universalFurniture(qe: QualifiedEntity<UniversalFurniture>): Qualif
         }
 
 
-        is Bench.BirchBench -> when (entity.rotation) {
+        is BirchBench -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 202, x = 10, y = 6, w = 2, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Bench.OakBench -> when (entity.rotation) {
+        is OakBench -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 192, x = 0, y = 6, w = 2, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Bench.WalnutBench -> when (entity.rotation) {
+        is WalnutBench -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 197, x = 5, y = 6, w = 2, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Bench.MahoganyBench -> when (entity.rotation) {
+        is MahoganyBench -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 207, x = 15, y = 6, w = 2, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
             Rotations4.R4 -> TODO()
         }
 
-        is Bench.ModernBench -> when (entity.rotation) {
+        is ModernBench -> when (entity.rotation) {
             Rotations4.R1 -> furniture(id = 212, x = 20, y = 6, w = 2, h = 2, r = entity.rotation)
             Rotations4.R2 -> TODO()
             Rotations4.R3 -> TODO()
@@ -339,22 +345,22 @@ internal fun universalFurniture(qe: QualifiedEntity<UniversalFurniture>): Qualif
         }
 
 
-        is WoodenEndTable.OakEndTable -> when (entity.rotation) {
+        is OakEndTable -> when (entity.rotation) {
             Rotations2.R1 -> furniture(id = 1391, x = 15, y = 43, w = 1, h = 2, r = entity.rotation)
             Rotations2.R2 -> TODO()
         }
 
-        is WoodenEndTable.BirchEndTable -> when (entity.rotation) {
+        is BirchEndTable -> when (entity.rotation) {
             Rotations2.R1 -> furniture(id = 1395, x = 19, y = 43, w = 1, h = 2, r = entity.rotation)
             Rotations2.R2 -> TODO()
         }
 
-        is WoodenEndTable.MahoganyEndTable -> when (entity.rotation) {
+        is MahoganyEndTable -> when (entity.rotation) {
             Rotations2.R1 -> furniture(id = 1397, x = 21, y = 43, w = 1, h = 2, r = entity.rotation)
             Rotations2.R2 -> TODO()
         }
 
-        is WoodenEndTable.WalnutEndTable -> when (entity.rotation) {
+        is WalnutEndTable -> when (entity.rotation) {
             Rotations2.R1 -> furniture(id = 1393, x = 17, y = 43, w = 1, h = 2, r = entity.rotation)
             Rotations2.R2 -> TODO()
         }
@@ -372,22 +378,22 @@ internal fun universalFurniture(qe: QualifiedEntity<UniversalFurniture>): Qualif
         }
 
 
-        is LongTable.ModernDiningTable -> when (entity.rotation) {
+        is ModernDiningTable -> when (entity.rotation) {
             Rotations2.R1 -> furniture(id = 826, x = 26, y = 25, w = 2, h = 5, r = entity.rotation)
             Rotations2.R2 -> TODO()
         }
 
-        is LongTable.MahoganyDiningTable -> when (entity.rotation) {
+        is MahoganyDiningTable -> when (entity.rotation) {
             Rotations2.R1 -> furniture(id = 819, x = 19, y = 25, w = 2, h = 5, r = entity.rotation)
             Rotations2.R2 -> TODO()
         }
 
-        is LongTable.FestiveDiningTable -> when (entity.rotation) {
+        is FestiveDiningTable -> when (entity.rotation) {
             Rotations2.R1 -> furniture(id = 812, x = 12, y = 25, w = 2, h = 5, r = entity.rotation)
             Rotations2.R2 -> TODO()
         }
 
-        is LongTable.WinterDiningTable -> when (entity.rotation) {
+        is WinterDiningTable -> when (entity.rotation) {
             Rotations2.R1 -> furniture(id = 805, x = 5, y = 25, w = 2, h = 5, r = entity.rotation)
             Rotations2.R2 -> TODO()
         }

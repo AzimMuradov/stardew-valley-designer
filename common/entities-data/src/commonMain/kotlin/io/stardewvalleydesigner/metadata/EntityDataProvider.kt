@@ -18,13 +18,15 @@ package io.stardewvalleydesigner.metadata
 
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.entity.Building.ColoredFarmBuilding
+import io.stardewvalleydesigner.engine.entity.Building.SimpleBuilding.JunimoHut
+import io.stardewvalleydesigner.engine.entity.Equipment.SimpleEquipment.*
 import io.stardewvalleydesigner.metadata.internal.*
 
 
 object EntityDataProvider {
 
     fun entityToId(entity: Entity<*>): EntityId = when (entity) {
-        is ColoredFarmBuilding -> building(QualifiedEntity(entity, SpriteQualifier.None)).entityId
+        is ColoredFarmBuilding -> building(QualifiedEntity(entity)).entityId
         else -> m2.getValue(entity)
     }
 
@@ -49,127 +51,115 @@ object EntityDataProvider {
     }
 
 
-    private val mapping: Set<QualifiedEntityData> = buildSet {
-        addAll(
-            (Building.all - Building.SimpleBuilding.JunimoHut).map {
-                building(QualifiedEntity(entity = it))
-            }
-        )
-        addAll(
-            Season.entries.map {
-                building(
-                    QualifiedEntity(
-                        entity = Building.SimpleBuilding.JunimoHut,
-                        qualifier = SpriteQualifier.SeasonQualifier(it)
-                    )
-                )
-            }
-        )
-        addAll(
-            Crop.all.map {
-                crop(QualifiedEntity(it))
-            }
-        )
-        addAll(
-            (Equipment.all - setOf(
-                Equipment.SimpleEquipment.SeasonalPlant1,
-                Equipment.SimpleEquipment.SeasonalPlant2,
-                Equipment.SimpleEquipment.SeasonalPlant3,
-                Equipment.SimpleEquipment.SeasonalPlant4,
-                Equipment.SimpleEquipment.SeasonalPlant5,
-                Equipment.SimpleEquipment.SeasonalPlant6,
-                Equipment.SimpleEquipment.SeasonalDecor,
-                Equipment.SimpleEquipment.TubOFlowers,
-                Equipment.SimpleEquipment.WoodFence,
-                Equipment.SimpleEquipment.StoneFence,
-                Equipment.SimpleEquipment.IronFence,
-                Equipment.SimpleEquipment.HardwoodFence,
-            )).map {
-                equipment(QualifiedEntity(entity = it))
-            }
-        )
-        addAll(
-            listOf(
-                Equipment.SimpleEquipment.SeasonalPlant1,
-                Equipment.SimpleEquipment.SeasonalPlant2,
-                Equipment.SimpleEquipment.SeasonalPlant3,
-                Equipment.SimpleEquipment.SeasonalPlant4,
-                Equipment.SimpleEquipment.SeasonalPlant5,
-                Equipment.SimpleEquipment.SeasonalPlant6,
-                Equipment.SimpleEquipment.SeasonalDecor,
-            ).flatMap {
-                Season.entries.map { season ->
-                    equipment(QualifiedEntity(entity = it, SpriteQualifier.SeasonQualifier(season)))
+    private val mapping by lazy {
+        buildSet {
+            addAll(
+                (Building.all - JunimoHut).map {
+                    building(QualifiedEntity(entity = it))
                 }
-            }
-        )
-        addAll(
-            listOf(
-                Equipment.SimpleEquipment.WoodFence,
-                Equipment.SimpleEquipment.StoneFence,
-                Equipment.SimpleEquipment.IronFence,
-                Equipment.SimpleEquipment.HardwoodFence,
-            ).flatMap {
-                FenceVariant.entries.map { variant ->
-                    equipment(QualifiedEntity(entity = it, SpriteQualifier.FenceQualifier(variant)))
-                }
-            }
-        )
-        addAll(
-            listOf(true, false).map {
-                equipment(
-                    QualifiedEntity(
-                        entity = Equipment.SimpleEquipment.TubOFlowers,
-                        qualifier = SpriteQualifier.TubOFlowersQualifier(it)
-                    )
-                )
-            }
-        )
-        addAll(
-            FloorFurniture.all.map {
-                floorFurniture(QualifiedEntity(entity = it))
-            }
-        )
-        addAll(
-            FloorVariant.entries.flatMap { ct ->
-                listOf(true, false).flatMap { season ->
-                    (Floor.all - listOf(Floor.Grass, Floor.SteppingStonePath)).map { floor ->
-                        floor(
-                            QualifiedEntity(
-                                entity = floor,
-                                qualifier = SpriteQualifier.FloorQualifier(ct, season),
-                            )
+            )
+            addAll(
+                Season.entries.map {
+                    building(
+                        QualifiedEntity(
+                            entity = JunimoHut,
+                            qualifier = SpriteQualifier.SeasonQualifier(it)
                         )
+                    )
+                }
+            )
+            addAll(
+                Crop.all.map {
+                    crop(QualifiedEntity(it))
+                }
+            )
+            addAll(
+                (Equipment.all - setOf(
+                    SeasonalPlant1, SeasonalPlant2, SeasonalPlant3,
+                    SeasonalPlant4, SeasonalPlant5, SeasonalPlant6,
+                    SeasonalDecor, TubOFlowers,
+                    WoodFence, StoneFence, IronFence, HardwoodFence,
+                )).map {
+                    equipment(QualifiedEntity(entity = it))
+                }
+            )
+            addAll(
+                listOf(
+                    SeasonalPlant1, SeasonalPlant2, SeasonalPlant3,
+                    SeasonalPlant4, SeasonalPlant5, SeasonalPlant6,
+                    SeasonalDecor,
+                ).flatMap {
+                    Season.entries.map { season ->
+                        equipment(QualifiedEntity(entity = it, SpriteQualifier.SeasonQualifier(season)))
                     }
                 }
-            }
-        )
-        add(floor(QualifiedEntity(entity = Floor.Grass)))
-        addAll(
-            listOf(true, false).map {
-                floor(
-                    QualifiedEntity(
-                        entity = Floor.SteppingStonePath,
-                        qualifier = SpriteQualifier.SteppingStonePathQualifier(it),
+            )
+            addAll(
+                listOf(
+                    WoodFence, StoneFence,
+                    IronFence, HardwoodFence,
+                ).flatMap {
+                    FenceVariant.entries.map { variant ->
+                        equipment(QualifiedEntity(entity = it, SpriteQualifier.FenceQualifier(variant)))
+                    }
+                }
+            )
+            addAll(
+                listOf(true, false).map {
+                    equipment(
+                        QualifiedEntity(
+                            entity = TubOFlowers,
+                            qualifier = SpriteQualifier.TubOFlowersQualifier(it)
+                        )
                     )
-                )
-            }
-        )
-        // addAll(
-        //     HouseFurniture.all.map {
-        //         houseFurniture(QualifiedEntity(entity = it))
-        //     }
-        // )
-        addAll(
-            IndoorFurniture.all.map {
-                indoorFurniture(QualifiedEntity(entity = it))
-            }
-        )
-        addAll(
-            UniversalFurniture.all.map {
-                universalFurniture(QualifiedEntity(entity = it))
-            }
-        )
+                }
+            )
+            addAll(
+                FloorFurniture.all.map {
+                    floorFurniture(QualifiedEntity(entity = it))
+                }
+            )
+            addAll(
+                FloorVariant.entries.flatMap { ct ->
+                    listOf(true, false).flatMap { season ->
+                        (Floor.all - listOf(Floor.Grass, Floor.SteppingStonePath)).map { floor ->
+                            floor(
+                                QualifiedEntity(
+                                    entity = floor,
+                                    qualifier = SpriteQualifier.FloorQualifier(ct, season),
+                                )
+                            )
+                        }
+                    }
+                }
+            )
+            add(floor(QualifiedEntity(entity = Floor.Grass)))
+            addAll(
+                listOf(true, false).map {
+                    floor(
+                        QualifiedEntity(
+                            entity = Floor.SteppingStonePath,
+                            qualifier = SpriteQualifier.SteppingStonePathQualifier(it),
+                        )
+                    )
+                }
+            )
+            // addAll(
+            //     HouseFurniture.all.map {
+            //         houseFurniture(QualifiedEntity(entity = it))
+            //     }
+            // )
+            addAll(
+                IndoorFurniture.all.map {
+                    indoorFurniture(QualifiedEntity(entity = it))
+                }
+            )
+            addAll(
+                UniversalFurniture.all.map {
+                    universalFurniture(QualifiedEntity(entity = it))
+                }
+            )
+        }
     }
 
 

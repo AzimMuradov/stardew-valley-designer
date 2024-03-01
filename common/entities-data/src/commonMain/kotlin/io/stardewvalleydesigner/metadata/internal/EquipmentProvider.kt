@@ -17,18 +17,22 @@
 package io.stardewvalleydesigner.metadata.internal
 
 import io.stardewvalleydesigner.engine.entity.*
-import io.stardewvalleydesigner.engine.entity.Equipment.*
+import io.stardewvalleydesigner.engine.entity.Equipment.Chest
+import io.stardewvalleydesigner.engine.entity.Equipment.SimpleEquipment.*
+import io.stardewvalleydesigner.engine.entity.Equipment.StoneChest
 import io.stardewvalleydesigner.metadata.*
+import io.stardewvalleydesigner.metadata.FenceVariant.*
 import io.stardewvalleydesigner.metadata.SpritePage.Companion.UNIT
+import io.stardewvalleydesigner.metadata.SpritePage.Craftables
 
 
 internal fun equipment(qe: QualifiedEntity<Equipment>): QualifiedEntityData {
     val entity = qe.entity
 
     fun craftable(
-        index: Int,
+        id: Int,
         flavor: EntityFlavor? = null,
-    ) = craftable(entity, index, flavor)
+    ) = craftable(entity, id, flavor)
 
     fun fence(
         index: Int,
@@ -52,45 +56,45 @@ internal fun equipment(qe: QualifiedEntity<Equipment>): QualifiedEntityData {
         // Common Equipment
         // (Artisan Equipment + Other Tools + Refining Equipment + Misc + Storage Equipment)
 
-        SimpleEquipment.MayonnaiseMachine -> craftable(24)
-        SimpleEquipment.BeeHouse -> craftable(10)
-        SimpleEquipment.PreservesJar -> craftable(15)
-        SimpleEquipment.CheesePress -> craftable(16)
-        SimpleEquipment.Loom -> craftable(17)
-        SimpleEquipment.Keg -> craftable(12)
-        SimpleEquipment.OilMaker -> craftable(19)
-        SimpleEquipment.Cask -> craftable(163)
+        MayonnaiseMachine -> craftable(24)
+        BeeHouse -> craftable(10)
+        PreservesJar -> craftable(15)
+        CheesePress -> craftable(16)
+        Loom -> craftable(17)
+        Keg -> craftable(12)
+        OilMaker -> craftable(19)
+        Cask -> craftable(163)
 
-        SimpleEquipment.GardenPot -> craftable(62)
-        SimpleEquipment.Heater -> craftable(104)
-        SimpleEquipment.AutoGrabber -> craftable(165)
-        SimpleEquipment.AutoPetter -> craftable(272)
+        GardenPot -> craftable(62)
+        Heater -> craftable(104)
+        AutoGrabber -> craftable(165)
+        AutoPetter -> craftable(272)
 
-        SimpleEquipment.CharcoalKiln -> craftable(114)
-        SimpleEquipment.Crystalarium -> craftable(21)
-        SimpleEquipment.Furnace -> craftable(13)
-        SimpleEquipment.LightningRod -> craftable(9)
-        SimpleEquipment.SolarPanel -> craftable(231)
-        SimpleEquipment.RecyclingMachine -> craftable(20)
-        SimpleEquipment.SeedMaker -> craftable(25)
-        SimpleEquipment.SlimeIncubator -> craftable(156)
-        SimpleEquipment.OstrichIncubator -> craftable(254)
-        SimpleEquipment.SlimeEggPress -> craftable(158)
-        SimpleEquipment.WormBin -> craftable(154)
-        SimpleEquipment.BoneMill -> craftable(90)
-        SimpleEquipment.GeodeCrusher -> craftable(182)
-        SimpleEquipment.WoodChipper -> craftable(211)
+        CharcoalKiln -> craftable(114)
+        Crystalarium -> craftable(21)
+        Furnace -> craftable(13)
+        LightningRod -> craftable(9)
+        SolarPanel -> craftable(231)
+        RecyclingMachine -> craftable(20)
+        SeedMaker -> craftable(25)
+        SlimeIncubator -> craftable(156)
+        OstrichIncubator -> craftable(254)
+        SlimeEggPress -> craftable(158)
+        WormBin -> craftable(154)
+        BoneMill -> craftable(90)
+        GeodeCrusher -> craftable(182)
+        WoodChipper -> craftable(211)
 
-        SimpleEquipment.MiniJukebox -> craftable(209)
-        SimpleEquipment.MiniObelisk -> craftable(238)
-        SimpleEquipment.FarmComputer -> craftable(239)
-        SimpleEquipment.Hopper -> craftable(275)
-        SimpleEquipment.Deconstructor -> craftable(265)
-        SimpleEquipment.CoffeeMaker -> craftable(246)
-        SimpleEquipment.Telephone -> craftable(214)
-        SimpleEquipment.SewingMachine -> craftable(247)
-        SimpleEquipment.Workbench -> craftable(208)
-        SimpleEquipment.MiniShippingBin -> craftable(248)
+        MiniJukebox -> craftable(209)
+        MiniObelisk -> craftable(238)
+        FarmComputer -> craftable(239)
+        Hopper -> craftable(275)
+        Deconstructor -> craftable(265)
+        CoffeeMaker -> craftable(246)
+        Telephone -> craftable(214)
+        SewingMachine -> craftable(247)
+        Workbench -> craftable(208)
+        MiniShippingBin -> craftable(248)
 
         // TODO (?) : CrabPot,
         // TODO (?) : Tapper,
@@ -100,141 +104,117 @@ internal fun equipment(qe: QualifiedEntity<Equipment>): QualifiedEntityData {
 
         is StoneChest -> chest(232, color = entity.color)
 
-        SimpleEquipment.JunimoChest -> craftable(256)
+        JunimoChest -> craftable(256)
 
 
         // Farm Elements (Scarecrows + Sprinklers)
 
-        SimpleEquipment.Scarecrow -> craftable(8)
-        SimpleEquipment.DeluxeScarecrow -> craftable(167)
-        SimpleEquipment.Rarecrow1 -> craftable(110)
-        SimpleEquipment.Rarecrow2 -> craftable(113)
-        SimpleEquipment.Rarecrow3 -> craftable(126)
-        SimpleEquipment.Rarecrow4 -> craftable(136)
-        SimpleEquipment.Rarecrow5 -> craftable(137)
-        SimpleEquipment.Rarecrow6 -> craftable(138)
-        SimpleEquipment.Rarecrow7 -> craftable(139)
-        SimpleEquipment.Rarecrow8 -> craftable(140)
+        Scarecrow -> craftable(8)
+        DeluxeScarecrow -> craftable(167)
+        Rarecrow1 -> craftable(110)
+        Rarecrow2 -> craftable(113)
+        Rarecrow3 -> craftable(126)
+        Rarecrow4 -> craftable(136)
+        Rarecrow5 -> craftable(137)
+        Rarecrow6 -> craftable(138)
+        Rarecrow7 -> craftable(139)
+        Rarecrow8 -> craftable(140)
 
-        SimpleEquipment.Sprinkler -> common(599)
-        SimpleEquipment.QualitySprinkler -> common(621)
-        SimpleEquipment.IridiumSprinkler -> common(645)
+        Sprinkler -> common(599)
+        QualitySprinkler -> common(621)
+        IridiumSprinkler -> common(645)
         // TODO : Equipment.SimpleEquipment.IridiumSprinklerWithPressureNozzle -> common(916)
 
 
         // Terrain Elements (Fences + Signs + Lighting)
 
-        SimpleEquipment.Gate -> common(325)
-        SimpleEquipment.WoodFence -> fence(322, SpritePage.Fence1)
-        SimpleEquipment.StoneFence -> fence(323, SpritePage.Fence2)
-        SimpleEquipment.IronFence -> fence(324, SpritePage.Fence3)
-        SimpleEquipment.HardwoodFence -> fence(298, SpritePage.Fence5)
+        Gate -> common(325)
+        WoodFence -> fence(322, SpritePage.Fence1)
+        StoneFence -> fence(323, SpritePage.Fence2)
+        IronFence -> fence(324, SpritePage.Fence3)
+        HardwoodFence -> fence(298, SpritePage.Fence5)
 
-        SimpleEquipment.WoodSign -> craftable(37)
-        SimpleEquipment.StoneSign -> craftable(38)
-        SimpleEquipment.DarkSign -> craftable(39)
+        WoodSign -> craftable(37)
+        StoneSign -> craftable(38)
+        DarkSign -> craftable(39)
 
-        SimpleEquipment.Torch -> common(93)
-        SimpleEquipment.Campfire -> craftable(146)
-        SimpleEquipment.WoodenBrazier -> craftable(143)
-        SimpleEquipment.StoneBrazier -> craftable(144)
-        SimpleEquipment.GoldBrazier -> craftable(145)
-        SimpleEquipment.CarvedBrazier -> craftable(148)
-        SimpleEquipment.StumpBrazier -> craftable(147)
-        SimpleEquipment.BarrelBrazier -> craftable(150)
-        SimpleEquipment.SkullBrazier -> craftable(149)
-        SimpleEquipment.MarbleBrazier -> craftable(151)
-        SimpleEquipment.WoodLampPost -> craftable(152)
-        SimpleEquipment.IronLampPost -> craftable(153)
-        SimpleEquipment.JackOLantern -> common(746)
+        Torch -> common(93)
+        Campfire -> craftable(146)
+        WoodenBrazier -> craftable(143)
+        StoneBrazier -> craftable(144)
+        GoldBrazier -> craftable(145)
+        CarvedBrazier -> craftable(148)
+        StumpBrazier -> craftable(147)
+        BarrelBrazier -> craftable(150)
+        SkullBrazier -> craftable(149)
+        MarbleBrazier -> craftable(151)
+        WoodLampPost -> craftable(152)
+        IronLampPost -> craftable(153)
+        JackOLantern -> common(746)
 
 
         // Furniture
 
-        SimpleEquipment.BasicLog -> craftable(35)
-        SimpleEquipment.LogSection -> craftable(46)
-        SimpleEquipment.OrnamentalHayBale -> craftable(45)
-        SimpleEquipment.SignOfTheVessel -> craftable(34)
-        SimpleEquipment.WickedStatue -> craftable(83)
-        SimpleEquipment.BigGreenCane -> craftable(40)
-        SimpleEquipment.BigRedCane -> craftable(44)
-        SimpleEquipment.GreenCanes -> craftable(41)
-        SimpleEquipment.RedCanes -> craftable(43)
-        SimpleEquipment.MixedCane -> craftable(42)
-        SimpleEquipment.LawnFlamingo -> craftable(36)
-        SimpleEquipment.PlushBunny -> craftable(107)
-        SimpleEquipment.SeasonalDecor -> seasonalPlant(48)
-        SimpleEquipment.TubOFlowers -> tubOFlowers(108, qe.qualifier as SpriteQualifier.TubOFlowersQualifier)
-        SimpleEquipment.SeasonalPlant1 -> seasonalPlant(184)
-        SimpleEquipment.SeasonalPlant2 -> seasonalPlant(188)
-        SimpleEquipment.SeasonalPlant3 -> seasonalPlant(192)
-        SimpleEquipment.SeasonalPlant4 -> seasonalPlant(196)
-        SimpleEquipment.SeasonalPlant5 -> seasonalPlant(200)
-        SimpleEquipment.SeasonalPlant6 -> seasonalPlant(204)
-        SimpleEquipment.DrumBlock -> common(463)
-        SimpleEquipment.FluteBlock -> common(464)
-        SimpleEquipment.GraveStone -> craftable(47)
-        SimpleEquipment.StoneCairn -> craftable(32)
-        SimpleEquipment.StoneFrog -> craftable(52)
-        SimpleEquipment.StoneJunimo -> craftable(55)
-        SimpleEquipment.StoneOwl -> craftable(54)
-        SimpleEquipment.StoneParrot -> craftable(53)
-        SimpleEquipment.SuitOfArmor -> craftable(33)
-        SimpleEquipment.Foroguemon -> craftable(162)
-        SimpleEquipment.HMTGF -> craftable(155)
-        SimpleEquipment.PinkyLemon -> craftable(161)
-        SimpleEquipment.SolidGoldLewis -> craftable(164)
-        SimpleEquipment.StatueOfEndlessFortune -> craftable(127)
-        SimpleEquipment.StatueOfPerfection -> craftable(160)
-        SimpleEquipment.StatueOfTruePerfection -> craftable(280)
-        SimpleEquipment.SodaMachine -> craftable(117)
-        SimpleEquipment.StardewHeroTrophy -> craftable(116)
-        SimpleEquipment.JunimoKartArcadeSystem -> craftable(159)
-        SimpleEquipment.PrairieKingArcadeSystem -> craftable(141)
-        SimpleEquipment.SingingStone -> craftable(94)
-        SimpleEquipment.SecretStoneOwl -> craftable(95)
-        SimpleEquipment.SecretStrangeCapsule -> craftable(96)
-        SimpleEquipment.SecretEmptyCapsule -> craftable(98)
+        BasicLog -> craftable(35)
+        LogSection -> craftable(46)
+        OrnamentalHayBale -> craftable(45)
+        SignOfTheVessel -> craftable(34)
+        WickedStatue -> craftable(83)
+        BigGreenCane -> craftable(40)
+        BigRedCane -> craftable(44)
+        GreenCanes -> craftable(41)
+        RedCanes -> craftable(43)
+        MixedCane -> craftable(42)
+        LawnFlamingo -> craftable(36)
+        PlushBunny -> craftable(107)
+        SeasonalDecor -> seasonalPlant(48)
+        TubOFlowers -> tubOFlowers(108, qe.qualifier as SpriteQualifier.TubOFlowersQualifier)
+        SeasonalPlant1 -> seasonalPlant(184)
+        SeasonalPlant2 -> seasonalPlant(188)
+        SeasonalPlant3 -> seasonalPlant(192)
+        SeasonalPlant4 -> seasonalPlant(196)
+        SeasonalPlant5 -> seasonalPlant(200)
+        SeasonalPlant6 -> seasonalPlant(204)
+        DrumBlock -> common(463)
+        FluteBlock -> common(464)
+        GraveStone -> craftable(47)
+        StoneCairn -> craftable(32)
+        StoneFrog -> craftable(52)
+        StoneJunimo -> craftable(55)
+        StoneOwl -> craftable(54)
+        StoneParrot -> craftable(53)
+        SuitOfArmor -> craftable(33)
+        Foroguemon -> craftable(162)
+        HMTGF -> craftable(155)
+        PinkyLemon -> craftable(161)
+        SolidGoldLewis -> craftable(164)
+        StatueOfEndlessFortune -> craftable(127)
+        StatueOfPerfection -> craftable(160)
+        StatueOfTruePerfection -> craftable(280)
+        SodaMachine -> craftable(117)
+        StardewHeroTrophy -> craftable(116)
+        JunimoKartArcadeSystem -> craftable(159)
+        PrairieKingArcadeSystem -> craftable(141)
+        SingingStone -> craftable(94)
+        SecretStoneOwl -> craftable(95)
+        SecretStrangeCapsule -> craftable(96)
+        SecretEmptyCapsule -> craftable(98)
     }
 }
 
 
-private fun common(
-    entity: Entity<*>,
-    index: Int,
-) = QualifiedEntityData(
-    qualifiedEntity = QualifiedEntity(entity),
-    entityId = EntityId(
-        page = EntityPage.CommonObjects,
-        localId = index,
-        flavor = null,
-    ),
-    spriteId = SpriteId.RegularSprite(
-        page = SpritePage.CommonObjects,
-        offset = SpriteOffset(
-            x = index % (SpritePage.CommonObjects.width / UNIT) * SpritePage.CommonObjects.grain.w,
-            y = index / (SpritePage.CommonObjects.width / UNIT) * SpritePage.CommonObjects.grain.h,
-        ) * UNIT,
-        size = SpriteSize(w = 1, h = 1) * UNIT,
-    )
-)
-
 private fun craftable(
     entity: Entity<*>,
-    index: Int,
+    id: Int,
     flavor: EntityFlavor? = null,
 ) = QualifiedEntityData(
     qualifiedEntity = QualifiedEntity(entity),
-    entityId = EntityId(
-        page = EntityPage.Craftables,
-        localId = index,
-        flavor = flavor,
-    ),
+    entityId = EntityId(EntityPage.Craftables, id, flavor),
     spriteId = SpriteId.RegularSprite(
-        page = SpritePage.Craftables,
+        page = Craftables,
         offset = SpriteOffset(
-            x = index % (SpritePage.Craftables.width / UNIT) * SpritePage.Craftables.grain.w,
-            y = index / (SpritePage.Craftables.width / UNIT) * SpritePage.Craftables.grain.h,
+            x = id % (Craftables.width / UNIT) * Craftables.grain.w,
+            y = id / (Craftables.width / UNIT) * Craftables.grain.h,
         ) * UNIT,
         size = SpriteSize(w = 1, h = 2) * UNIT,
     )
@@ -254,16 +234,16 @@ private fun fence(
     spriteId = SpriteId.RegularSprite(
         page = page,
         offset = when (qualifier.variant) {
-            FenceVariant.Single -> SpriteOffset(x = 2, y = 2)
-            FenceVariant.HasLeft -> SpriteOffset(x = 0, y = 6)
-            FenceVariant.HasRight -> SpriteOffset(x = 1, y = 6)
-            FenceVariant.HasLeftAndRight -> SpriteOffset(x = 1, y = 4)
-            FenceVariant.HasTop -> SpriteOffset(x = 0, y = 2)
-            FenceVariant.HasLeftAndBottom -> SpriteOffset(x = 2, y = 0)
-            FenceVariant.HasRightAndBottom -> SpriteOffset(x = 0, y = 0)
-            FenceVariant.HasLeftRightAndBottom -> SpriteOffset(x = 1, y = 2)
-            FenceVariant.HasLeftAndTop -> SpriteOffset(x = 2, y = 4)
-            FenceVariant.HasRightAndTop -> SpriteOffset(x = 0, y = 4)
+            Single -> SpriteOffset(x = 2, y = 2)
+            HasLeft -> SpriteOffset(x = 0, y = 6)
+            HasRight -> SpriteOffset(x = 1, y = 6)
+            HasLeftAndRight -> SpriteOffset(x = 1, y = 4)
+            HasTop -> SpriteOffset(x = 0, y = 2)
+            HasLeftAndBottom -> SpriteOffset(x = 2, y = 0)
+            HasRightAndBottom -> SpriteOffset(x = 0, y = 0)
+            HasLeftRightAndBottom -> SpriteOffset(x = 1, y = 2)
+            HasLeftAndTop -> SpriteOffset(x = 2, y = 4)
+            HasRightAndTop -> SpriteOffset(x = 0, y = 4)
         } * UNIT,
         size = SpriteSize(w = 1, h = 2) * UNIT,
     )
@@ -280,29 +260,29 @@ private fun seasonalPlant(
         localId = index + qualifier.season.ordinal,
     ),
     spriteId = SpriteId.RegularSprite(
-        page = SpritePage.Craftables,
+        page = Craftables,
         offset = SpriteOffset(
-            x = (index + qualifier.season.ordinal) % (SpritePage.Craftables.width / UNIT) * SpritePage.Craftables.grain.w,
-            y = (index + qualifier.season.ordinal) / (SpritePage.Craftables.width / UNIT) * SpritePage.Craftables.grain.h,
+            x = (index + qualifier.season.ordinal) % (Craftables.width / UNIT) * Craftables.grain.w,
+            y = (index + qualifier.season.ordinal) / (Craftables.width / UNIT) * Craftables.grain.h,
         ) * UNIT,
         size = SpriteSize(w = 1, h = 2) * UNIT,
     )
 )
 
-fun tubOFlowers(
+private fun tubOFlowers(
     index: Int,
     qualifier: SpriteQualifier.TubOFlowersQualifier,
 ) = QualifiedEntityData(
-    qualifiedEntity = QualifiedEntity(SimpleEquipment.TubOFlowers, qualifier),
+    qualifiedEntity = QualifiedEntity(TubOFlowers, qualifier),
     entityId = EntityId(
         page = EntityPage.Craftables,
         localId = index,
     ),
     spriteId = SpriteId.RegularSprite(
-        page = SpritePage.Craftables,
+        page = Craftables,
         offset = SpriteOffset(
-            x = index % (SpritePage.Craftables.width / UNIT) * SpritePage.Craftables.grain.w + if (!qualifier.isBlooming) 1 else 0,
-            y = index / (SpritePage.Craftables.width / UNIT) * SpritePage.Craftables.grain.h,
+            x = index % (Craftables.width / UNIT) * Craftables.grain.w + if (!qualifier.isBlooming) 1 else 0,
+            y = index / (Craftables.width / UNIT) * Craftables.grain.h,
         ) * UNIT,
         size = SpriteSize(w = 1, h = 2) * UNIT,
     )
@@ -324,11 +304,11 @@ private fun chest(
                 flavor = color,
             ),
             spriteId = SpriteId.RegularSprite(
-                page = SpritePage.Craftables,
+                page = Craftables,
                 size = SpriteSize(w = 1, h = 2) * UNIT,
                 offset = SpriteOffset(
-                    x = index % (SpritePage.Craftables.width / UNIT) * SpritePage.Craftables.grain.w,
-                    y = index / (SpritePage.Craftables.width / UNIT) * SpritePage.Craftables.grain.h,
+                    x = index % (Craftables.width / UNIT) * Craftables.grain.w,
+                    y = index / (Craftables.width / UNIT) * Craftables.grain.h,
                 ) * UNIT,
             )
         )
@@ -344,12 +324,12 @@ private fun chest(
             spriteId = SpriteId.ChestSprite(
                 tint = value,
                 offset = SpriteOffset(
-                    x = imgIndex % (SpritePage.Craftables.width / UNIT) * SpritePage.Craftables.grain.w,
-                    y = imgIndex / (SpritePage.Craftables.width / UNIT) * SpritePage.Craftables.grain.h,
+                    x = imgIndex % (Craftables.width / UNIT) * Craftables.grain.w,
+                    y = imgIndex / (Craftables.width / UNIT) * Craftables.grain.h,
                 ) * UNIT,
                 coverOffset = SpriteOffset(
-                    x = imgIndex % (SpritePage.Craftables.width / UNIT) * SpritePage.Craftables.grain.w,
-                    y = imgIndex / (SpritePage.Craftables.width / UNIT) * SpritePage.Craftables.grain.h + 2,
+                    x = imgIndex % (Craftables.width / UNIT) * Craftables.grain.w,
+                    y = imgIndex / (Craftables.width / UNIT) * Craftables.grain.h + 2,
                 ) * UNIT,
             )
         )

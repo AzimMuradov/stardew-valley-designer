@@ -18,6 +18,7 @@ package io.stardewvalleydesigner.metadata.internal
 
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.entity.Building.*
+import io.stardewvalleydesigner.engine.entity.Building.SimpleBuilding.*
 import io.stardewvalleydesigner.metadata.*
 
 
@@ -35,9 +36,10 @@ internal fun building(qe: QualifiedEntity<Building>): QualifiedEntityData {
         spritePage: SpritePage,
     ) = coloredBuilding(entity, flavor, page, spritePage)
 
-    fun junimoHut(
-        qualifier: SpriteQualifier.SeasonQualifier,
-    ) = junimoHut(entity, qualifier)
+    fun junimoHut() = junimoHut(
+        entity,
+        qualifier = qe.qualifier as SpriteQualifier.SeasonQualifier,
+    )
 
     fun cabin(
         page: EntityPage,
@@ -53,43 +55,43 @@ internal fun building(qe: QualifiedEntity<Building>): QualifiedEntityData {
     ) = coloredCabin(entity, flavor, page, spritePage, id)
 
     return when (entity) {
-        SimpleBuilding.Barn1 -> building(EntityPage.Barn1, SpritePage.Barn1)
-        SimpleBuilding.Barn2 -> building(EntityPage.Barn2, SpritePage.Barn2)
+        Barn1 -> building(EntityPage.Barn1, SpritePage.Barn1)
+        Barn2 -> building(EntityPage.Barn2, SpritePage.Barn2)
         is Barn3 -> coloredBuilding(entity.farmBuildingColors, EntityPage.Barn3, SpritePage.Barn3)
 
-        SimpleBuilding.Coop1 -> building(EntityPage.Coop1, SpritePage.Coop1)
-        SimpleBuilding.Coop2 -> building(EntityPage.Coop2, SpritePage.Coop2)
+        Coop1 -> building(EntityPage.Coop1, SpritePage.Coop1)
+        Coop2 -> building(EntityPage.Coop2, SpritePage.Coop2)
         is Coop3 -> coloredBuilding(entity.farmBuildingColors, EntityPage.Coop3, SpritePage.Coop3)
 
-        SimpleBuilding.Shed1 -> building(EntityPage.Shed, SpritePage.Shed)
+        Shed1 -> building(EntityPage.Shed, SpritePage.Shed)
         is Shed2 -> coloredBuilding(entity.farmBuildingColors, EntityPage.BigShed, SpritePage.BigShed)
 
-        SimpleBuilding.StoneCabin1 -> cabin(EntityPage.StoneCabin, SpritePage.StoneCabin, id = 0)
-        SimpleBuilding.StoneCabin2 -> cabin(EntityPage.StoneCabin, SpritePage.StoneCabin, id = 1)
+        StoneCabin1 -> cabin(EntityPage.StoneCabin, SpritePage.StoneCabin, id = 0)
+        StoneCabin2 -> cabin(EntityPage.StoneCabin, SpritePage.StoneCabin, id = 1)
         is StoneCabin3 -> coloredCabin(entity.farmBuildingColors, EntityPage.StoneCabin, SpritePage.StoneCabin, id = 2)
 
-        SimpleBuilding.PlankCabin1 -> cabin(EntityPage.PlankCabin, SpritePage.PlankCabin, id = 0)
-        SimpleBuilding.PlankCabin2 -> cabin(EntityPage.PlankCabin, SpritePage.PlankCabin, id = 1)
+        PlankCabin1 -> cabin(EntityPage.PlankCabin, SpritePage.PlankCabin, id = 0)
+        PlankCabin2 -> cabin(EntityPage.PlankCabin, SpritePage.PlankCabin, id = 1)
         is PlankCabin3 -> coloredCabin(entity.farmBuildingColors, EntityPage.PlankCabin, SpritePage.PlankCabin, id = 2)
 
-        SimpleBuilding.LogCabin1 -> cabin(EntityPage.LogCabin, SpritePage.LogCabin, id = 0)
-        SimpleBuilding.LogCabin2 -> cabin(EntityPage.LogCabin, SpritePage.LogCabin, id = 1)
+        LogCabin1 -> cabin(EntityPage.LogCabin, SpritePage.LogCabin, id = 0)
+        LogCabin2 -> cabin(EntityPage.LogCabin, SpritePage.LogCabin, id = 1)
         is LogCabin3 -> coloredCabin(entity.farmBuildingColors, EntityPage.LogCabin, SpritePage.LogCabin, id = 2)
 
-        SimpleBuilding.EarthObelisk -> building(EntityPage.EarthObelisk, SpritePage.EarthObelisk)
-        SimpleBuilding.WaterObelisk -> building(EntityPage.WaterObelisk, SpritePage.WaterObelisk)
-        SimpleBuilding.DesertObelisk -> building(EntityPage.DesertObelisk, SpritePage.DesertObelisk)
-        SimpleBuilding.IslandObelisk -> building(EntityPage.IslandObelisk, SpritePage.IslandObelisk)
-        SimpleBuilding.JunimoHut -> junimoHut(qe.qualifier as SpriteQualifier.SeasonQualifier)
-        SimpleBuilding.GoldClock -> building(EntityPage.GoldClock, SpritePage.GoldClock)
+        EarthObelisk -> building(EntityPage.EarthObelisk, SpritePage.EarthObelisk)
+        WaterObelisk -> building(EntityPage.WaterObelisk, SpritePage.WaterObelisk)
+        DesertObelisk -> building(EntityPage.DesertObelisk, SpritePage.DesertObelisk)
+        IslandObelisk -> building(EntityPage.IslandObelisk, SpritePage.IslandObelisk)
+        JunimoHut -> junimoHut()
+        GoldClock -> building(EntityPage.GoldClock, SpritePage.GoldClock)
 
-        SimpleBuilding.Mill -> building(EntityPage.Mill, SpritePage.Mill)
-        SimpleBuilding.Silo -> building(EntityPage.Silo, SpritePage.Silo)
-        SimpleBuilding.Well -> building(EntityPage.Well, SpritePage.Well)
+        Mill -> building(EntityPage.Mill, SpritePage.Mill)
+        Silo -> building(EntityPage.Silo, SpritePage.Silo)
+        Well -> building(EntityPage.Well, SpritePage.Well)
         is Stable -> building(EntityPage.Stable, SpritePage.Stable) // TODO : Colors
         is FishPond -> building(EntityPage.FishPond, SpritePage.FishPond) // TODO : Colors and other variations
-        SimpleBuilding.SlimeHutch -> building(EntityPage.SlimeHutch, SpritePage.SlimeHutch)
-        SimpleBuilding.ShippingBin -> building(EntityPage.ShippingBin, SpritePage.ShippingBin)
+        SlimeHutch -> building(EntityPage.SlimeHutch, SpritePage.SlimeHutch)
+        ShippingBin -> building(EntityPage.ShippingBin, SpritePage.ShippingBin)
     }
 }
 
@@ -100,7 +102,7 @@ private fun building(
     spritePage: SpritePage,
 ) = QualifiedEntityData(
     qualifiedEntity = QualifiedEntity(entity),
-    entityId = EntityId(page, localId = 0, flavor = null),
+    entityId = EntityId(page, localId = 0),
     spriteId = SpriteId.RegularSprite(
         page = spritePage,
         offset = SpriteOffset(x = 0, y = 0),
@@ -129,11 +131,7 @@ private fun junimoHut(
     qualifier: SpriteQualifier.SeasonQualifier,
 ) = QualifiedEntityData(
     qualifiedEntity = QualifiedEntity(entity, qualifier),
-    entityId = EntityId(
-        page = EntityPage.JunimoHut,
-        localId = 0,
-        flavor = null,
-    ),
+    entityId = EntityId(EntityPage.JunimoHut, localId = 0),
     spriteId = SpriteId.RegularSprite(
         page = SpritePage.JunimoHut,
         offset = SpriteOffset(x = 48 * qualifier.season.ordinal, y = 0),
@@ -148,7 +146,7 @@ private fun cabin(
     id: Int,
 ) = QualifiedEntityData(
     qualifiedEntity = QualifiedEntity(entity),
-    entityId = EntityId(page, localId = id),
+    entityId = EntityId(page, id),
     spriteId = SpriteId.RegularSprite(
         page = spritePage,
         offset = SpriteOffset(x = id * (spritePage.width / 3), y = 0),
@@ -165,7 +163,7 @@ private fun coloredCabin(
     id: Int,
 ) = QualifiedEntityData(
     qualifiedEntity = QualifiedEntity(entity),
-    entityId = EntityId(page, localId = id, flavor),
+    entityId = EntityId(page, id, flavor),
     spriteId = SpriteId.RegularSprite(
         page = spritePage,
         offset = SpriteOffset(x = id * (spritePage.width / 3), y = 0),

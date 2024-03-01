@@ -21,7 +21,6 @@ import io.stardewvalleydesigner.engine.geometry.rectOf
 
 
 enum class SpritePage(val width: Int, val height: Int, val grain: Rect = rectOf(1, 1)) {
-
     CommonObjects(width = 384, height = 624),
     Craftables(width = 128, height = 1152, grain = rectOf(1, 2)),
     Furniture(width = 512, height = 1488),
@@ -32,8 +31,6 @@ enum class SpritePage(val width: Int, val height: Int, val grain: Rect = rectOf(
     Fence3(width = 48, height = 352, grain = rectOf(1, 2)),
     Fence5(width = 48, height = 352, grain = rectOf(1, 2)),
     Crops(width = 32, height = 768, grain = rectOf(1, 2)),
-
-    // Buildings
 
     Barn1(width = 112, height = 112),
     Barn2(width = 112, height = 112),
