@@ -35,25 +35,25 @@ internal fun equipment(qe: QualifiedEntity<Equipment>): QualifiedEntityData {
     ) = craftable(entity, id, flavor)
 
     fun fence(
-        index: Int,
+        id: Int,
         page: SpritePage,
-    ) = fence(entity, index, qe.qualifier as SpriteQualifier.FenceQualifier, page)
+    ) = fence(entity, qualifier = qe.qualifier as SpriteQualifier.FenceQualifier, id, page)
 
-    fun seasonalPlant(
-        index: Int,
-    ) = seasonalPlant(entity, index, qe.qualifier as SpriteQualifier.SeasonQualifier)
+    fun seasonalPlant(id: Int) =
+        seasonalPlant(entity, qualifier = qe.qualifier as SpriteQualifier.SeasonQualifier, id)
 
-    fun common(
-        index: Int,
-    ) = common(entity, index)
+    fun common(id: Int) = common(entity, id)
 
     fun chest(
         index: Int,
         color: Colors.ChestColors,
     ) = chest(entity, index, color)
 
+    fun tubOFlowers() = tubOFlowers(
+        qualifier = qe.qualifier as SpriteQualifier.TubOFlowersQualifier,
+    )
+
     return when (entity) {
-        // Common Equipment
         // (Artisan Equipment + Other Tools + Refining Equipment + Misc + Storage Equipment)
 
         MayonnaiseMachine -> craftable(24)
@@ -168,7 +168,7 @@ internal fun equipment(qe: QualifiedEntity<Equipment>): QualifiedEntityData {
         LawnFlamingo -> craftable(36)
         PlushBunny -> craftable(107)
         SeasonalDecor -> seasonalPlant(48)
-        TubOFlowers -> tubOFlowers(108, qe.qualifier as SpriteQualifier.TubOFlowersQualifier)
+        TubOFlowers -> tubOFlowers()
         SeasonalPlant1 -> seasonalPlant(184)
         SeasonalPlant2 -> seasonalPlant(188)
         SeasonalPlant3 -> seasonalPlant(192)
@@ -222,15 +222,12 @@ private fun craftable(
 
 private fun fence(
     entity: Entity<*>,
-    index: Int,
     qualifier: SpriteQualifier.FenceQualifier,
+    id: Int,
     page: SpritePage,
 ) = QualifiedEntityData(
     qualifiedEntity = QualifiedEntity(entity, qualifier),
-    entityId = EntityId(
-        page = EntityPage.CommonObjects,
-        localId = index,
-    ),
+    entityId = EntityId(EntityPage.CommonObjects, id),
     spriteId = SpriteId.RegularSprite(
         page = page,
         offset = when (qualifier.variant) {
@@ -251,38 +248,31 @@ private fun fence(
 
 private fun seasonalPlant(
     entity: Entity<*>,
-    index: Int,
     qualifier: SpriteQualifier.SeasonQualifier,
+    id: Int,
 ) = QualifiedEntityData(
     qualifiedEntity = QualifiedEntity(entity, qualifier),
-    entityId = EntityId(
-        page = EntityPage.Craftables,
-        localId = index + qualifier.season.ordinal,
-    ),
+    entityId = EntityId(EntityPage.Craftables, id),
     spriteId = SpriteId.RegularSprite(
         page = Craftables,
         offset = SpriteOffset(
-            x = (index + qualifier.season.ordinal) % (Craftables.width / UNIT) * Craftables.grain.w,
-            y = (index + qualifier.season.ordinal) / (Craftables.width / UNIT) * Craftables.grain.h,
+            x = (id + qualifier.season.ordinal) % (Craftables.width / UNIT) * Craftables.grain.w,
+            y = (id + qualifier.season.ordinal) / (Craftables.width / UNIT) * Craftables.grain.h,
         ) * UNIT,
         size = SpriteSize(w = 1, h = 2) * UNIT,
     )
 )
 
 private fun tubOFlowers(
-    index: Int,
     qualifier: SpriteQualifier.TubOFlowersQualifier,
 ) = QualifiedEntityData(
     qualifiedEntity = QualifiedEntity(TubOFlowers, qualifier),
-    entityId = EntityId(
-        page = EntityPage.Craftables,
-        localId = index,
-    ),
+    entityId = EntityId(EntityPage.Craftables, localId = 108),
     spriteId = SpriteId.RegularSprite(
         page = Craftables,
         offset = SpriteOffset(
-            x = index % (Craftables.width / UNIT) * Craftables.grain.w + if (!qualifier.isBlooming) 1 else 0,
-            y = index / (Craftables.width / UNIT) * Craftables.grain.h,
+            x = 108 % (Craftables.width / UNIT) * Craftables.grain.w + if (!qualifier.isBlooming) 1 else 0,
+            y = 108 / (Craftables.width / UNIT) * Craftables.grain.h,
         ) * UNIT,
         size = SpriteSize(w = 1, h = 2) * UNIT,
     )
@@ -290,46 +280,38 @@ private fun tubOFlowers(
 
 private fun chest(
     entity: Entity<*>,
-    index: Int,
+    id: Int,
     color: Colors.ChestColors,
 ): QualifiedEntityData {
-    val value = color.value
+    val colorValue = color.value
 
-    return if (value == null) {
+    return if (colorValue == null) {
         QualifiedEntityData(
             qualifiedEntity = QualifiedEntity(entity),
-            entityId = EntityId(
-                page = EntityPage.Craftables,
-                localId = index,
-                flavor = color,
-            ),
+            entityId = EntityId(EntityPage.Craftables, id, color),
             spriteId = SpriteId.RegularSprite(
                 page = Craftables,
                 size = SpriteSize(w = 1, h = 2) * UNIT,
                 offset = SpriteOffset(
-                    x = index % (Craftables.width / UNIT) * Craftables.grain.w,
-                    y = index / (Craftables.width / UNIT) * Craftables.grain.h,
+                    x = id % (Craftables.width / UNIT) * Craftables.grain.w,
+                    y = id / (Craftables.width / UNIT) * Craftables.grain.h,
                 ) * UNIT,
             )
         )
     } else {
-        val imgIndex = if (entity is Chest) 168 else index
+        val spriteIndex = if (entity is Chest) 168 else id
         QualifiedEntityData(
             qualifiedEntity = QualifiedEntity(entity),
-            entityId = EntityId(
-                page = EntityPage.Craftables,
-                localId = index,
-                flavor = color,
-            ),
+            entityId = EntityId(EntityPage.Craftables, id, color),
             spriteId = SpriteId.ChestSprite(
-                tint = value,
+                tint = colorValue,
                 offset = SpriteOffset(
-                    x = imgIndex % (Craftables.width / UNIT) * Craftables.grain.w,
-                    y = imgIndex / (Craftables.width / UNIT) * Craftables.grain.h,
+                    x = spriteIndex % (Craftables.width / UNIT) * Craftables.grain.w,
+                    y = spriteIndex / (Craftables.width / UNIT) * Craftables.grain.h,
                 ) * UNIT,
                 coverOffset = SpriteOffset(
-                    x = imgIndex % (Craftables.width / UNIT) * Craftables.grain.w,
-                    y = imgIndex / (Craftables.width / UNIT) * Craftables.grain.h + 2,
+                    x = spriteIndex % (Craftables.width / UNIT) * Craftables.grain.w,
+                    y = spriteIndex / (Craftables.width / UNIT) * Craftables.grain.h + 2,
                 ) * UNIT,
             )
         )
