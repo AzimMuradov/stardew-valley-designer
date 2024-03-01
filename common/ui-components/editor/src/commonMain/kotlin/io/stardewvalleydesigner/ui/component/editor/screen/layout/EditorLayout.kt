@@ -77,7 +77,7 @@ internal fun EditorLayout(
 
     val layout = map.layout
     val (nW, nH) = layout.size
-    val layoutSprite = layoutSpriteBy(layout.type)
+    val layoutSprite = layoutSpriteBy(layout.type, season)
 
     val hoveredColor = MaterialTheme.colors.secondary
 

@@ -62,7 +62,8 @@ object ImageResourcesProvider {
     }
 
     @Composable
-    fun layoutSpriteBy(type: LayoutType): LayoutSprite = ImageResources.layouts.getValue(type)
+    fun layoutSpriteBy(type: LayoutType, season: Season): LayoutSprite =
+        ImageResources.layouts.getValue(type to season)
 
     fun flooringSpriteBy(wallsAndFloors: ImageBitmap, fl: Flooring): Sprite.Image {
         val flooringObjectSpriteSize = IntSize(width = 32, height = 32)
@@ -142,20 +143,39 @@ object ImageResourcesProvider {
     )
 
     @Composable
-    internal fun layoutSprites(themeVariant: ThemeVariant): Map<LayoutType, LayoutSprite> = mapOf(
-        LayoutType.Shed to LayoutSprite(
+    internal fun layoutSprites(themeVariant: ThemeVariant): Map<Pair<LayoutType, Season>, LayoutSprite> {
+        val shed = LayoutSprite(
             fgImage = rememberImageResource("layouts/shed-fg-light.png"),
             bgImage = rememberImageResource("layouts/shed-bg-light.png"),
-        ),
-        LayoutType.BigShed to LayoutSprite(
+        )
+        val bigShed = LayoutSprite(
             fgImage = rememberImageResource("layouts/big-shed-fg-light.png"),
             bgImage = rememberImageResource("layouts/big-shed-bg-light.png"),
-        ),
-        LayoutType.StandardFarm to LayoutSprite(
-            fgImage = rememberImageResource("layouts/standard-farm-fg-spring.png"),
-            bgImage = rememberImageResource("layouts/standard-farm-bg-spring.png"),
-        ),
-    )
+        )
+
+        val shedMap = Season.entries.associate { season -> (LayoutType.Shed to season) to shed }
+        val bigShedMap = Season.entries.associate { season -> (LayoutType.BigShed to season) to bigShed }
+        val standardFarmMap = mapOf(
+            (LayoutType.StandardFarm to Season.Spring) to LayoutSprite(
+                fgImage = rememberImageResource("layouts/standard-farm-fg-spring.png"),
+                bgImage = rememberImageResource("layouts/standard-farm-bg-spring.png"),
+            ),
+            (LayoutType.StandardFarm to Season.Summer) to LayoutSprite(
+                fgImage = rememberImageResource("layouts/standard-farm-fg-summer.png"),
+                bgImage = rememberImageResource("layouts/standard-farm-bg-summer.png"),
+            ),
+            (LayoutType.StandardFarm to Season.Fall) to LayoutSprite(
+                fgImage = rememberImageResource("layouts/standard-farm-fg-fall.png"),
+                bgImage = rememberImageResource("layouts/standard-farm-bg-fall.png"),
+            ),
+            (LayoutType.StandardFarm to Season.Winter) to LayoutSprite(
+                fgImage = rememberImageResource("layouts/standard-farm-fg-winter.png"),
+                bgImage = rememberImageResource("layouts/standard-farm-bg-winter.png"),
+            ),
+        )
+
+        return shedMap + bigShedMap + standardFarmMap
+    }
 
     @Composable
     internal fun wallsAndFloorsSprite(): ImageBitmap = rememberImageResource("layouts/walls-and-floors.png")

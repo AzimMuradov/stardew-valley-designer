@@ -55,7 +55,7 @@ fun BoxScope.LayoutPreview(
     val image = ImageResources.wallsAndFloors
 
     val (nW, nH) = layout.size
-    val layoutSprite = layoutSpriteBy(layout.type)
+    val layoutSprite = layoutSpriteBy(layout.type, season)
 
     var cellSide by remember { mutableStateOf(-1f) }
 
