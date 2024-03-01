@@ -44,7 +44,21 @@ internal fun Object.toPlacedEntityOrNull(): PlacedEntity<*>? {
                 else -> null
             } ?: return null
 
-            else -> parentSheetIndex
+            else -> if (type == "Crafting") {
+                when (parentSheetIndex) {
+                    in 48..<48 + 4 -> 48
+                    in 108..<108 + 2 -> 108
+                    in 184..<184 + 4 -> 184
+                    in 188..<188 + 4 -> 188
+                    in 192..<192 + 4 -> 192
+                    in 196..<196 + 4 -> 196
+                    in 200..<200 + 4 -> 200
+                    in 204..<204 + 4 -> 204
+                    else -> parentSheetIndex
+                }
+            } else {
+                parentSheetIndex
+            }
         },
         flavor = when (typeAttr) {
             "Chest" -> if (parentSheetIndex in arrayOf(130, 232)) {
