@@ -16,28 +16,48 @@
 
 package io.stardewvalleydesigner.ui.component.editor.screen.sidemenus
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.layout.ContentScale
 import io.stardewvalleydesigner.cmplib.group.GroupOption
 import io.stardewvalleydesigner.cmplib.group.ToggleButtonsGroup
 import io.stardewvalleydesigner.metadata.Season
+import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.rememberImageResource
 
 
 @Composable
-internal fun SeasonMenu(
+internal fun SeasonsMenu(
     chosenSeason: Season,
     onSeasonChosen: (Season) -> Unit,
 ) {
+    val spring = rememberImageResource(path = "other/spring.png")
+    val summer = rememberImageResource(path = "other/summer.png")
+    val fall = rememberImageResource(path = "other/fall.png")
+    val winter = rememberImageResource(path = "other/winter.png")
+
     ToggleButtonsGroup(
         buttonLabels = Season.entries.map { GroupOption.Some(it) },
         rowSize = 4u,
-        modifier = Modifier.fillMaxWidth(fraction = 0.7f),
+        modifier = Modifier.fillMaxWidth(fraction = 0.8f),
         chosenLabel = chosenSeason,
         onButtonClick = onSeasonChosen,
         buttonContent = { season ->
-            Text(season.name)
+            Image(
+                bitmap = when (season) {
+                    Season.Spring -> spring
+                    Season.Summer -> summer
+                    Season.Fall -> fall
+                    Season.Winter -> winter
+                },
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.FillWidth,
+                filterQuality = FilterQuality.None,
+            )
         }
     )
 }

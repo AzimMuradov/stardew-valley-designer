@@ -42,7 +42,7 @@ internal fun RightSideMenus(
 ) {
     FixedSideMenus(width) {
         menu {
-            SeasonMenu(chosenSeason, onSeasonChosen)
+            SeasonsMenu(chosenSeason, onSeasonChosen)
         }
         menu(padding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)) {
             LayersVisibility(
