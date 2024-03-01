@@ -36,10 +36,10 @@ import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.cmplib.group.GroupOption
 import io.stardewvalleydesigner.cmplib.group.ToggleButtonsGroup
 import io.stardewvalleydesigner.component.editor.EditorIntent
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.designformat.models.Palette
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.entity.Colors
-import io.stardewvalleydesigner.metadata.Season
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.rememberImageResource
 import io.stardewvalleydesigner.ui.component.editor.utils.*
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings

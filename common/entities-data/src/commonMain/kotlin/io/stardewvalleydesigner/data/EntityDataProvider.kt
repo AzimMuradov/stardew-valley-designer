@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata
+package io.stardewvalleydesigner.data
 
+import io.stardewvalleydesigner.data.internal.*
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.entity.Building.ColoredFarmBuilding
 import io.stardewvalleydesigner.engine.entity.Building.SimpleBuilding.JunimoHut
 import io.stardewvalleydesigner.engine.entity.Equipment.SimpleEquipment.*
-import io.stardewvalleydesigner.metadata.internal.*
 
 
 object EntityDataProvider {

@@ -14,12 +14,20 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata
+package io.stardewvalleydesigner.data
+
+import io.stardewvalleydesigner.engine.entity.EntityFlavor
 
 
-data class SpriteOffset(val x: Int, val y: Int)
+data class EntityId(
+    val page: EntityPage,
+    val localId: Int,
+    val flavor: EntityFlavor? = null,
+)
 
-
-operator fun SpriteOffset.times(multiplier: Int) = SpriteOffset(x = x * multiplier, y = y * multiplier)
-
-operator fun SpriteOffset.div(divider: Int) = SpriteOffset(x = x / divider, y = y / divider)
+val EntityId.default
+    get() = EntityId(
+        page = page,
+        localId = localId,
+        flavor = flavor?.default()
+    )

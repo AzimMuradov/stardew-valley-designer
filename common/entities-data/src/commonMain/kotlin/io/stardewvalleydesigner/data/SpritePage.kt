@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata
+package io.stardewvalleydesigner.data
 
 import io.stardewvalleydesigner.engine.geometry.Rect
 import io.stardewvalleydesigner.engine.geometry.rectOf

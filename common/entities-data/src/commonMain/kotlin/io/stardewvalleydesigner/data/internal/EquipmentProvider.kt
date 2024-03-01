@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata.internal
+package io.stardewvalleydesigner.data.internal
 
+import io.stardewvalleydesigner.data.*
+import io.stardewvalleydesigner.data.FenceVariant.*
+import io.stardewvalleydesigner.data.SpritePage.Companion.UNIT
+import io.stardewvalleydesigner.data.SpritePage.Craftables
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.entity.Equipment.Chest
 import io.stardewvalleydesigner.engine.entity.Equipment.SimpleEquipment.*
 import io.stardewvalleydesigner.engine.entity.Equipment.StoneChest
-import io.stardewvalleydesigner.metadata.*
-import io.stardewvalleydesigner.metadata.FenceVariant.*
-import io.stardewvalleydesigner.metadata.SpritePage.Companion.UNIT
-import io.stardewvalleydesigner.metadata.SpritePage.Craftables
 
 
 internal fun equipment(qe: QualifiedEntity<Equipment>): QualifiedEntityData {

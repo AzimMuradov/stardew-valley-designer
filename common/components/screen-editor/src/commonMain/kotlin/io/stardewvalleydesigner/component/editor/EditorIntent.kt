@@ -18,13 +18,13 @@ package io.stardewvalleydesigner.component.editor
 
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ShapeType
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolType
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.designformat.models.OptionsItemValue
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layer.LayerType
-import io.stardewvalleydesigner.metadata.Season
 
 
 sealed interface EditorIntent {

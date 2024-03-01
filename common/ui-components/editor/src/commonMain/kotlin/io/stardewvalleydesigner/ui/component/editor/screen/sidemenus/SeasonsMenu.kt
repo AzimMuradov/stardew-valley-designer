@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import io.stardewvalleydesigner.cmplib.group.GroupOption
 import io.stardewvalleydesigner.cmplib.group.ToggleButtonsGroup
-import io.stardewvalleydesigner.metadata.Season
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.rememberImageResource
 
 

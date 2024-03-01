@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata.internal
+package io.stardewvalleydesigner.data.internal
 
+import io.stardewvalleydesigner.data.QualifiedEntity
+import io.stardewvalleydesigner.data.QualifiedEntityData
 import io.stardewvalleydesigner.engine.entity.FloorFurniture
 import io.stardewvalleydesigner.engine.entity.FloorFurniture.FloorDivider.*
 import io.stardewvalleydesigner.engine.entity.FloorFurniture.RotatableRug.*
@@ -23,8 +25,6 @@ import io.stardewvalleydesigner.engine.entity.FloorFurniture.SimpleRug.*
 import io.stardewvalleydesigner.engine.entity.Rotations
 import io.stardewvalleydesigner.engine.entity.Rotations.Rotations2.R1
 import io.stardewvalleydesigner.engine.entity.Rotations.Rotations2.R2
-import io.stardewvalleydesigner.metadata.QualifiedEntity
-import io.stardewvalleydesigner.metadata.QualifiedEntityData
 
 
 internal fun floorFurniture(qe: QualifiedEntity<FloorFurniture>): QualifiedEntityData {

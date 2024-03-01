@@ -18,9 +18,9 @@ package io.stardewvalleydesigner.ui.component.editor.utils
 
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
+import io.stardewvalleydesigner.data.SpriteOffset
+import io.stardewvalleydesigner.data.SpriteSize
 import io.stardewvalleydesigner.engine.entity.Color
-import io.stardewvalleydesigner.metadata.SpriteOffset
-import io.stardewvalleydesigner.metadata.SpriteSize
 import androidx.compose.ui.graphics.Color as ComposeColor
 
 

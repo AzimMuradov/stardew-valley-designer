@@ -17,9 +17,9 @@
 package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesignas
 
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.designformat.DesignFormatSerializer
 import io.stardewvalleydesigner.designformat.models.*
-import io.stardewvalleydesigner.metadata.Season
 
 
 internal object DesignSaver {

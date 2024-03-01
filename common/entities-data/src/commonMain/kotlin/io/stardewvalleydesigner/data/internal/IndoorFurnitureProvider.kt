@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata.internal
+package io.stardewvalleydesigner.data.internal
 
+import io.stardewvalleydesigner.data.QualifiedEntity
+import io.stardewvalleydesigner.data.QualifiedEntityData
 import io.stardewvalleydesigner.engine.entity.IndoorFurniture
 import io.stardewvalleydesigner.engine.entity.IndoorFurniture.Armchair.*
 import io.stardewvalleydesigner.engine.entity.IndoorFurniture.Couch.*
@@ -24,8 +26,6 @@ import io.stardewvalleydesigner.engine.entity.IndoorFurniture.LargeBrownCouch
 import io.stardewvalleydesigner.engine.entity.IndoorFurniture.SimpleIndoorFurniture.*
 import io.stardewvalleydesigner.engine.entity.Rotations
 import io.stardewvalleydesigner.engine.entity.Rotations.Rotations4.*
-import io.stardewvalleydesigner.metadata.QualifiedEntity
-import io.stardewvalleydesigner.metadata.QualifiedEntityData
 
 
 internal fun indoorFurniture(qe: QualifiedEntity<IndoorFurniture>): QualifiedEntityData {

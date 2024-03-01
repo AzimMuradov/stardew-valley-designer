@@ -34,6 +34,8 @@ import androidx.compose.ui.input.pointer.*
 import io.stardewvalleydesigner.component.editor.EditorIntent
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolkitState
+import io.stardewvalleydesigner.data.Season
+import io.stardewvalleydesigner.data.SpritePage
 import io.stardewvalleydesigner.designformat.models.Options
 import io.stardewvalleydesigner.designformat.models.OptionsItemValue.Toggleable
 import io.stardewvalleydesigner.engine.entity.Building.SimpleBuilding.JunimoHut
@@ -46,8 +48,6 @@ import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.coordinates
 import io.stardewvalleydesigner.engine.layers.flatten
 import io.stardewvalleydesigner.engine.layers.flattenSequence
-import io.stardewvalleydesigner.metadata.Season
-import io.stardewvalleydesigner.metadata.SpritePage
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResources
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.layoutSpriteBy
 import io.stardewvalleydesigner.ui.component.editor.res.SpriteUtils

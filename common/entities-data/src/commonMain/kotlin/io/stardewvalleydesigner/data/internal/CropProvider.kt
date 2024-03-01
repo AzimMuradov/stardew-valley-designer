@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata.internal
+package io.stardewvalleydesigner.data.internal
 
+import io.stardewvalleydesigner.data.*
+import io.stardewvalleydesigner.data.SpritePage.Companion.UNIT
+import io.stardewvalleydesigner.data.SpritePage.Crops
 import io.stardewvalleydesigner.engine.entity.Crop
 import io.stardewvalleydesigner.engine.entity.Crop.SimpleCrop.*
 import io.stardewvalleydesigner.engine.entity.Entity
-import io.stardewvalleydesigner.metadata.*
-import io.stardewvalleydesigner.metadata.SpritePage.Companion.UNIT
-import io.stardewvalleydesigner.metadata.SpritePage.Crops
 
 
 internal fun crop(qe: QualifiedEntity<Crop>): QualifiedEntityData {

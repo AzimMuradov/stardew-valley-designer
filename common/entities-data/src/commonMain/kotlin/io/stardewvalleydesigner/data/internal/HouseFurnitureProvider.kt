@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata
+package io.stardewvalleydesigner.data.internal
+
+import io.stardewvalleydesigner.data.QualifiedEntity
+import io.stardewvalleydesigner.data.QualifiedEntityData
+import io.stardewvalleydesigner.engine.entity.HouseFurniture
 
 
-data class SpriteSize(val w: Int, val h: Int)
-
-
-operator fun SpriteSize.times(multiplier: Int) = SpriteSize(w = w * multiplier, h = h * multiplier)
-
-operator fun SpriteSize.div(divider: Int) = SpriteSize(w = w / divider, h = h / divider)
+internal fun houseFurniture(qe: QualifiedEntity<HouseFurniture>): QualifiedEntityData {
+    TODO()
+}

@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata.internal
+package io.stardewvalleydesigner.data.internal
 
+import io.stardewvalleydesigner.data.*
+import io.stardewvalleydesigner.data.FloorVariant.*
+import io.stardewvalleydesigner.data.SpritePage.Companion.UNIT
+import io.stardewvalleydesigner.data.SpritePage.Flooring
+import io.stardewvalleydesigner.data.SpritePage.FlooringWinter
 import io.stardewvalleydesigner.engine.entity.Floor
 import io.stardewvalleydesigner.engine.entity.Floor.*
-import io.stardewvalleydesigner.metadata.*
-import io.stardewvalleydesigner.metadata.FloorVariant.*
-import io.stardewvalleydesigner.metadata.SpritePage.Companion.UNIT
-import io.stardewvalleydesigner.metadata.SpritePage.Flooring
-import io.stardewvalleydesigner.metadata.SpritePage.FlooringWinter
 
 
 internal fun floor(qe: QualifiedEntity<Floor>): QualifiedEntityData {

@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata
-
-import io.stardewvalleydesigner.engine.entity.EntityFlavor
+package io.stardewvalleydesigner.data
 
 
-data class EntityId(
-    val page: EntityPage,
-    val localId: Int,
-    val flavor: EntityFlavor? = null,
-)
-
-val EntityId.default
-    get() = EntityId(
-        page = page,
-        localId = localId,
-        flavor = flavor?.default()
-    )
+enum class FenceVariant {
+    Single,
+    HasLeft,
+    HasRight,
+    HasLeftAndRight,
+    HasTop,
+    HasLeftAndBottom,
+    HasRightAndBottom,
+    HasLeftRightAndBottom,
+    HasLeftAndTop,
+    HasRightAndTop,
+}

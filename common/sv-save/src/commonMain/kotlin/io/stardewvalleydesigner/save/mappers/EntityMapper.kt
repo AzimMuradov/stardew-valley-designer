@@ -16,13 +16,13 @@
 
 package io.stardewvalleydesigner.save.mappers
 
+import io.stardewvalleydesigner.data.EntityDataProvider.entityById
+import io.stardewvalleydesigner.data.EntityDataProvider.entityToId
+import io.stardewvalleydesigner.data.EntityId
+import io.stardewvalleydesigner.data.EntityPage
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.geometry.xy
 import io.stardewvalleydesigner.engine.layer.placeIt
-import io.stardewvalleydesigner.metadata.EntityDataProvider.entityById
-import io.stardewvalleydesigner.metadata.EntityDataProvider.entityToId
-import io.stardewvalleydesigner.metadata.EntityId
-import io.stardewvalleydesigner.metadata.EntityPage
 import io.stardewvalleydesigner.save.models.*
 import io.stardewvalleydesigner.save.models.Building
 import io.stardewvalleydesigner.engine.entity.Building as BuildingEntity

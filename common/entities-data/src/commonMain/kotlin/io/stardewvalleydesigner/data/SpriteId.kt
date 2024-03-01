@@ -14,13 +14,27 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata.internal
+package io.stardewvalleydesigner.data
 
-import io.stardewvalleydesigner.engine.entity.HouseFurniture
-import io.stardewvalleydesigner.metadata.QualifiedEntity
-import io.stardewvalleydesigner.metadata.QualifiedEntityData
+import io.stardewvalleydesigner.data.SpritePage.Companion.UNIT
+import io.stardewvalleydesigner.engine.entity.Color
 
 
-internal fun houseFurniture(qe: QualifiedEntity<HouseFurniture>): QualifiedEntityData {
-    TODO()
+sealed interface SpriteId {
+
+    data class RegularSprite(
+        val page: SpritePage,
+        val size: SpriteSize,
+        val offset: SpriteOffset,
+    ) : SpriteId
+
+    data class ChestSprite(
+        val tint: Color,
+        val offset: SpriteOffset,
+        val coverOffset: SpriteOffset,
+    ) : SpriteId {
+
+        val page = SpritePage.Craftables
+        val size = SpriteSize(w = 1, h = 2) * UNIT
+    }
 }

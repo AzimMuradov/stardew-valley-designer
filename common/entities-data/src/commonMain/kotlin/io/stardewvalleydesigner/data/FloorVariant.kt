@@ -14,43 +14,24 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata
+package io.stardewvalleydesigner.data
 
 
-enum class EntityPage {
-    CommonObjects,
-    Craftables,
-    Furniture,
-    Flooring,
-    Crops,
-
-    Barn1,
-    Barn2,
-    Barn3,
-
-    Coop1,
-    Coop2,
-    Coop3,
-
-    Shed,
-    BigShed,
-
-    StoneCabin,
-    PlankCabin,
-    LogCabin,
-
-    EarthObelisk,
-    WaterObelisk,
-    DesertObelisk,
-    IslandObelisk,
-    JunimoHut,
-    GoldClock,
-
-    Mill,
-    Silo,
-    Well,
-    Stable,
-    FishPond,
-    SlimeHutch,
-    ShippingBin,
+enum class FloorVariant {
+    Single,
+    ColTop,
+    ColCenter,
+    ColBottom,
+    RowLeft,
+    RowCenter,
+    RowRight,
+    TopLeft,
+    TopCenter,
+    TopRight,
+    CenterLeft,
+    CenterCenter,
+    CenterRight,
+    BottomLeft,
+    BottomCenter,
+    BottomRight,
 }

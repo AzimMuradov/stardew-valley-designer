@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata.internal
+package io.stardewvalleydesigner.data.internal
 
+import io.stardewvalleydesigner.data.*
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.entity.Building.*
 import io.stardewvalleydesigner.engine.entity.Building.SimpleBuilding.*
-import io.stardewvalleydesigner.metadata.*
 
 
 internal fun building(qe: QualifiedEntity<Building>): QualifiedEntityData {

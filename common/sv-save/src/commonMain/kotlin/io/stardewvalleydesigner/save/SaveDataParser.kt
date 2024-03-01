@@ -26,7 +26,7 @@ import io.stardewvalleydesigner.save.models.SaveGame
 import io.stardewvalleydesigner.save.models.Season
 import kotlinx.serialization.decodeFromString
 import nl.adaptivity.xmlutil.serialization.XML
-import io.stardewvalleydesigner.metadata.Season as SeasonData
+import io.stardewvalleydesigner.data.Season as SeasonData
 
 
 object SaveDataParser {

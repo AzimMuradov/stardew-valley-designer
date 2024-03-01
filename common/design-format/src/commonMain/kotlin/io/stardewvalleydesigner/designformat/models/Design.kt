@@ -16,12 +16,12 @@
 
 package io.stardewvalleydesigner.designformat.models
 
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.designformat.serializers.*
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layout.LayoutType
-import io.stardewvalleydesigner.metadata.Season
 import kotlinx.serialization.Serializable
 
 

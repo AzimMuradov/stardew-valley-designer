@@ -24,11 +24,11 @@ import io.stardewvalleydesigner.LoggerUtils.logger
 import io.stardewvalleydesigner.cmplib.filedialogs.FileSaver
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
 import io.stardewvalleydesigner.component.editor.modules.vislayers.VisLayersState
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
 import io.stardewvalleydesigner.kmplib.fs.FileSystem
 import io.stardewvalleydesigner.kmplib.fs.getSvdImagesDir
 import io.stardewvalleydesigner.kmplib.png.PNG_FORMAT
-import io.stardewvalleydesigner.metadata.Season
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResources
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider
 import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesignasimg.DesignRenderer

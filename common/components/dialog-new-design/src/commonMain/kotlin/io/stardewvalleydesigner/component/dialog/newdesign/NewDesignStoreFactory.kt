@@ -19,13 +19,13 @@ package io.stardewvalleydesigner.component.dialog.newdesign
 import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.stardewvalleydesigner.component.dialog.newdesign.NewDesignState
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.designformat.Wrapper
 import io.stardewvalleydesigner.designformat.models.*
 import io.stardewvalleydesigner.designformat.wrapped
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layout.LayoutType
 import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
-import io.stardewvalleydesigner.metadata.Season
 import io.stardewvalleydesigner.component.dialog.newdesign.NewDesignIntent as Intent
 import io.stardewvalleydesigner.component.dialog.newdesign.NewDesignState as State
 

@@ -16,8 +16,8 @@
 
 package io.stardewvalleydesigner.designformat.serializers
 
+import io.stardewvalleydesigner.data.EntityDataProvider
 import io.stardewvalleydesigner.engine.entity.Entity
-import io.stardewvalleydesigner.metadata.EntityDataProvider
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer

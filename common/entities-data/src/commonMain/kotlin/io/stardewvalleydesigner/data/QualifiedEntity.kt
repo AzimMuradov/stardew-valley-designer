@@ -14,27 +14,12 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata
+package io.stardewvalleydesigner.data
 
-import io.stardewvalleydesigner.engine.entity.Color
-import io.stardewvalleydesigner.metadata.SpritePage.Companion.UNIT
+import io.stardewvalleydesigner.engine.entity.Entity
 
 
-sealed interface SpriteId {
-
-    data class RegularSprite(
-        val page: SpritePage,
-        val size: SpriteSize,
-        val offset: SpriteOffset,
-    ) : SpriteId
-
-    data class ChestSprite(
-        val tint: Color,
-        val offset: SpriteOffset,
-        val coverOffset: SpriteOffset,
-    ) : SpriteId {
-
-        val page = SpritePage.Craftables
-        val size = SpriteSize(w = 1, h = 2) * UNIT
-    }
-}
+data class QualifiedEntity<E : Entity<*>>(
+    val entity: E,
+    val qualifier: SpriteQualifier = SpriteQualifier.None,
+)

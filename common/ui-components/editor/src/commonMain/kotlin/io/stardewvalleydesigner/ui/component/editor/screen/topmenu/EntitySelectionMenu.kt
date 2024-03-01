@@ -36,9 +36,9 @@ import io.stardewvalleydesigner.cmplib.menu.DropdownMenuStyle
 import io.stardewvalleydesigner.cmplib.menu.HoverableDropdownMenu
 import io.stardewvalleydesigner.component.editor.menus.EntitySelectionMenu
 import io.stardewvalleydesigner.component.editor.menus.filterElements
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.EntityType
-import io.stardewvalleydesigner.metadata.Season
 import io.stardewvalleydesigner.ui.component.editor.utils.Sprite
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 

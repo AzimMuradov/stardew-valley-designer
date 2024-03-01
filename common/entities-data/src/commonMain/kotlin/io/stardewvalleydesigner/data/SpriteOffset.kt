@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata
-
-import io.stardewvalleydesigner.engine.entity.Entity
+package io.stardewvalleydesigner.data
 
 
-data class QualifiedEntity<E : Entity<*>>(
-    val entity: E,
-    val qualifier: SpriteQualifier = SpriteQualifier.None,
-)
+data class SpriteOffset(val x: Int, val y: Int)
+
+
+operator fun SpriteOffset.times(multiplier: Int) = SpriteOffset(x = x * multiplier, y = y * multiplier)
+
+operator fun SpriteOffset.div(divider: Int) = SpriteOffset(x = x / divider, y = y / divider)

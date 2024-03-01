@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata.internal
+package io.stardewvalleydesigner.data.internal
 
+import io.stardewvalleydesigner.data.QualifiedEntity
+import io.stardewvalleydesigner.data.QualifiedEntityData
 import io.stardewvalleydesigner.engine.entity.Rotations
 import io.stardewvalleydesigner.engine.entity.Rotations.Rotations2
 import io.stardewvalleydesigner.engine.entity.Rotations.Rotations4
@@ -27,8 +29,6 @@ import io.stardewvalleydesigner.engine.entity.UniversalFurniture.LongTable.*
 import io.stardewvalleydesigner.engine.entity.UniversalFurniture.SimpleUniversalFurniture.*
 import io.stardewvalleydesigner.engine.entity.UniversalFurniture.StoneSlab
 import io.stardewvalleydesigner.engine.entity.UniversalFurniture.WoodenEndTable.*
-import io.stardewvalleydesigner.metadata.QualifiedEntity
-import io.stardewvalleydesigner.metadata.QualifiedEntityData
 
 
 internal fun universalFurniture(qe: QualifiedEntity<UniversalFurniture>): QualifiedEntityData {

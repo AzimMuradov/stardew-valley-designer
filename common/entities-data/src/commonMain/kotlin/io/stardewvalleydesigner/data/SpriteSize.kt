@@ -14,24 +14,12 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata
+package io.stardewvalleydesigner.data
 
 
-enum class FloorVariant {
-    Single,
-    ColTop,
-    ColCenter,
-    ColBottom,
-    RowLeft,
-    RowCenter,
-    RowRight,
-    TopLeft,
-    TopCenter,
-    TopRight,
-    CenterLeft,
-    CenterCenter,
-    CenterRight,
-    BottomLeft,
-    BottomCenter,
-    BottomRight,
-}
+data class SpriteSize(val w: Int, val h: Int)
+
+
+operator fun SpriteSize.times(multiplier: Int) = SpriteSize(w = w * multiplier, h = h * multiplier)
+
+operator fun SpriteSize.div(divider: Int) = SpriteSize(w = w / divider, h = h / divider)

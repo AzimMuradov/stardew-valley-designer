@@ -23,11 +23,11 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ShapeType
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolType
+import io.stardewvalleydesigner.data.*
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.layout.LayoutType
-import io.stardewvalleydesigner.metadata.*
 import io.stardewvalleydesigner.ui.component.editor.utils.*
 import io.stardewvalleydesigner.ui.component.themes.ThemeVariant
 import org.jetbrains.compose.resources.ExperimentalResourceApi

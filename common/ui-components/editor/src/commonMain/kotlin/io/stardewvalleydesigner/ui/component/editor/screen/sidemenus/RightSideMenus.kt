@@ -24,9 +24,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.cmplib.sidemenus.FixedSideMenus
 import io.stardewvalleydesigner.component.editor.modules.map.LayoutState
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.allEntityTypes
-import io.stardewvalleydesigner.metadata.Season
 import io.stardewvalleydesigner.component.editor.EditorIntent as Intent
 
 

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata.internal
+package io.stardewvalleydesigner.data.internal
 
+import io.stardewvalleydesigner.data.*
+import io.stardewvalleydesigner.data.SpritePage.CommonObjects
+import io.stardewvalleydesigner.data.SpritePage.Companion.UNIT
+import io.stardewvalleydesigner.data.SpritePage.Furniture
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.Rotations
-import io.stardewvalleydesigner.metadata.*
-import io.stardewvalleydesigner.metadata.SpritePage.CommonObjects
-import io.stardewvalleydesigner.metadata.SpritePage.Companion.UNIT
-import io.stardewvalleydesigner.metadata.SpritePage.Furniture
 
 
 internal fun common(

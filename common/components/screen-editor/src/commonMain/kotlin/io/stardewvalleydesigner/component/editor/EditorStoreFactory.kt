@@ -27,10 +27,10 @@ import io.stardewvalleydesigner.component.editor.modules.palette.reduce
 import io.stardewvalleydesigner.component.editor.modules.toolkit.*
 import io.stardewvalleydesigner.component.editor.modules.vislayers.VisLayersState
 import io.stardewvalleydesigner.component.editor.modules.vislayers.reduce
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.designformat.models.Options
 import io.stardewvalleydesigner.designformat.models.Palette
 import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
-import io.stardewvalleydesigner.metadata.Season
 import io.stardewvalleydesigner.component.editor.EditorIntent as Intent
 import io.stardewvalleydesigner.component.editor.EditorLabel as Label
 import io.stardewvalleydesigner.component.editor.EditorState as State

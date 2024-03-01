@@ -14,28 +14,43 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.metadata
+package io.stardewvalleydesigner.data
 
 
-data class QualifiedEntityData(
-    val qualifiedEntity: QualifiedEntity<*>,
-    val entityId: EntityId,
-    val spriteId: SpriteId,
-) {
+enum class EntityPage {
+    CommonObjects,
+    Craftables,
+    Furniture,
+    Flooring,
+    Crops,
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is QualifiedEntityData) return false
+    Barn1,
+    Barn2,
+    Barn3,
 
-        if (entityId != other.entityId) return false
-        if (spriteId != other.spriteId) return false
+    Coop1,
+    Coop2,
+    Coop3,
 
-        return true
-    }
+    Shed,
+    BigShed,
 
-    override fun hashCode(): Int {
-        var result = entityId.hashCode()
-        result = 31 * result + spriteId.hashCode()
-        return result
-    }
+    StoneCabin,
+    PlankCabin,
+    LogCabin,
+
+    EarthObelisk,
+    WaterObelisk,
+    DesertObelisk,
+    IslandObelisk,
+    JunimoHut,
+    GoldClock,
+
+    Mill,
+    Silo,
+    Well,
+    Stable,
+    FishPond,
+    SlimeHutch,
+    ShippingBin,
 }

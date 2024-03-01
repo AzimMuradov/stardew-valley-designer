@@ -20,9 +20,9 @@ import io.stardewvalleydesigner.component.editor.modules.history.HistoryState
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolkitState
 import io.stardewvalleydesigner.component.editor.modules.vislayers.VisLayersState
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.designformat.models.*
 import io.stardewvalleydesigner.engine.layout.Layout
-import io.stardewvalleydesigner.metadata.Season
 
 
 data class EditorState(

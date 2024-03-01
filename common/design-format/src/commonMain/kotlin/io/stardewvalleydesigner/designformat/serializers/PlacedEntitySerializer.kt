@@ -16,11 +16,11 @@
 
 package io.stardewvalleydesigner.designformat.serializers
 
+import io.stardewvalleydesigner.data.EntityDataProvider
+import io.stardewvalleydesigner.data.EntityId
 import io.stardewvalleydesigner.engine.entity.PlacedEntity
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layer.placeIt
-import io.stardewvalleydesigner.metadata.EntityDataProvider
-import io.stardewvalleydesigner.metadata.EntityId
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
