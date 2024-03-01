@@ -16,9 +16,9 @@
 
 package io.stardewvalleydesigner.designformat.serializers
 
+import io.stardewvalleydesigner.data.EntityId
+import io.stardewvalleydesigner.data.EntityPage
 import io.stardewvalleydesigner.engine.entity.*
-import io.stardewvalleydesigner.metadata.EntityId
-import io.stardewvalleydesigner.metadata.EntityPage
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.*

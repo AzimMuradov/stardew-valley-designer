@@ -16,6 +16,8 @@ _Supported Stardew Valley version - 1.5.6_
 #### Added
 
 - :sparkles: Add player name and farm name text fields
+- :sparkles: Support connected textures for floors and fences
+- :sparkles: Support seasons
 
 #### Changed
 

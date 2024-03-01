@@ -16,13 +16,13 @@
 
 package io.stardewvalleydesigner.save.mappers
 
+import io.stardewvalleydesigner.data.EntityDataProvider.entityById
+import io.stardewvalleydesigner.data.EntityDataProvider.entityToId
+import io.stardewvalleydesigner.data.EntityId
+import io.stardewvalleydesigner.data.EntityPage
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.geometry.xy
 import io.stardewvalleydesigner.engine.layer.placeIt
-import io.stardewvalleydesigner.metadata.EntityDataProvider.entityById
-import io.stardewvalleydesigner.metadata.EntityDataProvider.entityToId
-import io.stardewvalleydesigner.metadata.EntityId
-import io.stardewvalleydesigner.metadata.EntityPage
 import io.stardewvalleydesigner.save.models.*
 import io.stardewvalleydesigner.save.models.Building
 import io.stardewvalleydesigner.engine.entity.Building as BuildingEntity
@@ -36,15 +36,29 @@ internal fun Object.toPlacedEntityOrNull(): PlacedEntity<*>? {
         },
         localId = when (typeAttr) {
             "Fence" -> when (name) {
-                "Wood Fence" -> entityToId[Equipment.SimpleEquipment.WoodFence]?.localId
-                "Stone Fence" -> entityToId[Equipment.SimpleEquipment.StoneFence]?.localId
-                "Iron Fence" -> entityToId[Equipment.SimpleEquipment.IronFence]?.localId
-                "Gate" -> entityToId[Equipment.SimpleEquipment.Gate]?.localId
-                "Hardwood Fence" -> entityToId[Equipment.SimpleEquipment.HardwoodFence]?.localId
+                "Wood Fence" -> entityToId(Equipment.SimpleEquipment.WoodFence).localId
+                "Stone Fence" -> entityToId(Equipment.SimpleEquipment.StoneFence).localId
+                "Iron Fence" -> entityToId(Equipment.SimpleEquipment.IronFence).localId
+                "Gate" -> entityToId(Equipment.SimpleEquipment.Gate).localId
+                "Hardwood Fence" -> entityToId(Equipment.SimpleEquipment.HardwoodFence).localId
                 else -> null
             } ?: return null
 
-            else -> parentSheetIndex
+            else -> if (type == "Crafting") {
+                when (parentSheetIndex) {
+                    in 48..<48 + 4 -> 48
+                    in 108..<108 + 2 -> 108
+                    in 184..<184 + 4 -> 184
+                    in 188..<188 + 4 -> 188
+                    in 192..<192 + 4 -> 192
+                    in 196..<196 + 4 -> 196
+                    in 200..<200 + 4 -> 200
+                    in 204..<204 + 4 -> 204
+                    else -> parentSheetIndex
+                }
+            } else {
+                parentSheetIndex
+            }
         },
         flavor = when (typeAttr) {
             "Chest" -> if (parentSheetIndex in arrayOf(130, 232)) {
@@ -57,7 +71,7 @@ internal fun Object.toPlacedEntityOrNull(): PlacedEntity<*>? {
             else -> null
         },
     )
-    return entityById[entityId]?.placeIt(there = tileLocation.toCoordinate())
+    return entityById(entityId)?.placeIt(there = tileLocation.toCoordinate())
 }
 
 internal fun Furniture.toPlacedEntityOrNull(): PlacedEntity<*>? {
@@ -85,29 +99,29 @@ internal fun Furniture.toPlacedEntityOrNull(): PlacedEntity<*>? {
         flavor = rotation
     )
 
-    return entityById[entityId]?.placeIt(there = tileLocation.toCoordinate())
+    return entityById(entityId)?.placeIt(there = tileLocation.toCoordinate())
 }
 
 internal fun Item<Vector2Wrapper, TerrainFeatureWrapper>.toPlacedEntityOrNull(): PlacedEntity<*>? {
     val (v2, tfw) = this
     val entity = when (tfw.tf.typeAttr) {
-        "Flooring" -> entityById[
+        "Flooring" -> entityById(
             EntityId(
                 page = EntityPage.Flooring,
                 localId = tfw.tf.whichFloor!!
             )
-        ]
+        )
 
         "Grass" -> Floor.Grass
 
         "Tree" -> null
 
-        "HoeDirt" -> entityById[
+        "HoeDirt" -> entityById(
             EntityId(
                 page = EntityPage.Crops,
                 localId = tfw.tf.crop?.rowInSpriteSheet ?: return null
             )
-        ]
+        )
 
         else -> null
     }

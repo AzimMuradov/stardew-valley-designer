@@ -23,8 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.component.editor.EditorIntent
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
-import io.stardewvalleydesigner.designformat.models.Options
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolkitState
+import io.stardewvalleydesigner.data.Season
+import io.stardewvalleydesigner.designformat.models.Options
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layer.LayerType
 
@@ -32,6 +33,7 @@ import io.stardewvalleydesigner.engine.layer.LayerType
 @Composable
 internal fun RowScope.MainPart(
     map: MapState,
+    season: Season,
     visibleLayers: Set<LayerType<*>>,
     toolkit: ToolkitState,
     options: Options,
@@ -41,7 +43,7 @@ internal fun RowScope.MainPart(
 ) {
     Box(Modifier.fillMaxHeight().weight(1f).padding(30.dp), Alignment.Center) {
         EditorLayout(
-            map, visibleLayers, toolkit, options,
+            map, season, visibleLayers, toolkit, options,
             currCoordinate, onCurrCoordinateChanged,
             intentConsumer,
         )

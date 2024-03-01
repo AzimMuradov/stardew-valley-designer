@@ -16,8 +16,8 @@
 
 package io.stardewvalleydesigner.designformat.serializers
 
+import io.stardewvalleydesigner.data.EntityDataProvider
 import io.stardewvalleydesigner.engine.entity.Entity
-import io.stardewvalleydesigner.metadata.EntityDataProvider
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
@@ -43,13 +43,12 @@ internal object EntitySerializer : KSerializer<Entity<*>> {
     override fun serialize(encoder: Encoder, value: Entity<*>) {
         delegateSerializer.serialize(
             encoder,
-            value = EntityDataProvider.entityToId.getValue(value),
+            value = EntityDataProvider.entityToId(value),
         )
     }
 
     override fun deserialize(decoder: Decoder): Entity<*> {
-        return EntityDataProvider.entityById.getValue(
-            delegateSerializer.deserialize(decoder),
-        )
+        val id = delegateSerializer.deserialize(decoder)
+        return EntityDataProvider.entityById(id) ?: error("can't find $id")
     }
 }

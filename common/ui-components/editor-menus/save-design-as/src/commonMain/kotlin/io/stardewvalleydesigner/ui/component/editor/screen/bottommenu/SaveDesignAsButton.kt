@@ -23,6 +23,7 @@ import androidx.compose.runtime.*
 import io.stardewvalleydesigner.LoggerUtils.logger
 import io.stardewvalleydesigner.cmplib.filedialogs.FileSaver
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.designformat.models.Options
 import io.stardewvalleydesigner.designformat.models.Palette
 import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
@@ -40,6 +41,7 @@ fun SaveDesignAsButton(
     map: MapState,
     playerName: String,
     farmName: String,
+    season: Season,
     palette: Palette,
     options: Options,
     snackbarHostState: SnackbarHostState,
@@ -80,6 +82,7 @@ fun SaveDesignAsButton(
                     map,
                     playerName,
                     farmName,
+                    season,
                     palette,
                     options,
                 )

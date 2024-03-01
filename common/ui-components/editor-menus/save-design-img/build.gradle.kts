@@ -17,7 +17,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.common.editorEngine)
-                implementation(projects.common.entitiesMetadata)
+                implementation(projects.common.entitiesData)
                 implementation(projects.common.designFormat)
 
                 implementation(projects.common.kmpLibs.dispatcher)

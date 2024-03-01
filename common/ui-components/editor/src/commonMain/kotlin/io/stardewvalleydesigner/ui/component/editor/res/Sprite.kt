@@ -35,7 +35,7 @@ sealed interface Sprite {
         override val size: IntSize,
     ) : Sprite
 
-    data class TintedImage(
+    data class ChestImage(
         override val image: ImageBitmap,
         override val size: IntSize,
         val tint: Color,

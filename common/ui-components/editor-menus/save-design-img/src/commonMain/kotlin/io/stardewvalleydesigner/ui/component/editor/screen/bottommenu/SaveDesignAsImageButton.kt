@@ -24,6 +24,7 @@ import io.stardewvalleydesigner.LoggerUtils.logger
 import io.stardewvalleydesigner.cmplib.filedialogs.FileSaver
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
 import io.stardewvalleydesigner.component.editor.modules.vislayers.VisLayersState
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
 import io.stardewvalleydesigner.kmplib.fs.FileSystem
 import io.stardewvalleydesigner.kmplib.fs.getSvdImagesDir
@@ -41,6 +42,7 @@ import kotlinx.datetime.Clock
 @Composable
 fun SaveDesignAsImageButton(
     map: MapState,
+    season: Season,
     visibleLayers: VisLayersState,
     snackbarHostState: SnackbarHostState,
 ) {
@@ -69,7 +71,7 @@ fun SaveDesignAsImageButton(
 
     val entities = ImageResources.entities
     val wallsAndFloors = ImageResources.wallsAndFloors
-    val layoutSprite = ImageResourcesProvider.layoutSpriteBy(map.layout.type)
+    val layoutSprite = ImageResourcesProvider.layoutSpriteBy(map.layout.type, season)
 
     var bytes: ByteArray? by remember(showFileSaver) { mutableStateOf(null) }
 
@@ -77,7 +79,7 @@ fun SaveDesignAsImageButton(
         bytes = if (showFileSaver) {
             withContext(PlatformDispatcher.IO) {
                 DesignRenderer.generateDesignAsPngBytes(
-                    map, visibleLayers.visibleLayers,
+                    map, season, visibleLayers.visibleLayers,
                     entities, wallsAndFloors, layoutSprite,
                 )
             }

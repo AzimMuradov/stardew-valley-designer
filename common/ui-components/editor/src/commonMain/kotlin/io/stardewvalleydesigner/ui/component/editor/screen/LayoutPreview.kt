@@ -27,6 +27,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.unit.IntSize
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.geometry.*
@@ -45,6 +46,7 @@ import kotlin.math.roundToInt
 @Composable
 fun BoxScope.LayoutPreview(
     layout: Layout,
+    season: Season,
     entities: LayeredEntitiesData,
     wallpaper: Wallpaper?,
     flooring: Flooring?,
@@ -53,7 +55,7 @@ fun BoxScope.LayoutPreview(
     val image = ImageResources.wallsAndFloors
 
     val (nW, nH) = layout.size
-    val layoutSprite = layoutSpriteBy(layout.type)
+    val layoutSprite = layoutSpriteBy(layout.type, season)
 
     var cellSide by remember { mutableStateOf(-1f) }
 
@@ -90,6 +92,7 @@ fun BoxScope.LayoutPreview(
 
         drawVisibleEntities(
             entityMaps = images,
+            season = season,
             entities = entities,
             visibleLayers = LayerType.all,
             renderSpritesFully = true,

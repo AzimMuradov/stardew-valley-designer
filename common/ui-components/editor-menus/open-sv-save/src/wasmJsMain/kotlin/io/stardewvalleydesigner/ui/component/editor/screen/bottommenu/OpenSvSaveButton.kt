@@ -114,7 +114,7 @@ fun OpenSvSaveButton(
                 acceptLayoutBar = {
                     AcceptDesignBar(
                         textFieldText = if (state is OpenSvSaveState.Loaded) {
-                            val (_, playerName, farmName, layoutType) = state.chosenLayout.value
+                            val (_, playerName, farmName, _, layoutType) = state.chosenLayout.value
                             val playerNameWithDefault = playerName.takeIf { it.isNotBlank() } ?: "??"
                             val farmNameWithDefault = farmName.takeIf { it.isNotBlank() } ?: "??"
                             "$playerNameWithDefault, $farmNameWithDefault ${wordList.farm}, ${wordList.layout(layoutType)}"

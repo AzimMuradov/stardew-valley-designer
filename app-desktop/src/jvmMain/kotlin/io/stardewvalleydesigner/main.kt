@@ -99,6 +99,7 @@ private fun Root(component: RootComponent, exitApplication: () -> Unit) {
                             map = editorState.map,
                             playerName = editorState.playerName,
                             farmName = editorState.farmName,
+                            season = editorState.season,
                             palette = editorState.palette,
                             options = editorState.options,
                             snackbarHostState = snackbarHostState,
@@ -108,6 +109,7 @@ private fun Root(component: RootComponent, exitApplication: () -> Unit) {
                             map = editorState.map,
                             playerName = editorState.playerName,
                             farmName = editorState.farmName,
+                            season = editorState.season,
                             palette = editorState.palette,
                             options = editorState.options,
                             snackbarHostState = snackbarHostState,
@@ -116,6 +118,7 @@ private fun Root(component: RootComponent, exitApplication: () -> Unit) {
                         )
                         SaveDesignAsImageButton(
                             map = editorState.map,
+                            season = editorState.season,
                             visibleLayers = editorState.visLayers,
                             snackbarHostState = snackbarHostState,
                         )

@@ -38,26 +38,26 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import io.stardewvalleydesigner.data.*
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layers.flattenSequence
 import io.stardewvalleydesigner.kmplib.clipboard.Clipboard
-import io.stardewvalleydesigner.metadata.*
 import io.stardewvalleydesigner.ui.component.editor.utils.Sprite
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 
 @Composable
-internal fun ObjectCounter(entities: LayeredEntitiesData) {
+internal fun ObjectCounter(entities: LayeredEntitiesData, season: Season) {
     val wordList = GlobalSettings.strings
     val countedEntities = entities
         .flattenSequence()
         .map { it.rectObject }
-        .groupingBy { EntityDataProvider.entityToId.getValue(it).default }
+        .groupingBy { EntityDataProvider.entityToId(it).default }
         .eachCount()
         .asSequence()
         .sortedWith(
             compareBy<Map.Entry<EntityId, Int>> { -it.value }
-                .thenBy { wordList.entity(EntityDataProvider.entityById.getValue(it.key)) }
+                .thenBy { wordList.entity(EntityDataProvider.entityById(it.key)!!) }
                 .thenBy { it.key.page.ordinal }
                 .thenBy { it.key.localId }
         )
@@ -104,7 +104,7 @@ internal fun ObjectCounter(entities: LayeredEntitiesData) {
                                 appendLine("# ${wordList.objectCounterTitle}")
                                 appendLine()
                                 for ((eId, cnt) in countedEntities) {
-                                    val entity = EntityDataProvider.entityById.getValue(eId)
+                                    val entity = EntityDataProvider.entityById(eId)!!
                                     appendLine("- [ ] ${wordList.entity(entity)} - $cnt")
                                 }
                             }
@@ -130,7 +130,7 @@ internal fun ObjectCounter(entities: LayeredEntitiesData) {
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             for ((eId, cnt) in countedEntities) {
-                val entity = EntityDataProvider.entityById.getValue(eId)
+                val entity = EntityDataProvider.entityById(eId)!!
 
                 Row(Modifier.fillMaxWidth()) {
                     Surface(
@@ -138,7 +138,7 @@ internal fun ObjectCounter(entities: LayeredEntitiesData) {
                         shape = RoundedCornerShape(3.dp),
                         border = BorderStroke(Dp.Hairline, MaterialTheme.colors.secondaryVariant)
                     ) {
-                        Sprite(entity, modifier = Modifier.size(16.dp).padding(2.dp))
+                        Sprite(entity, season, modifier = Modifier.size(16.dp).padding(2.dp))
                     }
                     Spacer(Modifier.width(6.dp))
                     Text(text = wordList.entity(entity))

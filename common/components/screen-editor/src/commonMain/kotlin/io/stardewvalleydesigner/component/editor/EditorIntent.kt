@@ -18,6 +18,7 @@ package io.stardewvalleydesigner.component.editor
 
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ShapeType
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolType
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.designformat.models.OptionsItemValue
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
@@ -45,6 +46,10 @@ sealed interface EditorIntent {
 
     sealed interface FarmName : EditorIntent {
         data class Change(val name: String) : FarmName
+    }
+
+    sealed interface SeasonMenu : EditorIntent {
+        data class Change(val season: Season) : SeasonMenu
     }
 
     sealed interface Toolkit : EditorIntent {

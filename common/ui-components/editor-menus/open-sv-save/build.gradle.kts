@@ -16,6 +16,7 @@ kotlin {
         val wasmJsMain by getting {
             dependencies {
                 implementation(projects.common.editorEngine)
+                implementation(projects.common.entitiesData)
                 implementation(projects.common.designFormat)
 
                 implementation(projects.common.kmpLibs.dispatcher)

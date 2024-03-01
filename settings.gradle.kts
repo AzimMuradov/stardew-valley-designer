@@ -10,7 +10,7 @@ include(":app-web")
 // Core Modules
 
 include(":common:editor-engine")
-include(":common:entities-metadata")
+include(":common:entities-data")
 include(":common:design-format")
 include(":common:sv-save")
 

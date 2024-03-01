@@ -19,6 +19,7 @@ package io.stardewvalleydesigner.component.dialog.newdesign
 import com.arkivanov.mvikotlin.core.store.*
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.stardewvalleydesigner.component.dialog.newdesign.NewDesignState
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.designformat.Wrapper
 import io.stardewvalleydesigner.designformat.models.*
 import io.stardewvalleydesigner.designformat.wrapped
@@ -81,6 +82,7 @@ class NewDesignStoreFactory(private val storeFactory: StoreFactory) {
                     Design(
                         playerName = "",
                         farmName = "",
+                        season = Season.Spring,
                         layout = layoutType,
                         entities = LayeredEntitiesData(),
                         wallpaper = null,

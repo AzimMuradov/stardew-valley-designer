@@ -44,7 +44,7 @@ import io.stardewvalleydesigner.utils.Browser
 
 
 @Composable
-fun RowScope.SideMenu() {
+fun SideMenu() {
     val wordList = GlobalSettings.strings
 
     val menuWidth by animateDpAsState(

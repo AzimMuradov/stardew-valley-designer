@@ -134,6 +134,7 @@ fun main() {
                                         map = editorState.map,
                                         playerName = editorState.playerName,
                                         farmName = editorState.farmName,
+                                        season = editorState.season,
                                         palette = editorState.palette,
                                         options = editorState.options,
                                         snackbarHostState = snackbarHostState,
@@ -142,6 +143,7 @@ fun main() {
                                     )
                                     SaveDesignAsImageButton(
                                         map = editorState.map,
+                                        season = editorState.season,
                                         visibleLayers = editorState.visLayers,
                                         snackbarHostState = snackbarHostState,
                                     )

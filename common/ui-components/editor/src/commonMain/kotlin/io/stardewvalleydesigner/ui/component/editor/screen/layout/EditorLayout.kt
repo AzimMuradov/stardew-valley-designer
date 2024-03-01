@@ -29,24 +29,28 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.pointer.*
 import io.stardewvalleydesigner.component.editor.EditorIntent
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolkitState
+import io.stardewvalleydesigner.data.Season
+import io.stardewvalleydesigner.data.SpritePage
 import io.stardewvalleydesigner.designformat.models.Options
 import io.stardewvalleydesigner.designformat.models.OptionsItemValue.Toggleable
-import io.stardewvalleydesigner.engine.entity.*
+import io.stardewvalleydesigner.engine.entity.Building.SimpleBuilding.JunimoHut
+import io.stardewvalleydesigner.engine.entity.Entity
+import io.stardewvalleydesigner.engine.entity.Equipment.SimpleEquipment.*
+import io.stardewvalleydesigner.engine.entity.PlacedEntity
 import io.stardewvalleydesigner.engine.geometry.*
 import io.stardewvalleydesigner.engine.geometry.shapes.*
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.coordinates
 import io.stardewvalleydesigner.engine.layers.flatten
 import io.stardewvalleydesigner.engine.layers.flattenSequence
-import io.stardewvalleydesigner.metadata.EntityPage
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResources
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.layoutSpriteBy
+import io.stardewvalleydesigner.ui.component.editor.res.SpriteUtils
 import io.stardewvalleydesigner.ui.component.editor.utils.*
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.drawEntityStretched
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.drawFlooring
@@ -60,6 +64,7 @@ import kotlin.math.floor
 @Composable
 internal fun EditorLayout(
     map: MapState,
+    season: Season,
     visibleLayers: Set<LayerType<*>>,
     toolkit: ToolkitState,
     options: Options,
@@ -67,12 +72,12 @@ internal fun EditorLayout(
     onCurrCoordinateChanged: (Coordinate) -> Unit,
     intentConsumer: (EditorIntent) -> Unit,
 ) {
-    val entityMaps = ImageResources.entities
-    val wallsAndFloors = ImageResources.wallsAndFloors
+    val entityMaps: Map<SpritePage, ImageBitmap> = ImageResources.entities
+    val wallsAndFloors: ImageBitmap = ImageResources.wallsAndFloors
 
     val layout = map.layout
     val (nW, nH) = layout.size
-    val layoutSprite = layoutSpriteBy(layout.type)
+    val layoutSprite = layoutSpriteBy(layout.type, season)
 
     val hoveredColor = MaterialTheme.colors.secondary
 
@@ -90,6 +95,7 @@ internal fun EditorLayout(
     } else {
         UNDEFINED
     }
+
 
     Canvas(
         modifier = Modifier
@@ -148,19 +154,33 @@ internal fun EditorLayout(
         // Main content
 
         if (layout.type.isShed()) {
-            drawFlooring(wallsAndFloors, map.flooring, nW, nH, cellSide)
-            drawWallpaper(wallsAndFloors, map.wallpaper, nW, cellSide)
+            drawFlooring(
+                wallsAndFloors,
+                flooring = map.flooring,
+                nW, nH, cellSide,
+            )
+            drawWallpaper(
+                wallsAndFloors,
+                wallpaper = map.wallpaper,
+                nW, cellSide,
+            )
         }
 
         drawVisibleEntities(
             entityMaps = entityMaps,
             entities = map.entities,
+            season = season,
             visibleLayers = visibleLayers,
             renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
             grid = grid
         )
 
-        drawSpecificSpritesAndEffects(entityMaps, map, toolkit, options, grid, cellSize)
+
+        drawSpecificSpritesAndEffects(
+            entityMaps, map, season,
+            toolkit, options,
+            grid, cellSize,
+        )
 
 
         // Foreground
@@ -185,8 +205,9 @@ internal fun EditorLayout(
 
 
 private fun DrawScope.drawSpecificSpritesAndEffects(
-    entityMaps: Map<EntityPage, ImageBitmap>,
+    entityMaps: Map<SpritePage, ImageBitmap>,
     map: MapState,
+    season: Season,
     toolkit: ToolkitState,
     options: Options,
     grid: CoordinateGrid,
@@ -203,12 +224,16 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
 
     when (toolkit) {
         is ToolkitState.Hand.Point.Acting -> {
-            val sorted = toolkit.heldEntities.flatten().sortedWith(placedEntityComparator)
+            val spriteMaps = SpriteUtils.calculateSprite(
+                spriteMaps = entityMaps,
+                entities = toolkit.heldEntities.flatten().sortedWith(placedEntityComparator),
+                season = season,
+            )
 
-            for (entity in sorted) {
+            for ((entity, sprite) in spriteMaps) {
                 drawEntityStretched(
-                    entityMaps = entityMaps,
                     entity = entity,
+                    sprite = sprite,
                     renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
                     grid = grid,
                     paddingInPx = 2u,
@@ -221,10 +246,16 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
             drawNeutralArea(toolkit.placedShape.coordinates, grid, cellSize)
             drawConflictArea(toolkit.entitiesToDelete, grid, cellSize)
 
-            for (entity in toolkit.entitiesToDraw) {
+            val spriteMaps = SpriteUtils.calculateSprite(
+                spriteMaps = entityMaps,
+                entities = toolkit.entitiesToDraw,
+                season = season,
+            )
+
+            for ((entity, sprite) in spriteMaps) {
                 drawEntityStretched(
-                    entityMaps = entityMaps,
                     entity = entity,
+                    sprite = sprite,
                     renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
                     grid = grid,
                     alpha = 0.7f
@@ -273,23 +304,16 @@ private fun DrawScope.drawAreasOfEffects(
     if (options.toggleables.getValue(Toggleable.ShowScarecrowsAreaOfEffect)) {
         drawAreaOfEffect(
             allowedEs = setOf(
-                Equipment.SimpleEquipment.Scarecrow,
-                Equipment.SimpleEquipment.DeluxeScarecrow,
-                Equipment.SimpleEquipment.Rarecrow1,
-                Equipment.SimpleEquipment.Rarecrow2,
-                Equipment.SimpleEquipment.Rarecrow3,
-                Equipment.SimpleEquipment.Rarecrow4,
-                Equipment.SimpleEquipment.Rarecrow5,
-                Equipment.SimpleEquipment.Rarecrow6,
-                Equipment.SimpleEquipment.Rarecrow7,
-                Equipment.SimpleEquipment.Rarecrow8,
+                Scarecrow, DeluxeScarecrow,
+                Rarecrow1, Rarecrow2, Rarecrow3, Rarecrow4,
+                Rarecrow5, Rarecrow6, Rarecrow7, Rarecrow8,
             ),
             getAreaOfEffect = { (e, place) ->
-                val r = if (e == Equipment.SimpleEquipment.DeluxeScarecrow) 17 else 9
+                val r = if (e == DeluxeScarecrow) 17 else 9
 
                 PlacedRectStrategy.from(
                     place,
-                    radius = if (e == Equipment.SimpleEquipment.DeluxeScarecrow) 16u else 8u
+                    radius = if (e == DeluxeScarecrow) 16u else 8u
                 ).filter { (it - place).length < r }
             },
             color = Color.Green,
@@ -299,14 +323,14 @@ private fun DrawScope.drawAreasOfEffects(
     if (options.toggleables.getValue(Toggleable.ShowSprinklersAreaOfEffect)) {
         drawAreaOfEffect(
             allowedEs = setOf(
-                Equipment.SimpleEquipment.Sprinkler,
-                Equipment.SimpleEquipment.QualitySprinkler,
-                Equipment.SimpleEquipment.IridiumSprinkler,
+                Sprinkler,
+                QualitySprinkler,
+                IridiumSprinkler,
                 // TODO : Equipment.SimpleEquipment.IridiumSprinklerWithPressureNozzle,
             ),
             getAreaOfEffect = { (e, place) ->
                 when (e) {
-                    Equipment.SimpleEquipment.Sprinkler -> setOf(
+                    Sprinkler -> setOf(
                         place - vec(1, 0),
                         place - vec(0, 1),
                         place,
@@ -314,12 +338,12 @@ private fun DrawScope.drawAreasOfEffects(
                         place + vec(0, 1),
                     )
 
-                    Equipment.SimpleEquipment.QualitySprinkler -> PlacedRectStrategy.from(
+                    QualitySprinkler -> PlacedRectStrategy.from(
                         place,
                         radius = 1u
                     )
 
-                    Equipment.SimpleEquipment.IridiumSprinkler -> PlacedRectStrategy.from(
+                    IridiumSprinkler -> PlacedRectStrategy.from(
                         place,
                         radius = 2u
                     )
@@ -336,7 +360,7 @@ private fun DrawScope.drawAreasOfEffects(
 
     if (options.toggleables.getValue(Toggleable.ShowBeeHousesAreaOfEffect)) {
         drawAreaOfEffect(
-            allowedEs = setOf(Equipment.SimpleEquipment.BeeHouse),
+            allowedEs = setOf(BeeHouse),
             getAreaOfEffect = { (_, place) ->
                 PlacedDiamondStrategy.from(place, radius = 5u)
             },
@@ -346,7 +370,7 @@ private fun DrawScope.drawAreasOfEffects(
 
     if (options.toggleables.getValue(Toggleable.ShowJunimoHutsAreaOfEffect)) {
         drawAreaOfEffect(
-            allowedEs = setOf(Building.SimpleBuilding.JunimoHut),
+            allowedEs = setOf(JunimoHut),
             getAreaOfEffect = { (_, place) ->
                 PlacedRectStrategy.from(center = place + vec(x = 1, y = 1), radius = 8u)
             },

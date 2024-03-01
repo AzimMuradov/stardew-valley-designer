@@ -19,11 +19,13 @@ package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesig
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.IntOffset
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
+import io.stardewvalleydesigner.data.Season
+import io.stardewvalleydesigner.data.SpritePage
+import io.stardewvalleydesigner.data.SpritePage.Companion.UNIT
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.kmplib.png.PngUtils
-import io.stardewvalleydesigner.metadata.EntityPage
 import io.stardewvalleydesigner.ui.component.editor.res.*
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils
 
@@ -32,12 +34,13 @@ internal object DesignRenderer {
 
     suspend fun generateDesignAsPngBytes(
         map: MapState,
+        season: Season,
         visibleLayers: Set<LayerType<*>>,
-        entityMaps: Map<EntityPage, ImageBitmap>,
+        entityMaps: Map<SpritePage, ImageBitmap>,
         wallsAndFloors: ImageBitmap,
         layoutSprite: LayoutSprite,
     ): ByteArray {
-        val bitmap = render(map, visibleLayers, entityMaps, wallsAndFloors, layoutSprite)
+        val bitmap = render(map, season, visibleLayers, entityMaps, wallsAndFloors, layoutSprite)
         val pixels = IntArray(bitmap.width * bitmap.height).apply { bitmap.readPixels(buffer = this) }
         val pngBytes = PngUtils.generatePngBytes(pixels, bitmap.width, bitmap.height)
 
@@ -47,8 +50,9 @@ internal object DesignRenderer {
 
     private fun render(
         map: MapState,
+        season: Season,
         visibleLayers: Set<LayerType<*>>,
-        entityMaps: Map<EntityPage, ImageBitmap>,
+        entityMaps: Map<SpritePage, ImageBitmap>,
         wallsAndFloors: ImageBitmap,
         layoutSprite: LayoutSprite,
     ): ImageBitmap {
@@ -71,7 +75,7 @@ internal object DesignRenderer {
                             image = fl.image,
                             srcOffset = fl.offset,
                             srcSize = fl.size,
-                            dstOffset = EntityPage.UNIT * IntOffset(x, y),
+                            dstOffset = UNIT * IntOffset(x, y),
                             paint = Paint()
                         )
                     }
@@ -81,40 +85,44 @@ internal object DesignRenderer {
                         image = wp.image,
                         srcOffset = wp.offset,
                         srcSize = wp.size,
-                        dstOffset = EntityPage.UNIT * IntOffset(x, y = 1),
+                        dstOffset = UNIT * IntOffset(x, y = 1),
                         paint = Paint()
                     )
                 }
             }
 
-            val sorted = visibleLayers.flatMap(map.entities::entitiesBy).sortedWith(DrawerUtils.placedEntityComparator)
-
-            for ((e, place) in sorted) {
-                val sprite = ImageResourcesProvider.spriteBy(entityMaps, e)
-                val rectH = sprite.size.height / EntityPage.UNIT
+            val spriteMaps = SpriteUtils.calculateSprite(
+                spriteMaps = entityMaps,
+                entities = map.entities,
+                visibleLayers = visibleLayers,
+                season = season,
+            )
+            for ((placedEntity, sprite) in spriteMaps) {
+                val (e, place) = placedEntity
+                val rectH = sprite.size.height / UNIT
 
                 when (sprite) {
                     is Sprite.Image -> drawImageRect(
                         image = sprite.image,
                         srcOffset = sprite.offset,
                         srcSize = sprite.size,
-                        dstOffset = EntityPage.UNIT * IntOffset(x = place.x, y = place.y - (rectH - e.size.h)),
+                        dstOffset = UNIT * IntOffset(x = place.x, y = place.y - (rectH - e.size.h)),
                         paint = Paint()
                     )
 
-                    is Sprite.TintedImage -> {
+                    is Sprite.ChestImage -> {
                         drawImageRect(
                             image = sprite.image,
                             srcOffset = sprite.offset,
                             srcSize = sprite.size,
-                            dstOffset = EntityPage.UNIT * IntOffset(x = place.x, y = place.y - (rectH - e.size.h)),
+                            dstOffset = UNIT * IntOffset(x = place.x, y = place.y - (rectH - e.size.h)),
                             paint = Paint().apply { colorFilter = DrawerUtils.tint(sprite.tint) }
                         )
                         drawImageRect(
                             image = sprite.image,
                             srcOffset = sprite.coverOffset,
                             srcSize = sprite.size,
-                            dstOffset = EntityPage.UNIT * IntOffset(x = place.x, y = place.y - (rectH - e.size.h)),
+                            dstOffset = UNIT * IntOffset(x = place.x, y = place.y - (rectH - e.size.h)),
                             paint = Paint()
                         )
                     }

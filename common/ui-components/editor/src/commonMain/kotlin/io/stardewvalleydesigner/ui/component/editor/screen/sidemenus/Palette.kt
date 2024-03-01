@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.cmplib.group.GroupOption
 import io.stardewvalleydesigner.cmplib.group.ToggleButtonsGroup
 import io.stardewvalleydesigner.component.editor.EditorIntent
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.designformat.models.Palette
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.entity.Colors
@@ -48,11 +49,12 @@ import androidx.compose.ui.graphics.Color as ComposeColor
 @Composable
 internal fun Palette(
     palette: Palette,
+    season: Season,
     intentConsumer: (EditorIntent.Palette) -> Unit,
 ) {
     // TODO : hotbar feature (val hotbar = palette.hotbar)
 
-    InUseCard(palette.inUse)
+    InUseCard(palette.inUse, season)
 
     // TODO : hotbar feature
     //
@@ -108,7 +110,7 @@ internal fun Palette(
 // TODO : Size bug on certain entities
 
 @Composable
-private fun InUseCard(inUse: Entity<*>?) {
+private fun InUseCard(inUse: Entity<*>?, season: Season) {
     val wordList = GlobalSettings.strings
 
     Card(elevation = 0.dp) {
@@ -133,7 +135,7 @@ private fun InUseCard(inUse: Entity<*>?) {
                 enabled = false, /* TODO : hotbar feature (inUse != null) */
             ) {
                 if (inUse != null) {
-                    Sprite(entity = inUse, modifier = Modifier.fillMaxSize())
+                    Sprite(entity = inUse, season, modifier = Modifier.fillMaxSize())
                 } else {
                     Icon(
                         imageVector = Icons.Default.Clear,

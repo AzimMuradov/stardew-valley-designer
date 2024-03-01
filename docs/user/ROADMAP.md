@@ -47,6 +47,7 @@
 
 ## Backlog
 
+- Missing render features (gates)
 - Better icons for toolbar and palette
 - Fully functional palette
 - Tooltips, Hotkeys, Cursors (Pointers) & Other PC Features, `shift` for NxN
@@ -56,7 +57,6 @@
 - New shapes (star, star outline, heart, heart outline)
 - Clipboard
 - Building paintings
-- Render (in every season)
 - Search fields for various types of items
 - Add new languages
 - Tappers, crab pots

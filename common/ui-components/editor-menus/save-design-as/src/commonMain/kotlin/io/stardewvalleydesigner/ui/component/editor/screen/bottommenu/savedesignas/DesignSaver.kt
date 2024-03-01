@@ -17,6 +17,7 @@
 package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesignas
 
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.designformat.DesignFormatSerializer
 import io.stardewvalleydesigner.designformat.models.*
 
@@ -27,10 +28,11 @@ internal object DesignSaver {
         map: MapState,
         playerName: String,
         farmName: String,
+        season: Season,
         palette: Palette,
         options: Options,
     ): ByteArray = DesignFormatSerializer.serialize(
-        design = convertToDesign(map, playerName, farmName, palette, options),
+        design = convertToDesign(map, playerName, farmName, season, palette, options),
     ).encodeToByteArray()
 
 
@@ -38,11 +40,13 @@ internal object DesignSaver {
         map: MapState,
         playerName: String,
         farmName: String,
+        season: Season,
         palette: Palette,
         options: Options,
     ): Design = Design(
         playerName = playerName,
         farmName = farmName,
+        season = season,
         layout = map.layout.type,
         entities = map.entities,
         wallpaper = map.wallpaper,

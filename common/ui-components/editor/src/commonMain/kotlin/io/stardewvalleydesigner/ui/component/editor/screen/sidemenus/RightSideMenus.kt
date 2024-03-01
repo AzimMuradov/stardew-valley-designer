@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.cmplib.sidemenus.FixedSideMenus
 import io.stardewvalleydesigner.component.editor.modules.map.LayoutState
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.allEntityTypes
 import io.stardewvalleydesigner.component.editor.EditorIntent as Intent
@@ -33,11 +34,16 @@ import io.stardewvalleydesigner.component.editor.EditorIntent as Intent
 internal fun RightSideMenus(
     visibleLayers: Set<LayerType<*>>,
     onVisibilityChange: (LayerType<*>, Boolean) -> Unit,
+    chosenSeason: Season,
+    onSeasonChosen: (Season) -> Unit,
     layout: LayoutState,
     width: Dp,
     intentConsumer: (Intent) -> Unit,
 ) {
     FixedSideMenus(width) {
+        menu {
+            SeasonsMenu(chosenSeason, onSeasonChosen)
+        }
         menu(padding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)) {
             LayersVisibility(
                 allowedLayers = LayerType.all.filterTo(mutableSetOf()) { lType ->

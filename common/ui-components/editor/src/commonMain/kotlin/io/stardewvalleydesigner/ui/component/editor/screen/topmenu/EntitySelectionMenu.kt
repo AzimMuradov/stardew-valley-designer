@@ -36,6 +36,7 @@ import io.stardewvalleydesigner.cmplib.menu.DropdownMenuStyle
 import io.stardewvalleydesigner.cmplib.menu.HoverableDropdownMenu
 import io.stardewvalleydesigner.component.editor.menus.EntitySelectionMenu
 import io.stardewvalleydesigner.component.editor.menus.filterElements
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.EntityType
 import io.stardewvalleydesigner.ui.component.editor.utils.Sprite
@@ -44,6 +45,7 @@ import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 @Composable
 internal fun EntitySelectionMenu(
+    season: Season,
     menu: EntitySelectionMenu,
     disallowedTypes: Set<EntityType>,
     onEntitySelection: (Entity<*>) -> Unit,
@@ -107,7 +109,7 @@ internal fun EntitySelectionMenu(
                     border = BorderStroke(1.dp, MaterialTheme.colors.secondaryVariant),
                     elevation = 3.dp,
                 ) {
-                    Sprite(entity = value, modifier = Modifier.size(36.dp).padding(3.dp))
+                    Sprite(entity = value, season, modifier = Modifier.size(36.dp).padding(3.dp))
                 }
                 Spacer(modifier = Modifier.width(20.dp))
                 Text(

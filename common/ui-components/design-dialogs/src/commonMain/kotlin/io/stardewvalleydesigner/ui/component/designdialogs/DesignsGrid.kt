@@ -65,10 +65,11 @@ fun DesignsGrid(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val (_, _, _, layoutType, entities, wallpaper, flooring) = design.value
+                val (_, _, _, season, layoutType, entities, wallpaper, flooring) = design.value
                 Box {
                     LayoutPreview(
                         layout = layoutOf(layoutType),
+                        season = season,
                         entities = entities,
                         wallpaper = wallpaper,
                         flooring = flooring,

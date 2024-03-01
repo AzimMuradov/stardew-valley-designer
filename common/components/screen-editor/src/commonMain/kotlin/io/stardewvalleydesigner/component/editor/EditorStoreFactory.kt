@@ -27,6 +27,7 @@ import io.stardewvalleydesigner.component.editor.modules.palette.reduce
 import io.stardewvalleydesigner.component.editor.modules.toolkit.*
 import io.stardewvalleydesigner.component.editor.modules.vislayers.VisLayersState
 import io.stardewvalleydesigner.component.editor.modules.vislayers.reduce
+import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.designformat.models.Options
 import io.stardewvalleydesigner.designformat.models.Palette
 import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
@@ -58,6 +59,7 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
         data class UpdateMap(val state: MapState) : Msg
         data class UpdatePlayerName(val state: String) : Msg
         data class UpdateFarmName(val state: String) : Msg
+        data class UpdateSeason(val state: Season) : Msg
         data class UpdateToolkit(val state: ToolkitState) : Msg
         data class UpdatePalette(val state: Palette) : Msg
         data class UpdateVisLayers(val state: VisLayersState) : Msg
@@ -113,7 +115,7 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
                 }
 
                 is Intent.Engine -> {
-                    val actionReturn = state().let { (_, map, _, _, _, palette, visLayers) ->
+                    val actionReturn = state().let { (_, map, _, _, _, _, palette, visLayers) ->
                         toolkit.runAction(
                             action = intent,
                             currentEntity = palette.inUse,
@@ -136,6 +138,8 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
                 is Intent.PlayerName.Change -> dispatch(Msg.UpdatePlayerName(intent.name))
 
                 is Intent.FarmName.Change -> dispatch(Msg.UpdateFarmName(intent.name))
+
+                is Intent.SeasonMenu.Change -> dispatch(Msg.UpdateSeason(intent.season))
 
                 is Intent.Toolkit -> {
                     dispatch(Msg.UpdateToolkit(state().toolkit.reduce(intent)))
@@ -178,6 +182,7 @@ class EditorStoreFactory(private val storeFactory: StoreFactory) {
             is Msg.UpdateMap -> copy(map = msg.state)
             is Msg.UpdatePlayerName -> copy(playerName = msg.state)
             is Msg.UpdateFarmName -> copy(farmName = msg.state)
+            is Msg.UpdateSeason -> copy(season = msg.state)
             is Msg.UpdateToolkit -> copy(toolkit = msg.state)
             is Msg.UpdatePalette -> copy(palette = msg.state)
             is Msg.UpdateVisLayers -> copy(visLayers = msg.state)
