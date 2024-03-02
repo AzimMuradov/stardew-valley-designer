@@ -30,16 +30,6 @@ fun WithMeasuredWindowSize(
     )
 }
 
-@Composable
-fun WithDefaultWindowSize(
-    content: @Composable () -> Unit,
-) {
-    CompositionLocalProvider(
-        LocalWindowSize provides WindowSize.LARGE,
-        content = content
-    )
-}
-
 
 val LocalWindowSize = staticCompositionLocalOf<WindowSize> {
     error("No window size provided")

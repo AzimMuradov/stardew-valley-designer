@@ -22,6 +22,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.CanvasBasedWindow
 import com.arkivanov.mvikotlin.extensions.coroutines.states
@@ -44,7 +45,7 @@ import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.*
 import io.stardewvalleydesigner.ui.component.settings.WithSettings
 import io.stardewvalleydesigner.ui.component.themes.AppTheme
 import io.stardewvalleydesigner.ui.component.themes.ThemeVariant
-import io.stardewvalleydesigner.ui.component.windowsize.WithDefaultWindowSize
+import io.stardewvalleydesigner.ui.component.windowsize.WithMeasuredWindowSize
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -109,7 +110,7 @@ fun main() {
         AppTheme(themeVariant = ThemeVariant.LIGHT) {
             WithSettings(lang) {
                 WithImageResources(themeVariant = ThemeVariant.LIGHT) {
-                    WithDefaultWindowSize {
+                    WithMeasuredWindowSize(windowWidth = LocalWindowInfo.current.containerSize.width) {
                         Box(
                             Modifier.fillMaxSize().then(
                                 if (show) Modifier.blur(10.dp) else Modifier
