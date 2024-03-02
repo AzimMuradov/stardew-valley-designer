@@ -9,6 +9,10 @@ I should note that versions before [0.8.0](#rocket-080---2023-07-08) don't have 
 
 ## :rocket: [Unreleased] (0.12.0) - 2024-XX-XX
 
+### Web
+
+- :sparkles: Support tooltips
+
 ## :rocket: [0.11.0] - 2024-03-02
 
 _Supported Stardew Valley version - 1.5.6_
