@@ -41,7 +41,13 @@ internal fun Toolbar(
     toolkit: ToolkitState,
     intentConsumer: (EditorIntent.Toolkit) -> Unit,
 ) {
-    val tools = ToolType.entries.map { GroupOption.Some(it) }
+    val tools = listOf(
+        ToolType.Pen,
+        ToolType.Eraser,
+        ToolType.Hand,
+        ToolType.Select,
+        ToolType.EyeDropper,
+    ).map { GroupOption.Some(it) }
     val shapes = (listOf(null) + ShapeType.entries).map {
         if (it in toolkit.allowedShapes) {
             GroupOption.Some(it)

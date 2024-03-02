@@ -218,7 +218,7 @@ private fun RowScope.CursorAndSelectionInfo(
         Row(Modifier.weight(2f), Arrangement.Center) {
             val text = currCoordinate.takeUnless { it == UNDEFINED }?.let { (x, y) ->
                 "X: $x, Y: $y"
-            } ?: wordList.noCursor
+            } ?: ""
 
             Text(
                 text = text,
@@ -262,13 +262,7 @@ private fun RowScope.CursorAndSelectionInfo(
                 )
             }
         } else {
-            Row(Modifier.weight(2f), Arrangement.Center) {
-                Text(
-                    text = wordList.noSelection,
-                    color = MaterialTheme.colors.onPrimary,
-                    style = MaterialTheme.typography.subtitle1
-                )
-            }
+            Row(Modifier.weight(2f), Arrangement.Center) {}
         }
 
         Divider(

@@ -9,6 +9,10 @@ I should note that versions before [0.8.0](#rocket-080---2023-07-08) don't have 
 
 ## :rocket: [Unreleased] (0.12.0) - 2024-XX-XX
 
+### Desktop & Web
+
+- :nail_care: Adjust UI
+
 ### Web
 
 - :sparkles: Support tooltips

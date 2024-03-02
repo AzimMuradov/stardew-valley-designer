@@ -231,8 +231,4 @@ sealed interface WordList {
     val start: String
 
     val end: String
-
-    val noCursor: String
-
-    val noSelection: String
 }

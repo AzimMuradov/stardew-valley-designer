@@ -831,10 +831,6 @@ data object EnWordList : WordList {
 
     override val end: String = "End"
 
-    override val noCursor: String = "No cursor \uD83D\uDC24"
-
-    override val noSelection: String = "No selection \uD83D\uDC14"
-
 
     // Private
 
