@@ -137,6 +137,13 @@ data object EnWordList : WordList {
     override val chooseLayout: String = "CHOOSE LAYOUT"
 
 
+    override fun designNoDesignsAtPath(path: String): String = """
+        |You have no designs yet :)
+        |
+        |Try creating a new design and save it at the
+        |"$path".
+    """.trimMargin()
+
     override val designCardFilename: String = "Filename"
 
     override val designCardDate: String = "Date"

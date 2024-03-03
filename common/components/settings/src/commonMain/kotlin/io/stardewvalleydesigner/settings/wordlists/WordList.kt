@@ -142,6 +142,8 @@ sealed interface WordList {
     val chooseLayout: String
 
 
+    fun designNoDesignsAtPath(path: String): String
+
     val designCardFilename: String
 
     val designCardDate: String
