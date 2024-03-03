@@ -20,7 +20,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -43,7 +43,7 @@ fun NewDesignButton(
 
     BottomMenuIconButton(
         tooltip = wordList.buttonNewDesignText,
-        icon = Icons.Rounded.Add,
+        icon = Icons.Filled.Add,
         onClick = { intentConsumer(NewDesignIntent.OpenMenu) },
     )
 

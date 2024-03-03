@@ -21,7 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.FileOpen
+import androidx.compose.material.icons.filled.FileOpen
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -48,7 +48,7 @@ fun OpenDesignButton(
 
     BottomMenuIconButton(
         tooltip = wordList.buttonOpenDesignText,
-        icon = Icons.Rounded.FileOpen,
+        icon = Icons.Filled.FileOpen,
         onClick = { intentConsumer(OpenDesignIntent.OpenMenu) },
     )
 

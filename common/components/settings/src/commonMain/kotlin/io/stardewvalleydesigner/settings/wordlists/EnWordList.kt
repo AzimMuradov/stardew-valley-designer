@@ -790,7 +790,7 @@ data object EnWordList : WordList {
 
     override fun tool(type: ToolType?): String = when (type) {
         null -> "No tool selected"
-        ToolType.Hand -> "Hand"
+        ToolType.Hand -> "Drag"
         ToolType.Pen -> "Pen"
         ToolType.Eraser -> "Eraser"
         ToolType.Select -> "Select"

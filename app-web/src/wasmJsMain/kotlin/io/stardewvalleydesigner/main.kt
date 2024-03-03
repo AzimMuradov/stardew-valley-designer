@@ -16,8 +16,9 @@
 
 package io.stardewvalleydesigner
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -130,6 +131,10 @@ fun main() {
                                     OpenSvSaveButton(
                                         state = openSvSaveState,
                                         intentConsumer = openSvSaveStore::accept,
+                                    )
+                                    Divider(
+                                        modifier = Modifier.fillMaxHeight(fraction = 0.6f).width(1.dp),
+                                        color = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f),
                                     )
                                     SaveDesignAsButton(
                                         map = editorState.map,
