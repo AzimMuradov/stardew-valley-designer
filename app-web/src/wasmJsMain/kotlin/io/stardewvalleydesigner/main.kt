@@ -23,6 +23,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.CanvasBasedWindow
@@ -54,7 +55,7 @@ fun main() {
     val lang = Lang.EN
 
     CanvasBasedWindow(title = SettingsInterpreter.wordList(lang).application) {
-        var component by remember {
+        var editorComponent by remember {
             mutableStateOf(
                 value = EditorComponentImpl(
                     EditorState.default(LayoutsProvider.layoutOf(LayoutType.BigShed))
@@ -65,7 +66,7 @@ fun main() {
         val newDesignComponent by remember {
             mutableStateOf(
                 NewDesignComponentImpl { design: Design, designPath: String? ->
-                    component = EditorComponentImpl(
+                    editorComponent = EditorComponentImpl(
                         EditorState.from(design, designPath)
                     )
                 }
@@ -77,7 +78,7 @@ fun main() {
         val openDesignComponent by remember {
             mutableStateOf(
                 OpenDesignComponentImpl { design: Design, designPath: String? ->
-                    component = EditorComponentImpl(
+                    editorComponent = EditorComponentImpl(
                         EditorState.from(design, designPath)
                     )
                 }
@@ -89,7 +90,7 @@ fun main() {
         val openSvSaveComponent by remember {
             mutableStateOf(
                 OpenSvSaveComponentImpl { design: Design, designPath: String? ->
-                    component = EditorComponentImpl(
+                    editorComponent = EditorComponentImpl(
                         EditorState.from(design, designPath)
                     )
                 }
@@ -113,12 +114,27 @@ fun main() {
                 WithImageResources(themeVariant = ThemeVariant.LIGHT) {
                     WithMeasuredWindowSize(windowWidth = LocalWindowInfo.current.containerSize.width) {
                         Box(
-                            Modifier.fillMaxSize().then(
-                                if (show) Modifier.blur(10.dp) else Modifier
-                            )
+                            Modifier
+                                .fillMaxSize()
+                                .then(if (show) Modifier.blur(10.dp) else Modifier)
+                                .onKeyEvent {
+                                    when {
+                                        it.isCtrlPressed && it.key == Key.Z && it.type == KeyEventType.KeyDown -> {
+                                            editorComponent.store.accept(EditorIntent.History.GoBack)
+                                            true
+                                        }
+
+                                        it.isCtrlPressed && it.key == Key.Y && it.type == KeyEventType.KeyDown -> {
+                                            editorComponent.store.accept(EditorIntent.History.GoForward)
+                                            true
+                                        }
+
+                                        else -> false
+                                    }
+                                }
                         ) {
                             EditorScreen(
-                                component = component,
+                                component = editorComponent,
                                 rightBottomMenus = { editorState, snackbarHostState ->
                                     NewDesignButton(
                                         state = newDesignState,

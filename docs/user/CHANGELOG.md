@@ -17,6 +17,7 @@ I should note that versions before [0.8.0](#rocket-080---2023-07-08) don't have 
 
 - :sparkles: Support tooltips
 - :sparkles: Support adaptive screen
+- :sparkles: Support hotkeys (Ctrl+Z and Ctrl+Y)
 
 ## :rocket: [0.11.0] - 2024-03-02
 
