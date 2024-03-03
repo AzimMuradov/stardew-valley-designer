@@ -3,6 +3,9 @@ name: "Release web application"
 on:
   push:
     branches: [master]
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
   workflow_dispatch:
 
 jobs:
