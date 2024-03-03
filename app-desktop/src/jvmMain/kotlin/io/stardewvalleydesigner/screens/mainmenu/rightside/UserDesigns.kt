@@ -33,6 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.*
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.DialogProperties
@@ -64,6 +65,8 @@ fun UserDesigns(
     onDesignOpenClicked: (Design, String) -> Unit,
     onDesignDeleteClicked: (String) -> Unit,
 ) {
+    val wordList = GlobalSettings.strings
+
     val scope = rememberCoroutineScope()
 
     val docsDir by remember { mutableStateOf(JvmFileSystem.getDocsDir()) }
@@ -132,39 +135,49 @@ fun UserDesigns(
     ) {
         val lazyGridState = rememberLazyGridState()
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(
-                count = when (LocalWindowSize.current) {
-                    WindowSize.EXPANDED -> 1
-                    WindowSize.LARGE -> 2
-                    WindowSize.EXTRA_LARGE -> 3
-                }
-            ),
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colors.surface),
-            state = lazyGridState,
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            items(designsData) { designData ->
-                val designPath = JvmFileSystem.relative(
-                    dir = designSavesDir,
-                    filename = "${designData.metadata.filename}.json",
-                )
+        if (designsData.isNotEmpty()) {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(
+                    count = when (LocalWindowSize.current) {
+                        WindowSize.EXPANDED -> 1
+                        WindowSize.LARGE -> 2
+                        WindowSize.EXTRA_LARGE -> 3
+                    }
+                ),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colors.surface),
+                state = lazyGridState,
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                items(designsData) { designData ->
+                    val designPath = JvmFileSystem.relative(
+                        dir = designSavesDir,
+                        filename = "${designData.metadata.filename}.json",
+                    )
 
-                DesignCard(
-                    designData = designData,
-                    openDesign = {
-                        onDesignOpenClicked(designData.design, designPath)
-                    },
-                    deleteDesign = {
-                        onDesignDeleteClicked(designPath)
-                    },
-                )
+                    DesignCard(
+                        designData = designData,
+                        openDesign = {
+                            onDesignOpenClicked(designData.design, designPath)
+                        },
+                        deleteDesign = {
+                            onDesignDeleteClicked(designPath)
+                        },
+                    )
+                }
             }
+        } else {
+            Text(
+                text = wordList.designNoDesignsAtPath(designSavesDir),
+                modifier = Modifier.align(Alignment.Center).padding(20.dp),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.h6
+            )
         }
+
         VerticalScrollbar(
             modifier = Modifier
                 .align(Alignment.TopEnd)

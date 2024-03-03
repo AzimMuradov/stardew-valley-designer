@@ -16,9 +16,23 @@
 
 package io.stardewvalleydesigner.cmplib.tooltip
 
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.onPointerEvent
+import androidx.compose.ui.unit.dp
+import io.stardewvalleydesigner.ui.component.themes.ternaryColor
 
 
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 actual fun TooltipArea(
     tooltip: String,
@@ -27,5 +41,45 @@ actual fun TooltipArea(
     tooltipPlacement: TooltipPlacement,
     content: @Composable () -> Unit,
 ) {
-    content()
+    var cursorPosition by remember { mutableStateOf(Offset.Zero) }
+
+    Box(
+        Modifier
+            .onPointerEvent(PointerEventType.Enter) {
+                cursorPosition = it.changes.first().position
+            }
+            .onPointerEvent(PointerEventType.Move) {
+                cursorPosition = it.changes.first().position
+            }
+    ) {
+        BasicTooltipBox(
+            positionProvider = when (tooltipPlacement) {
+                is TooltipPlacement.ComponentRect ->
+                    rememberComponentRectPositionProvider(tooltipPlacement)
+
+                is TooltipPlacement.CursorPoint ->
+                    rememberPopupPositionProviderAtPosition(cursorPosition, tooltipPlacement)
+            },
+            tooltip = {
+                if (enabled) {
+                    Surface(
+                        modifier = Modifier.shadow(4.dp),
+                        color = ternaryColor,
+                        shape = MaterialTheme.shapes.small
+                    ) {
+                        Text(
+                            text = tooltip,
+                            modifier = Modifier.padding(10.dp),
+                            color = Color.Black,
+                            style = MaterialTheme.typography.body2
+                        )
+                    }
+                }
+            },
+            state = rememberBasicTooltipState(
+                isPersistent = false,
+            ),
+            content = content,
+        )
+    }
 }

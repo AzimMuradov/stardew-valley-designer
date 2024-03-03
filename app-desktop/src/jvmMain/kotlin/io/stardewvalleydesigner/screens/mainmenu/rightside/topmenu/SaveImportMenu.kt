@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Save
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
@@ -30,6 +29,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.states
 import io.stardewvalleydesigner.component.dialog.opensvsave.*
 import io.stardewvalleydesigner.kmplib.fs.*
 import io.stardewvalleydesigner.ui.component.designdialogs.*
+import io.stardewvalleydesigner.ui.component.editor.res.SaveOpen
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 
@@ -50,7 +50,7 @@ fun RowScope.SaveImportMenu(component: OpenSvSaveComponent) {
         topMenuButton = {
             TopMenuButton(
                 text = wordList.buttonSaveImportText,
-                icon = Icons.Filled.Save,
+                icon = Icons.Filled.SaveOpen,
                 onClick = { store.accept(OpenSvSaveIntent.OpenMenu) }
             )
         },

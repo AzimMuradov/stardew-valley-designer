@@ -210,15 +210,12 @@ private fun RowScope.CursorAndSelectionInfo(
     wordList: WordList,
 ) {
     if (editorState.options.toggleables.getValue(OptionsItemValue.Toggleable.ShowCurrentCoordinatesAnsShapeSize)) {
-        Divider(
-            modifier = Modifier.fillMaxHeight(fraction = 0.6f).width(1.dp),
-            color = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f),
-        )
+        val actionVector = editorState.toolkit.actionVector
 
         Row(Modifier.weight(2f), Arrangement.Center) {
             val text = currCoordinate.takeUnless { it == UNDEFINED }?.let { (x, y) ->
                 "X: $x, Y: $y"
-            } ?: wordList.noCursor
+            } ?: ""
 
             Text(
                 text = text,
@@ -227,14 +224,12 @@ private fun RowScope.CursorAndSelectionInfo(
             )
         }
 
-        Divider(
-            modifier = Modifier.fillMaxHeight(fraction = 0.6f).width(1.dp),
-            color = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f),
-        )
-
-        val actionVector = editorState.toolkit.actionVector
-
         if (actionVector != null) {
+            Divider(
+                modifier = Modifier.fillMaxHeight(fraction = 0.6f).width(1.dp),
+                color = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f),
+            )
+
             Row(Modifier.weight(3f), Arrangement.Center) {
                 val (start, end) = actionVector
 
@@ -261,19 +256,6 @@ private fun RowScope.CursorAndSelectionInfo(
                     style = MaterialTheme.typography.subtitle1
                 )
             }
-        } else {
-            Row(Modifier.weight(2f), Arrangement.Center) {
-                Text(
-                    text = wordList.noSelection,
-                    color = MaterialTheme.colors.onPrimary,
-                    style = MaterialTheme.typography.subtitle1
-                )
-            }
         }
-
-        Divider(
-            modifier = Modifier.fillMaxHeight(fraction = 0.6f).width(1.dp),
-            color = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f),
-        )
     }
 }

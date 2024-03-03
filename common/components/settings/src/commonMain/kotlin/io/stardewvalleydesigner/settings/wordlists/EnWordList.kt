@@ -137,6 +137,13 @@ data object EnWordList : WordList {
     override val chooseLayout: String = "CHOOSE LAYOUT"
 
 
+    override fun designNoDesignsAtPath(path: String): String = """
+        |You have no designs yet :)
+        |
+        |Try creating a new design and save it at the
+        |"$path".
+    """.trimMargin()
+
     override val designCardFilename: String = "Filename"
 
     override val designCardDate: String = "Date"
@@ -790,7 +797,7 @@ data object EnWordList : WordList {
 
     override fun tool(type: ToolType?): String = when (type) {
         null -> "No tool selected"
-        ToolType.Hand -> "Hand"
+        ToolType.Hand -> "Drag"
         ToolType.Pen -> "Pen"
         ToolType.Eraser -> "Eraser"
         ToolType.Select -> "Select"
@@ -830,10 +837,6 @@ data object EnWordList : WordList {
     override val start: String = "Start"
 
     override val end: String = "End"
-
-    override val noCursor: String = "No cursor \uD83D\uDC24"
-
-    override val noSelection: String = "No selection \uD83D\uDC14"
 
 
     // Private

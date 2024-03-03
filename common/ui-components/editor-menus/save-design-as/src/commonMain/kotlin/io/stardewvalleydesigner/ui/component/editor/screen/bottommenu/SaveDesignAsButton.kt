@@ -18,7 +18,7 @@ package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu
 
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.SaveAs
+import androidx.compose.material.icons.filled.SaveAs
 import androidx.compose.runtime.*
 import io.stardewvalleydesigner.LoggerUtils.logger
 import io.stardewvalleydesigner.cmplib.filedialogs.FileSaver
@@ -56,7 +56,7 @@ fun SaveDesignAsButton(
 
     BottomMenuIconButton(
         tooltip = wordList.buttonSaveDesignAsTooltip,
-        icon = Icons.Rounded.SaveAs,
+        icon = Icons.Filled.SaveAs,
         onClick = {
             if (!showFileSaver) {
                 pathname = if (designSaveAbsolutePath != null) {

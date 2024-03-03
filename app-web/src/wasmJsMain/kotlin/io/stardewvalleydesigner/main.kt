@@ -16,12 +16,15 @@
 
 package io.stardewvalleydesigner
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.input.key.*
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.CanvasBasedWindow
 import com.arkivanov.mvikotlin.extensions.coroutines.states
@@ -44,7 +47,7 @@ import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.*
 import io.stardewvalleydesigner.ui.component.settings.WithSettings
 import io.stardewvalleydesigner.ui.component.themes.AppTheme
 import io.stardewvalleydesigner.ui.component.themes.ThemeVariant
-import io.stardewvalleydesigner.ui.component.windowsize.WithDefaultWindowSize
+import io.stardewvalleydesigner.ui.component.windowsize.WithMeasuredWindowSize
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -52,7 +55,7 @@ fun main() {
     val lang = Lang.EN
 
     CanvasBasedWindow(title = SettingsInterpreter.wordList(lang).application) {
-        var component by remember {
+        var editorComponent by remember {
             mutableStateOf(
                 value = EditorComponentImpl(
                     EditorState.default(LayoutsProvider.layoutOf(LayoutType.BigShed))
@@ -63,7 +66,7 @@ fun main() {
         val newDesignComponent by remember {
             mutableStateOf(
                 NewDesignComponentImpl { design: Design, designPath: String? ->
-                    component = EditorComponentImpl(
+                    editorComponent = EditorComponentImpl(
                         EditorState.from(design, designPath)
                     )
                 }
@@ -75,7 +78,7 @@ fun main() {
         val openDesignComponent by remember {
             mutableStateOf(
                 OpenDesignComponentImpl { design: Design, designPath: String? ->
-                    component = EditorComponentImpl(
+                    editorComponent = EditorComponentImpl(
                         EditorState.from(design, designPath)
                     )
                 }
@@ -87,7 +90,7 @@ fun main() {
         val openSvSaveComponent by remember {
             mutableStateOf(
                 OpenSvSaveComponentImpl { design: Design, designPath: String? ->
-                    component = EditorComponentImpl(
+                    editorComponent = EditorComponentImpl(
                         EditorState.from(design, designPath)
                     )
                 }
@@ -109,14 +112,29 @@ fun main() {
         AppTheme(themeVariant = ThemeVariant.LIGHT) {
             WithSettings(lang) {
                 WithImageResources(themeVariant = ThemeVariant.LIGHT) {
-                    WithDefaultWindowSize {
+                    WithMeasuredWindowSize(windowWidth = LocalWindowInfo.current.containerSize.width) {
                         Box(
-                            Modifier.fillMaxSize().then(
-                                if (show) Modifier.blur(10.dp) else Modifier
-                            )
+                            Modifier
+                                .fillMaxSize()
+                                .then(if (show) Modifier.blur(10.dp) else Modifier)
+                                .onKeyEvent {
+                                    when {
+                                        it.isCtrlPressed && it.key == Key.Z && it.type == KeyEventType.KeyDown -> {
+                                            editorComponent.store.accept(EditorIntent.History.GoBack)
+                                            true
+                                        }
+
+                                        it.isCtrlPressed && it.key == Key.Y && it.type == KeyEventType.KeyDown -> {
+                                            editorComponent.store.accept(EditorIntent.History.GoForward)
+                                            true
+                                        }
+
+                                        else -> false
+                                    }
+                                }
                         ) {
                             EditorScreen(
-                                component = component,
+                                component = editorComponent,
                                 rightBottomMenus = { editorState, snackbarHostState ->
                                     NewDesignButton(
                                         state = newDesignState,
@@ -129,6 +147,10 @@ fun main() {
                                     OpenSvSaveButton(
                                         state = openSvSaveState,
                                         intentConsumer = openSvSaveStore::accept,
+                                    )
+                                    Divider(
+                                        modifier = Modifier.fillMaxHeight(fraction = 0.6f).width(1.dp),
+                                        color = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f),
                                     )
                                     SaveDesignAsButton(
                                         map = editorState.map,
