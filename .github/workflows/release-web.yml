@@ -2,8 +2,7 @@ name: "Release web application"
 
 on:
   push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+    branches: [master]
   workflow_dispatch:
 
 jobs:
