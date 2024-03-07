@@ -22,19 +22,14 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
-import io.stardewvalleydesigner.data.Season
-import io.stardewvalleydesigner.data.SpritePage
 import io.stardewvalleydesigner.data.SpritePage.Companion.UNIT
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.entity.PlacedEntity
-import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.toLayerType
-import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.flooringSpriteBy
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.wallpaperSpriteBy
 import io.stardewvalleydesigner.ui.component.editor.res.Sprite
-import io.stardewvalleydesigner.ui.component.editor.res.SpriteUtils
 import kotlin.math.roundToInt
 
 
@@ -136,16 +131,11 @@ object DrawerUtils {
 
 
     internal fun DrawScope.drawVisibleEntities(
-        entityMaps: Map<SpritePage, ImageBitmap>,
-        entities: LayeredEntitiesData,
-        season: Season,
-        visibleLayers: Set<LayerType<*>>,
+        sprites: List<Pair<PlacedEntity<*>, Sprite>>,
         renderSpritesFully: Boolean,
         grid: CoordinateGrid,
     ) {
-        val spriteMaps = SpriteUtils.calculateSprite(entityMaps, entities, visibleLayers, season)
-
-        for ((entity, sprite) in spriteMaps) {
+        for ((entity, sprite) in sprites) {
             drawEntityStretched(entity, sprite, renderSpritesFully, grid)
         }
     }

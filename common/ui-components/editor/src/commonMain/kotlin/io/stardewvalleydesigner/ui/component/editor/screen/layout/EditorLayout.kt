@@ -48,9 +48,8 @@ import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.coordinates
 import io.stardewvalleydesigner.engine.layers.flatten
 import io.stardewvalleydesigner.engine.layers.flattenSequence
-import io.stardewvalleydesigner.ui.component.editor.res.ImageResources
+import io.stardewvalleydesigner.ui.component.editor.res.*
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.layoutSpriteBy
-import io.stardewvalleydesigner.ui.component.editor.res.SpriteUtils
 import io.stardewvalleydesigner.ui.component.editor.utils.*
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.drawEntityStretched
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.drawFlooring
@@ -72,7 +71,7 @@ internal fun EditorLayout(
     onCurrCoordinateChanged: (Coordinate) -> Unit,
     intentConsumer: (EditorIntent) -> Unit,
 ) {
-    val entityMaps: Map<SpritePage, ImageBitmap> = ImageResources.entities
+    val entityMaps: CachedMap<SpritePage, ImageBitmap> = ImageResources.entities
     val wallsAndFloors: ImageBitmap = ImageResources.wallsAndFloors
 
     val layout = map.layout
@@ -96,6 +95,28 @@ internal fun EditorLayout(
         UNDEFINED
     }
 
+    val sprites = SpriteUtils.calculateSprites(
+        sprites = entityMaps,
+        entities = map.entities,
+        visibleLayers = visibleLayers,
+        season = season,
+    )
+
+    val sprites2 = when (toolkit) {
+        is ToolkitState.Hand.Point.Acting -> SpriteUtils.calculateSprites(
+            sprites = entityMaps,
+            entities = toolkit.heldEntities.flatten().sortedWith(placedEntityComparator),
+            season = season,
+        )
+
+        is ToolkitState.Pen.Shape.Acting -> SpriteUtils.calculateSprites(
+            sprites = entityMaps,
+            entities = toolkit.entitiesToDraw,
+            season = season,
+        )
+
+        else -> emptyList()
+    }
 
     Canvas(
         modifier = Modifier
@@ -167,17 +188,14 @@ internal fun EditorLayout(
         }
 
         drawVisibleEntities(
-            entityMaps = entityMaps,
-            entities = map.entities,
-            season = season,
-            visibleLayers = visibleLayers,
+            sprites,
             renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
             grid = grid
         )
 
 
         drawSpecificSpritesAndEffects(
-            entityMaps, map, season,
+            sprites2, map,
             toolkit, options,
             grid, cellSize,
         )
@@ -205,9 +223,8 @@ internal fun EditorLayout(
 
 
 private fun DrawScope.drawSpecificSpritesAndEffects(
-    entityMaps: Map<SpritePage, ImageBitmap>,
+    sprites: List<Pair<PlacedEntity<*>, Sprite>>,
     map: MapState,
-    season: Season,
     toolkit: ToolkitState,
     options: Options,
     grid: CoordinateGrid,
@@ -224,13 +241,7 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
 
     when (toolkit) {
         is ToolkitState.Hand.Point.Acting -> {
-            val spriteMaps = SpriteUtils.calculateSprite(
-                spriteMaps = entityMaps,
-                entities = toolkit.heldEntities.flatten().sortedWith(placedEntityComparator),
-                season = season,
-            )
-
-            for ((entity, sprite) in spriteMaps) {
+            for ((entity, sprite) in sprites) {
                 drawEntityStretched(
                     entity = entity,
                     sprite = sprite,
@@ -246,13 +257,7 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
             drawNeutralArea(toolkit.placedShape.coordinates, grid, cellSize)
             drawConflictArea(toolkit.entitiesToDelete, grid, cellSize)
 
-            val spriteMaps = SpriteUtils.calculateSprite(
-                spriteMaps = entityMaps,
-                entities = toolkit.entitiesToDraw,
-                season = season,
-            )
-
-            for ((entity, sprite) in spriteMaps) {
+            for ((entity, sprite) in sprites) {
                 drawEntityStretched(
                     entity = entity,
                     sprite = sprite,
