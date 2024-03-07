@@ -26,6 +26,7 @@ _Supported Stardew Valley version - 1.5.6_
 - :sparkles: Support tooltips
 - :sparkles: Support adaptive screen
 - :sparkles: Support hotkeys (Ctrl+Z and Ctrl+Y)
+- :nail_care: Use standard farm as a default layout
 
 ## :rocket: [0.11.0] - 2024-03-02
 

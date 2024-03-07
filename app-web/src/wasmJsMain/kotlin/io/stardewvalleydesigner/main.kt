@@ -58,7 +58,7 @@ fun main() {
         var editorComponent by remember {
             mutableStateOf(
                 value = EditorComponentImpl(
-                    EditorState.default(LayoutsProvider.layoutOf(LayoutType.BigShed))
+                    EditorState.default(LayoutsProvider.layoutOf(LayoutType.StandardFarm))
                 ),
             )
         }
