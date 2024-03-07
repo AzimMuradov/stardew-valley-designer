@@ -30,7 +30,6 @@ import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.layout.LayoutType
 import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
 import io.stardewvalleydesigner.ui.component.editor.utils.*
-import io.stardewvalleydesigner.ui.component.themes.ThemeVariant
 import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.skia.Image
@@ -39,8 +38,9 @@ import stardew_valley_designer.common.ui_components.editor.generated.resources.R
 
 object ImageResourcesProvider {
 
+    @Composable
     fun spriteBy(
-        spriteMaps: Map<SpritePage, ImageBitmap>,
+        sprites: CachedMap<SpritePage, ImageBitmap>,
         entity: Entity<*>,
         qualifier: SpriteQualifier,
     ): Sprite = EntityDataProvider.entityToData(
@@ -48,13 +48,17 @@ object ImageResourcesProvider {
     ).let { spriteId ->
         when (spriteId) {
             is SpriteId.RegularSprite -> Sprite.Image(
-                image = spriteMaps.getValue(spriteId.page),
+                image = sprites.get(spriteId.page) { page ->
+                    entitySpriteMapOf(page)
+                },
                 offset = spriteId.offset.toIntOffset(),
                 size = spriteId.size.toIntSize(),
             )
 
             is SpriteId.ChestSprite -> Sprite.ChestImage(
-                image = spriteMaps.getValue(spriteId.page),
+                image = sprites.get(spriteId.page) { page ->
+                    entitySpriteMapOf(page)
+                },
                 size = spriteId.size.toIntSize(),
                 tint = spriteId.tint.toComposeColor(),
                 offset = spriteId.offset.toIntOffset(),
@@ -65,7 +69,9 @@ object ImageResourcesProvider {
 
     @Composable
     fun layoutSpriteBy(type: LayoutType, season: Season): LayoutSprite =
-        ImageResources.layouts.getValue(type to season)
+        ImageResources.layouts.get(type to season) { (type, season) ->
+            layoutSpriteOf(type, season)
+        }
 
     fun flooringSpriteBy(wallsAndFloors: ImageBitmap, fl: Flooring): Sprite.Image {
         val flooringObjectSpriteSize = IntSize(width = 32, height = 32)
@@ -101,100 +107,105 @@ object ImageResourcesProvider {
 
 
     @Composable
-    internal fun entitySpriteMaps(): Map<SpritePage, ImageBitmap> = mapOf(
-        SpritePage.CommonObjects to rememberImageResource("entities/common-objects.png"),
-        SpritePage.Craftables to rememberImageResource("entities/craftables.png"),
-        SpritePage.Furniture to rememberImageResource("entities/furniture.png"),
-        SpritePage.Flooring to rememberImageResource("entities/flooring.png"),
-        SpritePage.FlooringWinter to rememberImageResource("entities/flooring-winter.png"),
-        SpritePage.Fence1 to rememberImageResource("entities/fence-1.png"),
-        SpritePage.Fence2 to rememberImageResource("entities/fence-2.png"),
-        SpritePage.Fence3 to rememberImageResource("entities/fence-3.png"),
-        SpritePage.Fence5 to rememberImageResource("entities/fence-5.png"),
-        SpritePage.Crops to rememberImageResource("entities/crops.png"),
-
-        SpritePage.Barn1 to rememberImageResource("buildings/barn.png"),
-        SpritePage.Barn2 to rememberImageResource("buildings/big-barn.png"),
-        SpritePage.Barn3 to rememberImageResource("buildings/deluxe-barn.png"),
-
-        SpritePage.Coop1 to rememberImageResource("buildings/coop.png"),
-        SpritePage.Coop2 to rememberImageResource("buildings/big-coop.png"),
-        SpritePage.Coop3 to rememberImageResource("buildings/deluxe-coop.png"),
-
-        SpritePage.Shed to rememberImageResource("buildings/shed.png"),
-        SpritePage.BigShed to rememberImageResource("buildings/big-shed.png"),
-
-        SpritePage.StoneCabin to rememberImageResource("buildings/stone-cabin.png"),
-        SpritePage.PlankCabin to rememberImageResource("buildings/plank-cabin.png"),
-        SpritePage.LogCabin to rememberImageResource("buildings/log-cabin.png"),
-
-        SpritePage.EarthObelisk to rememberImageResource("buildings/earth-obelisk.png"),
-        SpritePage.WaterObelisk to rememberImageResource("buildings/water-obelisk.png"),
-        SpritePage.DesertObelisk to rememberImageResource("buildings/desert-obelisk.png"),
-        SpritePage.IslandObelisk to rememberImageResource("buildings/island-obelisk.png"),
-        SpritePage.JunimoHut to rememberImageResource("buildings/junimo-hut.png"),
-        SpritePage.GoldClock to rememberImageResource("buildings/gold-clock.png"),
-
-        SpritePage.Mill to rememberImageResource("buildings/mill.png"),
-        SpritePage.Silo to rememberImageResource("buildings/silo.png"),
-        SpritePage.Well to rememberImageResource("buildings/well.png"),
-        SpritePage.Stable to rememberImageResource("buildings/stable.png"),
-        SpritePage.FishPond to rememberImageResource("buildings/fish-pond.png"),
-        SpritePage.SlimeHutch to rememberImageResource("buildings/slime-hutch.png"),
-        SpritePage.ShippingBin to rememberImageResource("buildings/shipping-bin.png"),
-    )
+    internal fun entitySpriteMaps(): CachedMap<SpritePage, ImageBitmap> =
+        CachedMap { img ->
+            img != emptyImageBitmap
+        }
 
     @Composable
-    internal fun layoutSprites(themeVariant: ThemeVariant): Map<Pair<LayoutType, Season>, LayoutSprite> {
-        val standardFarmMap = farmLayouts(type = LayoutType.StandardFarm, name = "standard")
-        val riverlandFarmMap = farmLayouts(type = LayoutType.RiverlandFarm, name = "riverland")
-        val forestFarmMap = farmLayouts(type = LayoutType.ForestFarm, name = "forest")
-        val hillTopFarmMap = farmLayouts(type = LayoutType.HillTopFarm, name = "hill-top")
-        val wildernessFarmMap = farmLayouts(type = LayoutType.WildernessFarm, name = "wilderness")
-        val fourCornersFarmMap = farmLayouts(type = LayoutType.FourCornersFarm, name = "four-corners")
+    private fun entitySpriteMapOf(page: SpritePage): ImageBitmap = when (page) {
+        SpritePage.CommonObjects -> rememberImageResource("entities/common-objects.png")
+        SpritePage.Craftables -> rememberImageResource("entities/craftables.png")
+        SpritePage.Furniture -> rememberImageResource("entities/furniture.png")
+        SpritePage.Flooring -> rememberImageResource("entities/flooring.png")
+        SpritePage.FlooringWinter -> rememberImageResource("entities/flooring-winter.png")
+        SpritePage.Fence1 -> rememberImageResource("entities/fence-1.png")
+        SpritePage.Fence2 -> rememberImageResource("entities/fence-2.png")
+        SpritePage.Fence3 -> rememberImageResource("entities/fence-3.png")
+        SpritePage.Fence5 -> rememberImageResource("entities/fence-5.png")
+        SpritePage.Crops -> rememberImageResource("entities/crops.png")
 
-        val shed = LayoutSprite(
+        SpritePage.Barn1 -> rememberImageResource("buildings/barn.png")
+        SpritePage.Barn2 -> rememberImageResource("buildings/big-barn.png")
+        SpritePage.Barn3 -> rememberImageResource("buildings/deluxe-barn.png")
+
+        SpritePage.Coop1 -> rememberImageResource("buildings/coop.png")
+        SpritePage.Coop2 -> rememberImageResource("buildings/big-coop.png")
+        SpritePage.Coop3 -> rememberImageResource("buildings/deluxe-coop.png")
+
+        SpritePage.Shed -> rememberImageResource("buildings/shed.png")
+        SpritePage.BigShed -> rememberImageResource("buildings/big-shed.png")
+
+        SpritePage.StoneCabin -> rememberImageResource("buildings/stone-cabin.png")
+        SpritePage.PlankCabin -> rememberImageResource("buildings/plank-cabin.png")
+        SpritePage.LogCabin -> rememberImageResource("buildings/log-cabin.png")
+
+        SpritePage.EarthObelisk -> rememberImageResource("buildings/earth-obelisk.png")
+        SpritePage.WaterObelisk -> rememberImageResource("buildings/water-obelisk.png")
+        SpritePage.DesertObelisk -> rememberImageResource("buildings/desert-obelisk.png")
+        SpritePage.IslandObelisk -> rememberImageResource("buildings/island-obelisk.png")
+        SpritePage.JunimoHut -> rememberImageResource("buildings/junimo-hut.png")
+        SpritePage.GoldClock -> rememberImageResource("buildings/gold-clock.png")
+
+        SpritePage.Mill -> rememberImageResource("buildings/mill.png")
+        SpritePage.Silo -> rememberImageResource("buildings/silo.png")
+        SpritePage.Well -> rememberImageResource("buildings/well.png")
+        SpritePage.Stable -> rememberImageResource("buildings/stable.png")
+        SpritePage.FishPond -> rememberImageResource("buildings/fish-pond.png")
+        SpritePage.SlimeHutch -> rememberImageResource("buildings/slime-hutch.png")
+        SpritePage.ShippingBin -> rememberImageResource("buildings/shipping-bin.png")
+    }
+
+
+    @Composable
+    internal fun layoutSprites(): CachedMap<Pair<LayoutType, Season>, LayoutSprite> =
+        CachedMap { (fg, bg) ->
+            fg != emptyImageBitmap && bg != emptyImageBitmap
+        }
+
+    @Composable
+    internal fun layoutSpriteOf(type: LayoutType, season: Season): LayoutSprite = when (type) {
+        LayoutType.StandardFarm -> farmLayoutOf(season, "standard")
+        LayoutType.RiverlandFarm -> farmLayoutOf(season, "riverland")
+        LayoutType.ForestFarm -> farmLayoutOf(season, "forest")
+        LayoutType.HillTopFarm -> farmLayoutOf(season, "hill-top")
+        LayoutType.WildernessFarm -> farmLayoutOf(season, "wilderness")
+        LayoutType.FourCornersFarm -> farmLayoutOf(season, "four-corners")
+
+        LayoutType.Shed -> LayoutSprite(
             fgImage = rememberImageResource("layouts/shed-fg-light.png"),
             bgImage = rememberImageResource("layouts/shed-bg-light.png"),
         )
-        val bigShed = LayoutSprite(
+
+        LayoutType.BigShed -> LayoutSprite(
             fgImage = rememberImageResource("layouts/big-shed-fg-light.png"),
             bgImage = rememberImageResource("layouts/big-shed-bg-light.png"),
         )
-        val shedMap = Season.entries.associate { season -> (LayoutType.Shed to season) to shed }
-        val bigShedMap = Season.entries.associate { season -> (LayoutType.BigShed to season) to bigShed }
-
-        return listOf(
-            standardFarmMap,
-            riverlandFarmMap,
-            forestFarmMap,
-            hillTopFarmMap,
-            wildernessFarmMap,
-            fourCornersFarmMap,
-            shedMap,
-            bigShedMap,
-        ).reduce { acc, map -> acc + map }
     }
 
     @Composable
-    private fun farmLayouts(type: LayoutType, name: String) = mapOf(
-        (type to Season.Spring) to LayoutSprite(
+    private fun farmLayoutOf(season: Season, name: String) = when (season) {
+        Season.Spring -> LayoutSprite(
             fgImage = rememberImageResource("layouts/farm-$name-spring-fg.png"),
             bgImage = rememberImageResource("layouts/farm-$name-spring-bg.png"),
-        ),
-        (type to Season.Summer) to LayoutSprite(
+        )
+
+        Season.Summer -> LayoutSprite(
             fgImage = rememberImageResource("layouts/farm-$name-summer-fg.png"),
             bgImage = rememberImageResource("layouts/farm-$name-summer-bg.png"),
-        ),
-        (type to Season.Fall) to LayoutSprite(
+        )
+
+        Season.Fall -> LayoutSprite(
             fgImage = rememberImageResource("layouts/farm-$name-fall-fg.png"),
             bgImage = rememberImageResource("layouts/farm-$name-fall-bg.png"),
-        ),
-        (type to Season.Winter) to LayoutSprite(
+        )
+
+        Season.Winter -> LayoutSprite(
             fgImage = rememberImageResource("layouts/farm-$name-winter-fg.png"),
             bgImage = rememberImageResource("layouts/farm-$name-winter-bg.png"),
-        ),
-    )
+        )
+    }
+
 
     @Composable
     internal fun wallsAndFloorsSprite(): ImageBitmap = rememberImageResource("layouts/walls-and-floors.png")
