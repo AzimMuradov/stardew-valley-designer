@@ -13,7 +13,7 @@ _Supported Stardew Valley version - 1.5.6_
 
 ### Desktop & Web
 
-- :sparkles: Add new layout
+- :sparkles: Add new layouts
   - riverland farm
   - forest farm
   - hill-top farm
