@@ -16,20 +16,13 @@
 
 package io.stardewvalleydesigner.engine.layout
 
-import io.stardewvalleydesigner.engine.layout.LayoutType.*
-import io.stardewvalleydesigner.engine.layout.layouts.*
+import io.stardewvalleydesigner.engine.entity.EntityType
+import io.stardewvalleydesigner.engine.geometry.Coordinate
 
 
-object LayoutsProvider {
+internal object LayoutProviderUtils {
 
-    fun layoutOf(type: LayoutType): Layout = when (type) {
-        StandardFarm -> StandardFarmLayout
-        RiverlandFarm -> RiverlandFarmLayout
-        ForestFarm -> ForestFarmLayout
-        HillTopFarm -> HillTopFarmLayout
-        WildernessFarm -> WildernessFarmLayout
-        FourCornersFarm -> FourCornersFarmLayout
-        Shed -> ShedLayout
-        BigShed -> BigShedLayout
+    infix fun Collection<Coordinate>.withData(noPlaceable: Set<EntityType>) = associateWith {
+        noPlaceable
     }
 }

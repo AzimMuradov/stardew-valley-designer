@@ -23,15 +23,19 @@ import io.stardewvalleydesigner.engine.layout.Layout
 import io.stardewvalleydesigner.engine.layout.LayoutType
 
 
-internal val ShedLayout: Layout = shedLayoutOf(
-    type = LayoutType.Shed,
-    size = rectOf(w = 13, h = 14)
-)
+internal val ShedLayout: Layout by lazy {
+    shedLayoutOf(
+        type = LayoutType.Shed,
+        size = rectOf(w = 13, h = 14)
+    )
+}
 
-internal val BigShedLayout: Layout = shedLayoutOf(
-    type = LayoutType.BigShed,
-    size = rectOf(w = 19, h = 17)
-)
+internal val BigShedLayout: Layout by lazy {
+    shedLayoutOf(
+        type = LayoutType.BigShed,
+        size = rectOf(w = 19, h = 17)
+    )
+}
 
 
 private fun shedLayoutOf(type: LayoutType, size: Rect) = Layout(

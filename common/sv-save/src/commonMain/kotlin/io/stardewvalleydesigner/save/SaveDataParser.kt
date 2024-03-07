@@ -46,7 +46,18 @@ object SaveDataParser {
         val buildings = farm.buildings.filter { it.buildingType in buildingsByType }
 
         val farmEngine = run {
-            val layout = LayoutsProvider.layoutOf(LayoutType.StandardFarm)
+            val layout = LayoutsProvider.layoutOf(
+                when (save.whichFarm) {
+                    0 -> LayoutType.StandardFarm
+                    1 -> LayoutType.RiverlandFarm
+                    2 -> LayoutType.ForestFarm
+                    3 -> LayoutType.HillTopFarm
+                    4 -> LayoutType.WildernessFarm
+                    5 -> LayoutType.FourCornersFarm
+                    6 -> TODO("Beach Farm")
+                    else -> error("unknown farm ${save.whichFarm}")
+                }
+            )
 
             editorEngineOf(layout).apply {
                 val (es, failedEs) = buildList {
