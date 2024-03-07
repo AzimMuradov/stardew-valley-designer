@@ -21,6 +21,7 @@ kotlin {
                 implementation(projects.common.designFormat)
 
                 implementation(projects.common.kmpLibs.clipboard)
+                implementation(projects.common.kmpLibs.dispatcher)
 
                 implementation(projects.common.components.screenEditor)
                 implementation(projects.common.components.settings)

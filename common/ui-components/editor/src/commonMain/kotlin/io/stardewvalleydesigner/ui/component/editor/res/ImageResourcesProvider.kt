@@ -28,8 +28,10 @@ import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.layout.LayoutType
+import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
 import io.stardewvalleydesigner.ui.component.editor.utils.*
 import io.stardewvalleydesigner.ui.component.themes.ThemeVariant
+import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.skia.Image
 import stardew_valley_designer.common.ui_components.editor.generated.resources.Res
@@ -224,7 +226,7 @@ object ImageResourcesProvider {
     internal fun rememberImageResource(path: String): ImageBitmap {
         var bytes: ByteArray? by remember { mutableStateOf(null) }
         LaunchedEffect(path) {
-            bytes = Res.readBytes(path = "files/$path")
+            bytes = withContext(PlatformDispatcher.IO) { Res.readBytes(path = "files/$path") }
         }
         val image by remember(bytes) {
             mutableStateOf(
