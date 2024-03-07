@@ -144,6 +144,13 @@ object ImageResourcesProvider {
 
     @Composable
     internal fun layoutSprites(themeVariant: ThemeVariant): Map<Pair<LayoutType, Season>, LayoutSprite> {
+        val standardFarmMap = farmLayouts(type = LayoutType.StandardFarm, name = "standard")
+        val riverlandFarmMap = farmLayouts(type = LayoutType.RiverlandFarm, name = "riverland")
+        val forestFarmMap = farmLayouts(type = LayoutType.ForestFarm, name = "forest")
+        val hillTopFarmMap = farmLayouts(type = LayoutType.HillTopFarm, name = "hill-top")
+        val wildernessFarmMap = farmLayouts(type = LayoutType.WildernessFarm, name = "wilderness")
+        val fourCornersFarmMap = farmLayouts(type = LayoutType.FourCornersFarm, name = "four-corners")
+
         val shed = LayoutSprite(
             fgImage = rememberImageResource("layouts/shed-fg-light.png"),
             bgImage = rememberImageResource("layouts/shed-bg-light.png"),
@@ -152,30 +159,40 @@ object ImageResourcesProvider {
             fgImage = rememberImageResource("layouts/big-shed-fg-light.png"),
             bgImage = rememberImageResource("layouts/big-shed-bg-light.png"),
         )
-
         val shedMap = Season.entries.associate { season -> (LayoutType.Shed to season) to shed }
         val bigShedMap = Season.entries.associate { season -> (LayoutType.BigShed to season) to bigShed }
-        val standardFarmMap = mapOf(
-            (LayoutType.StandardFarm to Season.Spring) to LayoutSprite(
-                fgImage = rememberImageResource("layouts/standard-farm-fg-spring.png"),
-                bgImage = rememberImageResource("layouts/standard-farm-bg-spring.png"),
-            ),
-            (LayoutType.StandardFarm to Season.Summer) to LayoutSprite(
-                fgImage = rememberImageResource("layouts/standard-farm-fg-summer.png"),
-                bgImage = rememberImageResource("layouts/standard-farm-bg-summer.png"),
-            ),
-            (LayoutType.StandardFarm to Season.Fall) to LayoutSprite(
-                fgImage = rememberImageResource("layouts/standard-farm-fg-fall.png"),
-                bgImage = rememberImageResource("layouts/standard-farm-bg-fall.png"),
-            ),
-            (LayoutType.StandardFarm to Season.Winter) to LayoutSprite(
-                fgImage = rememberImageResource("layouts/standard-farm-fg-winter.png"),
-                bgImage = rememberImageResource("layouts/standard-farm-bg-winter.png"),
-            ),
-        )
 
-        return shedMap + bigShedMap + standardFarmMap
+        return listOf(
+            standardFarmMap,
+            riverlandFarmMap,
+            forestFarmMap,
+            hillTopFarmMap,
+            wildernessFarmMap,
+            fourCornersFarmMap,
+            shedMap,
+            bigShedMap,
+        ).reduce { acc, map -> acc + map }
     }
+
+    @Composable
+    private fun farmLayouts(type: LayoutType, name: String) = mapOf(
+        (type to Season.Spring) to LayoutSprite(
+            fgImage = rememberImageResource("layouts/farm-$name-spring-fg.png"),
+            bgImage = rememberImageResource("layouts/farm-$name-spring-bg.png"),
+        ),
+        (type to Season.Summer) to LayoutSprite(
+            fgImage = rememberImageResource("layouts/farm-$name-summer-fg.png"),
+            bgImage = rememberImageResource("layouts/farm-$name-summer-bg.png"),
+        ),
+        (type to Season.Fall) to LayoutSprite(
+            fgImage = rememberImageResource("layouts/farm-$name-fall-fg.png"),
+            bgImage = rememberImageResource("layouts/farm-$name-fall-bg.png"),
+        ),
+        (type to Season.Winter) to LayoutSprite(
+            fgImage = rememberImageResource("layouts/farm-$name-winter-fg.png"),
+            bgImage = rememberImageResource("layouts/farm-$name-winter-bg.png"),
+        ),
+    )
 
     @Composable
     internal fun wallsAndFloorsSprite(): ImageBitmap = rememberImageResource("layouts/walls-and-floors.png")

@@ -18,10 +18,14 @@ package io.stardewvalleydesigner.engine.layout
 
 
 enum class LayoutType {
-    Shed,
-    BigShed,
     StandardFarm,
-    ;
+    RiverlandFarm,
+    ForestFarm,
+    HillTopFarm,
+    WildernessFarm,
+    FourCornersFarm,
+    Shed,
+    BigShed;
 
     fun isShed(): Boolean = this == Shed || this == BigShed
 }

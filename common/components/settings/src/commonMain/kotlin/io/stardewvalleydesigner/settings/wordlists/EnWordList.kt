@@ -48,9 +48,14 @@ data object EnWordList : WordList {
     override val farm: String = "farm"
 
     override fun layout(type: LayoutType): String = when (type) {
+        LayoutType.StandardFarm -> "Standard Farm"
+        LayoutType.RiverlandFarm -> "Riverland Farm"
+        LayoutType.ForestFarm -> "Forest Farm"
+        LayoutType.HillTopFarm -> "Hill-top Farm"
+        LayoutType.WildernessFarm -> "Wilderness Farm"
+        LayoutType.FourCornersFarm -> "Four Corners Farm"
         LayoutType.Shed -> "Shed"
         LayoutType.BigShed -> "Big Shed"
-        LayoutType.StandardFarm -> "Standard Farm"
     }
 
 

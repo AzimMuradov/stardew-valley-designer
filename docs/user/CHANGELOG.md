@@ -9,8 +9,16 @@ I should note that versions before [0.8.0](#rocket-080---2023-07-08) don't have 
 
 ## :rocket: [Unreleased] (0.12.0) - 2024-XX-XX
 
+_Supported Stardew Valley version - 1.5.6_
+
 ### Desktop & Web
 
+- :sparkles: Add new layout
+  - riverland farm
+  - forest farm
+  - hill-top farm
+  - wilderness farm
+  - four corners farm
 - :nail_care: Adjust UI
 
 ### Web

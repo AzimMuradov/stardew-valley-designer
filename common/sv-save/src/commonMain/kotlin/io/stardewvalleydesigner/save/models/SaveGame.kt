@@ -25,5 +25,6 @@ internal data class SaveGame(
     val player: Player,
     @XmlChildrenName("GameLocation", "", "") val locations: List<GameLocation>,
     val currentSeason: Season,
+    val whichFarm: Int,
     val gameVersion: String,
 )
