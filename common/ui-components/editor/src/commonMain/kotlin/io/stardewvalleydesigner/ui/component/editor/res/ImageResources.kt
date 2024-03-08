@@ -28,9 +28,9 @@ import io.stardewvalleydesigner.ui.component.themes.ThemeVariant
 
 object ImageResources {
 
-    val entities: CachedMap<SpritePage, ImageBitmap> @Composable get() = imagesResourcesData.entities
+    val entities: Map<SpritePage, ImageBitmap> @Composable get() = imagesResourcesData.entities
 
-    val layouts: CachedMap<Pair<LayoutType, Season>, LayoutSprite> @Composable get() = imagesResourcesData.layouts
+    val layouts: Map<Pair<LayoutType, Season>, LayoutSprite> @Composable get() = imagesResourcesData.layouts
 
     val wallsAndFloors: ImageBitmap @Composable get() = imagesResourcesData.wallsAndFloors
 
@@ -46,7 +46,7 @@ object ImageResources {
 fun WithImageResources(themeVariant: ThemeVariant, content: @Composable () -> Unit) {
     val data = ImagesResourcesData(
         entities = ImageResourcesProvider.entitySpriteMaps(),
-        layouts = ImageResourcesProvider.layoutSprites(),
+        layouts = ImageResourcesProvider.layoutSprites(themeVariant),
         wallsAndFloors = ImageResourcesProvider.wallsAndFloorsSprite(),
         tools = ImageResourcesProvider.toolImages(),
         shapes = ImageResourcesProvider.shapeImages(),
@@ -58,8 +58,8 @@ fun WithImageResources(themeVariant: ThemeVariant, content: @Composable () -> Un
 }
 
 private data class ImagesResourcesData(
-    val entities: CachedMap<SpritePage, ImageBitmap>,
-    val layouts: CachedMap<Pair<LayoutType, Season>, LayoutSprite>,
+    val entities: Map<SpritePage, ImageBitmap>,
+    val layouts: Map<Pair<LayoutType, Season>, LayoutSprite>,
     val wallsAndFloors: ImageBitmap,
     val tools: Map<ToolType, ImageBitmap>,
     val shapes: Map<ShapeType?, ImageBitmap>,

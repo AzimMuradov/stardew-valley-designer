@@ -29,7 +29,8 @@ import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
 import io.stardewvalleydesigner.kmplib.fs.FileSystem
 import io.stardewvalleydesigner.kmplib.fs.getSvdImagesDir
 import io.stardewvalleydesigner.kmplib.png.PNG_FORMAT
-import io.stardewvalleydesigner.ui.component.editor.res.*
+import io.stardewvalleydesigner.ui.component.editor.res.ImageResources
+import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider
 import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesignasimg.DesignRenderer
 import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesignasimg.nowFormatted
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
@@ -74,18 +75,12 @@ fun SaveDesignAsImageButton(
 
     var bytes: ByteArray? by remember(showFileSaver) { mutableStateOf(null) }
 
-    val sprites = SpriteUtils.calculateSprites(
-        sprites = entities,
-        entities = map.entities,
-        visibleLayers = visibleLayers.visibleLayers,
-        season = season,
-    )
-
     LaunchedEffect(showFileSaver) {
         bytes = if (showFileSaver) {
             withContext(PlatformDispatcher.IO) {
                 DesignRenderer.generateDesignAsPngBytes(
-                    map, sprites, wallsAndFloors, layoutSprite,
+                    map, season, visibleLayers.visibleLayers,
+                    entities, wallsAndFloors, layoutSprite,
                 )
             }
         } else {

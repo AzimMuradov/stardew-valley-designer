@@ -33,9 +33,11 @@ internal fun Sprite(
     modifier: Modifier = Modifier,
 ) {
     val entityMaps = ImageResources.entities
-    val sprite = SpriteUtils.calculateSprite(entityMaps, entity, season)
 
     Canvas(modifier) {
-        drawEntityContained(sprite, layoutSize = size)
+        drawEntityContained(
+            sprite = SpriteUtils.calculateSprite(entityMaps, entity, season),
+            layoutSize = size
+        )
     }
 }

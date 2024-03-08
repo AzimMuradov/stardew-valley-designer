@@ -19,10 +19,12 @@ package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesig
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.IntOffset
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
+import io.stardewvalleydesigner.data.Season
+import io.stardewvalleydesigner.data.SpritePage
 import io.stardewvalleydesigner.data.SpritePage.Companion.UNIT
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
-import io.stardewvalleydesigner.engine.entity.PlacedEntity
+import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.kmplib.png.PngUtils
 import io.stardewvalleydesigner.ui.component.editor.res.*
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils
@@ -32,11 +34,13 @@ internal object DesignRenderer {
 
     suspend fun generateDesignAsPngBytes(
         map: MapState,
-        sprites: List<Pair<PlacedEntity<*>, Sprite>>,
+        season: Season,
+        visibleLayers: Set<LayerType<*>>,
+        entityMaps: Map<SpritePage, ImageBitmap>,
         wallsAndFloors: ImageBitmap,
         layoutSprite: LayoutSprite,
     ): ByteArray {
-        val bitmap = render(map, sprites, wallsAndFloors, layoutSprite)
+        val bitmap = render(map, season, visibleLayers, entityMaps, wallsAndFloors, layoutSprite)
         val pixels = IntArray(bitmap.width * bitmap.height).apply { bitmap.readPixels(buffer = this) }
         val pngBytes = PngUtils.generatePngBytes(pixels, bitmap.width, bitmap.height)
 
@@ -46,7 +50,9 @@ internal object DesignRenderer {
 
     private fun render(
         map: MapState,
-        sprites: List<Pair<PlacedEntity<*>, Sprite>>,
+        season: Season,
+        visibleLayers: Set<LayerType<*>>,
+        entityMaps: Map<SpritePage, ImageBitmap>,
         wallsAndFloors: ImageBitmap,
         layoutSprite: LayoutSprite,
     ): ImageBitmap {
@@ -85,7 +91,13 @@ internal object DesignRenderer {
                 }
             }
 
-            for ((placedEntity, sprite) in sprites) {
+            val spriteMaps = SpriteUtils.calculateSprite(
+                spriteMaps = entityMaps,
+                entities = map.entities,
+                visibleLayers = visibleLayers,
+                season = season,
+            )
+            for ((placedEntity, sprite) in spriteMaps) {
                 val (e, place) = placedEntity
                 val rectH = sprite.size.height / UNIT
 

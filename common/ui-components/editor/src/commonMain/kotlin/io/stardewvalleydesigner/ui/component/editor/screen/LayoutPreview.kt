@@ -36,7 +36,6 @@ import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layout.Layout
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResources
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.layoutSpriteBy
-import io.stardewvalleydesigner.ui.component.editor.res.SpriteUtils
 import io.stardewvalleydesigner.ui.component.editor.utils.CoordinateGrid
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.drawFlooring
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.drawVisibleEntities
@@ -60,12 +59,6 @@ fun BoxScope.LayoutPreview(
 
     var cellSide by remember { mutableStateOf(-1f) }
 
-    val sprites = SpriteUtils.calculateSprites(
-        sprites = images,
-        season = season,
-        entities = entities,
-        visibleLayers = LayerType.all,
-    )
 
     Canvas(
         modifier = Modifier
@@ -98,7 +91,10 @@ fun BoxScope.LayoutPreview(
         }
 
         drawVisibleEntities(
-            sprites,
+            entityMaps = images,
+            season = season,
+            entities = entities,
+            visibleLayers = LayerType.all,
             renderSpritesFully = true,
             grid = grid
         )
