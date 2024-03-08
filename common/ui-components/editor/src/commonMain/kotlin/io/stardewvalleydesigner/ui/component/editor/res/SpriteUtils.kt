@@ -16,7 +16,6 @@
 
 package io.stardewvalleydesigner.ui.component.editor.res
 
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.ImageBitmap
 import io.stardewvalleydesigner.data.*
 import io.stardewvalleydesigner.data.Season.*
@@ -32,9 +31,8 @@ import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.placedEnti
 
 object SpriteUtils {
 
-    @Composable
-    fun calculateSprites(
-        sprites: CachedMap<SpritePage, ImageBitmap>,
+    fun calculateSprite(
+        spriteMaps: Map<SpritePage, ImageBitmap>,
         entities: LayeredEntitiesData,
         visibleLayers: Set<LayerType<*>>,
         season: Season,
@@ -144,14 +142,13 @@ object SpriteUtils {
                     else -> SpriteQualifier.None
                 }
 
-                add(Pair(placedEntity, spriteBy(sprites, entity, qualifier)))
+                add(Pair(placedEntity, spriteBy(spriteMaps, entity, qualifier)))
             }
         }
     }
 
-    @Composable
     fun calculateSprite(
-        sprites: CachedMap<SpritePage, ImageBitmap>,
+        spriteMaps: Map<SpritePage, ImageBitmap>,
         entity: Entity<*>,
         season: Season,
     ): Sprite {
@@ -187,16 +184,15 @@ object SpriteUtils {
 
             else -> SpriteQualifier.None
         }
-        return spriteBy(sprites, entity, qualifier)
+        return spriteBy(spriteMaps, entity, qualifier)
     }
 
-    @Composable
-    fun calculateSprites(
-        sprites: CachedMap<SpritePage, ImageBitmap>,
+    fun calculateSprite(
+        spriteMaps: Map<SpritePage, ImageBitmap>,
         entities: Collection<PlacedEntity<*>>,
         season: Season,
-    ): List<Pair<PlacedEntity<*>, Sprite>> = entities.map { placedEntity ->
-        val sprite = calculateSprite(sprites, placedEntity.rectObject, season)
+    ): Sequence<Pair<PlacedEntity<*>, Sprite>> = entities.asSequence().map { placedEntity ->
+        val sprite = calculateSprite(spriteMaps, placedEntity.rectObject, season)
         placedEntity to sprite
     }
 }
