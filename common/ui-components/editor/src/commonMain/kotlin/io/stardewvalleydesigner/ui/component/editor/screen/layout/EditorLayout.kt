@@ -16,8 +16,7 @@
 
 package io.stardewvalleydesigner.ui.component.editor.screen.layout
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,10 +28,11 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.*
 import androidx.compose.ui.input.pointer.*
 import io.stardewvalleydesigner.component.editor.EditorIntent
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
+import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolType
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolkitState
 import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.data.SpritePage
@@ -58,9 +58,10 @@ import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.drawVisibl
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.drawWallpaper
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.placedEntityComparator
 import kotlin.math.floor
+import kotlin.math.sign
 
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
 internal fun EditorLayout(
     map: MapState,
@@ -70,6 +71,8 @@ internal fun EditorLayout(
     options: Options,
     currCoordinate: Coordinate,
     onCurrCoordinateChanged: (Coordinate) -> Unit,
+    scale: Float,
+    onScaleChanged: (Float) -> Unit,
     intentConsumer: (EditorIntent) -> Unit,
 ) {
     val entityMaps: Map<SpritePage, ImageBitmap> = ImageResources.entities
@@ -82,6 +85,10 @@ internal fun EditorLayout(
     val hoveredColor = MaterialTheme.colors.secondary
 
     var cellSide by remember { mutableStateOf(-1f) }
+    var canvasSize by remember { mutableStateOf(Size.Zero) }
+    var offset by remember { mutableStateOf(Offset.Zero) }
+    var offsetStart by remember { mutableStateOf(Offset.Zero) }
+    var prevOffset by remember { mutableStateOf(Offset.Zero) }
     var prevDragCoordinate by remember { mutableStateOf(UNDEFINED) }
 
 
@@ -103,16 +110,50 @@ internal fun EditorLayout(
             .fillMaxSize()
             .clipToBounds()
             .background(color = MaterialTheme.colors.surface)
+            .onPointerEvent(PointerEventType.Scroll) { event ->
+                val change = event.changes.first()
+                val newScale = (scale - change.scrollDelta.y.sign)
+                    .coerceIn(range = 1f..10f)
+                offset = (offset + (change.position - offset) * (1 - newScale / scale)).let {
+                    Offset(
+                        it.x.coerceIn(
+                            minimumValue = canvasSize.width - canvasSize.width * newScale,
+                            maximumValue = 0f,
+                        ),
+                        it.y.coerceIn(
+                            minimumValue = canvasSize.height - canvasSize.height * newScale,
+                            maximumValue = 0f,
+                        ),
+                    )
+                }
+                onScaleChanged(newScale)
+            }
             // Hovered cell
             .onPointerEvent(PointerEventType.Move) { event ->
-                onCurrCoordinateChanged(event.changes.first().position.toCoordinateStrict())
+                if (toolkit.tool == ToolType.Hand && toolkit.isActing) {
+                    offset = (prevOffset + (event.changes.first().position - offsetStart)).let {
+                        Offset(
+                            it.x.coerceIn(
+                                minimumValue = canvasSize.width - canvasSize.width * scale,
+                                maximumValue = 0f,
+                            ),
+                            it.y.coerceIn(
+                                minimumValue = canvasSize.height - canvasSize.height * scale,
+                                maximumValue = 0f,
+                            ),
+                        )
+                    }
+                }
+                onCurrCoordinateChanged(((event.changes.first().position - offset) / scale).toCoordinateStrict())
             }
             .onPointerEvent(PointerEventType.Exit) { onCurrCoordinateChanged(UNDEFINED) }
             // Tools logic
             .onPointerEvent(eventType = PointerEventType.Press) { event ->
-                val current = event.changes.first().position.toCoordinateStrict()
+                val current = ((event.changes.first().position - offset) / scale).toCoordinateStrict()
                     .takeUnless { it == UNDEFINED } ?: return@onPointerEvent
                 prevDragCoordinate = current
+                offsetStart = event.changes.first().position
+                prevOffset = offset
                 intentConsumer(EditorIntent.Engine.Start(current))
             }
             .onPointerEvent(eventType = PointerEventType.Release) {
@@ -122,7 +163,7 @@ internal fun EditorLayout(
             .pointerInput(toolkit.tool) {
                 detectDragGestures(
                     onDrag = { change, _ ->
-                        val current = change.position.toCoordinate()
+                        val current = ((change.position - offset) / scale).toCoordinate()
                         if (current != prevDragCoordinate) {
                             prevDragCoordinate = current
                             intentConsumer(EditorIntent.Engine.Keep(current))
@@ -135,71 +176,75 @@ internal fun EditorLayout(
                 )
             }
     ) {
-        cellSide = size.height / nH
+        translate(offset.x, offset.y) {
+            scale(scale, pivot = Offset.Zero) {
+                canvasSize = size
+                cellSide = size.height / nH
 
-        val cellSize = Size(cellSide, cellSide)
-        val grid = CoordinateGrid(cellSide)
+                val cellSize = Size(cellSide, cellSide)
+                val grid = CoordinateGrid(cellSide)
+
+                // Background
+
+                drawImage(
+                    image = layoutSprite.bgImage,
+                    srcSize = layoutSprite.size,
+                    dstSize = size.toIntSize(),
+                    filterQuality = FilterQuality.None,
+                )
 
 
-        // Background
+                // Main content
 
-        drawImage(
-            image = layoutSprite.bgImage,
-            srcSize = layoutSprite.size,
-            dstSize = size.toIntSize(),
-            filterQuality = FilterQuality.None,
-        )
+                if (layout.type.isShed()) {
+                    drawFlooring(
+                        wallsAndFloors,
+                        flooring = map.flooring,
+                        nW, nH, cellSide,
+                    )
+                    drawWallpaper(
+                        wallsAndFloors,
+                        wallpaper = map.wallpaper,
+                        nW, cellSide,
+                    )
+                }
+
+                drawVisibleEntities(
+                    entityMaps = entityMaps,
+                    entities = map.entities,
+                    season = season,
+                    visibleLayers = visibleLayers,
+                    renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
+                    grid = grid
+                )
 
 
-        // Main content
+                drawSpecificSpritesAndEffects(
+                    entityMaps, map, season,
+                    toolkit, options,
+                    grid, cellSize,
+                )
 
-        if (layout.type.isShed()) {
-            drawFlooring(
-                wallsAndFloors,
-                flooring = map.flooring,
-                nW, nH, cellSide,
-            )
-            drawWallpaper(
-                wallsAndFloors,
-                wallpaper = map.wallpaper,
-                nW, cellSide,
-            )
+
+                // Foreground
+
+                drawImage(
+                    image = layoutSprite.fgImage,
+                    srcSize = layoutSprite.size,
+                    dstSize = size.toIntSize(),
+                    filterQuality = FilterQuality.None,
+                )
+
+
+                // Hints and visual guides
+
+                drawAreasOfEffects(map, options, grid, cellSize)
+
+                drawGrid(options, grid, nW, nH)
+
+                drawHoveredCellAndAxis(options, grid, cellSize, currCoordinate, hoveredColor)
+            }
         }
-
-        drawVisibleEntities(
-            entityMaps = entityMaps,
-            entities = map.entities,
-            season = season,
-            visibleLayers = visibleLayers,
-            renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
-            grid = grid
-        )
-
-
-        drawSpecificSpritesAndEffects(
-            entityMaps, map, season,
-            toolkit, options,
-            grid, cellSize,
-        )
-
-
-        // Foreground
-
-        drawImage(
-            image = layoutSprite.fgImage,
-            srcSize = layoutSprite.size,
-            dstSize = size.toIntSize(),
-            filterQuality = FilterQuality.None,
-        )
-
-
-        // Hints and visual guides
-
-        drawAreasOfEffects(map, options, grid, cellSize)
-
-        drawGrid(options, grid, nW, nH)
-
-        drawHoveredCellAndAxis(options, grid, cellSize, currCoordinate, hoveredColor)
     }
 }
 

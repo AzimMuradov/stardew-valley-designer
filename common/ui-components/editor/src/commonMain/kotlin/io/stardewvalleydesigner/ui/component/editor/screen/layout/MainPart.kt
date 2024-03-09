@@ -39,12 +39,15 @@ internal fun RowScope.MainPart(
     options: Options,
     currCoordinate: Coordinate,
     onCurrCoordinateChanged: (Coordinate) -> Unit,
+    scale: Float,
+    onScaleChanged: (Float) -> Unit,
     intentConsumer: (EditorIntent) -> Unit,
 ) {
-    Box(Modifier.fillMaxHeight().weight(1f).padding(30.dp), Alignment.Center) {
+    Box(Modifier.fillMaxHeight().weight(1f).padding(horizontal = 24.dp), Alignment.Center) {
         EditorLayout(
             map, season, visibleLayers, toolkit, options,
             currCoordinate, onCurrCoordinateChanged,
+            scale, onScaleChanged,
             intentConsumer,
         )
     }

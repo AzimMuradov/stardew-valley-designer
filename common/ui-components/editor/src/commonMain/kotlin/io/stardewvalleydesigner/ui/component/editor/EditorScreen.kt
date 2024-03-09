@@ -60,13 +60,20 @@ fun EditorScreen(
 
         val menuWidth by animateDpAsState(
             when (LocalWindowSize.current) {
-                WindowSize.EXPANDED -> 250.dp
-                WindowSize.LARGE -> 300.dp
-                WindowSize.EXTRA_LARGE -> 350.dp
+                WindowSize.EXPANDED -> 200.dp
+                WindowSize.LARGE -> 250.dp
+                WindowSize.EXTRA_LARGE -> 300.dp
             }
         )
 
-        Row(Modifier.fillMaxWidth().weight(1f)) {
+        var scale by remember { mutableFloatStateOf(value = 1f) }
+
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(24.dp)
+        ) {
             LeftSideMenus(
                 toolkit = toolkit,
                 palette = palette,
@@ -84,6 +91,8 @@ fun EditorScreen(
                 options = options,
                 currCoordinate = currCoordinate,
                 onCurrCoordinateChanged = { currCoordinate = it },
+                scale = scale,
+                onScaleChanged = { scale = it },
                 intentConsumer = store::accept
             )
             RightSideMenus(
@@ -95,6 +104,8 @@ fun EditorScreen(
                 onSeasonChosen = {
                     store.accept(EditorIntent.SeasonMenu.Change(it))
                 },
+                scale = scale,
+                onScaleChanged = { scale = it },
                 layout = map.layout,
                 width = menuWidth,
                 intentConsumer = store::accept

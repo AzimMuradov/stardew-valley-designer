@@ -807,6 +807,7 @@ data object EnWordList : WordList {
         ToolType.Eraser -> "Eraser (remove entities)"
         ToolType.Select -> "Select entities"
         ToolType.EyeDropper -> "Eye dropper (entity picker)"
+        ToolType.Hand -> "Hand (move layout)"
     }
 
     override fun shape(type: ShapeType?): String = when (type) {
