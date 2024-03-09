@@ -42,10 +42,10 @@ internal fun Toolbar(
     intentConsumer: (EditorIntent.Toolkit) -> Unit,
 ) {
     val tools = listOf(
-        ToolType.Pen,
-        ToolType.Eraser,
         ToolType.Drag,
         ToolType.Select,
+        ToolType.Pen,
+        ToolType.Eraser,
         ToolType.EyeDropper,
     ).map { GroupOption.Some(it) }
     val shapes = (listOf(null) + ShapeType.entries).map {
