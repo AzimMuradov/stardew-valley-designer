@@ -50,7 +50,7 @@ class ToolkitImpl(
     ): ActionReturn? {
         val shapeType = shapeType
         val tool = when (toolType) {
-            ToolType.Hand -> if (shapeType == null) Hand(engine) else undefinedTool()
+            ToolType.Drag -> if (shapeType == null) Drag(engine) else undefinedTool()
             ToolType.Pen -> if (shapeType == null) PenPoint(engine) else PenShape(engine, shapeType)
             ToolType.Eraser -> if (shapeType == null) EraserPoint(engine) else EraserShape(engine, shapeType)
             ToolType.Select -> if (shapeType == null) undefinedTool() else Select(engine, shapeType)

@@ -44,7 +44,7 @@ internal fun Toolbar(
     val tools = listOf(
         ToolType.Pen,
         ToolType.Eraser,
-        ToolType.Hand,
+        ToolType.Drag,
         ToolType.Select,
         ToolType.EyeDropper,
     ).map { GroupOption.Some(it) }

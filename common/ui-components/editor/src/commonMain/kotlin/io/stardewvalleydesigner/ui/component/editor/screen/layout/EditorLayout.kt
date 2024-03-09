@@ -223,7 +223,7 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
     }
 
     when (toolkit) {
-        is ToolkitState.Hand.Point.Acting -> {
+        is ToolkitState.Drag.Point.Acting -> {
             val spriteMaps = SpriteUtils.calculateSprite(
                 spriteMaps = entityMaps,
                 entities = toolkit.heldEntities.flatten().sortedWith(placedEntityComparator),

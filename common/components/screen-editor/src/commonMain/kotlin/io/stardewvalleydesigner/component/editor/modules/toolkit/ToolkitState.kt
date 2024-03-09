@@ -37,9 +37,9 @@ sealed class ToolkitState(val tool: ToolType) {
     val allowedShapes: List<ShapeType?> = tool.allowedShapes
 
 
-    sealed class Hand : ToolkitState(tool = ToolType.Hand) {
+    sealed class Drag : ToolkitState(tool = ToolType.Drag) {
 
-        sealed class Point(final override val isIdle: Boolean) : Hand() {
+        sealed class Point(final override val isIdle: Boolean) : Drag() {
 
             data object Idle : Point(isIdle = true)
 
@@ -157,7 +157,7 @@ sealed class ToolkitState(val tool: ToolType) {
             val compatibleShape = if (shape in tool.allowedShapes) shape else tool.allowedShapes.firstOrNull()
 
             return when (tool) {
-                ToolType.Hand -> Hand.Point.Idle
+                ToolType.Drag -> Drag.Point.Idle
                 ToolType.Pen -> compatibleShape?.let(Pen.Shape::Idle) ?: Pen.Point.Idle
                 ToolType.Eraser -> compatibleShape?.let(Eraser.Shape::Idle) ?: Eraser.Point.Idle
                 ToolType.Select -> Select.Shape.Idle(compatibleShape!!)
@@ -167,7 +167,7 @@ sealed class ToolkitState(val tool: ToolType) {
 
         private val ToolType.allowedShapes: List<ShapeType?>
             get() = when (this) {
-                ToolType.Hand -> listOf(null)
+                ToolType.Drag -> listOf(null)
                 ToolType.Pen -> listOf(null) + ShapeType.entries
                 ToolType.Eraser -> listOf(null) + ShapeType.entries
                 ToolType.Select -> ShapeType.entries

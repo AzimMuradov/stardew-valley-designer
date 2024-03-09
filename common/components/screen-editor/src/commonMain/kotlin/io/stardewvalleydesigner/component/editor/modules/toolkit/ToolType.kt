@@ -21,8 +21,7 @@ package io.stardewvalleydesigner.component.editor.modules.toolkit
  * Available tool types.
  */
 enum class ToolType {
-
-    Hand,
+    Drag,
     Pen,
     Eraser,
     Select,
