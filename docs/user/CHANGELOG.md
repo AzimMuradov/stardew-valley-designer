@@ -21,6 +21,10 @@ _Supported Stardew Valley version - 1.5.6_
   - four corners farm
 - :nail_care: Adjust UI
 
+### Desktop
+
+- :wrench: Fix screen scaling bug
+
 ### Web
 
 - :sparkles: Support tooltips
