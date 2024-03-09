@@ -36,6 +36,8 @@ internal fun RightSideMenus(
     onVisibilityChange: (LayerType<*>, Boolean) -> Unit,
     chosenSeason: Season,
     onSeasonChosen: (Season) -> Unit,
+    scale: Float,
+    onScaleChanged: (Float) -> Unit,
     layout: LayoutState,
     width: Dp,
     intentConsumer: (Intent) -> Unit,
@@ -51,6 +53,14 @@ internal fun RightSideMenus(
                 },
                 visibleLayers = visibleLayers,
                 onVisibilityChange = onVisibilityChange
+            )
+        }
+        menu {
+            ResizeButtons(
+                canDecrease = scale > 1f,
+                canIncrease = scale < 10f,
+                onDecreased = { onScaleChanged(scale - 1) },
+                onIncreased = { onScaleChanged(scale + 1) },
             )
         }
         if (layout.type.isShed()) {

@@ -19,6 +19,7 @@ _Supported Stardew Valley version - 1.5.6_
   - hill-top farm
   - wilderness farm
   - four corners farm
+- :sparkles: Support editor map zoom
 - :nail_care: Adjust UI
 
 ### Desktop

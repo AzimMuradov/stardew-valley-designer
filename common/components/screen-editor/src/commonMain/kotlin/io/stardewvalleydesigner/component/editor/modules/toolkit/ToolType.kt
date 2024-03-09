@@ -26,4 +26,5 @@ enum class ToolType {
     Eraser,
     Select,
     EyeDropper,
+    Hand,
 }

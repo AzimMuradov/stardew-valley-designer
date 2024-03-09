@@ -47,6 +47,7 @@ internal fun Toolbar(
         ToolType.Pen,
         ToolType.Eraser,
         ToolType.EyeDropper,
+        ToolType.Hand,
     ).map { GroupOption.Some(it) }
     val shapes = (listOf(null) + ShapeType.entries).map {
         if (it in toolkit.allowedShapes) {

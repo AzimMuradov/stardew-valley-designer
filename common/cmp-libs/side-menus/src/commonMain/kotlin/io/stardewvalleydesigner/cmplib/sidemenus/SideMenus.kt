@@ -29,7 +29,7 @@ fun SideMenus(
     content: SideMenusBuilder.() -> Unit,
 ) {
     Column(
-        modifier = modifier.padding(24.dp),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         val menus = SideMenusBuilder(columnScope = this).apply(content).build()
@@ -41,6 +41,13 @@ fun SideMenus(
 }
 
 @Composable
-fun FixedSideMenus(width: Dp, content: SideMenusBuilder.() -> Unit) {
-    SideMenus(Modifier.fillMaxHeight().width(width), content)
+fun FixedSideMenus(
+    width: Dp,
+    modifier: Modifier = Modifier,
+    content: SideMenusBuilder.() -> Unit,
+) {
+    SideMenus(
+        modifier = Modifier.fillMaxHeight().width(width).then(modifier),
+        content = content,
+    )
 }

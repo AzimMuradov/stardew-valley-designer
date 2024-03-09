@@ -206,6 +206,7 @@ object ImageResourcesProvider {
         ToolType.Eraser to rememberImageResource("tools/eraser.png"),
         ToolType.Select to rememberImageResource("tools/select.png"),
         ToolType.EyeDropper to rememberImageResource("tools/eye-dropper.png"),
+        ToolType.Hand to rememberImageResource("tools/hand.png"),
     )
 
     @Composable
