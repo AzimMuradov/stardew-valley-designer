@@ -201,7 +201,7 @@ object ImageResourcesProvider {
 
     @Composable
     internal fun toolImages(): Map<ToolType, ImageBitmap> = mapOf(
-        ToolType.Hand to rememberImageResource("tools/hand.png"),
+        ToolType.Drag to rememberImageResource("tools/drag.png"),
         ToolType.Pen to rememberImageResource("tools/pen.png"),
         ToolType.Eraser to rememberImageResource("tools/eraser.png"),
         ToolType.Select to rememberImageResource("tools/select.png"),

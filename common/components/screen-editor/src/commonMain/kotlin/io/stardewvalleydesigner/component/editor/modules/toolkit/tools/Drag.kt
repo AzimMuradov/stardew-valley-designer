@@ -27,7 +27,7 @@ import io.stardewvalleydesigner.engine.layout.respectsLayout
 import kotlin.properties.Delegates
 
 
-class Hand(private val engine: EditorEngine) : Tool {
+class Drag(private val engine: EditorEngine) : Tool {
 
     private lateinit var initMovedEntities: LayeredEntitiesData
 
@@ -56,7 +56,7 @@ class Hand(private val engine: EditorEngine) : Tool {
 
         return if (heldEntities.flattenSequence().any()) {
             ActionReturn(
-                toolkit = ToolkitState.Hand.Point.Acting(heldEntities),
+                toolkit = ToolkitState.Drag.Point.Acting(heldEntities),
                 currentEntity = currentEntity,
                 selectedEntities = heldEntities
             )
@@ -78,7 +78,7 @@ class Hand(private val engine: EditorEngine) : Tool {
             .layeredData()
 
         return ActionReturn(
-            toolkit = ToolkitState.Hand.Point.Acting(heldEntities),
+            toolkit = ToolkitState.Drag.Point.Acting(heldEntities),
             currentEntity = currentEntity,
             selectedEntities = heldEntities
         )
@@ -91,7 +91,7 @@ class Hand(private val engine: EditorEngine) : Tool {
     ): ActionReturn {
         engine.putAll(heldEntities.toLayeredEntities())
         return ActionReturn(
-            toolkit = ToolkitState.Hand.Point.Idle,
+            toolkit = ToolkitState.Drag.Point.Idle,
             currentEntity = currentEntity,
             selectedEntities = if (isSelected) heldEntities else LayeredEntitiesData()
         )
