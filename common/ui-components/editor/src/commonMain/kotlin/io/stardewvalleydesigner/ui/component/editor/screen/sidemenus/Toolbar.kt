@@ -18,8 +18,6 @@ package io.stardewvalleydesigner.ui.component.editor.screen.sidemenus
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +32,8 @@ import io.stardewvalleydesigner.component.editor.EditorIntent
 import io.stardewvalleydesigner.component.editor.modules.toolkit.*
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
+import io.stardewvalleydesigner.ui.component.windowsize.LocalWindowSize
+import io.stardewvalleydesigner.ui.component.windowsize.WindowSize
 
 
 @Composable
@@ -56,7 +56,11 @@ internal fun Toolbar(
         }
     }
 
-    val size = 5u
+    val size = when (LocalWindowSize.current) {
+        WindowSize.EXPANDED -> 5u
+        WindowSize.LARGE -> 5u
+        WindowSize.EXTRA_LARGE -> 6u
+    }
 
     val wordList = GlobalSettings.strings
 
@@ -82,13 +86,6 @@ internal fun Toolbar(
         modifier = Modifier.fillMaxWidth(),
         chosenLabel = toolkit.tool,
         onButtonClick = { intentConsumer(EditorIntent.Toolkit.ChooseTool(it)) },
-        spaceContent = {
-            Icon(
-                imageVector = Icons.Default.Clear,
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize().padding(8.dp),
-            )
-        },
         buttonContent = { toolType ->
             ButtonContent(
                 tooltip = wordList.tool(toolType),
@@ -98,7 +95,23 @@ internal fun Toolbar(
     )
 
     if (toolkit.allowedShapes != listOf(null)) {
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Divider(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = wordList.shape(toolkit.shape),
+                style = MaterialTheme.typography.subtitle1
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Divider(modifier = Modifier.weight(1f))
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         ToggleButtonsGroup(
             buttonLabels = shapes,
@@ -106,13 +119,6 @@ internal fun Toolbar(
             modifier = Modifier.fillMaxWidth(),
             chosenLabel = toolkit.shape,
             onButtonClick = { intentConsumer(EditorIntent.Toolkit.ChooseShape(it)) },
-            spaceContent = {
-                Icon(
-                    imageVector = Icons.Default.Clear,
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize().padding(8.dp),
-                )
-            },
             buttonContent = { shapeType ->
                 val shapeName = wordList.shape(shapeType)
                 val postfix = if (shapeType !in toolkit.allowedShapes) {
@@ -144,7 +150,7 @@ private fun ButtonContent(tooltip: String, image: ImageBitmap) {
         Icon(
             bitmap = image,
             contentDescription = null,
-            modifier = Modifier.fillMaxSize().padding(8.dp),
+            modifier = Modifier.fillMaxSize().padding(6.dp),
         )
     }
 }
