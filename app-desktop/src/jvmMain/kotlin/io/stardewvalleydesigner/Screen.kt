@@ -23,14 +23,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.KeyEvent
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.window.*
 import io.stardewvalleydesigner.ui.component.windowsize.WithMeasuredWindowSize
 import kotlinx.coroutines.delay
 import java.awt.Dimension
+import kotlin.math.roundToInt
 
 
 @Composable
@@ -53,7 +52,7 @@ fun Screen(
         resizable = true,
         onKeyEvent = onKeyEvent,
     ) {
-        WithMeasuredWindowSize(windowWidth = with(LocalDensity.current) { state.size.width.roundToPx() }) {
+        WithMeasuredWindowSize(windowWidth = state.size.width.value.roundToInt()) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -62,10 +61,8 @@ fun Screen(
             }
         }
 
-        val density = LocalDensity.current
-
         LaunchedEffect(Unit) {
-            window.minimumSize = dimension(initialSize, density)
+            window.minimumSize = dimension(initialSize)
             delay(timeMillis = 200)
             window.toFront()
         }
@@ -73,6 +70,7 @@ fun Screen(
 }
 
 
-private fun dimension(dpSize: DpSize, density: Density) = with(density) {
-    Dimension(dpSize.width.roundToPx(), dpSize.height.roundToPx())
-}
+private fun dimension(dpSize: DpSize) = Dimension(
+    dpSize.width.value.roundToInt(),
+    dpSize.height.value.roundToInt(),
+)
