@@ -29,7 +29,7 @@ Latest release: https://azimmuradov.github.io/stardew-valley-designer/download.h
 
 ## :globe_with_meridians: Web editor
 
-Online editor: https://azimmuradov.github.io/stardew-valley-designer/svd/editor.
+Online editor: https://azimmuradov.github.io/stardew-valley-designer/editor.
 
 > [!WARNING]
 > Web version is experimental and may contain bugs.

@@ -33,5 +33,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: site
-          destination_dir: svd/editor
+          destination_dir: editor
           publish_dir: app-web/build/dist/wasmJs/productionExecutable
