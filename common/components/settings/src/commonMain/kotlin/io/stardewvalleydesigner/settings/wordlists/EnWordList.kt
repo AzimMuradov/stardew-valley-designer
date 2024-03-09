@@ -802,11 +802,11 @@ data object EnWordList : WordList {
 
     override fun tool(type: ToolType?): String = when (type) {
         null -> "No tool selected"
-        ToolType.Drag -> "Drag"
-        ToolType.Pen -> "Pen"
-        ToolType.Eraser -> "Eraser"
-        ToolType.Select -> "Select"
-        ToolType.EyeDropper -> "Eye dropper"
+        ToolType.Drag -> "Drag entities"
+        ToolType.Pen -> "Pen (put entities)"
+        ToolType.Eraser -> "Eraser (remove entities)"
+        ToolType.Select -> "Select entities"
+        ToolType.EyeDropper -> "Eye dropper (entity picker)"
     }
 
     override fun shape(type: ShapeType?): String = when (type) {
