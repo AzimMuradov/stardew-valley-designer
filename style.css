@@ -1,0 +1,19 @@
+.btn {
+  width: 100px;
+}
+
+
+.btn:focus {
+  box-shadow: none;
+  outline: none;
+  background-color: #198754;
+}
+
+.btn:hover {
+  background-color: #157347;
+}
+
+.navbar-toggler:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
