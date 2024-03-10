@@ -27,6 +27,7 @@ kotlin {
                 implementation(projects.common.cmpLibs.tooltip)
 
                 implementation(projects.common.uiComponents.editor)
+                implementation(projects.common.uiComponents.editorMenus.help)
                 implementation(projects.common.uiComponents.editorMenus.saveDesign)
                 implementation(projects.common.uiComponents.editorMenus.saveDesignAs)
                 implementation(projects.common.uiComponents.editorMenus.saveDesignImg)

@@ -35,6 +35,7 @@ include(":common:components:settings")
 
 include(":common:ui-components:editor")
 include(
+    ":common:ui-components:editor-menus:help",
     ":common:ui-components:editor-menus:new-design",
     ":common:ui-components:editor-menus:open-design",
     ":common:ui-components:editor-menus:open-sv-save",

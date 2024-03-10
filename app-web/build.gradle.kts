@@ -44,6 +44,7 @@ kotlin {
                 implementation(projects.common.components.settings)
 
                 implementation(projects.common.uiComponents.editor)
+                implementation(projects.common.uiComponents.editorMenus.help)
                 implementation(projects.common.uiComponents.editorMenus.newDesign)
                 implementation(projects.common.uiComponents.editorMenus.openDesign)
                 implementation(projects.common.uiComponents.editorMenus.openSvSave)

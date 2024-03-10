@@ -169,6 +169,13 @@ fun main() {
                                         visibleLayers = editorState.visLayers,
                                         snackbarHostState = snackbarHostState,
                                     )
+
+                                    Divider(
+                                        modifier = Modifier.fillMaxHeight(fraction = 0.6f).width(1.dp),
+                                        color = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f),
+                                    )
+
+                                    HelpButton()
                                 }
                             )
                         }
