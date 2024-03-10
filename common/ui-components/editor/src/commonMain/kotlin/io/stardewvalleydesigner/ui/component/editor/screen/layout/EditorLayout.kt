@@ -215,14 +215,15 @@ internal fun EditorLayout(
                     season = season,
                     visibleLayers = visibleLayers,
                     renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
-                    grid = grid
+                    grid = grid,
+                    scale = scale,
                 )
 
 
                 drawSpecificSpritesAndEffects(
                     entityMaps, map, season,
                     toolkit, options,
-                    grid, cellSize,
+                    grid, scale, cellSize,
                 )
 
 
@@ -256,6 +257,7 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
     toolkit: ToolkitState,
     options: Options,
     grid: CoordinateGrid,
+    scale: Float,
     cellSize: Size,
 ) {
     for (c in map.selectedEntities.flatten().coordinates) {
@@ -281,6 +283,7 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
                     sprite = sprite,
                     renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
                     grid = grid,
+                    scale = scale,
                     paddingInPx = 2u,
                     alpha = 0.7f
                 )
@@ -303,6 +306,7 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
                     sprite = sprite,
                     renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
                     grid = grid,
+                    scale = scale,
                     alpha = 0.7f
                 )
             }

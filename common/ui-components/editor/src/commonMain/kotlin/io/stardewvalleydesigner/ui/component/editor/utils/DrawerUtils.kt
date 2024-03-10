@@ -54,6 +54,7 @@ object DrawerUtils {
         sprite: Sprite,
         offset: IntOffset = IntOffset.Zero,
         layoutSize: Size,
+        scale: Float = 1.0f,
     ) {
         val (spriteW, spriteH) = sprite.size
         val (layoutW, layoutH) = layoutSize
@@ -73,8 +74,8 @@ object DrawerUtils {
         ).toIntOffset()
 
         when (sprite) {
-            is Sprite.Image -> drawImage(sprite, dstOffset, dstSize)
-            is Sprite.ChestImage -> drawChestImage(sprite, dstOffset, dstSize)
+            is Sprite.Image -> drawImage(sprite, dstOffset, dstSize, scale)
+            is Sprite.ChestImage -> drawChestImage(sprite, dstOffset, dstSize, scale)
         }
     }
 
@@ -82,11 +83,25 @@ object DrawerUtils {
         sprite: Sprite,
         offset: IntOffset = IntOffset.Zero,
         layoutSize: IntSize,
+        scale: Float = 1.0f,
         alpha: Float = 1.0f,
     ) {
         when (sprite) {
-            is Sprite.Image -> drawImage(sprite, dstOffset = offset, dstSize = layoutSize, alpha)
-            is Sprite.ChestImage -> drawChestImage(sprite, dstOffset = offset, dstSize = layoutSize, alpha)
+            is Sprite.Image -> drawImage(
+                sprite = sprite,
+                dstOffset = offset,
+                dstSize = layoutSize,
+                scale = scale,
+                alpha = alpha
+            )
+
+            is Sprite.ChestImage -> drawChestImage(
+                sprite = sprite,
+                dstOffset = offset,
+                dstSize = layoutSize,
+                scale = scale,
+                alpha = alpha
+            )
         }
     }
 
@@ -95,6 +110,7 @@ object DrawerUtils {
         sprite: Sprite,
         renderSpritesFully: Boolean,
         grid: CoordinateGrid,
+        scale: Float = 1.0f,
         paddingInPx: UInt = 0u,
         alpha: Float = 1.0f,
     ) {
@@ -130,6 +146,7 @@ object DrawerUtils {
             sprite = sprite2,
             offset = offsetTopLeft,
             layoutSize = IntSize(offsetTopLeft, offsetBottomRight),
+            scale = scale,
             alpha = alpha,
         )
     }
@@ -142,11 +159,12 @@ object DrawerUtils {
         visibleLayers: Set<LayerType<*>>,
         renderSpritesFully: Boolean,
         grid: CoordinateGrid,
+        scale: Float = 1.0f,
     ) {
         val spriteMaps = SpriteUtils.calculateSprite(entityMaps, entities, visibleLayers, season)
 
         for ((entity, sprite) in spriteMaps) {
-            drawEntityStretched(entity, sprite, renderSpritesFully, grid)
+            drawEntityStretched(entity, sprite, renderSpritesFully, grid, scale)
         }
     }
 
@@ -204,36 +222,42 @@ object DrawerUtils {
     private fun DrawScope.drawImage(
         sprite: Sprite.Image,
         dstOffset: IntOffset, dstSize: IntSize,
+        scale: Float,
         alpha: Float = 1.0f,
     ) {
         drawSprite(
             sprite, srcOffset = sprite.offset,
             dstOffset, dstSize,
-            alpha = alpha
+            scale = scale,
+            alpha = alpha,
         )
     }
 
     private fun DrawScope.drawChestImage(
         sprite: Sprite.ChestImage,
         dstOffset: IntOffset, dstSize: IntSize,
+        scale: Float,
         alpha: Float = 1.0f,
     ) {
         drawSprite(
             sprite, srcOffset = sprite.offset,
             dstOffset, dstSize,
+            scale = scale,
             colorFilter = tint(sprite.tint),
-            alpha
+            alpha = alpha,
         )
         drawSprite(
             sprite, srcOffset = sprite.coverOffset,
             dstOffset, dstSize,
-            alpha = alpha
+            scale = scale,
+            alpha = alpha,
         )
     }
 
     private fun DrawScope.drawSprite(
         sprite: Sprite, srcOffset: IntOffset,
         dstOffset: IntOffset, dstSize: IntSize,
+        scale: Float,
         colorFilter: ColorFilter? = null,
         alpha: Float = 1.0f,
     ) {
@@ -243,7 +267,7 @@ object DrawerUtils {
             dstOffset, dstSize,
             alpha,
             colorFilter = colorFilter,
-            filterQuality = if (sprite.size.width * 1.5 < dstSize.width) {
+            filterQuality = if (sprite.size.width * 1.5 < dstSize.width * scale) {
                 FilterQuality.None
             } else {
                 FilterQuality.Medium
