@@ -16,7 +16,12 @@
 
 package io.stardewvalleydesigner
 
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -122,6 +127,13 @@ private fun Root(component: RootComponent, exitApplication: () -> Unit) {
                             visibleLayers = editorState.visLayers,
                             snackbarHostState = snackbarHostState,
                         )
+
+                        Divider(
+                            modifier = Modifier.fillMaxHeight(fraction = 0.6f).width(1.dp),
+                            color = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f),
+                        )
+
+                        HelpButton()
                     }
                 )
             }
