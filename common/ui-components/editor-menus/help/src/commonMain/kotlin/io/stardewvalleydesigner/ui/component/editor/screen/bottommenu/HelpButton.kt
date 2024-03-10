@@ -27,18 +27,15 @@ import androidx.compose.ui.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun HelpButton() {
-    val wordList = GlobalSettings.strings
-
     var show by remember { mutableStateOf(false) }
 
     BottomMenuIconButton(
-        tooltip = wordList.buttonNewDesignText,
+        tooltip = "Help",
         icon = Icons.AutoMirrored.Filled.Help,
         onClick = { show = true },
     )
