@@ -104,8 +104,6 @@ fun EditorScreen(
                 onSeasonChosen = {
                     store.accept(EditorIntent.SeasonMenu.Change(it))
                 },
-                scale = scale,
-                onScaleChanged = { scale = it },
                 layout = map.layout,
                 width = menuWidth,
                 intentConsumer = store::accept
