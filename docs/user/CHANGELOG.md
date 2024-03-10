@@ -7,7 +7,12 @@ and this project _tries_ to adhere to [Semantic Versioning](https://semver.org/s
 
 I should note that versions before [0.8.0](#rocket-080---2023-07-08) don't have proper changelog.
 
-## :rocket: [Unreleased] (0.12.0) - 2024-XX-XX
+## :rocket: [Unreleased] (0.13.0) - 2024-XX-XX
+
+## :rocket: [0.12.0] - 2024-03-10
+
+Thanks to [Vladislav](https://github.com/AndrVLDZ), we've created the new website for our project:
+https://azimmuradov.github.io/stardew-valley-designer :tada:.
 
 _Supported Stardew Valley version - 1.5.6_
 
@@ -35,9 +40,9 @@ _Supported Stardew Valley version - 1.5.6_
 
 ## :rocket: [0.11.0] - 2024-03-02
 
-_Supported Stardew Valley version - 1.5.6_
-
 Because the design format is still experimental, v0.10.* and v0.11.* formats are incompatible.
+
+_Supported Stardew Valley version - 1.5.6_
 
 ### Desktop & Web
 
@@ -293,7 +298,8 @@ _Supported Stardew Valley version - 1.5.6_
 - Initial state
 
 
-[unreleased]: https://github.com/AzimMuradov/stardew-valley-designer/compare/v0.11.0...HEAD
+[unreleased]: https://github.com/AzimMuradov/stardew-valley-designer/compare/v0.12.0...HEAD
+[0.12.0]: https://github.com/AzimMuradov/stardew-valley-designer/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/AzimMuradov/stardew-valley-designer/compare/v0.10.2...v0.11.0
 [0.10.2]: https://github.com/AzimMuradov/stardew-valley-designer/compare/v0.10.1...v0.10.2
 [0.10.1]: https://github.com/AzimMuradov/stardew-valley-designer/compare/v0.10.0...v0.10.1

@@ -1,66 +1,50 @@
 # :steam_locomotive: Roadmap
 
-## 0.12.0
-
-### Desktop & Web
-
-- Support greenhouse and farmhouse
-- Better view options for the editor
-
 ## 0.13.0
 
 ### Desktop & Web
 
-- Fish pond color menu and flower color menu
-- Rotation menu
+- Support greenhouse and farmhouse
+- Trees and fruit trees
+- Search fields for various types of items
+- Rework entity selection menus
+- Help section
 
 ## 1.0.0
 
 ### Desktop & Web
 
 - Stable design saves
-- New site
 
 ### Web
 
 - Stable web version
 
-## 1.1.0
-
-- Modified sprinklers
-- Trees and fruit trees
-
-## 1.2.0
-
-- New layouts (riverland farm, forest farm, hill-top farm, wilderness farm)
-
-## 1.3.0
-
-- Map resize
-- Expandable tool windows
-- Support for different window sizes
-- More layout flexibility
-
-## 1.4.0
-
-- Settings menu (with ability to store and restore settings)
-
 ## Backlog
 
-- Missing render features (gates)
-- Better icons for toolbar and palette
+- Better custom icons
 - Fully functional palette
 - Tooltips, Hotkeys, Cursors (Pointers) & Other PC Features, `shift` for NxN
-- New layouts (four corners farm, beach farm)
-- New layouts (barns, coops, farmhouses, slime hutch, greenhouse)
 - Wall furniture
 - New shapes (star, star outline, heart, heart outline)
 - Clipboard
 - Building paintings
-- Search fields for various types of items
 - Add new languages
 - Tappers, crab pots
 - Dark theme, OS theme
 - Stardew Valley mods support
 - "Open with..." feature
+- Settings menu (with ability to store and restore settings)
+- Add minimap
+- Add new layouts: beach farm, barns, coops, farmhouses, slime hutch, greenhouse
+- Modified sprinklers
+- Support hotkeys
+- Better view options for the editor
+- Improve loading performance
+- Rotation menu
+- Fish pond color menu and flower color menu
+- Missing render features
 - Support stepping stone path variants
+- Expandable tool windows
+- Support for different window sizes
+- More layout flexibility
