@@ -800,6 +800,8 @@ data object EnWordList : WordList {
     }
 
 
+    override val tool: String = "Tool"
+
     override fun tool(type: ToolType?): String = when (type) {
         null -> "No tool selected"
         ToolType.Drag -> "Drag entities"
@@ -809,6 +811,8 @@ data object EnWordList : WordList {
         ToolType.EyeDropper -> "Eye dropper (entity picker)"
         ToolType.Hand -> "Hand (move layout)"
     }
+
+    override val shape: String = "Shape"
 
     override fun shape(type: ShapeType?): String = when (type) {
         null -> "Point"

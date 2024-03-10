@@ -203,10 +203,14 @@ sealed interface WordList {
     fun saveDesignAsNotificationMessage(path: String?): String
 
 
+    val tool: String
+
     /**
      * Get tool name by its type.
      */
     fun tool(type: ToolType?): String
+
+    val shape: String
 
     /**
      * Get shape name by its type.
