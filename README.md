@@ -75,7 +75,7 @@ Ability to save and import designs.
 
 ### :desktop_computer: Desktop
 
-![desktop-05.png](docs/user/gallery/desktop-05.png)
+![desktop-04.png](docs/user/gallery/desktop-04.png)
 
 <details>
   <summary>More screenshots</summary>
