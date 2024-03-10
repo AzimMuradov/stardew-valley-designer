@@ -72,7 +72,7 @@ internal fun Toolbar(
         Divider(modifier = Modifier.weight(1f))
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = wordList.tool(toolkit.tool),
+            text = "${wordList.tool}: ${wordList.tool(toolkit.tool)}",
             style = MaterialTheme.typography.subtitle1
         )
         Spacer(modifier = Modifier.width(8.dp))
@@ -105,7 +105,7 @@ internal fun Toolbar(
             Divider(modifier = Modifier.weight(1f))
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = wordList.shape(toolkit.shape),
+                text = "${wordList.shape}: ${wordList.shape(toolkit.shape)}",
                 style = MaterialTheme.typography.subtitle1
             )
             Spacer(modifier = Modifier.width(8.dp))
