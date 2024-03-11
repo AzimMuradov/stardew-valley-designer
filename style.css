@@ -1,7 +1,11 @@
+::selection {
+  background-color: #198754;
+  color: #ffffff;
+}
+
 .btn {
   width: 100px;
 }
-
 
 .btn:focus {
   box-shadow: none;
@@ -16,4 +20,46 @@
 .navbar-toggler:focus {
   outline: none !important;
   box-shadow: none !important;
+}
+
+.navbar-nav .nav-item .nav-link {
+  color: #d6d6d6;
+}
+
+.navbar-nav .nav-item .nav-link:visited,
+.navbar-nav .nav-item .nav-link:focus,
+.navbar-nav .nav-item .nav-link:active {
+  color: #d6d6d6;
+}
+
+.a-green {
+  color: #198754;
+}
+
+.a-green:visited {
+  color: #198754;
+}
+
+.a-footer-green {
+  color: #01E675;
+  text-decoration: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+  .navbar-nav .nav-item .nav-link:hover {
+    color: #01E675;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 20px;
+  }
+
+  .a-green:hover {
+    color: #23b370;
+  }
+
+  .a-footer-green:hover {
+    color: #01E675;
+    text-decoration: underline;
+  }
 }
