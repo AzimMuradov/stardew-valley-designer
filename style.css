@@ -1,9 +1,17 @@
+:root {
+  --primary-color: #198754;
+  --primary-color-hover: #157347;
+  --navbar-link-color: #d6d6d6;
+  --footer-link-color: #01E675;
+  --content-link-color-hover: #23b370;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
 }
 
 ::selection {
-  background-color: #198754;
+  background-color: var(--primary-color);
   color: #ffffff;
 }
 
@@ -14,7 +22,7 @@ body {
 .btn:focus {
   box-shadow: none;
   outline: none;
-  background-color: #198754;
+  background-color: var(--primary-color);
 }
 
 .navbar-toggler:focus {
@@ -23,47 +31,47 @@ body {
 }
 
 .btn:hover {
-  background-color: #157347;
+  background-color: var(--primary-color-hover);
 }
 
 .navbar-nav .nav-item .nav-link {
-  color: #d6d6d6;
+  color: var(--navbar-link-color);
 }
 
 .navbar-nav .nav-item .nav-link:visited,
 .navbar-nav .nav-item .nav-link:focus,
 .navbar-nav .nav-item .nav-link:active {
-  color: #d6d6d6;
+  color: var(--navbar-link-color);
 }
 
 .a-green {
-  color: #198754;
+  color: var(--primary-color);
 }
 
 .a-green:visited {
-  color: #198754;
+  color: var(--primary-color);
 }
 
 .a-footer-green {
-  color: #01E675;
+  color: var(--footer-link-color);
   text-decoration: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
 
   .navbar-nav .nav-item .nav-link:hover {
-    color: #01E675;
+    color: var(--footer-link-color);
     text-decoration: underline;
     text-decoration-thickness: 2px;
     text-underline-offset: 21px;
   }
 
   .a-green:hover {
-    color: #23b370;
+    color: var(--content-link-color-hover);
   }
 
   .a-footer-green:hover {
-    color: #01E675;
+    color: var(--footer-link-color);
     text-decoration: underline;
   }
 }
