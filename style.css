@@ -17,13 +17,13 @@ body {
   background-color: #198754;
 }
 
-.btn:hover {
-  background-color: #157347;
-}
-
 .navbar-toggler:focus {
   outline: none !important;
   box-shadow: none !important;
+}
+
+.btn:hover {
+  background-color: #157347;
 }
 
 .navbar-nav .nav-item .nav-link {
@@ -55,7 +55,7 @@ body {
     color: #01E675;
     text-decoration: underline;
     text-decoration-thickness: 2px;
-    text-underline-offset: 20px;
+    text-underline-offset: 21px;
   }
 
   .a-green:hover {
@@ -65,5 +65,11 @@ body {
   .a-footer-green:hover {
     color: #01E675;
     text-decoration: underline;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar-nav .nav-item .nav-link:hover {
+    text-decoration: none;
   }
 }
