@@ -125,7 +125,7 @@ Most of the sprites and icons used in this app, including the app icon, are from
 
 ## :busts_in_silhouette: Authors
 
-- Desktop & Web applications: [Azim Muradov](https://www.github.com/AzimMuradov)
+- Desktop & Web applications: [Azim Muradov](https://github.com/AzimMuradov)
 - Website: [Vladislav Andronov](https://github.com/AndrVLDZ)
 
 ## :scroll: License
