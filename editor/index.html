@@ -19,9 +19,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
     <title>Stardew Valley Designer</title>
-    <script type="application/javascript" src="skiko.js"></script>
     <style>
         #wait-msg {
             text-align: center;
@@ -30,6 +28,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             width: 100%;
+            font-size: x-large;
         }
     </style>
 </head>
@@ -38,16 +37,7 @@
 <div id="wait-msg">
     Please, wait, initial loading can take time...
 </div>
-<script>
-    function removeWaitMsg() {
-        let waitMsgBlock = document.getElementById("wait-msg");
-        if (waitMsgBlock) {
-            waitMsgBlock.remove();
-        } else {
-            console.warn(waitMsgBlock);
-        }
-    }
-</script>
-<script type="application/javascript" src="svd.js" onload="removeWaitMsg()"></script>
+<script type="application/javascript" src="skiko.js"></script>
+<script type="application/javascript" src="svd.js"></script>
 </body>
 </html>
