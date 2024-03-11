@@ -1,3 +1,7 @@
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
 ::selection {
   background-color: #198754;
   color: #ffffff;
