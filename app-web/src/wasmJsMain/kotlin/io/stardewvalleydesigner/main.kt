@@ -53,6 +53,7 @@ import io.stardewvalleydesigner.ui.component.windowsize.WithMeasuredWindowSize
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     val lang = Lang.EN
+    removeWaitMsg()
 
     CanvasBasedWindow(title = SettingsInterpreter.wordList(lang).application) {
         var editorComponent by remember {
@@ -192,3 +193,16 @@ class EditorComponentImpl(
 
     override val store = EditorStoreFactory(createLoggerAwareStoreFactory()).create(initialState)
 }
+
+fun removeWaitMsg(): Unit = js(
+    """
+    {
+        let waitMsgBlock = document.getElementById("wait-msg");
+        if (waitMsgBlock) {
+            waitMsgBlock.remove();
+        } else {
+            console.warn(waitMsgBlock);
+        }
+    }
+    """
+)
