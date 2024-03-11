@@ -13,15 +13,33 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Stardew Valley Designer</title>
-    <script src="skiko.js"></script>
+
+    <title>JetSnack with Kotlin/Wasm</title>
+    <script type="application/javascript" src="skiko.js"></script>
+    <script type="application/javascript" src="svd.js"></script>
+    <style>
+        #wait-msg {
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            font-size: x-large;
+        }
+    </style>
 </head>
 <body>
 <canvas id="ComposeTarget"></canvas>
-<script src="svd.js"></script>
+
+<div id="wait-msg">
+    Please, wait, initial loading can take time...
+</div>
 </body>
 </html>
