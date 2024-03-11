@@ -17,7 +17,7 @@ The goal of this project is to provide a finely tuned, feature-rich editor for d
 
 ## :package: Desktop installation
 
-Latest release: [stardewdesigner.com/download.html](https://stardewdesigner.com/download.html).
+Latest release: [stardewdesigner.com/download](https://stardewdesigner.com/download).
 
 **Currently supported platforms**:
 
