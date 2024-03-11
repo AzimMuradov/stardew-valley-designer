@@ -1,6 +1,6 @@
 # Stardew Valley Designer
 
-[![Latest release](https://img.shields.io/github/v/release/AzimMuradov/stardew-valley-designer)](https://azimmuradov.github.io/stardew-valley-designer)
+[![Latest release](https://img.shields.io/github/v/release/AzimMuradov/stardew-valley-designer)](https://stardewdesigner.com)
 [![Build project](https://img.shields.io/github/actions/workflow/status/AzimMuradov/stardew-valley-designer/build.yml?branch=master)](https://github.com/AzimMuradov/stardew-valley-designer/actions/workflows/build.yml)
 [![Test project](https://img.shields.io/github/actions/workflow/status/AzimMuradov/stardew-valley-designer/test.yml?branch=master&label=test)](https://github.com/AzimMuradov/stardew-valley-designer/actions/workflows/test.yml)
 [![Apache-2.0](https://img.shields.io/github/license/AzimMuradov/stardew-valley-designer)](https://www.apache.org/licenses/LICENSE-2.0)
@@ -8,7 +8,7 @@
 Stardew Valley Designer is a free and open-source Stardew Valley farm editor.
 The goal of this project is to provide a finely tuned, feature-rich editor for designing your farm and the interior of all its buildings.
 
-**Website**: [azimmuradov.github.io/stardew-valley-designer](https://azimmuradov.github.io/stardew-valley-designer).
+**Website**: [stardewdesigner.com](https://stardewdesigner.com).
 
 > [!NOTE]
 > The app aims to support the latest version of Stardew Valley (**1.5.6**).
@@ -17,7 +17,7 @@ The goal of this project is to provide a finely tuned, feature-rich editor for d
 
 ## :package: Desktop installation
 
-Latest release: [azimmuradov.github.io/stardew-valley-designer/download.html](https://azimmuradov.github.io/stardew-valley-designer/download.html).
+Latest release: [stardewdesigner.com/download.html](https://stardewdesigner.com/download.html).
 
 **Currently supported platforms**:
 
@@ -29,7 +29,7 @@ Latest release: [azimmuradov.github.io/stardew-valley-designer/download.html](ht
 
 ## :globe_with_meridians: Web editor
 
-Online editor: [azimmuradov.github.io/stardew-valley-designer/editor](https://azimmuradov.github.io/stardew-valley-designer/editor).
+Online editor: [stardewdesigner.com/editor](https://stardewdesigner.com/editor).
 
 > [!WARNING]
 > Web version is experimental and may contain bugs.
