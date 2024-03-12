@@ -12,7 +12,7 @@ I should note that versions before [0.8.0](#rocket-080---2023-07-08) don't have 
 ## :rocket: [0.12.0] - 2024-03-10
 
 Thanks to [Vladislav](https://github.com/AndrVLDZ), we've created the new website for our project:
-https://azimmuradov.github.io/stardew-valley-designer :tada:.
+[stardewdesigner.com](https://stardewdesigner.com) :tada:.
 
 _Supported Stardew Valley version - 1.5.6_
 
