@@ -118,7 +118,7 @@ private fun RowScope.NameField(
     )
     val textFieldInteractionSource = remember { MutableInteractionSource() }
 
-    var name by remember { mutableStateOf(initName) }
+    var name by remember(initName) { mutableStateOf(initName) }
 
     BasicTextField(
         value = name,
