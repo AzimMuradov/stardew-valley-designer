@@ -31,7 +31,9 @@ import io.stardewvalleydesigner.engine.layout.LayoutType
 import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
 import io.stardewvalleydesigner.ui.component.editor.utils.*
 import io.stardewvalleydesigner.ui.component.themes.ThemeVariant
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.skia.Image
 import stardew_valley_designer.common.ui_components.editor.generated.resources.Res
@@ -64,8 +66,18 @@ object ImageResourcesProvider {
     }
 
     @Composable
-    fun layoutSpriteBy(type: LayoutType, season: Season): LayoutSprite =
-        ImageResources.layouts.getValue(type to season)
+    fun layoutSpriteBy(type: LayoutType, season: Season): LayoutSprite {
+        val theme = ThemeVariant.LIGHT
+        var sprite by remember(theme, type, season) {
+            mutableStateOf(
+                layoutSpritesCache[theme.ordinal][type.ordinal][season.ordinal] ?: emptyLayoutSprite
+            )
+        }
+        LaunchedEffect(theme, type, season) {
+            sprite = layoutSpriteOf(theme, type, season)
+        }
+        return sprite
+    }
 
     fun flooringSpriteBy(wallsAndFloors: ImageBitmap, fl: Flooring): Sprite.Image {
         val flooringObjectSpriteSize = IntSize(width = 32, height = 32)
@@ -144,56 +156,49 @@ object ImageResourcesProvider {
         SpritePage.ShippingBin to rememberImageResource("buildings/shipping-bin.png"),
     )
 
-    @Composable
-    internal fun layoutSprites(themeVariant: ThemeVariant): Map<Pair<LayoutType, Season>, LayoutSprite> {
-        val standardFarmMap = farmLayouts(type = LayoutType.StandardFarm, name = "standard")
-        val riverlandFarmMap = farmLayouts(type = LayoutType.RiverlandFarm, name = "riverland")
-        val forestFarmMap = farmLayouts(type = LayoutType.ForestFarm, name = "forest")
-        val hillTopFarmMap = farmLayouts(type = LayoutType.HillTopFarm, name = "hill-top")
-        val wildernessFarmMap = farmLayouts(type = LayoutType.WildernessFarm, name = "wilderness")
-        val fourCornersFarmMap = farmLayouts(type = LayoutType.FourCornersFarm, name = "four-corners")
 
-        val shed = LayoutSprite(
-            fgImage = rememberImageResource("layouts/shed-fg-light.png"),
-            bgImage = rememberImageResource("layouts/shed-bg-light.png"),
-        )
-        val bigShed = LayoutSprite(
-            fgImage = rememberImageResource("layouts/big-shed-fg-light.png"),
-            bgImage = rememberImageResource("layouts/big-shed-bg-light.png"),
-        )
-        val shedMap = Season.entries.associate { season -> (LayoutType.Shed to season) to shed }
-        val bigShedMap = Season.entries.associate { season -> (LayoutType.BigShed to season) to bigShed }
-
-        return listOf(
-            standardFarmMap,
-            riverlandFarmMap,
-            forestFarmMap,
-            hillTopFarmMap,
-            wildernessFarmMap,
-            fourCornersFarmMap,
-            shedMap,
-            bigShedMap,
-        ).reduce { acc, map -> acc + map }
+    private suspend fun layoutSpriteOf(
+        theme: ThemeVariant,
+        type: LayoutType,
+        season: Season,
+    ): LayoutSprite = when (type) {
+        LayoutType.StandardFarm -> farmLayoutOf(type, name = "standard", season)
+        LayoutType.RiverlandFarm -> farmLayoutOf(type, name = "riverland", season)
+        LayoutType.ForestFarm -> farmLayoutOf(type, name = "forest", season)
+        LayoutType.HillTopFarm -> farmLayoutOf(type, name = "hill-top", season)
+        LayoutType.WildernessFarm -> farmLayoutOf(type, name = "wilderness", season)
+        LayoutType.FourCornersFarm -> farmLayoutOf(type, name = "four-corners", season)
+        LayoutType.Shed -> shedLayoutOf(theme, type, name = "shed")
+        LayoutType.BigShed -> shedLayoutOf(theme, type, name = "big-shed")
     }
 
-    @Composable
-    private fun farmLayouts(type: LayoutType, name: String) = mapOf(
-        (type to Season.Spring) to LayoutSprite(
-            fgImage = rememberImageResource("layouts/farm-$name-spring-fg.png"),
-            bgImage = rememberImageResource("layouts/farm-$name-spring-bg.png"),
-        ),
-        (type to Season.Summer) to LayoutSprite(
-            fgImage = rememberImageResource("layouts/farm-$name-summer-fg.png"),
-            bgImage = rememberImageResource("layouts/farm-$name-summer-bg.png"),
-        ),
-        (type to Season.Fall) to LayoutSprite(
-            fgImage = rememberImageResource("layouts/farm-$name-fall-fg.png"),
-            bgImage = rememberImageResource("layouts/farm-$name-fall-bg.png"),
-        ),
-        (type to Season.Winter) to LayoutSprite(
-            fgImage = rememberImageResource("layouts/farm-$name-winter-fg.png"),
-            bgImage = rememberImageResource("layouts/farm-$name-winter-bg.png"),
-        ),
+    private val layoutSpritesCache: List<List<MutableList<LayoutSprite?>>> = ThemeVariant.entries.map {
+        LayoutType.entries.map {
+            Season.entries.mapTo(mutableListOf()) {
+                null
+            }
+        }
+    }
+
+
+    private suspend fun farmLayoutOf(
+        type: LayoutType,
+        name: String,
+        season: Season,
+    ) = loadLayoutSpriteOf(
+        theme = null, type, season,
+        fgPath = "layouts/farm-$name-${season.name.lowercase()}-fg.png",
+        bgPath = "layouts/farm-$name-${season.name.lowercase()}-bg.png",
+    )
+
+    private suspend fun shedLayoutOf(
+        theme: ThemeVariant,
+        type: LayoutType,
+        name: String,
+    ) = loadLayoutSpriteOf(
+        theme, type, season = null,
+        fgPath = "layouts/$name-fg-${theme.name.lowercase()}.png",
+        bgPath = "layouts/$name-bg-${theme.name.lowercase()}.png",
     )
 
     @Composable
@@ -240,5 +245,47 @@ object ImageResourcesProvider {
         return image
     }
 
+    private val layoutSpritesCacheMutex = Mutex()
+
+    @OptIn(ExperimentalResourceApi::class)
+    private suspend fun loadLayoutSpriteOf(
+        theme: ThemeVariant?, // `null` means theme is irrelevant
+        type: LayoutType,
+        season: Season?, // `null` means season is irrelevant
+        fgPath: String, bgPath: String,
+    ): LayoutSprite {
+        val themeIndex = theme?.ordinal ?: 0
+        val typeIndex = type.ordinal
+        val seasonIndex = season?.ordinal ?: 0
+
+        return coroutineScope {
+            layoutSpritesCache[themeIndex][typeIndex][seasonIndex] ?: layoutSpritesCacheMutex.withLock {
+                layoutSpritesCache[themeIndex][typeIndex][seasonIndex] ?: run {
+                    val fg = async {
+                        withContext(PlatformDispatcher.IO) {
+                            Image.makeFromEncoded(Res.readBytes(path = "files/$fgPath")).toComposeImageBitmap()
+                        }
+                    }
+                    val bg = async {
+                        withContext(PlatformDispatcher.IO) {
+                            Image.makeFromEncoded(Res.readBytes(path = "files/$bgPath")).toComposeImageBitmap()
+                        }
+                    }
+                    LayoutSprite(fg.await(), bg.await()).also { sprite ->
+                        for (tI in theme?.ordinal?.let(::listOf) ?: ThemeVariant.entries.indices) {
+                            for (sI in season?.ordinal?.let(::listOf) ?: Season.entries.indices) {
+                                layoutSpritesCache[tI][typeIndex][sI] = sprite
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private val emptyImageBitmap: ImageBitmap by lazy { ImageBitmap(1, 1) }
+
+    private val emptyLayoutSprite: LayoutSprite by lazy {
+        LayoutSprite(emptyImageBitmap, emptyImageBitmap)
+    }
 }
