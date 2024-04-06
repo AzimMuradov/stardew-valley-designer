@@ -1,9 +1,30 @@
+:root {
+  --primary-color: #198754;
+  --btn-color-hover: #157347;
+  --bright-green: #01e675;
+  --navbar-color: #d6d6d6;
+  --content-link-color-hover: #23b370;
+}
+
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
+}
+
+.a-green {
+  color: var(--primary-color);
+}
+
+.a-green:visited {
+  color: var(--primary-color);
+}
+
+.a-footer-green {
+  color: var(--bright-green);
+  text-decoration: none;
 }
 
 ::selection {
-  background-color: #198754;
+  background-color: var(--primary-color);
   color: #ffffff;
 }
 
@@ -12,58 +33,89 @@ body {
 }
 
 .btn:focus {
+  background-color: var(--primary-color);
   box-shadow: none;
-  outline: none;
-  background-color: #198754;
-}
-
-.btn:hover {
-  background-color: #157347;
 }
 
 .navbar-toggler:focus {
-  outline: none !important;
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 .navbar-nav .nav-item .nav-link {
-  color: #d6d6d6;
+  color: var(--navbar-color);
 }
 
 .navbar-nav .nav-item .nav-link:visited,
 .navbar-nav .nav-item .nav-link:focus,
 .navbar-nav .nav-item .nav-link:active {
-  color: #d6d6d6;
+  color: var(--navbar-color);
 }
 
-.a-green {
-  color: #198754;
+.navbar-toggler {
+  border: none;
+  background: transparent !important;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  padding-left: 3%;
+  padding-right: 3%;
 }
 
-.a-green:visited {
-  color: #198754;
+.navbar-toggler .icon-bar {
+  display: block;
+  width: 23px;
+  height: 2px;
+  background: var(--navbar-color);
+  transition: all 0.2s ease-in-out;
 }
 
-.a-footer-green {
-  color: #01E675;
-  text-decoration: none;
+.navbar-toggler .icon-bar + .icon-bar {
+  margin-top: 6px;
+}
+
+.navbar-toggler:not(.collapsed) .icon-bar:nth-of-type(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.navbar-toggler:not(.collapsed) .icon-bar:nth-of-type(2) {
+  opacity: 0;
+}
+
+.navbar-toggler:not(.collapsed) .icon-bar:nth-of-type(3) {
+  transform: translateY(-8px) rotate(-45deg);
 }
 
 @media (hover: hover) and (pointer: fine) {
-
   .navbar-nav .nav-item .nav-link:hover {
-    color: #01E675;
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 20px;
+      color: var(--bright-green);
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 21px;
+  }
+
+  .navbar-toggler:hover .icon-bar {
+      background-color: var(--bright-green);
+  }
+
+  .btn:hover {
+      background-color: var(--btn-color-hover);
   }
 
   .a-green:hover {
-    color: #23b370;
+      color: var(--content-link-color-hover);
   }
 
   .a-footer-green:hover {
-    color: #01E675;
-    text-decoration: underline;
+      color: var(--bright-green);
+      text-decoration: underline;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar-nav .nav-item .nav-link:hover {
+      text-decoration: none;
+  }
+
+  .navbar-collapse {
+      text-align: center;
   }
 }
