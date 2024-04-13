@@ -20,17 +20,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.ImageBitmap
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ShapeType
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolType
-import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.data.SpritePage
-import io.stardewvalleydesigner.engine.layout.LayoutType
 import io.stardewvalleydesigner.ui.component.themes.ThemeVariant
 
 
 object ImageResources {
 
     val entities: Map<SpritePage, ImageBitmap> @Composable get() = imagesResourcesData.entities
-
-    val layouts: Map<Pair<LayoutType, Season>, LayoutSprite> @Composable get() = imagesResourcesData.layouts
 
     val wallsAndFloors: ImageBitmap @Composable get() = imagesResourcesData.wallsAndFloors
 
@@ -46,7 +42,6 @@ object ImageResources {
 fun WithImageResources(themeVariant: ThemeVariant, content: @Composable () -> Unit) {
     val data = ImagesResourcesData(
         entities = ImageResourcesProvider.entitySpriteMaps(),
-        layouts = ImageResourcesProvider.layoutSprites(themeVariant),
         wallsAndFloors = ImageResourcesProvider.wallsAndFloorsSprite(),
         tools = ImageResourcesProvider.toolImages(),
         shapes = ImageResourcesProvider.shapeImages(),
@@ -59,12 +54,11 @@ fun WithImageResources(themeVariant: ThemeVariant, content: @Composable () -> Un
 
 private data class ImagesResourcesData(
     val entities: Map<SpritePage, ImageBitmap>,
-    val layouts: Map<Pair<LayoutType, Season>, LayoutSprite>,
     val wallsAndFloors: ImageBitmap,
     val tools: Map<ToolType, ImageBitmap>,
     val shapes: Map<ShapeType?, ImageBitmap>,
 )
 
-private val LocalImageResources = staticCompositionLocalOf<ImagesResourcesData> {
+private val LocalImageResources = compositionLocalOf<ImagesResourcesData> {
     error("No image resources provided")
 }
