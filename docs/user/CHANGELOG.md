@@ -9,6 +9,18 @@ I should note that versions before [0.8.0](#rocket-080---2023-07-08) don't have 
 
 ## :rocket: [Unreleased] (0.13.0) - 2024-XX-XX
 
+### Desktop & Web
+
+#### Fixed
+
+- :zap: Improve editor loading performance
+
+### Web
+
+#### Fixed
+
+- :wrench: Fix "missing values in text fields" bug
+
 ## :rocket: [0.12.0] - 2024-03-10
 
 Thanks to [Vladislav](https://github.com/AndrVLDZ), we've created the new website for our project:
@@ -18,6 +30,8 @@ _Supported Stardew Valley version - 1.5.6_
 
 ### Desktop & Web
 
+#### Added
+
 - :sparkles: Add new layouts
   - riverland farm
   - forest farm
@@ -25,17 +39,27 @@ _Supported Stardew Valley version - 1.5.6_
   - wilderness farm
   - four corners farm
 - :sparkles: Support editor map zoom
+
+#### Changed
+
 - :nail_care: Adjust UI
 
 ### Desktop
+
+#### Fixed
 
 - :wrench: Fix screen scaling bug
 
 ### Web
 
+#### Added
+
 - :sparkles: Support tooltips
 - :sparkles: Support adaptive screen
 - :sparkles: Support hotkeys (Ctrl+Z and Ctrl+Y)
+
+#### Changed
+
 - :nail_care: Use standard farm as a default layout
 
 ## :rocket: [0.11.0] - 2024-03-02
