@@ -10,10 +10,15 @@ The goal of this project is to provide a finely tuned, feature-rich editor for d
 
 **Website**: [stardewdesigner.com](https://stardewdesigner.com).
 
+> [!IMPORTANT]
+> Support for the latest version of Stardew Valley (**1.6.3**) is on the way.
+
+<!--
 > [!NOTE]
-> The app aims to support the latest version of Stardew Valley (**1.5.6**).
+> The app aims to support the latest version of Stardew Valley (**1.6.3**).
 >
 > Other versions may have little or no support.
+-->
 
 ## :package: Desktop installation
 
