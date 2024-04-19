@@ -110,7 +110,7 @@ body {
   }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 767.98px) {
   .navbar-nav .nav-item .nav-link:hover {
       text-decoration: none;
   }
