@@ -74,7 +74,7 @@ sealed interface Building : Entity<BuildingType> {
         Mill(size = rectOf(w = 4, h = 2)),
         Silo(size = rectOf(w = 3, h = 3)),
         Well(size = rectOf(w = 3, h = 3)),
-        SlimeHutch(size = rectOf(w = 11, h = 6)),
+        SlimeHutch(size = rectOf(w = 7, h = 4)),
         ShippingBin(size = rectOf(w = 2, h = 1)),
     }
 
