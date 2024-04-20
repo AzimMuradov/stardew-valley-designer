@@ -38,9 +38,15 @@ internal object DesignRenderer {
         visibleLayers: Set<LayerType<*>>,
         entityMaps: Map<SpritePage, ImageBitmap>,
         wallsAndFloors: ImageBitmap,
+        walls2: ImageBitmap,
+        floors2: ImageBitmap,
         layoutSprite: LayoutSprite,
     ): ByteArray {
-        val bitmap = render(map, season, visibleLayers, entityMaps, wallsAndFloors, layoutSprite)
+        val bitmap = render(
+            map, season, visibleLayers, entityMaps,
+            wallsAndFloors, walls2, floors2,
+            layoutSprite,
+        )
         val pixels = IntArray(bitmap.width * bitmap.height).apply { bitmap.readPixels(buffer = this) }
         val pngBytes = PngUtils.generatePngBytes(pixels, bitmap.width, bitmap.height)
 
@@ -54,6 +60,8 @@ internal object DesignRenderer {
         visibleLayers: Set<LayerType<*>>,
         entityMaps: Map<SpritePage, ImageBitmap>,
         wallsAndFloors: ImageBitmap,
+        walls2: ImageBitmap,
+        floors2: ImageBitmap,
         layoutSprite: LayoutSprite,
     ): ImageBitmap {
         val layout = map.layout
@@ -65,9 +73,16 @@ internal object DesignRenderer {
             drawImageRect(image = layoutSprite.bgImage, paint = Paint())
 
             if (layout.type.isShed()) {
-                val fl = ImageResourcesProvider.flooringSpriteBy(wallsAndFloors, map.flooring ?: Flooring.all().first())
-                val wp =
-                    ImageResourcesProvider.wallpaperSpriteBy(wallsAndFloors, map.wallpaper ?: Wallpaper.all().first())
+                val fl = ImageResourcesProvider.flooringSpriteBy(
+                    wallsAndFloors,
+                    floors2,
+                    fl = map.flooring ?: Flooring.all().first(),
+                )
+                val wp = ImageResourcesProvider.wallpaperSpriteBy(
+                    wallsAndFloors,
+                    walls2,
+                    wp = map.wallpaper ?: Wallpaper.all().first(),
+                )
 
                 for (x in List(size = (nW + 1) / 2 + 1) { -1 + 2 * it }) {
                     for (y in List(size = (nH + 1) / 2) { 2 * (it + 1) }) {

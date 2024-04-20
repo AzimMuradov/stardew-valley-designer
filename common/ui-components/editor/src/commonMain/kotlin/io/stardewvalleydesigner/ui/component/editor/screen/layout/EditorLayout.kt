@@ -77,6 +77,8 @@ internal fun EditorLayout(
 ) {
     val entityMaps: Map<SpritePage, ImageBitmap> = ImageResources.entities
     val wallsAndFloors: ImageBitmap = ImageResources.wallsAndFloors
+    val walls2: ImageBitmap = ImageResources.walls2
+    val floors2: ImageBitmap = ImageResources.floors2
 
     val layout = map.layout
     val (nW, nH) = layout.size
@@ -199,11 +201,13 @@ internal fun EditorLayout(
                 if (layout.type.isShed()) {
                     drawFlooring(
                         wallsAndFloors,
+                        floors2,
                         flooring = map.flooring,
                         nW, nH, cellSide,
                     )
                     drawWallpaper(
                         wallsAndFloors,
+                        walls2,
                         wallpaper = map.wallpaper,
                         nW, cellSide,
                     )

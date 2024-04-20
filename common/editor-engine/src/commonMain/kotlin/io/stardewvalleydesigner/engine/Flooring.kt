@@ -27,6 +27,6 @@ data class Flooring(val n: UByte) {
 
         fun all() = List(size = COUNT.toInt()) { Flooring(it.toUByte()) }
 
-        private val COUNT: UByte = 56u
+        private val COUNT: UByte = 97u
     }
 }

@@ -170,6 +170,7 @@ object DrawerUtils {
 
     internal fun DrawScope.drawFlooring(
         wallsAndFloors: ImageBitmap,
+        floors: ImageBitmap,
         flooring: Flooring?,
         nW: Int, nH: Int,
         stepSize: Float,
@@ -177,7 +178,7 @@ object DrawerUtils {
         val xs = List(size = (nW + 1) / 2 + 1) { -stepSize + stepSize * 2 * it }.map { it.roundToInt() }
         val ys = List(size = (nH + 1) / 2) { stepSize * 2 * (it + 1) }.map { it.roundToInt() }
 
-        val sprite = flooringSpriteBy(wallsAndFloors, flooring ?: Flooring.all().first())
+        val sprite = flooringSpriteBy(wallsAndFloors, floors, flooring ?: Flooring.all().first())
 
         for ((left, right) in xs.zipWithNext()) {
             for ((top, bottom) in ys.zipWithNext()) {
@@ -195,6 +196,7 @@ object DrawerUtils {
 
     internal fun DrawScope.drawWallpaper(
         wallsAndFloors: ImageBitmap,
+        walls2: ImageBitmap,
         wallpaper: Wallpaper?,
         nW: Int,
         stepSize: Float,
@@ -204,7 +206,7 @@ object DrawerUtils {
         val bottom = (stepSize * 4).roundToInt()
         val height = bottom - top
 
-        val sprite = wallpaperSpriteBy(wallsAndFloors, wallpaper ?: Wallpaper.all().first())
+        val sprite = wallpaperSpriteBy(wallsAndFloors, walls2, wallpaper ?: Wallpaper.all().first())
 
         for ((left, right) in xs.zipWithNext()) {
             drawImage(

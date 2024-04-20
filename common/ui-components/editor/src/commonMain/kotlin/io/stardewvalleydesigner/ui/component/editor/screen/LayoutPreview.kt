@@ -51,8 +51,10 @@ fun BoxScope.LayoutPreview(
     wallpaper: Wallpaper?,
     flooring: Flooring?,
 ) {
-    val images = ImageResources.entities
-    val image = ImageResources.wallsAndFloors
+    val entityMaps = ImageResources.entities
+    val wallsAndFloors = ImageResources.wallsAndFloors
+    val walls2 = ImageResources.walls2
+    val floors2 = ImageResources.floors2
 
     val (nW, nH) = layout.size
     val layoutSprite = layoutSpriteBy(layout.type, season)
@@ -86,12 +88,12 @@ fun BoxScope.LayoutPreview(
         // Main content
 
         if (layout.type.isShed()) {
-            drawFlooring(image, flooring, nW, nH, cellSide)
-            drawWallpaper(image, wallpaper, nW, cellSide)
+            drawFlooring(wallsAndFloors, floors2, flooring, nW, nH, cellSide)
+            drawWallpaper(wallsAndFloors, walls2, wallpaper, nW, cellSide)
         }
 
         drawVisibleEntities(
-            entityMaps = images,
+            entityMaps = entityMaps,
             season = season,
             entities = entities,
             visibleLayers = LayerType.all,

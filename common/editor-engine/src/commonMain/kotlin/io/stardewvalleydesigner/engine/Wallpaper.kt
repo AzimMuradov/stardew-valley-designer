@@ -27,6 +27,6 @@ data class Wallpaper(val n: UByte) {
 
         fun all() = List(size = COUNT.toInt()) { Wallpaper(it.toUByte()) }
 
-        private val COUNT: UByte = 112u
+        private val COUNT: UByte = 138u
     }
 }
