@@ -99,6 +99,8 @@ internal fun ColumnScope.WallpaperAndFlooringSelection(
         val flooringState = rememberLazyGridState()
 
         val wallsAndFloors = ImageResources.wallsAndFloors
+        val walls2 = ImageResources.walls2
+        val floors2 = ImageResources.floors2
 
         when (chosenTab) {
             Tab.Wallpaper -> {
@@ -118,7 +120,7 @@ internal fun ColumnScope.WallpaperAndFlooringSelection(
                                 .fillMaxSize()
                                 .drawBehind {
                                     drawSpriteStretched(
-                                        sprite = wallpaperSpriteBy(wallsAndFloors, w),
+                                        sprite = wallpaperSpriteBy(wallsAndFloors, walls2, w),
                                         layoutSize = size.toIntSize()
                                     )
                                 }
@@ -148,7 +150,7 @@ internal fun ColumnScope.WallpaperAndFlooringSelection(
                                 .fillMaxSize()
                                 .drawBehind {
                                     drawSpriteStretched(
-                                        sprite = flooringSpriteBy(wallsAndFloors, f),
+                                        sprite = flooringSpriteBy(wallsAndFloors, floors2, f),
                                         layoutSize = size.toIntSize()
                                     )
                                 }

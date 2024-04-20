@@ -79,29 +79,33 @@ object ImageResourcesProvider {
         return sprite
     }
 
-    fun flooringSpriteBy(wallsAndFloors: ImageBitmap, fl: Flooring): Sprite.Image {
-        val flooringObjectSpriteSize = IntSize(width = 32, height = 32)
-        val index = fl.n.toInt()
-        val (i, j) = (index % 8) to (index / 8)
-        val (w, h) = flooringObjectSpriteSize
-
-        return Sprite.Image(
-            image = wallsAndFloors,
-            offset = IntOffset(x = i * w, y = 336 + j * h),
-            size = flooringObjectSpriteSize,
-        )
-    }
-
-    fun wallpaperSpriteBy(wallsAndFloors: ImageBitmap, wp: Wallpaper): Sprite.Image {
+    fun wallpaperSpriteBy(wallsAndFloors: ImageBitmap, walls2: ImageBitmap, wp: Wallpaper): Sprite.Image {
         val wallpaperObjectSpriteSize = IntSize(width = 16, height = 48)
         val index = wp.n.toInt()
-        val (i, j) = (index % 16) to (index / 16)
+        val (i, j) = (index % 112).let { (it % 16) to (it / 16) }
         val (w, h) = wallpaperObjectSpriteSize
 
         return Sprite.Image(
-            image = wallsAndFloors,
+            image = if (index < 112) wallsAndFloors else walls2,
             offset = IntOffset(x = i * w, y = j * h),
             size = wallpaperObjectSpriteSize,
+        )
+    }
+
+    fun flooringSpriteBy(wallsAndFloors: ImageBitmap, floors2: ImageBitmap, fl: Flooring): Sprite.Image {
+        val flooringObjectSpriteSize = IntSize(width = 32, height = 32)
+        val index = fl.n.toInt()
+        val (i, j) = (index % 88).let { (it % 8) to (it / 8) }
+        val (w, h) = flooringObjectSpriteSize
+
+        return Sprite.Image(
+            image = if (index < 88) wallsAndFloors else floors2,
+            offset = if (index < 88) {
+                IntOffset(x = i * w, y = 336 + j * h)
+            } else {
+                IntOffset(x = i * w, y = j * h)
+            },
+            size = flooringObjectSpriteSize,
         )
     }
 
@@ -203,6 +207,12 @@ object ImageResourcesProvider {
 
     @Composable
     internal fun wallsAndFloorsSprite(): ImageBitmap = rememberImageResource("layouts/walls-and-floors.png")
+
+    @Composable
+    internal fun walls2Sprite(): ImageBitmap = rememberImageResource("layouts/walls-2.png")
+
+    @Composable
+    internal fun floors2Sprite(): ImageBitmap = rememberImageResource("layouts/floors-2.png")
 
     @Composable
     internal fun toolImages(): Map<ToolType, ImageBitmap> = mapOf(

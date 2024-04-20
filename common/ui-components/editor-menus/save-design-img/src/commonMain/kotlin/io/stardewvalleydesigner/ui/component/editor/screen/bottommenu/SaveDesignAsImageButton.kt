@@ -71,6 +71,8 @@ fun SaveDesignAsImageButton(
 
     val entities = ImageResources.entities
     val wallsAndFloors = ImageResources.wallsAndFloors
+    val walls2 = ImageResources.walls2
+    val floors2 = ImageResources.floors2
     val layoutSprite = ImageResourcesProvider.layoutSpriteBy(map.layout.type, season)
 
     var bytes: ByteArray? by remember(showFileSaver) { mutableStateOf(null) }
@@ -79,8 +81,9 @@ fun SaveDesignAsImageButton(
         bytes = if (showFileSaver) {
             withContext(PlatformDispatcher.IO) {
                 DesignRenderer.generateDesignAsPngBytes(
-                    map, season, visibleLayers.visibleLayers,
-                    entities, wallsAndFloors, layoutSprite,
+                    map, season, visibleLayers.visibleLayers, entities,
+                    wallsAndFloors, walls2, floors2,
+                    layoutSprite,
                 )
             }
         } else {
