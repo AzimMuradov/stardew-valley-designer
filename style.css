@@ -4,11 +4,12 @@
   --bright-green: #01e675;
   --navbar-color: #d6d6d6;
   --content-link-color-hover: #23b370;
+  --body-color: #F8F8F8;
 }
 
 body {
   font-family: "Roboto", sans-serif;
-  background-color: #F8F8F8;
+  background-color: var(--body-color);
 }
 
 .a-green {
