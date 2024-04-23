@@ -1,23 +1,13 @@
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header-container').innerHTML = data;
-        });
-});
+addElementToPage("header.html", "header-container")
+addElementToPage("footer.html", "footer-container")
 
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('content.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('content-container').innerHTML = data;
-        });
-});
 
-document.addEventListener("DOMContentLoaded", function() {
-    fetch('footer.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('footer-container').innerHTML = data;
-        });
-});
+function addElementToPage(htmlFile, elementID) {
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch(htmlFile)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById(elementID).innerHTML = data;
+            });
+    });
+}
