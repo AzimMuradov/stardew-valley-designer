@@ -91,7 +91,7 @@ body {
       color: var(--bright-green);
       text-decoration: underline;
       text-decoration-thickness: 2px;
-      text-underline-offset: 21px;
+      text-underline-offset: 20px;
   }
 
   .navbar-toggler:hover .icon-bar {
