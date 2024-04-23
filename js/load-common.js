@@ -3,7 +3,7 @@ const COMMON_HTML_FOLDER = "common";
 
 
 function getPath(...parts) {
-    return parts.join("/");
+    return "/" + (parts).join("/");
 }
 
 
