@@ -14,15 +14,23 @@ function fetchLatestRelease(owner, repo) {
         })
         .then(data => {
             const version = data.tag_name.slice(1);
-            document.getElementById('release-version').innerText = version;
-            document.getElementById('download-zip')
-                .href = `https://github.com/${owner}/${repo}/releases/latest/download/stardew-valley-designer-${version}-windows-amd64.zip`;
-            document.getElementById('download-msix')
-                .href = `https://github.com/${owner}/${repo}/releases/latest/download/stardew-valley-designer-${version}.x64.msix`;
-            document.getElementById('download-deb')
-                .href = `https://github.com/${owner}/${repo}/releases/latest/download/stardew-valley-designer_${version}_amd64.deb`;
-            document.getElementById('download-tar-gz')
-                .href = `https://github.com/${owner}/${repo}/releases/latest/download/stardew-valley-designer-${version}-linux-amd64.tar.gz`;
+
+            const releaseVersionElement = document.getElementById("release-version");
+            if (releaseVersionElement) {
+                releaseVersionElement.innerText = version;
+            }
+
+            const updateHref = (id, newHref) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.href = newHref;
+                }
+            };
+
+            updateHref("download-zip", `https://github.com/${owner}/${repo}/releases/latest/download/stardew-valley-designer-${version}-windows-amd64.zip`);
+            updateHref("download-msix", `https://github.com/${owner}/${repo}/releases/latest/download/stardew-valley-designer-${version}.x64.msix`);
+            updateHref("download-deb", `https://github.com/${owner}/${repo}/releases/latest/download/stardew-valley-designer_${version}_amd64.deb`);
+            updateHref("download-tar-gz", `https://github.com/${owner}/${repo}/releases/latest/download/stardew-valley-designer-${version}-linux-amd64.tar.gz`);
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
