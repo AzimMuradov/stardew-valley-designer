@@ -30,11 +30,14 @@ body {
   color: #ffffff;
 }
 
-.btn {
+.btn-success {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 100px;
 }
 
-.btn:focus {
+.btn-success:focus {
   background-color: var(--primary-color);
   box-shadow: none;
 }
@@ -98,7 +101,7 @@ body {
       background-color: var(--bright-green);
   }
 
-  .btn:hover {
+  .btn-success:hover {
       background-color: var(--btn-color-hover);
   }
 
