@@ -21,10 +21,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.engine.entity.Entity
-import io.stardewvalleydesigner.ui.component.editor.res.ImageResources
-import io.stardewvalleydesigner.ui.component.editor.res.SpriteUtils
+import io.stardewvalleydesigner.ui.component.editor.res.*
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.drawEntityContained
 
+
+@Composable
+internal fun Sprite(
+    sprite: Sprite,
+    modifier: Modifier = Modifier,
+) {
+    Canvas(modifier) {
+        drawEntityContained(sprite, layoutSize = size)
+    }
+}
 
 @Composable
 internal fun Sprite(
@@ -32,12 +41,11 @@ internal fun Sprite(
     season: Season,
     modifier: Modifier = Modifier,
 ) {
-    val entityMaps = ImageResources.entities
-
-    Canvas(modifier) {
-        drawEntityContained(
-            sprite = SpriteUtils.calculateSprite(entityMaps, entity, season),
-            layoutSize = size
-        )
-    }
+    Sprite(
+        sprite = SpriteUtils.calculateSprite(
+            spriteMaps = ImageResources.entities,
+            entity, season,
+        ),
+        modifier,
+    )
 }

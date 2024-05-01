@@ -27,6 +27,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import io.stardewvalleydesigner.ui.component.editor.screen.topmenu.BottomMenuIconButton
 
 
 @OptIn(ExperimentalComposeUiApi::class)
