@@ -30,6 +30,7 @@ import androidx.compose.ui.window.DialogProperties
 import io.stardewvalleydesigner.component.dialog.newdesign.NewDesignIntent
 import io.stardewvalleydesigner.component.dialog.newdesign.NewDesignState
 import io.stardewvalleydesigner.ui.component.designdialogs.*
+import io.stardewvalleydesigner.ui.component.editor.screen.topmenu.BottomMenuIconButton
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 
