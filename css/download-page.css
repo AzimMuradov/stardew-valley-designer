@@ -1,0 +1,24 @@
+:root {
+    --alert-background: #e9f5ec;
+    --alert-border: #d4edda;
+    --alert-color: #155724;
+}
+
+.btn-success {
+    width: 400px;
+    height: 50px;
+}
+
+.alert-custom {
+    background-color: var(--alert-background);
+    border-color: var(--alert-border);
+    color: var(--alert-color);
+}
+
+.a-margin {
+    margin-right: 0.9em;
+}
+
+.icon-right-margin {
+    margin-right: 0.5em;
+}

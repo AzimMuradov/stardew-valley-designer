@@ -30,11 +30,14 @@ body {
   color: #ffffff;
 }
 
-.btn {
+.btn-success {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 100px;
 }
 
-.btn:focus {
+.btn-success:focus {
   background-color: var(--primary-color);
   box-shadow: none;
 }
@@ -91,14 +94,14 @@ body {
       color: var(--bright-green);
       text-decoration: underline;
       text-decoration-thickness: 2px;
-      text-underline-offset: 21px;
+      text-underline-offset: 20px;
   }
 
   .navbar-toggler:hover .icon-bar {
       background-color: var(--bright-green);
   }
 
-  .btn:hover {
+  .btn-success:hover {
       background-color: var(--btn-color-hover);
   }
 
