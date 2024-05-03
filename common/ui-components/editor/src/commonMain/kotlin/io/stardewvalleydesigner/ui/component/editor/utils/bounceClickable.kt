@@ -17,6 +17,7 @@
 package io.stardewvalleydesigner.ui.component.editor.utils
 
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.Indication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
@@ -28,7 +29,12 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 
 
-internal fun Modifier.bounceClickable(pressedScale: Float = 0.8f, onClick: () -> Unit) = composed {
+internal fun Modifier.bounceClickable(
+    pressedScale: Float = 0.8f,
+    interactionSource: MutableInteractionSource,
+    indication: Indication?,
+    onClick: () -> Unit,
+) = composed {
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val scale by animateFloatAsState(
         targetValue = if (buttonState == ButtonState.Pressed) pressedScale.coerceAtLeast(minimumValue = 0f) else 1f,
@@ -44,9 +50,9 @@ internal fun Modifier.bounceClickable(pressedScale: Float = 0.8f, onClick: () ->
             scaleY = scale
         }
         .clickable(
-            interactionSource = remember(::MutableInteractionSource),
-            indication = null,
-            onClick = onClick
+            interactionSource = interactionSource,
+            indication = indication,
+            onClick = onClick,
         )
         .pointerInput(buttonState) {
             awaitPointerEventScope {
