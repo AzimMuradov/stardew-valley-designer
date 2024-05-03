@@ -54,6 +54,11 @@ internal fun RowScope.OptionsMenu(
 
             dropdownMenuStyle = DropdownMenuStyle.of(shape = RectangleShape),
 
+            menuRootModifierProvider = { hovered ->
+                Modifier.background(
+                    color = if (hovered) Color.White.copy(alpha = 0.15f) else Color.Transparent
+                )
+            },
             menuRootContent = { _, hovered ->
                 val rotation by animateFloatAsState(if (hovered) 180f else 0f)
 

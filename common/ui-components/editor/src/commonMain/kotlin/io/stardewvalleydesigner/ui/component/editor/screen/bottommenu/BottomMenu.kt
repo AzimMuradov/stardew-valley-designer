@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.ui.component.editor.screen.sidemenus
+package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -28,147 +28,81 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import io.stardewvalleydesigner.cmplib.tooltip.TooltipArea
-import io.stardewvalleydesigner.cmplib.tooltip.TooltipPlacement
-import io.stardewvalleydesigner.data.Season
-import io.stardewvalleydesigner.data.SpritePage
-import io.stardewvalleydesigner.engine.entity.Entity
-import io.stardewvalleydesigner.ui.component.editor.res.*
-import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.drawEntityContained
-import io.stardewvalleydesigner.ui.component.editor.utils.bounceClickable
-import io.stardewvalleydesigner.ui.component.editor.utils.ratio
+import io.stardewvalleydesigner.component.editor.EditorState
+import io.stardewvalleydesigner.designformat.models.OptionsItemValue
+import io.stardewvalleydesigner.engine.geometry.*
+import io.stardewvalleydesigner.settings.wordlists.WordList
+import io.stardewvalleydesigner.ui.component.editor.utils.UNDEFINED
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun EntitiesGrid(
-    modifier: Modifier,
-    state: LazyListState,
-    rowCapacity: UInt,
-    entities: List<Entity<*>>,
-    season: Season,
-    onEntitySelection: (Entity<*>) -> Unit,
+internal fun BottomMenu(
+    editorState: EditorState,
+    snackbarHostState: SnackbarHostState,
+    currCoordinate: Coordinate,
+    onPlayerNameChanged: (String) -> Unit,
+    onFarmNameChanged: (String) -> Unit,
+    rightBottomMenus: @Composable RowScope.(EditorState, SnackbarHostState) -> Unit,
 ) {
     val wordList = GlobalSettings.strings
 
-    val spriteMaps = ImageResources.entities
-
-    val rowCap = rowCapacity.toInt()
-
-    var text by remember { mutableStateOf("") }
-
-    val filteredEntities = remember(entities, text) {
-        entities.filter { e ->
-            wordList.entity(e).contains(text, ignoreCase = true)
-        }
-    }
-
-    val rows: List<List<Pair<Entity<*>, Sprite>?>> = remember(filteredEntities, season) {
-        buildList {
-            var row = mutableListOf<Pair<Entity<*>, Sprite>?>()
-            var rowSize = 0
-            for ((e, sprite) in filteredEntities.map { e -> e to SpriteUtils.calculateSprite(spriteMaps, e, season) }) {
-                val w = sprite.size.width / SpritePage.UNIT
-                if (rowSize + w > rowCap) {
-                    row.add(null)
-                    add(row)
-                    row = mutableListOf()
-                    rowSize = 0
-                }
-                row.add(e to sprite)
-                rowSize += w
-                if (rowSize == rowCap) {
-                    add(row)
-                    row = mutableListOf()
-                    rowSize = 0
-                }
-            }
-            if (rowSize != 0) {
-                row.add(null)
-                add(row)
-            }
-        }
-    }
-
-    LazyColumn(
-        modifier,
-        state = state,
+    Row(
+        modifier = Modifier
+            .shadow(elevation = 4.dp)
+            .fillMaxWidth().height(56.dp)
+            .background(color = MaterialTheme.colors.primary)
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        stickyHeader(key = Unit, contentType = Unit) {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                SearchField(
-                    initName = text,
-                    placeholder = "search field",
-                    onNameChanged = { text = it },
-                )
-            }
-            Spacer(Modifier.height(4.dp))
+        Row(
+            modifier = Modifier.fillMaxHeight().weight(1f).padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            NameField(
+                initName = editorState.playerName,
+                placeholder = wordList.playerNamePlaceholder,
+                onNameChanged = onPlayerNameChanged
+            )
+            NameField(
+                initName = editorState.farmName,
+                placeholder = wordList.farmNamePlaceholder,
+                onNameChanged = onFarmNameChanged,
+            )
         }
 
-        items(rows, key = { it }) { row ->
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.Bottom,
-            ) {
-                row.forEach { pair ->
-                    if (pair != null) {
-                        val (e, sprite) = pair
-                        Box(
-                            modifier = Modifier
-                                .pointerHoverIcon(PointerIcon.Hand)
-                                .bounceClickable(
-                                    interactionSource = remember(::MutableInteractionSource),
-                                    indication = rememberRipple(),
-                                ) { onEntitySelection(e) }
-                                .aspectRatio(ratio = sprite.size.ratio)
-                                .weight(sprite.size.width.toFloat())
-                                .padding(4.dp)
-                                .drawBehind {
-                                    drawEntityContained(
-                                        sprite = sprite,
-                                        layoutSize = size,
-                                    )
-                                }
-                        ) {
-                            TooltipArea(
-                                tooltip = wordList.entity(e),
-                                tooltipPlacement = TooltipPlacement.CursorPoint(
-                                    offset = DpOffset(4.dp, (-4).dp),
-                                ),
-                            ) {
-                                Box(Modifier.fillMaxSize())
-                            }
-                        }
-                    } else {
-                        Spacer(
-                            Modifier
-                                .height(IntrinsicSize.Max)
-                                .weight(
-                                    (rowCap * SpritePage.UNIT - row
-                                        .filterNotNull()
-                                        .sumOf { (_, s) -> s.size.width }).toFloat()
-                                )
-                        )
-                    }
-                }
-            }
+        Row(
+            modifier = Modifier.fillMaxHeight().weight(2f),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            CursorAndSelectionInfo(editorState, currCoordinate, wordList)
+        }
+
+        Row(
+            modifier = Modifier.fillMaxHeight().weight(1f),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Spacer(Modifier.weight(Float.MAX_VALUE))
+
+            rightBottomMenus(editorState, snackbarHostState)
         }
     }
 }
 
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun RowScope.SearchField(
+private fun RowScope.NameField(
     initName: String,
     placeholder: String,
     onNameChanged: (String) -> Unit,
@@ -189,7 +123,7 @@ private fun RowScope.SearchField(
     BasicTextField(
         value = name,
         onValueChange = {
-            if (it.length <= name.length || it.length <= 15) {
+            if (it.length <= name.length || it.length <= 35) {
                 name = it
                 onNameChanged(it)
             }
@@ -267,4 +201,61 @@ private fun RowScope.SearchField(
             )
         }
     )
+}
+
+@Composable
+private fun RowScope.CursorAndSelectionInfo(
+    editorState: EditorState,
+    currCoordinate: Coordinate,
+    wordList: WordList,
+) {
+    if (editorState.options.toggleables.getValue(OptionsItemValue.Toggleable.ShowCurrentCoordinatesAnsShapeSize)) {
+        val actionVector = editorState.toolkit.actionVector
+
+        Row(Modifier.weight(2f), Arrangement.Center) {
+            val text = currCoordinate.takeUnless { it == UNDEFINED }?.let { (x, y) ->
+                "X: $x, Y: $y"
+            } ?: ""
+
+            Text(
+                text = text,
+                color = MaterialTheme.colors.onPrimary,
+                style = MaterialTheme.typography.subtitle1
+            )
+        }
+
+        if (actionVector != null) {
+            Divider(
+                modifier = Modifier.fillMaxHeight(fraction = 0.6f).width(1.dp),
+                color = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f),
+            )
+
+            Row(Modifier.weight(3f), Arrangement.Center) {
+                val (start, end) = actionVector
+
+                Text(
+                    text = "${wordList.start}: $start, ${wordList.end}: $end",
+                    color = MaterialTheme.colors.onPrimary,
+                    style = MaterialTheme.typography.subtitle1
+                )
+            }
+
+            Divider(
+                modifier = Modifier.fillMaxHeight(fraction = 0.6f).width(1.dp),
+                color = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f),
+            )
+
+            Row(Modifier.weight(2f), Arrangement.Center) {
+                val (w, h) = actionVector.let { (start, end) ->
+                    CanonicalCorners.fromTwoCoordinates(start, end).rect
+                }
+
+                Text(
+                    text = "${wordList.width}: $w, ${wordList.height}: $h",
+                    color = MaterialTheme.colors.onPrimary,
+                    style = MaterialTheme.typography.subtitle1
+                )
+            }
+        }
+    }
 }

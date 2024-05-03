@@ -33,7 +33,6 @@ import io.stardewvalleydesigner.component.dialog.opensvsave.OpenSvSaveIntent
 import io.stardewvalleydesigner.component.dialog.opensvsave.OpenSvSaveState
 import io.stardewvalleydesigner.ui.component.designdialogs.*
 import io.stardewvalleydesigner.ui.component.editor.res.SaveOpen
-import io.stardewvalleydesigner.ui.component.editor.screen.topmenu.BottomMenuIconButton
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 

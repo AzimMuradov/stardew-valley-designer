@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.ui.component.editor.screen.topmenu
+package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment

@@ -33,7 +33,6 @@ import io.stardewvalleydesigner.ui.component.editor.res.ImageResources
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider
 import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesignasimg.DesignRenderer
 import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesignasimg.nowFormatted
-import io.stardewvalleydesigner.ui.component.editor.screen.topmenu.BottomMenuIconButton
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

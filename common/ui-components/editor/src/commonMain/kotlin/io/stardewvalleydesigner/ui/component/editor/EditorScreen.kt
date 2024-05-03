@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import io.stardewvalleydesigner.component.editor.*
+import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.BottomMenu
 import io.stardewvalleydesigner.ui.component.editor.screen.layout.MainPart
 import io.stardewvalleydesigner.ui.component.editor.screen.sidemenus.LeftSideMenus
 import io.stardewvalleydesigner.ui.component.editor.screen.sidemenus.RightSideMenus
@@ -50,25 +51,18 @@ fun EditorScreen(
     Column(Modifier.fillMaxSize()) {
         TopMenu(
             history = history,
-            editorState = state,
-            snackbarHostState = snackbarHostState,
-            currCoordinate = currCoordinate,
-            onPlayerNameChanged = { name ->
-                store.accept(EditorIntent.PlayerName.Change(name))
-            },
-            onFarmNameChanged = { name ->
-                store.accept(EditorIntent.FarmName.Change(name))
-            },
-            rightBottomMenus = rightBottomMenus,
+            season = season,
+            disallowedTypes = map.layout.disallowedTypes,
+            onEntitySelection = { component.store.accept(EditorIntent.Palette.AddToInUse(it)) },
             options = options,
             intentConsumer = store::accept,
         )
 
         val menuWidth by animateDpAsState(
             when (LocalWindowSize.current) {
-                WindowSize.EXPANDED -> 225.dp
-                WindowSize.LARGE -> 275.dp
-                WindowSize.EXTRA_LARGE -> 325.dp
+                WindowSize.EXPANDED -> 200.dp
+                WindowSize.LARGE -> 250.dp
+                WindowSize.EXTRA_LARGE -> 300.dp
             }
         )
 
@@ -111,11 +105,23 @@ fun EditorScreen(
                     store.accept(EditorIntent.SeasonMenu.Change(it))
                 },
                 layout = map.layout,
-                onEntitySelection = { component.store.accept(EditorIntent.Palette.AddToInUse(it)) },
                 width = menuWidth,
                 intentConsumer = store::accept
             )
         }
+
+        BottomMenu(
+            editorState = state,
+            snackbarHostState = snackbarHostState,
+            currCoordinate = currCoordinate,
+            onPlayerNameChanged = { name ->
+                store.accept(EditorIntent.PlayerName.Change(name))
+            },
+            onFarmNameChanged = { name ->
+                store.accept(EditorIntent.FarmName.Change(name))
+            },
+            rightBottomMenus = rightBottomMenus,
+        )
     }
 
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
