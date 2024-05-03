@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.EntityType
-import io.stardewvalleydesigner.ui.component.editor.res.Sprite
 
 
 @Composable

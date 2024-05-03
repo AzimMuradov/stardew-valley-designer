@@ -18,10 +18,13 @@ package io.stardewvalleydesigner.ui.component.editor.screen.sidemenus
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.material.*
+import androidx.compose.material.ripple.*
+import androidx.compose.material.ripple.RippleTheme.Companion.defaultRippleColor
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -132,7 +135,8 @@ internal fun ColumnScope.AnySelection(
     TabRow(
         selectedTabIndex = tabs.indexOf(chosenTab),
         modifier = Modifier.fillMaxWidth().height(48.dp),
-        backgroundColor = MaterialTheme.colors.surface
+        backgroundColor = MaterialTheme.colors.surface,
+        contentColor = MaterialTheme.colors.primarySurface,
     ) {
         tabs.forEach { tab ->
             val bg by animateColorAsState(
@@ -157,83 +161,93 @@ internal fun ColumnScope.AnySelection(
 
     Spacer(modifier = Modifier.height(8.dp))
 
-    Box(Modifier.fillMaxSize()) {
-        when (chosenTab) {
-            Tab.Wallpaper -> {
-                val wallpaperState = rememberLazyGridState()
+    CompositionLocalProvider(LocalRippleTheme provides CustomRippleTheme) {
+        Box(Modifier.fillMaxSize()) {
+            when (chosenTab) {
+                Tab.Wallpaper -> {
+                    val wallpaperState = rememberLazyGridState()
 
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(count = 8),
-                    modifier = Modifier.fillMaxSize().padding(end = 12.dp),
-                    state = wallpaperState,
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    items(items = Wallpaper.all()) { w ->
-                        Box(
-                            modifier = Modifier
-                                .pointerHoverIcon(PointerIcon.Hand)
-                                .bounceClickable { onWallpaperSelection(w) }
-                                .aspectRatio(ratio = 1f / 3f)
-                                .fillMaxSize()
-                                .drawBehind {
-                                    drawSpriteStretched(
-                                        sprite = wallpaperSpriteBy(wallsAndFloors, walls2, w),
-                                        layoutSize = size.toIntSize()
-                                    )
-                                }
-                        )
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(count = 8),
+                        modifier = Modifier.fillMaxSize().padding(end = 12.dp),
+                        state = wallpaperState,
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        items(items = Wallpaper.all()) { w ->
+                            Box(
+                                modifier = Modifier
+                                    .pointerHoverIcon(PointerIcon.Hand)
+                                    .bounceClickable(
+                                        interactionSource = remember(::MutableInteractionSource),
+                                        indication = rememberRipple(),
+                                    ) { onWallpaperSelection(w) }
+                                    .aspectRatio(ratio = 1f / 3f)
+                                    .fillMaxSize()
+                                    .padding(4.dp)
+                                    .drawBehind {
+                                        drawSpriteStretched(
+                                            sprite = wallpaperSpriteBy(wallsAndFloors, walls2, w),
+                                            layoutSize = size.toIntSize()
+                                        )
+                                    }
+                            )
+                        }
                     }
+                    VerticalScrollbar(
+                        adapter = rememberScrollbarAdapter(scrollState = wallpaperState),
+                        modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight()
+                    )
                 }
-                VerticalScrollbar(
-                    adapter = rememberScrollbarAdapter(scrollState = wallpaperState),
-                    modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight()
-                )
-            }
 
-            Tab.Flooring -> {
-                val flooringState = rememberLazyGridState()
+                Tab.Flooring -> {
+                    val flooringState = rememberLazyGridState()
 
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(count = 4),
-                    modifier = Modifier.fillMaxSize().padding(end = 12.dp),
-                    state = flooringState,
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    items(items = Flooring.all()) { f ->
-                        Box(
-                            modifier = Modifier
-                                .pointerHoverIcon(PointerIcon.Hand)
-                                .bounceClickable { onFlooringSelection(f) }
-                                .aspectRatio(ratio = 1f)
-                                .fillMaxSize()
-                                .drawBehind {
-                                    drawSpriteStretched(
-                                        sprite = flooringSpriteBy(wallsAndFloors, floors2, f),
-                                        layoutSize = size.toIntSize()
-                                    )
-                                }
-                        )
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(count = 4),
+                        modifier = Modifier.fillMaxSize().padding(end = 12.dp),
+                        state = flooringState,
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        items(items = Flooring.all()) { f ->
+                            Box(
+                                modifier = Modifier
+                                    .pointerHoverIcon(PointerIcon.Hand)
+                                    .bounceClickable(
+                                        interactionSource = remember(::MutableInteractionSource),
+                                        indication = rememberRipple(),
+                                    ) { onFlooringSelection(f) }
+                                    .aspectRatio(ratio = 1f)
+                                    .fillMaxSize()
+                                    .padding(4.dp)
+                                    .drawBehind {
+                                        drawSpriteStretched(
+                                            sprite = flooringSpriteBy(wallsAndFloors, floors2, f),
+                                            layoutSize = size.toIntSize()
+                                        )
+                                    }
+                            )
+                        }
                     }
-                }
-                VerticalScrollbar(
-                    adapter = rememberScrollbarAdapter(scrollState = flooringState),
-                    modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight()
-                )
-            }
-
-            else -> {
-                val es by remember(esTabs, chosenTab) {
-                    mutableStateOf(esTabs.getValue(chosenTab))
+                    VerticalScrollbar(
+                        adapter = rememberScrollbarAdapter(scrollState = flooringState),
+                        modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight()
+                    )
                 }
 
-                EntitySelection(
-                    state = esTabStates.getValue(chosenTab),
-                    rowCapacity = tabsData.getValue(chosenTab).rowSize,
-                    entities = es.values.flatten(),
-                    season, disallowedTypes, onEntitySelection,
-                )
+                else -> {
+                    val es by remember(esTabs, chosenTab) {
+                        mutableStateOf(esTabs.getValue(chosenTab))
+                    }
+
+                    EntitySelection(
+                        state = esTabStates.getValue(chosenTab),
+                        rowCapacity = tabsData.getValue(chosenTab).rowSize,
+                        entities = es.values.flatten(),
+                        season, disallowedTypes, onEntitySelection,
+                    )
+                }
             }
         }
     }
@@ -254,3 +268,20 @@ private data class TabData(
     val rowSize: UInt,
     val icon: Sprite,
 )
+
+private object CustomRippleTheme : RippleTheme {
+
+    @Composable
+    override fun defaultColor(): Color = defaultRippleColor(
+        contentColor = LocalContentColor.current,
+        lightTheme = MaterialTheme.colors.isLight
+    )
+
+    @Composable
+    override fun rippleAlpha() = RippleAlpha(
+        pressedAlpha = 0.13f,
+        focusedAlpha = 0.13f,
+        draggedAlpha = 0.10f,
+        hoveredAlpha = 0.10f,
+    )
+}

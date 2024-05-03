@@ -103,7 +103,6 @@ fun EntitiesGrid(
     LazyColumn(
         modifier,
         state = state,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         stickyHeader(key = Unit, contentType = Unit) {
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -113,12 +112,12 @@ fun EntitiesGrid(
                     onNameChanged = { text = it },
                 )
             }
+            Spacer(Modifier.height(4.dp))
         }
 
         items(rows, key = { it }) { row ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalAlignment = Alignment.Bottom,
             ) {
                 row.forEach { pair ->
@@ -127,13 +126,17 @@ fun EntitiesGrid(
                         Box(
                             modifier = Modifier
                                 .pointerHoverIcon(PointerIcon.Hand)
-                                .bounceClickable { onEntitySelection(e) }
+                                .bounceClickable(
+                                    interactionSource = remember(::MutableInteractionSource),
+                                    indication = rememberRipple(),
+                                ) { onEntitySelection(e) }
                                 .aspectRatio(ratio = sprite.size.ratio)
                                 .weight(sprite.size.width.toFloat())
+                                .padding(4.dp)
                                 .drawBehind {
                                     drawEntityContained(
                                         sprite = sprite,
-                                        layoutSize = size
+                                        layoutSize = size,
                                     )
                                 }
                         ) {
