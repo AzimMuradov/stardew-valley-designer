@@ -17,14 +17,13 @@
 package io.stardewvalleydesigner.ui.component.editor.screen.sidemenus
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.cmplib.sidemenus.FixedSideMenus
 import io.stardewvalleydesigner.component.editor.modules.map.LayoutState
 import io.stardewvalleydesigner.data.Season
+import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.allEntityTypes
 import io.stardewvalleydesigner.component.editor.EditorIntent as Intent
@@ -37,6 +36,7 @@ internal fun RightSideMenus(
     chosenSeason: Season,
     onSeasonChosen: (Season) -> Unit,
     layout: LayoutState,
+    onEntitySelection: (Entity<*>) -> Unit,
     width: Dp,
     intentConsumer: (Intent) -> Unit,
 ) {
@@ -53,13 +53,15 @@ internal fun RightSideMenus(
                 onVisibilityChange = onVisibilityChange
             )
         }
-        if (layout.type.isShed()) {
-            menu(modifier = Modifier.height(300.dp)) {
-                WallpaperAndFlooringSelection(
-                    onWallpaperSelection = { intentConsumer(Intent.WallpaperAndFlooring.ChooseWallpaper(it)) },
-                    onFlooringSelection = { intentConsumer(Intent.WallpaperAndFlooring.ChooseFlooring(it)) },
-                )
-            }
+        menu {
+            AnySelection(
+                layoutType = layout.type,
+                season = chosenSeason,
+                disallowedTypes = layout.disallowedTypes,
+                onEntitySelection = onEntitySelection,
+                onWallpaperSelection = { intentConsumer(Intent.WallpaperAndFlooring.ChooseWallpaper(it)) },
+                onFlooringSelection = { intentConsumer(Intent.WallpaperAndFlooring.ChooseFlooring(it)) },
+            )
         }
     }
 }
