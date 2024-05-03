@@ -171,8 +171,6 @@ internal fun ColumnScope.AnySelection(
                         columns = GridCells.Fixed(count = 8),
                         modifier = Modifier.fillMaxSize().padding(end = 12.dp),
                         state = wallpaperState,
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
                         items(items = Wallpaper.all()) { w ->
                             Box(
@@ -207,8 +205,6 @@ internal fun ColumnScope.AnySelection(
                         columns = GridCells.Fixed(count = 4),
                         modifier = Modifier.fillMaxSize().padding(end = 12.dp),
                         state = flooringState,
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
                         items(items = Flooring.all()) { f ->
                             Box(
