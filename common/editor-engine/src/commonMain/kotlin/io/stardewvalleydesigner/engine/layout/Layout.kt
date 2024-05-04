@@ -18,8 +18,8 @@ package io.stardewvalleydesigner.engine.layout
 
 import io.stardewvalleydesigner.engine.contains
 import io.stardewvalleydesigner.engine.entity.EntityType
-import io.stardewvalleydesigner.engine.entity.PlacedEntity
 import io.stardewvalleydesigner.engine.geometry.*
+import io.stardewvalleydesigner.engine.layer.PlacedEntity
 
 
 /**
@@ -55,7 +55,7 @@ open class LayoutRules internal constructor(
 /**
  * Returns `true` if [this] placed entity respects the given [layoutRules].
  */
-infix fun <EType : EntityType> PlacedEntity<EType>.respects(layoutRules: LayoutRules): Boolean {
+infix fun <T : EntityType> PlacedEntity<T>.respects(layoutRules: LayoutRules): Boolean {
     val (entity, _, coordinates) = this
 
     val requirements = sequence {
@@ -72,7 +72,7 @@ infix fun <EType : EntityType> PlacedEntity<EType>.respects(layoutRules: LayoutR
 /**
  * Returns `true` if [this] placed entity respects the given [layoutRules].
  */
-infix fun <EType : EntityType> PlacedEntity<EType>.respectsLayout(layout: Layout): Boolean =
+infix fun <T : EntityType> PlacedEntity<T>.respectsLayout(layout: Layout): Boolean =
     coordinates in layout.size && respects(layoutRules = layout)
 
 

@@ -19,11 +19,13 @@ package io.stardewvalleydesigner.ui.component.editor.res
 import androidx.compose.ui.graphics.ImageBitmap
 import io.stardewvalleydesigner.data.*
 import io.stardewvalleydesigner.data.Season.*
-import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.entity.Building.SimpleBuilding.JunimoHut
+import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.Equipment.SimpleEquipment.*
+import io.stardewvalleydesigner.engine.entity.Floor
 import io.stardewvalleydesigner.engine.geometry.*
 import io.stardewvalleydesigner.engine.layer.LayerType
+import io.stardewvalleydesigner.engine.layer.PlacedEntity
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.spriteBy
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.placedEntityComparator
@@ -42,11 +44,11 @@ object SpriteUtils {
         val fences = entities
             .objectEntities
             .asSequence()
-            .filter { it.rectObject in fenceEs }
-            .associate { it.place to it.rectObject }
+            .filter { it.entity in fenceEs }
+            .associate { it.place to it.entity }
         val fe = entities
             .floorEntities
-            .associate { it.place to it.rectObject }
+            .associate { it.place to it.entity }
 
         return buildList {
             for (placedEntity in sorted) {
@@ -192,7 +194,7 @@ object SpriteUtils {
         entities: Collection<PlacedEntity<*>>,
         season: Season,
     ): Sequence<Pair<PlacedEntity<*>, Sprite>> = entities.asSequence().map { placedEntity ->
-        val sprite = calculateSprite(spriteMaps, placedEntity.rectObject, season)
+        val sprite = calculateSprite(spriteMaps, placedEntity.entity, season)
         placedEntity to sprite
     }
 }

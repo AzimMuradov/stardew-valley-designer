@@ -16,7 +16,7 @@
 
 package io.stardewvalleydesigner.engine.layer
 
-import io.stardewvalleydesigner.engine.entity.*
+import io.stardewvalleydesigner.engine.entity.EntityType
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layout.Layout
 import io.stardewvalleydesigner.engine.layout.respects
@@ -29,16 +29,16 @@ fun <EType : EntityType> mutableLayerOf(layout: Layout): MutableLayer<EType> = M
 
 // Actual private implementations
 
-private class LayerImpl<EType : EntityType>(layer: Layer<EType>) : Layer<EType> by layer
+private class LayerImpl<T : EntityType>(layer: Layer<T>) : Layer<T> by layer
 
-private class MutableLayerImpl<EType : EntityType>(layout: Layout) : MutableLayer<EType> {
+private class MutableLayerImpl<T : EntityType>(layout: Layout) : MutableLayer<T> {
 
     override val size = layout.size
 
     override val layoutRules = layout
 
 
-    private val map = mutableMapOf<Coordinate, PlacedEntity<EType>>()
+    private val map = mutableMapOf<Coordinate, PlacedEntity<T>>()
 
 
     // Query Operations
@@ -58,7 +58,7 @@ private class MutableLayerImpl<EType : EntityType>(layout: Layout) : MutableLaye
 
     // Modification Operations
 
-    override fun put(obj: PlacedEntity<EType>): Set<PlacedEntity<EType>> {
+    override fun put(obj: PlacedEntity<T>): Set<PlacedEntity<T>> {
         require(obj in size) { "Object coordinates are out of `RectMap` bounds." }
         require(obj respects layoutRules) { "The object ($obj) failed to satisfy layout rules." }
 
@@ -69,7 +69,7 @@ private class MutableLayerImpl<EType : EntityType>(layout: Layout) : MutableLaye
         return replaced
     }
 
-    override fun remove(c: Coordinate): PlacedEntity<EType>? {
+    override fun remove(c: Coordinate): PlacedEntity<T>? {
         val removed = map[c]
         removed?.coordinates?.forEach(map::remove)
         return removed
@@ -78,7 +78,7 @@ private class MutableLayerImpl<EType : EntityType>(layout: Layout) : MutableLaye
 
     // Bulk Modification Operations
 
-    override fun putAll(objs: DisjointRectObjects<Entity<EType>>) = objs.flatMapTo(mutableSetOf(), this::put)
+    override fun putAll(objs: DisjointEntities<T>) = objs.flatMapTo(mutableSetOf(), this::put)
 
     override fun removeAll(cs: Iterable<Coordinate>) = cs.mapNotNullTo(mutableSetOf(), this::remove)
 

@@ -20,6 +20,7 @@ package io.stardewvalleydesigner.engine.layers
 
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.layer.LayerType
+import io.stardewvalleydesigner.engine.layer.PlacedEntity
 
 
 data class LayeredSingleEntitiesData(

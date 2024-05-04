@@ -16,38 +16,39 @@
 
 package io.stardewvalleydesigner.engine.layer
 
+import io.stardewvalleydesigner.engine.entity.EntityType
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 
 
 /**
  * List of disjoint placed rectangular objects.
  */
-class DisjointRectObjects<out RO : RectObject> private constructor(
-    private val objects: List<PlacedRectObject<RO>>,
-) : List<PlacedRectObject<RO>> by objects {
+class DisjointEntities<out T : EntityType> private constructor(
+    private val objects: List<PlacedEntity<T>>,
+) : List<PlacedEntity<T>> by objects {
 
     companion object {
 
-        internal fun <RO : RectObject> unsafe(objects: List<PlacedRectObject<RO>>): DisjointRectObjects<RO> =
-            DisjointRectObjects(objects)
+        internal fun <T : EntityType> unsafe(objects: List<PlacedEntity<T>>): DisjointEntities<T> =
+            DisjointEntities(objects)
 
-        internal fun <RO : RectObject> verified(objects: List<PlacedRectObject<RO>>): DisjointRectObjects<RO> {
+        internal fun <T : EntityType> verified(objects: List<PlacedEntity<T>>): DisjointEntities<T> {
             val cs = mutableSetOf<Coordinate>()
 
             objects
                 .asSequence()
-                .flatMap(PlacedRectObject<RO>::coordinates)
+                .flatMap(PlacedEntity<T>::coordinates)
                 .forEach {
                     require(cs.add(it)) { "Wrong `DisjointRectObjects` definition." }
                 }
 
-            return DisjointRectObjects(objects)
+            return DisjointEntities(objects)
         }
     }
 }
 
-fun <RO : RectObject> emptyDisjointRectObjects(): DisjointRectObjects<RO> =
-    DisjointRectObjects.unsafe(emptyList())
+fun <T : EntityType> emptyDisjointRectObjects(): DisjointEntities<T> =
+    DisjointEntities.unsafe(emptyList())
 
-fun <RO : RectObject> List<PlacedRectObject<RO>>.asDisjointUnsafe(): DisjointRectObjects<RO> =
-    if (this is DisjointRectObjects<RO>) this else DisjointRectObjects.unsafe(objects = this)
+fun <T : EntityType> List<PlacedEntity<T>>.asDisjointUnsafe(): DisjointEntities<T> =
+    if (this is DisjointEntities<T>) this else DisjointEntities.unsafe(objects = this)

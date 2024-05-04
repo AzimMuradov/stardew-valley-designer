@@ -35,7 +35,7 @@ class EyeDropper(private val engine: EditorEngine) : Tool {
         visLayers: Set<LayerType<*>>,
     ): ActionReturn = ActionReturn(
         toolkit = ToolkitState.EyeDropper.Point.Acting,
-        currentEntity = engine.get(coordinate, visLayers).topmost()?.rectObject,
+        currentEntity = engine.get(coordinate, visLayers).topmost()?.entity,
         selectedEntities = selectedEntities
     )
 
@@ -46,7 +46,7 @@ class EyeDropper(private val engine: EditorEngine) : Tool {
         visLayers: Set<LayerType<*>>,
     ): ActionReturn = ActionReturn(
         toolkit = ToolkitState.EyeDropper.Point.Acting,
-        currentEntity = engine.get(coordinate, visLayers).topmost()?.rectObject,
+        currentEntity = engine.get(coordinate, visLayers).topmost()?.entity,
         selectedEntities = selectedEntities
     )
 

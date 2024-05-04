@@ -17,20 +17,22 @@
 package io.stardewvalleydesigner.engine.layer
 
 import io.stardewvalleydesigner.engine.contains
+import io.stardewvalleydesigner.engine.entity.Entity
+import io.stardewvalleydesigner.engine.entity.EntityType
 import io.stardewvalleydesigner.engine.geometry.*
 
 
 /**
  * Placed rectangular object.
  */
-data class PlacedRectObject<out RO : RectObject>(
-    val rectObject: RO,
+data class PlacedEntity<out EType : EntityType>(
+    val entity: Entity<EType>,
     val place: Coordinate,
 ) {
 
     val coordinates: List<Coordinate> by lazy {
         val (x, y) = place
-        val (w, h) = rectObject.size
+        val (w, h) = entity.size
 
         val xs = x until x + w
         val ys = y until y + h
@@ -45,18 +47,18 @@ data class PlacedRectObject<out RO : RectObject>(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is PlacedRectObject<*>) return false
+        if (other !is PlacedEntity<*>) return false
 
         // `rectObject` and `place` are swapped for efficiency
 
         if (place != other.place) return false
-        if (rectObject != other.rectObject) return false
+        if (entity != other.entity) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = rectObject.hashCode()
+        var result = entity.hashCode()
         result = 31 * result + place.hashCode()
         return result
     }
@@ -66,36 +68,36 @@ data class PlacedRectObject<out RO : RectObject>(
 // Static factories
 
 /**
- * Static factory function for [PlacedRectObject] creation.
+ * Static factory function for [PlacedEntity] creation.
  */
-fun <RO : RectObject> RO.placeIt(there: Coordinate): PlacedRectObject<RO> =
-    PlacedRectObject(rectObject = this, place = there)
+fun Entity<*>.placeIt(there: Coordinate): PlacedEntity<*> =
+    PlacedEntity(entity = this, place = there)
 
 
 // Operators
 
 
-val PlacedRectObject<*>.corners: CanonicalCorners
+val PlacedEntity<*>.corners: CanonicalCorners
     get() = CanonicalCorners(
         bottomLeft = place,
         topRight = xy(
-            x = place.x + rectObject.size.w - 1,
-            y = place.y + rectObject.size.h - 1
+            x = place.x + entity.size.w - 1,
+            y = place.y + entity.size.h - 1,
         )
     )
 
-val PlacedRectObject<*>.coordinateRanges: Pair<IntRange, IntRange>
+val PlacedEntity<*>.coordinateRanges: Pair<IntRange, IntRange>
     get() {
         val (bl, tr) = corners
         return bl.x..tr.x to bl.y..tr.y
     }
 
-operator fun PlacedRectObject<*>.contains(c: Coordinate): Boolean {
+operator fun PlacedEntity<*>.contains(c: Coordinate): Boolean {
     val (xs, ys) = coordinateRanges
     return c.x in xs && c.y in ys
 }
 
-operator fun PlacedRectObject<*>.contains(other: PlacedRectObject<*>): Boolean {
+operator fun PlacedEntity<*>.contains(other: PlacedEntity<*>): Boolean {
     val (bl, tr) = other.corners
     return bl in this && tr in this
 }
@@ -104,7 +106,7 @@ operator fun PlacedRectObject<*>.contains(other: PlacedRectObject<*>): Boolean {
 /**
  * Returns `true` if [this] overlaps with the [other] placed rectangular object.
  */
-infix fun PlacedRectObject<*>.overlapsWith(other: PlacedRectObject<*>): Boolean {
+infix fun PlacedEntity<*>.overlapsWith(other: PlacedEntity<*>): Boolean {
     val (bl, tr) = other.corners
     return bl in this || tr in this
 }
@@ -112,7 +114,7 @@ infix fun PlacedRectObject<*>.overlapsWith(other: PlacedRectObject<*>): Boolean 
 /**
  * Returns `true` if [obj] is contained in [this] rectangle.
  */
-operator fun Rect.contains(obj: PlacedRectObject<*>): Boolean {
+operator fun Rect.contains(obj: PlacedEntity<*>): Boolean {
     val (bl, tr) = obj.corners
     return bl in this && tr in this
 }
@@ -120,7 +122,7 @@ operator fun Rect.contains(obj: PlacedRectObject<*>): Boolean {
 /**
  * All coordinates of this list of objects.
  */
-val Iterable<PlacedRectObject<*>>.coordinates: Set<Coordinate>
+val Iterable<PlacedEntity<*>>.coordinates: Set<Coordinate>
     get() = flatMapTo(mutableSetOf()) { it.coordinates }
 
 

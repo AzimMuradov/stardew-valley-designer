@@ -93,23 +93,23 @@ sealed interface FloorFurniture : Entity<FloorFurnitureType> {
 
         val all by lazy {
             FloorFurniture.SimpleRug.entries.toSet() +
-                    Rotations2.entries.flatMapTo(mutableSetOf()) {
-                        setOf(
-                            RotatableRug.BambooMat(it),
-                            RotatableRug.NauticalRug(it),
-                            RotatableRug.DarkRug(it),
-                            RotatableRug.RedRug(it),
-                            RotatableRug.LightGreenRug(it),
-                            RotatableRug.GreenCottageRug(it),
-                            RotatableRug.RedCottageRug(it),
-                            RotatableRug.MysticRug(it),
-                            RotatableRug.BoneRug(it),
-                            RotatableRug.SnowyRug(it),
-                            RotatableRug.PirateRug(it),
-                            RotatableRug.PatchworkRug(it),
-                            RotatableRug.FruitSaladRug(it),
-                        )
-                    }
+                Rotations2.entries.flatMapTo(mutableSetOf()) {
+                    setOf(
+                        RotatableRug.BambooMat(it),
+                        RotatableRug.NauticalRug(it),
+                        RotatableRug.DarkRug(it),
+                        RotatableRug.RedRug(it),
+                        RotatableRug.LightGreenRug(it),
+                        RotatableRug.GreenCottageRug(it),
+                        RotatableRug.RedCottageRug(it),
+                        RotatableRug.MysticRug(it),
+                        RotatableRug.BoneRug(it),
+                        RotatableRug.SnowyRug(it),
+                        RotatableRug.PirateRug(it),
+                        RotatableRug.PatchworkRug(it),
+                        RotatableRug.FruitSaladRug(it),
+                    )
+                }
             /* + FloorDivider.entries.toSet() */
         }
     }

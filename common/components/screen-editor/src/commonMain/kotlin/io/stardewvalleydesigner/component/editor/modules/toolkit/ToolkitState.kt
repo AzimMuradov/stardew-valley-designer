@@ -16,10 +16,10 @@
 
 package io.stardewvalleydesigner.component.editor.modules.toolkit
 
-import io.stardewvalleydesigner.engine.entity.PlacedEntity
 import io.stardewvalleydesigner.engine.geometry.BoundVector
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.geometry.shapes.PlacedShape
+import io.stardewvalleydesigner.engine.layer.PlacedEntity
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 
 

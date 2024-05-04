@@ -16,7 +16,7 @@
 
 package io.stardewvalleydesigner.engine
 
-import io.stardewvalleydesigner.engine.entity.*
+import io.stardewvalleydesigner.engine.entity.EntityType
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layer.*
 import io.stardewvalleydesigner.engine.layers.*

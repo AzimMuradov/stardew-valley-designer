@@ -16,7 +16,7 @@
 
 package io.stardewvalleydesigner.engine.layer
 
-import io.stardewvalleydesigner.engine.entity.*
+import io.stardewvalleydesigner.engine.entity.EntityType
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.geometry.Rect
 import io.stardewvalleydesigner.engine.layout.LayoutRules
@@ -46,20 +46,20 @@ interface Layer<out EType : EntityType> {
 }
 
 
-interface MutableLayer<EType : EntityType> : Layer<EType> {
+interface MutableLayer<T : EntityType> : Layer<T> {
 
     // Modification Operations
 
-    fun put(obj: PlacedEntity<EType>): Set<PlacedEntity<EType>>
+    fun put(obj: PlacedEntity<T>): Set<PlacedEntity<T>>
 
-    fun remove(c: Coordinate): PlacedEntity<EType>?
+    fun remove(c: Coordinate): PlacedEntity<T>?
 
 
     // Bulk Modification Operations
 
-    fun putAll(objs: DisjointRectObjects<Entity<EType>>): Set<PlacedEntity<EType>>
+    fun putAll(objs: DisjointEntities<T>): Set<PlacedEntity<T>>
 
-    fun removeAll(cs: Iterable<Coordinate>): Set<PlacedEntity<EType>>
+    fun removeAll(cs: Iterable<Coordinate>): Set<PlacedEntity<T>>
 
     fun clear()
 }

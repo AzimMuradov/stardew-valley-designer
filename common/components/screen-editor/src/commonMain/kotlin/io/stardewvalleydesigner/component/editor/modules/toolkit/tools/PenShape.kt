@@ -19,7 +19,6 @@ package io.stardewvalleydesigner.component.editor.modules.toolkit.tools
 import io.stardewvalleydesigner.component.editor.modules.toolkit.*
 import io.stardewvalleydesigner.engine.*
 import io.stardewvalleydesigner.engine.entity.Entity
-import io.stardewvalleydesigner.engine.entity.PlacedEntity
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layer.*
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData

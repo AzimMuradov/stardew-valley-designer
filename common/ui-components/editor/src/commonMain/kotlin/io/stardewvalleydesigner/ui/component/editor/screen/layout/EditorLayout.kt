@@ -41,11 +41,9 @@ import io.stardewvalleydesigner.designformat.models.OptionsItemValue.Toggleable
 import io.stardewvalleydesigner.engine.entity.Building.SimpleBuilding.JunimoHut
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.Equipment.SimpleEquipment.*
-import io.stardewvalleydesigner.engine.entity.PlacedEntity
 import io.stardewvalleydesigner.engine.geometry.*
 import io.stardewvalleydesigner.engine.geometry.shapes.*
-import io.stardewvalleydesigner.engine.layer.LayerType
-import io.stardewvalleydesigner.engine.layer.coordinates
+import io.stardewvalleydesigner.engine.layer.*
 import io.stardewvalleydesigner.engine.layers.flatten
 import io.stardewvalleydesigner.engine.layers.flattenSequence
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResources

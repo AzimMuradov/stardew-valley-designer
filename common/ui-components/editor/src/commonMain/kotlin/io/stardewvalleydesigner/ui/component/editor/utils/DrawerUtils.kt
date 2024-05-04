@@ -27,9 +27,7 @@ import io.stardewvalleydesigner.data.SpritePage
 import io.stardewvalleydesigner.data.SpritePage.Companion.UNIT
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
-import io.stardewvalleydesigner.engine.entity.PlacedEntity
-import io.stardewvalleydesigner.engine.layer.LayerType
-import io.stardewvalleydesigner.engine.layer.toLayerType
+import io.stardewvalleydesigner.engine.layer.*
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.flooringSpriteBy
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.wallpaperSpriteBy

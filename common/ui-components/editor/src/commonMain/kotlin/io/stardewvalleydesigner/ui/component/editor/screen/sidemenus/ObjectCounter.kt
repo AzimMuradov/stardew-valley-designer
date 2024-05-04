@@ -51,7 +51,7 @@ internal fun ObjectCounter(entities: LayeredEntitiesData, season: Season) {
     val wordList = GlobalSettings.strings
     val countedEntities = entities
         .flattenSequence()
-        .map { it.rectObject }
+        .map { it.entity }
         .groupingBy { EntityDataProvider.entityToId(it).default }
         .eachCount()
         .asSequence()

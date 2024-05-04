@@ -18,8 +18,8 @@ package io.stardewvalleydesigner.designformat.serializers
 
 import io.stardewvalleydesigner.data.EntityDataProvider
 import io.stardewvalleydesigner.data.EntityId
-import io.stardewvalleydesigner.engine.entity.PlacedEntity
 import io.stardewvalleydesigner.engine.geometry.Coordinate
+import io.stardewvalleydesigner.engine.layer.PlacedEntity
 import io.stardewvalleydesigner.engine.layer.placeIt
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -41,7 +41,7 @@ internal object PlacedEntitySerializer : KSerializer<PlacedEntity<*>> {
         delegateSerializer.serialize(
             encoder,
             value = PlacedEntitySurrogate(
-                id = EntityDataProvider.entityToId(value.rectObject),
+                id = EntityDataProvider.entityToId(value.entity),
                 place = value.place
             )
         )

@@ -20,7 +20,7 @@ import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.impossible
 
 
-sealed interface LayerType<out EType : EntityType> {
+sealed interface LayerType<out T : EntityType> {
 
     val ordinal: Int
 
@@ -69,20 +69,20 @@ val LayerType<*>.incompatibleLayers
 // TODO : Report the issue
 
 @Suppress("UNCHECKED_CAST")
-fun <EType : EntityType> EType.toLayerType(): LayerType<EType> = when (this) {
+fun <T : EntityType> T.toLayerType(): LayerType<T> = when (this) {
     FloorType -> LayerType.Floor
     FloorFurnitureType -> LayerType.FloorFurniture
     is ObjectType -> LayerType.Object
     is EntityWithoutFloorType -> LayerType.EntityWithoutFloor
     else -> impossible()
-} as LayerType<EType>
+} as LayerType<T>
 
 @Suppress("UNCHECKED_CAST")
-fun <EType : EntityType> LayerType<EType>.allEntityTypes(): Set<EType> = when (this) {
+fun <T : EntityType> LayerType<T>.allEntityTypes(): Set<T> = when (this) {
     LayerType.Floor -> setOf(FloorType)
     LayerType.FloorFurniture -> setOf(FloorFurnitureType)
     LayerType.Object -> ObjectType.all
     LayerType.EntityWithoutFloor -> EntityWithoutFloorType.all
-} as Set<EType>
+} as Set<T>
 
-val <EType : EntityType> PlacedEntity<EType>.layerType get() = type.toLayerType()
+val <T : EntityType> PlacedEntity<T>.layerType get() = type.toLayerType()
