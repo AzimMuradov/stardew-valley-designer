@@ -68,6 +68,3 @@ internal inline fun <T, K, V : MutableCollection<T>, M : MutableMap<in K, V>> Se
     }
     return destination
 }
-
-
-internal fun impossible(): Nothing = error("Impossible state.")

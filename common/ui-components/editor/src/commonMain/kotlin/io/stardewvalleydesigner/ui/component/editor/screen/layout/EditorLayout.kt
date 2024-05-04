@@ -44,8 +44,7 @@ import io.stardewvalleydesigner.engine.entity.Equipment.SimpleEquipment.*
 import io.stardewvalleydesigner.engine.geometry.*
 import io.stardewvalleydesigner.engine.geometry.shapes.*
 import io.stardewvalleydesigner.engine.layer.*
-import io.stardewvalleydesigner.engine.layers.flatten
-import io.stardewvalleydesigner.engine.layers.flattenSequence
+import io.stardewvalleydesigner.engine.layers.*
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResources
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.layoutSpriteBy
 import io.stardewvalleydesigner.ui.component.editor.res.SpriteUtils
@@ -79,7 +78,7 @@ internal fun EditorLayout(
     val floors2: ImageBitmap = ImageResources.floors2
 
     val layout = map.layout
-    val (nW, nH) = layout.size
+    val (nW, nH) = layout.area
     val layoutSprite = layoutSpriteBy(layout.type, season)
 
     val hoveredColor = MaterialTheme.colors.secondary
@@ -213,9 +212,8 @@ internal fun EditorLayout(
 
                 drawVisibleEntities(
                     entityMaps = entityMaps,
-                    entities = map.entities,
+                    entities = map.entities.filter(visibleLayers),
                     season = season,
-                    visibleLayers = visibleLayers,
                     renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
                     grid = grid,
                     scale = scale,

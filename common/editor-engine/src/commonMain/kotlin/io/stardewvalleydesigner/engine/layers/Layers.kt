@@ -16,27 +16,22 @@
 
 package io.stardewvalleydesigner.engine.layers
 
-import io.stardewvalleydesigner.engine.entity.EntityType
-import io.stardewvalleydesigner.engine.layer.*
-import io.stardewvalleydesigner.engine.layout.Layout
+import io.stardewvalleydesigner.engine.entity.*
+import io.stardewvalleydesigner.engine.layer.Layer
+import io.stardewvalleydesigner.engine.layer.LayerType
 
 
-interface Layers {
+class Layers {
 
-    val layout: Layout
+    @Suppress("UNCHECKED_CAST")
+    fun <T : EntityType> layerBy(type: LayerType<T>): Layer<T> =
+        layersMap.getValue(type) as Layer<T>
 
-    val all: List<Pair<LayerType<*>, Layer<*>>>
 
-    fun <EType : EntityType> layerBy(type: LayerType<EType>): Layer<EType>
+    private val layersMap = mapOf(
+        LayerType.Floor to Layer<FloorType>(),
+        LayerType.FloorFurniture to Layer<FloorFurnitureType>(),
+        LayerType.Object to Layer<ObjectType>(),
+        LayerType.EntityWithoutFloor to Layer<EntityWithoutFloorType>(),
+    )
 }
-
-
-interface MutableLayers : Layers {
-
-    override val all: List<Pair<LayerType<*>, MutableLayer<*>>>
-
-    override fun <EType : EntityType> layerBy(type: LayerType<EType>): MutableLayer<EType>
-}
-
-
-val Layers.entities: LayeredEntitiesData get() = layeredEntitiesData { layerBy(it).objects }

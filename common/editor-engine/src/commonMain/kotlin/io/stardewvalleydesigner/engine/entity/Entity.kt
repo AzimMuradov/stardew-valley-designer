@@ -17,7 +17,6 @@
 package io.stardewvalleydesigner.engine.entity
 
 import io.stardewvalleydesigner.engine.geometry.Rect
-import io.stardewvalleydesigner.engine.layer.PlacedEntity
 
 
 sealed interface Entity<out T : EntityType> {
@@ -26,5 +25,3 @@ sealed interface Entity<out T : EntityType> {
 
     val size: Rect
 }
-
-val <T : EntityType> PlacedEntity<T>.type get() = entity.type

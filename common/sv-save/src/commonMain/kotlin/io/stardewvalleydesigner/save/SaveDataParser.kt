@@ -19,7 +19,6 @@ package io.stardewvalleydesigner.save
 import io.stardewvalleydesigner.LoggerUtils.logger
 import io.stardewvalleydesigner.designformat.models.*
 import io.stardewvalleydesigner.engine.*
-import io.stardewvalleydesigner.engine.layers.entities
 import io.stardewvalleydesigner.engine.layout.*
 import io.stardewvalleydesigner.save.mappers.toPlacedEntityOrNull
 import io.stardewvalleydesigner.save.models.SaveGame
@@ -65,7 +64,7 @@ object SaveDataParser {
                     addAll(farm.objects.mapNotNull { it.value.obj.toPlacedEntityOrNull() })
                     addAll(farm.terrainFeatures.mapNotNull { it.toPlacedEntityOrNull() })
                     addAll(farm.buildings.mapNotNull { it.toPlacedEntityOrNull() })
-                }.partition { it respectsLayout layout }
+                }.partition { it respects layout }
 
                 if (failedEs.isNotEmpty()) {
                     logger.warn { failedEs }
@@ -85,7 +84,7 @@ object SaveDataParser {
                         addAll(building.indoors.objects.mapNotNull { it.value.obj.toPlacedEntityOrNull() })
                         addAll(building.indoors.terrainFeatures.mapNotNull { it.toPlacedEntityOrNull() })
                     }
-                }.partition { it respectsLayout layout }
+                }.partition { it respects layout }
 
                 if (failedEs.isNotEmpty()) {
                     logger.warn { failedEs }
@@ -109,7 +108,7 @@ object SaveDataParser {
                     Season.winter -> SeasonData.Winter
                 },
                 layout = engine.layout.type,
-                entities = engine.layers.entities,
+                entities = engine.getEntities(),
                 wallpaper = engine.wallpaper,
                 flooring = engine.flooring,
                 palette = Palette.default(),

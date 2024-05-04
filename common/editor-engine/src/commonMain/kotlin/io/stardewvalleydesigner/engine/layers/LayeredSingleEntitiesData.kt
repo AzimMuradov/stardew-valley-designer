@@ -30,18 +30,12 @@ data class LayeredSingleEntitiesData(
     val entityWithoutFloorEntity: PlacedEntity<EntityWithoutFloorType>? = null,
 ) {
 
-    private val entitiesMap = mapOf(
+    val all: List<Pair<LayerType<*>, PlacedEntity<*>?>> = listOf(
         LayerType.Floor to floorEntity,
         LayerType.FloorFurniture to floorFurnitureEntity,
         LayerType.Object to objectEntity,
         LayerType.EntityWithoutFloor to entityWithoutFloorEntity,
     )
-
-
-    val all: List<Pair<LayerType<*>, PlacedEntity<*>?>> = entitiesMap.toList()
-
-    fun <EType : EntityType> entityOrNullBy(layerType: LayerType<EType>): PlacedEntity<EType>? =
-        entitiesMap.getValue(layerType) as PlacedEntity<EType>?
 }
 
 fun layeredSingleEntitiesData(entitiesSelector: (LayerType<*>) -> PlacedEntity<*>?): LayeredSingleEntitiesData =

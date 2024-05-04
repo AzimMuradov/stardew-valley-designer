@@ -154,12 +154,11 @@ object DrawerUtils {
         entityMaps: Map<SpritePage, ImageBitmap>,
         entities: LayeredEntitiesData,
         season: Season,
-        visibleLayers: Set<LayerType<*>>,
         renderSpritesFully: Boolean,
         grid: CoordinateGrid,
         scale: Float = 1.0f,
     ) {
-        val spriteMaps = SpriteUtils.calculateSprite(entityMaps, entities, visibleLayers, season)
+        val spriteMaps = SpriteUtils.calculateSprite(entityMaps, entities, season)
 
         for ((entity, sprite) in spriteMaps) {
             drawEntityStretched(entity, sprite, renderSpritesFully, grid, scale)

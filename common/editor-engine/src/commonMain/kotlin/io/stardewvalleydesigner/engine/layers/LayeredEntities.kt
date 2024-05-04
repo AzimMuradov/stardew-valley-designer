@@ -54,8 +54,8 @@ class LayeredEntities(
 
     val all: List<Pair<LayerType<*>, DisjointEntities<*>>> = entitiesMap.toList()
 
-    fun <EType : EntityType> entitiesBy(layerType: LayerType<EType>): DisjointEntities<EType> =
-        entitiesMap.getValue(layerType) as DisjointEntities<EType>
+    fun <T : EntityType> entitiesBy(layerType: LayerType<T>): DisjointEntities<T> =
+        entitiesMap.getValue(layerType) as DisjointEntities<T>
 }
 
 fun layeredEntities(entitiesSelector: (LayerType<*>) -> List<PlacedEntity<*>>): LayeredEntities =

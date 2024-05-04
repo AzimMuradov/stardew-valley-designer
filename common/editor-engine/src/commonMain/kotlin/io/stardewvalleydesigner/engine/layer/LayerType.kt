@@ -17,7 +17,6 @@
 package io.stardewvalleydesigner.engine.layer
 
 import io.stardewvalleydesigner.engine.entity.*
-import io.stardewvalleydesigner.engine.impossible
 
 
 sealed interface LayerType<out T : EntityType> {
@@ -66,15 +65,15 @@ val LayerType<*>.incompatibleLayers
     }
 
 
-// TODO : Report the issue
+// TODO : Remove `this as EntityType` cast when the issue is resolved
+// https://youtrack.jetbrains.com/issue/KT-21908
 
-@Suppress("UNCHECKED_CAST")
-fun <T : EntityType> T.toLayerType(): LayerType<T> = when (this) {
+@Suppress("UNCHECKED_CAST", "USELESS_CAST")
+fun <T : EntityType> T.toLayerType(): LayerType<T> = when (this as EntityType) {
     FloorType -> LayerType.Floor
     FloorFurnitureType -> LayerType.FloorFurniture
     is ObjectType -> LayerType.Object
     is EntityWithoutFloorType -> LayerType.EntityWithoutFloor
-    else -> impossible()
 } as LayerType<T>
 
 @Suppress("UNCHECKED_CAST")

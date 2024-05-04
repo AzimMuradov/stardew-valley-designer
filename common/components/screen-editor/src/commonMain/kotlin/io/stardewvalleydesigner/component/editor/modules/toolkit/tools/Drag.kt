@@ -23,7 +23,7 @@ import io.stardewvalleydesigner.engine.geometry.*
 import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.coordinates
 import io.stardewvalleydesigner.engine.layers.*
-import io.stardewvalleydesigner.engine.layout.respectsLayout
+import io.stardewvalleydesigner.engine.layout.respects
 import kotlin.properties.Delegates
 
 
@@ -74,7 +74,7 @@ class Drag(private val engine: EditorEngine) : Tool {
         heldEntities = initMovedEntities
             .flattenSequence()
             .map { it.copy(place = it.place + (coordinate - start)) }
-            .filter { it respectsLayout engine.layout }
+            .filter { it respects engine.layout }
             .layeredData()
 
         return ActionReturn(

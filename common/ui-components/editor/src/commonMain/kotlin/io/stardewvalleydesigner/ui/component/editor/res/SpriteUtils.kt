@@ -24,9 +24,9 @@ import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.Equipment.SimpleEquipment.*
 import io.stardewvalleydesigner.engine.entity.Floor
 import io.stardewvalleydesigner.engine.geometry.*
-import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.PlacedEntity
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
+import io.stardewvalleydesigner.engine.layers.flatten
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.spriteBy
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.placedEntityComparator
 
@@ -36,10 +36,9 @@ object SpriteUtils {
     fun calculateSprite(
         spriteMaps: Map<SpritePage, ImageBitmap>,
         entities: LayeredEntitiesData,
-        visibleLayers: Set<LayerType<*>>,
         season: Season,
     ): List<Pair<PlacedEntity<*>, Sprite>> {
-        val sorted = visibleLayers.flatMap(entities::entitiesBy).sortedWith(placedEntityComparator)
+        val sorted = entities.flatten().sortedWith(placedEntityComparator)
         val fenceEs = setOf(WoodFence, StoneFence, IronFence, HardwoodFence)
         val fences = entities
             .objectEntities

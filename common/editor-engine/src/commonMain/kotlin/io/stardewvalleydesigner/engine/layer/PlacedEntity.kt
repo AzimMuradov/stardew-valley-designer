@@ -23,10 +23,10 @@ import io.stardewvalleydesigner.engine.geometry.*
 
 
 /**
- * Placed rectangular object.
+ * Placed entity.
  */
-data class PlacedEntity<out EType : EntityType>(
-    val entity: Entity<EType>,
+data class PlacedEntity<out T : EntityType>(
+    val entity: Entity<T>,
     val place: Coordinate,
 ) {
 
@@ -43,29 +43,13 @@ data class PlacedEntity<out EType : EntityType>(
     operator fun component3(): List<Coordinate> = coordinates
 
 
-    // `Any` overrides
+    private companion object {
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is PlacedEntity<*>) return false
-
-        // `rectObject` and `place` are swapped for efficiency
-
-        if (place != other.place) return false
-        if (entity != other.entity) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = entity.hashCode()
-        result = 31 * result + place.hashCode()
-        return result
+        // Cartesian product
+        private operator fun <A, B> Iterable<A>.times(other: Iterable<B>): List<Pair<A, B>> =
+            flatMap { a -> other.map { b -> a to b } }
     }
 }
-
-
-// Static factories
 
 /**
  * Static factory function for [PlacedEntity] creation.
@@ -74,8 +58,9 @@ fun Entity<*>.placeIt(there: Coordinate): PlacedEntity<*> =
     PlacedEntity(entity = this, place = there)
 
 
-// Operators
+// Utilities
 
+val <T : EntityType> PlacedEntity<T>.type get() = entity.type
 
 val PlacedEntity<*>.corners: CanonicalCorners
     get() = CanonicalCorners(
@@ -86,49 +71,13 @@ val PlacedEntity<*>.corners: CanonicalCorners
         )
     )
 
-val PlacedEntity<*>.coordinateRanges: Pair<IntRange, IntRange>
-    get() {
-        val (bl, tr) = corners
-        return bl.x..tr.x to bl.y..tr.y
-    }
-
-operator fun PlacedEntity<*>.contains(c: Coordinate): Boolean {
-    val (xs, ys) = coordinateRanges
-    return c.x in xs && c.y in ys
-}
-
-operator fun PlacedEntity<*>.contains(other: PlacedEntity<*>): Boolean {
-    val (bl, tr) = other.corners
+/**
+ * Returns `true` if [entity] is contained in [this] rectangle.
+ */
+operator fun Rect.contains(entity: PlacedEntity<*>): Boolean {
+    val (bl, tr) = entity.corners
     return bl in this && tr in this
 }
 
-// TODO : FIX BUGS
-/**
- * Returns `true` if [this] overlaps with the [other] placed rectangular object.
- */
-infix fun PlacedEntity<*>.overlapsWith(other: PlacedEntity<*>): Boolean {
-    val (bl, tr) = other.corners
-    return bl in this || tr in this
-}
-
-/**
- * Returns `true` if [obj] is contained in [this] rectangle.
- */
-operator fun Rect.contains(obj: PlacedEntity<*>): Boolean {
-    val (bl, tr) = obj.corners
-    return bl in this && tr in this
-}
-
-/**
- * All coordinates of this list of objects.
- */
 val Iterable<PlacedEntity<*>>.coordinates: Set<Coordinate>
     get() = flatMapTo(mutableSetOf()) { it.coordinates }
-
-
-// Private utils
-
-// Cartesian product
-
-private operator fun <A, B> Iterable<A>.times(other: Iterable<B>): List<Pair<A, B>> =
-    flatMap { a -> other.map { b -> a to b } }

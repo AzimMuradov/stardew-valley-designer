@@ -18,55 +18,52 @@ package io.stardewvalleydesigner.engine.layer
 
 import io.stardewvalleydesigner.engine.entity.EntityType
 import io.stardewvalleydesigner.engine.geometry.Coordinate
-import io.stardewvalleydesigner.engine.geometry.Rect
-import io.stardewvalleydesigner.engine.layout.LayoutRules
 
 
-interface Layer<out EType : EntityType> {
+class Layer<T : EntityType> {
 
-    val size: Rect
-
-
-    // Query Operations
-
-    operator fun get(c: Coordinate): PlacedEntity<EType>?
-
-
-    // Bulk Query Operations
-
-    fun getAll(cs: Iterable<Coordinate>): Set<PlacedEntity<EType>>
+    private val map = mutableMapOf<Coordinate, PlacedEntity<T>>()
 
 
     // Views
 
-    val objects: Set<PlacedEntity<EType>>
+    val placedEntities: Set<PlacedEntity<T>> get() = map.values.toSet()
 
 
-    val layoutRules: LayoutRules
+    // Operations
+
+    operator fun get(c: Coordinate): PlacedEntity<T>? = map[c]
+
+    fun put(entity: PlacedEntity<T>): Set<PlacedEntity<T>> {
+        val cs = entity.coordinates
+        val replaced = removeAll(cs)
+        map.putAll(cs.associateWith { entity })
+
+        return replaced
+    }
+
+    fun remove(c: Coordinate): PlacedEntity<T>? {
+        val removed = map[c]
+        removed?.coordinates?.forEach(map::remove)
+        return removed
+    }
+
+
+    // Bulk Operations
+
+    fun getAll(
+        cs: Iterable<Coordinate>,
+    ): Set<PlacedEntity<T>> = cs.mapNotNullTo(mutableSetOf(), map::get)
+
+    fun putAll(
+        entities: DisjointEntities<T>,
+    ): Set<PlacedEntity<T>> = entities.flatMapTo(mutableSetOf(), this::put)
+
+    fun removeAll(
+        cs: Iterable<Coordinate>,
+    ): Set<PlacedEntity<T>> = cs.mapNotNullTo(mutableSetOf(), this::remove)
+
+    fun clear() {
+        map.clear()
+    }
 }
-
-
-interface MutableLayer<T : EntityType> : Layer<T> {
-
-    // Modification Operations
-
-    fun put(obj: PlacedEntity<T>): Set<PlacedEntity<T>>
-
-    fun remove(c: Coordinate): PlacedEntity<T>?
-
-
-    // Bulk Modification Operations
-
-    fun putAll(objs: DisjointEntities<T>): Set<PlacedEntity<T>>
-
-    fun removeAll(cs: Iterable<Coordinate>): Set<PlacedEntity<T>>
-
-    fun clear()
-}
-
-
-// Extensions
-
-fun Layer<*>.isEmpty(): Boolean = objects.isEmpty()
-
-fun Layer<*>.isNotEmpty(): Boolean = objects.isNotEmpty()

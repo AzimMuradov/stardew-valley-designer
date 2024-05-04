@@ -16,10 +16,11 @@
 
 package io.stardewvalleydesigner.engine.layout
 
-import io.stardewvalleydesigner.engine.contains
 import io.stardewvalleydesigner.engine.entity.EntityType
-import io.stardewvalleydesigner.engine.geometry.*
+import io.stardewvalleydesigner.engine.geometry.Coordinate
+import io.stardewvalleydesigner.engine.geometry.Rect
 import io.stardewvalleydesigner.engine.layer.PlacedEntity
+import io.stardewvalleydesigner.engine.layer.contains
 
 
 /**
@@ -27,74 +28,42 @@ import io.stardewvalleydesigner.engine.layer.PlacedEntity
  */
 class Layout(
     val type: LayoutType,
-    val size: Rect,
-    disallowedTypes: Set<EntityType> = setOf(),
-    disallowedTypesMap: Map<Coordinate, Set<EntityType>> = mapOf(),
-    disallowedCoordinates: Set<Coordinate> = setOf(),
-) : LayoutRules(size, disallowedTypes, disallowedTypesMap, disallowedCoordinates)
-
-
-/**
- * Editor layout rules.
- */
-open class LayoutRules internal constructor(
-    size: Rect,
-    val disallowedTypes: Set<EntityType>,
-    val disallowedTypesMap: Map<Coordinate, Set<EntityType>>,
-    val disallowedCoordinates: Set<Coordinate>,
+    val area: Rect,
+    val disallowedTypes: Set<EntityType> = setOf(),
+    val disallowedTypesMap: Map<Coordinate, Set<EntityType>> = mapOf(),
+    val disallowedCoordinates: Set<Coordinate> = setOf(),
 ) {
 
     init {
-        require(disallowedTypesMap.keys in size && disallowedCoordinates in size) {
-            "Wrong `LayoutRules` definition."
+        require(disallowedTypesMap.keys in area && disallowedCoordinates in area) {
+            "Wrong layout definition."
         }
+    }
+
+
+    private companion object {
+
+        operator fun Rect.contains(coordinates: Iterable<Coordinate>): Boolean =
+            coordinates.all { (x, y) -> x < w && y < h }
     }
 }
 
 
 /**
- * Returns `true` if [this] placed entity respects the given [layoutRules].
+ * Returns `true` if [this] placed entity respects the given [layout].
  */
-infix fun <T : EntityType> PlacedEntity<T>.respects(layoutRules: LayoutRules): Boolean {
-    val (entity, _, coordinates) = this
-
+infix fun <T : EntityType> PlacedEntity<T>.respects(layout: Layout): Boolean {
+    val placedEntity = this
+    val (entity, _, coordinates) = placedEntity
     val requirements = sequence {
-        with(layoutRules) {
-            yield(entity.type !in disallowedTypes)
-            yield(coordinates.mapNotNull(disallowedTypesMap::get).none { entity.type in it })
-            yield(coordinates.none(disallowedCoordinates::contains))
-        }
+        yield(placedEntity in layout.area)
+        yield(entity.type !in layout.disallowedTypes)
+        yield(
+            coordinates
+                .mapNotNull(layout.disallowedTypesMap::get)
+                .none { entity.type in it }
+        )
+        yield(coordinates.none(layout.disallowedCoordinates::contains))
     }
-
     return requirements.all { it }
-}
-
-/**
- * Returns `true` if [this] placed entity respects the given [layoutRules].
- */
-infix fun <T : EntityType> PlacedEntity<T>.respectsLayout(layout: Layout): Boolean =
-    coordinates in layout.size && respects(layoutRules = layout)
-
-
-// Private utils
-
-private operator fun Rect.contains(coordinates: Iterable<Coordinate>): Boolean {
-    // Check that iterable is not empty
-    val first = coordinates.firstOrNull() ?: return true
-
-    val (min, max) = run {
-        var (minX: Int, minY: Int) = first
-        var (maxX: Int, maxY: Int) = first
-
-        for ((x, y) in coordinates) {
-            minX = minOf(minX, x)
-            maxX = maxOf(maxX, x)
-            minY = minOf(minY, y)
-            maxY = maxOf(maxY, y)
-        }
-
-        xy(minX, minY) to xy(maxX, maxY)
-    }
-
-    return contains(min) && contains(max)
 }

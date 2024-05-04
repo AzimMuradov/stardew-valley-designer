@@ -56,7 +56,7 @@ fun BoxScope.LayoutPreview(
     val walls2 = ImageResources.walls2
     val floors2 = ImageResources.floors2
 
-    val (nW, nH) = layout.size
+    val (nW, nH) = layout.area
     val layoutSprite = layoutSpriteBy(layout.type, season)
 
     var cellSide by remember { mutableStateOf(-1f) }
@@ -96,7 +96,6 @@ fun BoxScope.LayoutPreview(
             entityMaps = entityMaps,
             season = season,
             entities = entities,
-            visibleLayers = LayerType.all,
             renderSpritesFully = true,
             grid = grid
         )

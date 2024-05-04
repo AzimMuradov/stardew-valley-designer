@@ -23,7 +23,7 @@ import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layer.*
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layers.flatten
-import io.stardewvalleydesigner.engine.layout.respectsLayout
+import io.stardewvalleydesigner.engine.layout.respects
 import kotlin.properties.Delegates
 
 
@@ -49,7 +49,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
                 .coordinates
                 .asSequence()
                 .map(currentEntity::placeIt)
-                .filterTo(mutableSetOf()) { it respectsLayout engine.layout }
+                .filterTo(mutableSetOf()) { it respects engine.layout }
 
             return ActionReturn(
                 toolkit = ToolkitState.Pen.Shape.Acting(
@@ -83,7 +83,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
             .asSequence()
             .sortedWith(compareBy(Coordinate::x).thenBy(Coordinate::y))
             .map(currentEntity!!::placeIt)
-            .filter { it respectsLayout engine.layout }
+            .filter { it respects engine.layout }
             .filterTo(mutableSetOf()) {
                 if (it.coordinates.any(cs::contains)) {
                     false

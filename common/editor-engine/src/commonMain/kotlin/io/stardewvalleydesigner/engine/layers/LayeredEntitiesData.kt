@@ -30,18 +30,12 @@ data class LayeredEntitiesData(
     val entityWithoutFloorEntities: Set<PlacedEntity<EntityWithoutFloorType>> = emptySet(),
 ) {
 
-    private val entitiesMap = mapOf(
+    val all: List<Pair<LayerType<*>, Set<PlacedEntity<*>>>> = listOf(
         LayerType.Floor to floorEntities,
         LayerType.FloorFurniture to floorFurnitureEntities,
         LayerType.Object to objectEntities,
         LayerType.EntityWithoutFloor to entityWithoutFloorEntities,
     )
-
-
-    val all: List<Pair<LayerType<*>, Set<PlacedEntity<*>>>> = entitiesMap.toList()
-
-    fun <EType : EntityType> entitiesBy(layerType: LayerType<EType>): Set<PlacedEntity<EType>> =
-        entitiesMap.getValue(layerType) as Set<PlacedEntity<EType>>
 }
 
 fun layeredEntitiesData(entitiesSelector: (LayerType<*>) -> Set<PlacedEntity<*>>): LayeredEntitiesData =
@@ -65,6 +59,13 @@ fun Sequence<PlacedEntity<*>>.layeredData(): LayeredEntitiesData = customGroupBy
     keySelector = PlacedEntity<*>::layerType,
     valuesCollectionGenerator = ::mutableSetOf
 ).asLayeredEntitiesData()
+
+fun LayeredEntitiesData.filter(visibleLayers: Set<LayerType<*>>): LayeredEntitiesData = LayeredEntitiesData(
+    if (LayerType.Floor in visibleLayers) floorEntities else emptySet(),
+    if (LayerType.FloorFurniture in visibleLayers) floorFurnitureEntities else emptySet(),
+    if (LayerType.Object in visibleLayers) objectEntities else emptySet(),
+    if (LayerType.EntityWithoutFloor in visibleLayers) entityWithoutFloorEntities else emptySet(),
+)
 
 fun LayeredEntitiesData.toLayeredEntities(): LayeredEntities = LayeredEntities(
     floorEntities.toList().asDisjointUnsafe(),
