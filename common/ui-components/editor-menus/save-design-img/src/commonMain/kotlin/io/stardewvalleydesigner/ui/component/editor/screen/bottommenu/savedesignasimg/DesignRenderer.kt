@@ -25,6 +25,7 @@ import io.stardewvalleydesigner.data.SpritePage.Companion.UNIT
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.layer.LayerType
+import io.stardewvalleydesigner.engine.layers.filter
 import io.stardewvalleydesigner.kmplib.png.PngUtils
 import io.stardewvalleydesigner.ui.component.editor.res.*
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils
@@ -65,7 +66,7 @@ internal object DesignRenderer {
         layoutSprite: LayoutSprite,
     ): ImageBitmap {
         val layout = map.layout
-        val (nW, nH) = layout.size
+        val (nW, nH) = layout.area
 
         val imageBitmap = ImageBitmap(layoutSprite.size.width, layoutSprite.size.height)
 
@@ -108,8 +109,7 @@ internal object DesignRenderer {
 
             val spriteMaps = SpriteUtils.calculateSprite(
                 spriteMaps = entityMaps,
-                entities = map.entities,
-                visibleLayers = visibleLayers,
+                entities = map.entities.filter(visibleLayers),
                 season = season,
             )
             for ((placedEntity, sprite) in spriteMaps) {

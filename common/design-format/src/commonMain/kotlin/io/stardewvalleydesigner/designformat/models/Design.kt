@@ -20,7 +20,7 @@ import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.designformat.serializers.*
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
-import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
+import io.stardewvalleydesigner.engine.layers.LayeredEntities
 import io.stardewvalleydesigner.engine.layout.LayoutType
 import kotlinx.serialization.Serializable
 
@@ -32,7 +32,7 @@ data class Design(
     val farmName: String = "",
     val season: Season,
     val layout: LayoutType,
-    val entities: @Serializable(with = LayeredEntitiesDataSerializer::class) LayeredEntitiesData = LayeredEntitiesData(),
+    val entities: @Serializable(with = LayeredEntitiesSerializer::class) LayeredEntities = LayeredEntities(),
     val wallpaper: @Serializable(with = WallpaperSerializer::class) Wallpaper? = null,
     val flooring: @Serializable(with = FlooringSerializer::class) Flooring? = null,
     val palette: Palette = Palette.default(),

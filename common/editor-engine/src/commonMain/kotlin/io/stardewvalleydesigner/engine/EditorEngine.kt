@@ -16,7 +16,7 @@
 
 package io.stardewvalleydesigner.engine
 
-import io.stardewvalleydesigner.engine.entity.*
+import io.stardewvalleydesigner.engine.entity.EntityType
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layer.*
 import io.stardewvalleydesigner.engine.layers.*
@@ -28,7 +28,9 @@ import io.stardewvalleydesigner.engine.layout.Layout
  */
 interface EditorEngine {
 
-    val layers: Layers
+    val layout: Layout
+
+    fun getEntities(): LayeredEntities
 
     var wallpaper: Wallpaper?
 
@@ -37,65 +39,83 @@ interface EditorEngine {
 
     // Operations
 
-    fun <EType : EntityType> get(type: LayerType<EType>, c: Coordinate): PlacedEntity<EType>?
+    fun <T : EntityType> get(layer: LayerType<T>, c: Coordinate): PlacedEntity<T>?
 
-    fun put(obj: PlacedEntity<*>): LayeredEntitiesData
+    fun put(entity: PlacedEntity<*>)
 
-    fun <EType : EntityType> remove(type: LayerType<EType>, c: Coordinate): PlacedEntity<EType>?
+    fun <T : EntityType> remove(layer: LayerType<T>, c: Coordinate): PlacedEntity<T>?
 
 
     // Bulk Operations
 
-    fun <EType : EntityType> getAll(type: LayerType<EType>, cs: Iterable<Coordinate>): Set<PlacedEntity<EType>>
+    fun <T : EntityType> getAll(layer: LayerType<T>, cs: Iterable<Coordinate>): Set<PlacedEntity<T>>
 
-    fun <EType : EntityType> putAll(objs: DisjointEntities<EType>): LayeredEntitiesData
+    fun putAll(entities: Iterable<PlacedEntity<*>>)
 
-    fun <EType : EntityType> removeAll(type: LayerType<EType>, cs: Iterable<Coordinate>): Set<PlacedEntity<EType>>
+    fun <T : EntityType> removeAll(layer: LayerType<T>, cs: Iterable<Coordinate>): Set<PlacedEntity<T>>
 
     fun clear(type: LayerType<*>)
 }
 
 
-// Properties
-
-val EditorEngine.layout: Layout get() = layers.layout
-
-
 // Operations
 
-fun EditorEngine.get(c: Coordinate, layers: Set<LayerType<*>> = LayerType.all): LayeredSingleEntitiesData =
-    layeredSingleEntitiesData { if (it in layers) get(it, c) else null }
+fun EditorEngine.get(
+    c: Coordinate,
+    layers: Set<LayerType<*>> = LayerType.all,
+): LayeredSingleEntities = layeredSingleEntities(layers) { layer ->
+    get(layer, c)
+}
 
-fun EditorEngine.remove(c: Coordinate, layers: Set<LayerType<*>> = LayerType.all): LayeredSingleEntitiesData =
-    layeredSingleEntitiesData { if (it in layers) remove(it, c) else null }
+fun EditorEngine.remove(
+    c: Coordinate,
+    layers: Set<LayerType<*>> = LayerType.all,
+): LayeredSingleEntities = layeredSingleEntities(layers) { layer ->
+    remove(layer, c)
+}
 
-fun <EType : EntityType> EditorEngine.remove(obj: PlacedEntity<EType>): PlacedEntity<EType>? =
-    remove(obj.layerType, obj.place)
+fun <T : EntityType> EditorEngine.remove(
+    entity: PlacedEntity<T>,
+): PlacedEntity<T>? = remove(entity.layerType, entity.place)
 
 
 // Bulk Operations
 
-fun EditorEngine.getAll(cs: Iterable<Coordinate>, layers: Set<LayerType<*>> = LayerType.all): LayeredEntitiesData =
-    layeredEntitiesData { if (it in layers) getAll(it, cs) else emptySet() }
+fun EditorEngine.getAll(
+    cs: Iterable<Coordinate>,
+    layers: Set<LayerType<*>> = LayerType.all,
+): LayeredEntities = layeredEntities(layers) { layer ->
+    getAll(layer, cs)
+}
 
-fun EditorEngine.putAll(objs: LayeredEntities): LayeredEntitiesData =
-    objs.flattenSequence().flatMap { put(it).flattenSequence() }.layeredData()
+fun EditorEngine.putAll(entities: LayeredEntities) {
+    entities.flattenSequence().forEach(this::put)
+}
 
-fun EditorEngine.removeAll(cs: Iterable<Coordinate>, layers: Set<LayerType<*>> = LayerType.all): LayeredEntitiesData =
-    layeredEntitiesData { if (it in layers) removeAll(it, cs) else emptySet() }
+fun EditorEngine.removeAll(
+    cs: Iterable<Coordinate>,
+    layers: Set<LayerType<*>> = LayerType.all,
+): LayeredEntities = layeredEntities(layers) { layer ->
+    removeAll(layer, cs)
+}
 
-fun EditorEngine.removeAll(objs: List<PlacedEntity<*>>): LayeredEntitiesData =
-    objs.mapNotNull(this::remove).layeredData()
+fun EditorEngine.removeAll(
+    entities: Iterable<PlacedEntity<*>>,
+): List<PlacedEntity<*>> = entities.mapNotNull(this::remove)
 
-fun EditorEngine.clear(layers: Set<LayerType<*>> = LayerType.all) = layers.forEach(this::clear)
+fun EditorEngine.clear(layers: Set<LayerType<*>> = LayerType.all) {
+    layers.forEach(this::clear)
+}
 
 
 // Utils
 
-fun EditorEngine.getReplacedBy(obj: PlacedEntity<*>): LayeredEntitiesData {
-    val objLayer = obj.layerType
-    return getAll(obj.coordinates, layers = objLayer.incompatibleLayers + objLayer)
-}
-
-fun <EType : EntityType> EditorEngine.getReplacedBy(objs: DisjointEntities<EType>): LayeredEntitiesData =
-    objs.asSequence().flatMap { getReplacedBy(it).flattenSequence() }.layeredData()
+fun EditorEngine.getReplacedBy(
+    entities: Iterable<PlacedEntity<*>>,
+): List<PlacedEntity<*>> = entities
+    .asSequence()
+    .flatMap {
+        val layer = it.layerType
+        getAll(it.coordinates, layers = layer.incompatibleLayers + layer).flattenSequence()
+    }
+    .toList()

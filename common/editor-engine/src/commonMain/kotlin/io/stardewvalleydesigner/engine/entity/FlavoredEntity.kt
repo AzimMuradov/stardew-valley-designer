@@ -56,7 +56,7 @@ sealed class Rotatable private constructor(
 }
 
 
-sealed class Colored<out EType : EntityType> private constructor() : FlavoredEntity {
+sealed class Colored<out T : EntityType> private constructor() : FlavoredEntity {
 
     abstract val color: Colors
 

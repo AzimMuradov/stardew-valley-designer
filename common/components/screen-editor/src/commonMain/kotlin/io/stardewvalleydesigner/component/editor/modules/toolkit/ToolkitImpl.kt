@@ -21,7 +21,7 @@ import io.stardewvalleydesigner.engine.EditorEngine
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layer.LayerType
-import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
+import io.stardewvalleydesigner.engine.layer.PlacedEntity
 
 
 class ToolkitImpl(
@@ -45,7 +45,7 @@ class ToolkitImpl(
     override fun start(
         coordinate: Coordinate,
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn? {
         val shapeType = shapeType
@@ -71,7 +71,7 @@ class ToolkitImpl(
     override fun keep(
         coordinate: Coordinate,
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn? {
         val tool = this.tool
@@ -87,7 +87,7 @@ class ToolkitImpl(
 
     override fun end(
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn? {
         val result = tool?.end(currentEntity, selectedEntities, visLayers)

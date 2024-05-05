@@ -19,15 +19,15 @@ package io.stardewvalleydesigner.component.editor.modules.map
 import io.stardewvalleydesigner.component.editor.utils.toState
 import io.stardewvalleydesigner.designformat.models.Design
 import io.stardewvalleydesigner.engine.*
-import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
-import io.stardewvalleydesigner.engine.layers.toLayeredEntities
+import io.stardewvalleydesigner.engine.layer.PlacedEntity
+import io.stardewvalleydesigner.engine.layers.LayeredEntities
 import io.stardewvalleydesigner.engine.layout.Layout
 import io.stardewvalleydesigner.engine.layout.LayoutsProvider
 
 
 data class MapState(
-    val entities: LayeredEntitiesData,
-    val selectedEntities: LayeredEntitiesData,
+    val entities: LayeredEntities,
+    val selectedEntities: List<PlacedEntity<*>>,
     val wallpaper: Wallpaper?,
     val flooring: Flooring?,
     val layout: LayoutState,
@@ -36,8 +36,8 @@ data class MapState(
     companion object {
 
         fun default(layout: Layout) = MapState(
-            entities = LayeredEntitiesData(),
-            selectedEntities = LayeredEntitiesData(),
+            entities = LayeredEntities(),
+            selectedEntities = emptyList(),
             wallpaper = null,
             flooring = null,
             layout = layout.toState(),
@@ -45,7 +45,7 @@ data class MapState(
 
         fun from(design: Design) = MapState(
             entities = design.entities,
-            selectedEntities = LayeredEntitiesData(),
+            selectedEntities = emptyList(),
             wallpaper = design.wallpaper,
             flooring = design.flooring,
             layout = LayoutsProvider.layoutOf(design.layout).toState(),
@@ -57,7 +57,7 @@ data class MapState(
 fun MapState.generateEngine(): EditorEngine = editorEngineOf(
     layout = LayoutsProvider.layoutOf(layout.type),
 ).apply {
-    putAll(this@generateEngine.entities.toLayeredEntities())
+    putAll(this@generateEngine.entities)
     wallpaper = this@generateEngine.wallpaper
     flooring = this@generateEngine.flooring
 }

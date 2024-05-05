@@ -41,12 +41,10 @@ import io.stardewvalleydesigner.designformat.models.OptionsItemValue.Toggleable
 import io.stardewvalleydesigner.engine.entity.Building.SimpleBuilding.JunimoHut
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.entity.Equipment.SimpleEquipment.*
-import io.stardewvalleydesigner.engine.entity.PlacedEntity
 import io.stardewvalleydesigner.engine.geometry.*
 import io.stardewvalleydesigner.engine.geometry.shapes.*
-import io.stardewvalleydesigner.engine.layer.LayerType
-import io.stardewvalleydesigner.engine.layer.coordinates
-import io.stardewvalleydesigner.engine.layers.flatten
+import io.stardewvalleydesigner.engine.layer.*
+import io.stardewvalleydesigner.engine.layers.filter
 import io.stardewvalleydesigner.engine.layers.flattenSequence
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResources
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.layoutSpriteBy
@@ -81,7 +79,7 @@ internal fun EditorLayout(
     val floors2: ImageBitmap = ImageResources.floors2
 
     val layout = map.layout
-    val (nW, nH) = layout.size
+    val (nW, nH) = layout.area
     val layoutSprite = layoutSpriteBy(layout.type, season)
 
     val hoveredColor = MaterialTheme.colors.secondary
@@ -215,9 +213,8 @@ internal fun EditorLayout(
 
                 drawVisibleEntities(
                     entityMaps = entityMaps,
-                    entities = map.entities,
+                    entities = map.entities.filter(visibleLayers),
                     season = season,
-                    visibleLayers = visibleLayers,
                     renderSpritesFully = options.toggleables.getValue(Toggleable.ShowSpritesFully),
                     grid = grid,
                     scale = scale,
@@ -264,7 +261,7 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
     scale: Float,
     cellSize: Size,
 ) {
-    for (c in map.selectedEntities.flatten().coordinates) {
+    for (c in map.selectedEntities.coordinates) {
         drawRect(
             color = Color.Blue,
             topLeft = grid[c],
@@ -277,7 +274,7 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
         is ToolkitState.Drag.Point.Acting -> {
             val spriteMaps = SpriteUtils.calculateSprite(
                 spriteMaps = entityMaps,
-                entities = toolkit.heldEntities.flatten().sortedWith(placedEntityComparator),
+                entities = toolkit.heldEntities.sortedWith(placedEntityComparator),
                 season = season,
             )
 
@@ -335,7 +332,7 @@ private fun DrawScope.drawAreasOfEffects(
     grid: CoordinateGrid,
     cellSize: Size,
 ) {
-    val es = (map.entities.flattenSequence() + map.selectedEntities.flattenSequence())
+    val es = (map.entities.flattenSequence() + map.selectedEntities.asSequence())
         .toList()
         .asSequence()
 

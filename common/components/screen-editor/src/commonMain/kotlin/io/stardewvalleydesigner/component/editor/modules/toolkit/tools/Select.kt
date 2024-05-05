@@ -22,7 +22,8 @@ import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.getAll
 import io.stardewvalleydesigner.engine.layer.LayerType
-import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
+import io.stardewvalleydesigner.engine.layer.PlacedEntity
+import io.stardewvalleydesigner.engine.layers.flatten
 import kotlin.properties.Delegates
 
 
@@ -34,7 +35,7 @@ class Select(private val engine: EditorEngine, private val shape: ShapeType) : T
     override fun start(
         coordinate: Coordinate,
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
         start = coordinate
@@ -44,14 +45,14 @@ class Select(private val engine: EditorEngine, private val shape: ShapeType) : T
         return ActionReturn(
             toolkit = ToolkitState.Select.Shape.Acting(placedShape),
             currentEntity = currentEntity,
-            selectedEntities = engine.getAll(placedShape.coordinates, visLayers)
+            selectedEntities = engine.getAll(placedShape.coordinates, visLayers).flatten()
         )
     }
 
     override fun keep(
         coordinate: Coordinate,
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
         val placedShape = shape.projectTo(start, coordinate)
@@ -59,13 +60,13 @@ class Select(private val engine: EditorEngine, private val shape: ShapeType) : T
         return ActionReturn(
             toolkit = ToolkitState.Select.Shape.Acting(placedShape),
             currentEntity = currentEntity,
-            selectedEntities = engine.getAll(placedShape.coordinates, visLayers)
+            selectedEntities = engine.getAll(placedShape.coordinates, visLayers).flatten()
         )
     }
 
     override fun end(
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
         return ActionReturn(

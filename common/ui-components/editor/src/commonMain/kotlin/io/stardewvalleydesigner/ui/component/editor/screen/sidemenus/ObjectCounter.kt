@@ -39,7 +39,7 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.data.*
-import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
+import io.stardewvalleydesigner.engine.layers.LayeredEntities
 import io.stardewvalleydesigner.engine.layers.flattenSequence
 import io.stardewvalleydesigner.kmplib.clipboard.Clipboard
 import io.stardewvalleydesigner.ui.component.editor.utils.Sprite
@@ -47,11 +47,11 @@ import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 
 @Composable
-internal fun ObjectCounter(entities: LayeredEntitiesData, season: Season) {
+internal fun ObjectCounter(entities: LayeredEntities, season: Season) {
     val wordList = GlobalSettings.strings
     val countedEntities = entities
         .flattenSequence()
-        .map { it.rectObject }
+        .map { it.entity }
         .groupingBy { EntityDataProvider.entityToId(it).default }
         .eachCount()
         .asSequence()

@@ -25,24 +25,24 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 
-internal object LayeredEntitiesDataSerializer : KSerializer<LayeredEntitiesData> {
+internal object LayeredEntitiesSerializer : KSerializer<LayeredEntities> {
 
     private val delegateSerializer = ListSerializer(PlacedEntitySerializer)
 
     @OptIn(ExperimentalSerializationApi::class)
     override val descriptor: SerialDescriptor = SerialDescriptor(
-        serialName = "io.stardewvalleydesigner.engine.layers.LayeredEntitiesData",
+        serialName = "io.stardewvalleydesigner.engine.layers.LayeredEntities",
         original = delegateSerializer.descriptor,
     )
 
-    override fun serialize(encoder: Encoder, value: LayeredEntitiesData) {
+    override fun serialize(encoder: Encoder, value: LayeredEntities) {
         delegateSerializer.serialize(
             encoder,
             value = value.flatten(),
         )
     }
 
-    override fun deserialize(decoder: Decoder): LayeredEntitiesData {
-        return delegateSerializer.deserialize(decoder).layeredData()
+    override fun deserialize(decoder: Decoder): LayeredEntities {
+        return delegateSerializer.deserialize(decoder).layered()
     }
 }

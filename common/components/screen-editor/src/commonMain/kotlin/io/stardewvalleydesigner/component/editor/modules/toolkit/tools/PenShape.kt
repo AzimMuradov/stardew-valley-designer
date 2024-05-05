@@ -17,14 +17,12 @@
 package io.stardewvalleydesigner.component.editor.modules.toolkit.tools
 
 import io.stardewvalleydesigner.component.editor.modules.toolkit.*
-import io.stardewvalleydesigner.engine.*
+import io.stardewvalleydesigner.engine.EditorEngine
 import io.stardewvalleydesigner.engine.entity.Entity
-import io.stardewvalleydesigner.engine.entity.PlacedEntity
 import io.stardewvalleydesigner.engine.geometry.Coordinate
+import io.stardewvalleydesigner.engine.getReplacedBy
 import io.stardewvalleydesigner.engine.layer.*
-import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
-import io.stardewvalleydesigner.engine.layers.flatten
-import io.stardewvalleydesigner.engine.layout.respectsLayout
+import io.stardewvalleydesigner.engine.layout.respects
 import kotlin.properties.Delegates
 
 
@@ -38,7 +36,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
     override fun start(
         coordinate: Coordinate,
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn? {
         start = coordinate
@@ -50,15 +48,14 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
                 .coordinates
                 .asSequence()
                 .map(currentEntity::placeIt)
-                .filterTo(mutableSetOf()) { it respectsLayout engine.layout }
+                .filterTo(mutableSetOf()) { it respects engine.layout }
 
             return ActionReturn(
                 toolkit = ToolkitState.Pen.Shape.Acting(
                     placedShape = placedShape,
                     entitiesToDraw = entitiesToDraw,
                     entitiesToDelete = engine
-                        .getReplacedBy(entitiesToDraw.toList().asDisjointUnsafe())
-                        .flatten()
+                        .getReplacedBy(entitiesToDraw)
                         .coordinates
                 ),
                 currentEntity = currentEntity,
@@ -72,7 +69,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
     override fun keep(
         coordinate: Coordinate,
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
         val placedShape = shape.projectTo(start, coordinate)
@@ -84,7 +81,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
             .asSequence()
             .sortedWith(compareBy(Coordinate::x).thenBy(Coordinate::y))
             .map(currentEntity!!::placeIt)
-            .filter { it respectsLayout engine.layout }
+            .filter { it respects engine.layout }
             .filterTo(mutableSetOf()) {
                 if (it.coordinates.any(cs::contains)) {
                     false
@@ -99,8 +96,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
                 placedShape = placedShape,
                 entitiesToDraw = entitiesToDraw,
                 entitiesToDelete = engine
-                    .getReplacedBy(entitiesToDraw.toList().asDisjointUnsafe())
-                    .flatten()
+                    .getReplacedBy(entitiesToDraw)
                     .coordinates
             ),
             currentEntity = currentEntity,
@@ -110,10 +106,10 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
 
     override fun end(
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
-        engine.putAll(entitiesToDraw.toList().asDisjointUnsafe())
+        engine.putAll(entitiesToDraw)
         return ActionReturn(
             toolkit = ToolkitState.Pen.Shape.Idle(shape),
             currentEntity = currentEntity,

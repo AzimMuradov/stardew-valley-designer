@@ -22,7 +22,7 @@ import io.stardewvalleydesigner.engine.layout.Layout
 
 internal fun Layout.toState(): LayoutState = LayoutState(
     type = type,
-    size = size,
+    area = area,
     disallowedTypes = disallowedTypes.toSet(),
     disallowedTypesMap = disallowedTypesMap.toMap(),
     disallowedCoordinates = disallowedCoordinates.toSet()

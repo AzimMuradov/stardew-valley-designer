@@ -19,7 +19,7 @@ package io.stardewvalleydesigner.component.editor.modules.toolkit
 import io.stardewvalleydesigner.component.editor.EditorIntent
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.layer.LayerType
-import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
+import io.stardewvalleydesigner.engine.layer.PlacedEntity
 
 
 typealias Action = EditorIntent.Engine
@@ -27,13 +27,13 @@ typealias Action = EditorIntent.Engine
 data class ActionReturn(
     val toolkit: ToolkitState,
     val currentEntity: Entity<*>?,
-    val selectedEntities: LayeredEntitiesData,
+    val selectedEntities: List<PlacedEntity<*>>,
 )
 
 fun Toolkit.runAction(
     action: Action,
     currentEntity: Entity<*>?,
-    selectedEntities: LayeredEntitiesData,
+    selectedEntities: List<PlacedEntity<*>>,
     visLayers: Set<LayerType<*>>,
 ): ActionReturn? = when (action) {
     is EditorIntent.Engine.Start -> start(

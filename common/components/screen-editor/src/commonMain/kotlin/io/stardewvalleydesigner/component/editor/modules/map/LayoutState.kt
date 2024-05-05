@@ -24,7 +24,7 @@ import io.stardewvalleydesigner.engine.layout.LayoutType
 
 data class LayoutState(
     val type: LayoutType,
-    val size: Rect,
+    val area: Rect,
     val disallowedTypes: Set<EntityType>,
     val disallowedTypesMap: Map<Coordinate, Set<EntityType>>,
     val disallowedCoordinates: Set<Coordinate>,

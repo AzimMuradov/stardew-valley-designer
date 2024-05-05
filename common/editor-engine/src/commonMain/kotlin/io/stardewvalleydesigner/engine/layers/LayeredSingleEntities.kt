@@ -14,59 +14,49 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNCHECKED_CAST")
-
 package io.stardewvalleydesigner.engine.layers
 
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.layer.LayerType
+import io.stardewvalleydesigner.engine.layer.PlacedEntity
 
 
-data class LayeredSingleEntitiesData(
+data class LayeredSingleEntities(
     val floorEntity: PlacedEntity<FloorType>? = null,
     val floorFurnitureEntity: PlacedEntity<FloorFurnitureType>? = null,
     val objectEntity: PlacedEntity<ObjectType>? = null,
     val entityWithoutFloorEntity: PlacedEntity<EntityWithoutFloorType>? = null,
 ) {
 
-    private val entitiesMap = mapOf(
+    val all: List<Pair<LayerType<*>, PlacedEntity<*>?>> = listOf(
         LayerType.Floor to floorEntity,
         LayerType.FloorFurniture to floorFurnitureEntity,
         LayerType.Object to objectEntity,
         LayerType.EntityWithoutFloor to entityWithoutFloorEntity,
     )
-
-
-    val all: List<Pair<LayerType<*>, PlacedEntity<*>?>> = entitiesMap.toList()
-
-    fun <EType : EntityType> entityOrNullBy(layerType: LayerType<EType>): PlacedEntity<EType>? =
-        entitiesMap.getValue(layerType) as PlacedEntity<EType>?
 }
 
-fun layeredSingleEntitiesData(entitiesSelector: (LayerType<*>) -> PlacedEntity<*>?): LayeredSingleEntitiesData =
-    LayerType.all.associateWith { entitiesSelector(it) }.asLayeredSingleEntitiesData()
-
-
-// Conversions
-
-fun LayeredSingleEntitiesData.flatten(): List<PlacedEntity<*>> = all.mapNotNull { (_, entity) -> entity }
-
-fun LayeredSingleEntitiesData.toLayeredEntitiesData(): LayeredEntitiesData = LayeredEntitiesData(
-    floorEntities = floorEntity?.let(::setOf) ?: emptySet(),
-    floorFurnitureEntities = floorFurnitureEntity?.let(::setOf) ?: emptySet(),
-    objectEntities = objectEntity?.let(::setOf) ?: emptySet(),
-    entityWithoutFloorEntities = entityWithoutFloorEntity?.let(::setOf) ?: emptySet()
-)
+// sort held es
 
 
 // Utils
 
-fun LayeredSingleEntitiesData.topmost(): PlacedEntity<*>? = flatten().lastOrNull()
+fun LayeredSingleEntities.flatten(): List<PlacedEntity<*>> = all.mapNotNull { (_, entity) -> entity }
+
+fun LayeredSingleEntities.topmost(): PlacedEntity<*>? = flatten().lastOrNull()
 
 
-// Private utils
+// Internal utils
 
-private fun Map<LayerType<*>, PlacedEntity<*>?>.asLayeredSingleEntitiesData() = LayeredSingleEntitiesData(
+internal inline fun layeredSingleEntities(
+    layers: Set<LayerType<*>> = LayerType.all,
+    entitiesSelector: (LayerType<*>) -> PlacedEntity<*>?,
+): LayeredSingleEntities = layers
+    .associateWith(entitiesSelector)
+    .asLayeredSingleEntities()
+
+@Suppress("UNCHECKED_CAST")
+private fun Map<LayerType<*>, PlacedEntity<*>?>.asLayeredSingleEntities() = LayeredSingleEntities(
     floorEntity = get(LayerType.Floor) as PlacedEntity<FloorType>?,
     floorFurnitureEntity = get(LayerType.FloorFurniture) as PlacedEntity<FloorFurnitureType>?,
     objectEntity = get(LayerType.Object) as PlacedEntity<ObjectType>?,

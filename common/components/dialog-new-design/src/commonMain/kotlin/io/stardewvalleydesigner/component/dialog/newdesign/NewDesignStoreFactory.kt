@@ -23,7 +23,7 @@ import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.designformat.Wrapper
 import io.stardewvalleydesigner.designformat.models.*
 import io.stardewvalleydesigner.designformat.wrapped
-import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
+import io.stardewvalleydesigner.engine.layers.LayeredEntities
 import io.stardewvalleydesigner.engine.layout.LayoutType
 import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
 import io.stardewvalleydesigner.component.dialog.newdesign.NewDesignIntent as Intent
@@ -84,7 +84,7 @@ class NewDesignStoreFactory(private val storeFactory: StoreFactory) {
                         farmName = "",
                         season = Season.Spring,
                         layout = layoutType,
-                        entities = LayeredEntitiesData(),
+                        entities = LayeredEntities(),
                         wallpaper = null,
                         flooring = null,
                         palette = Palette.default(),

@@ -14,75 +14,65 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNCHECKED_CAST")
-
 package io.stardewvalleydesigner.engine.layers
 
+import io.stardewvalleydesigner.engine.customGroupByTo
 import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.layer.*
-import io.stardewvalleydesigner.engine.notOverlapsWith
 
 
-class LayeredEntities(
-    floorEntities: DisjointEntities<FloorType>? = null,
-    floorFurnitureEntities: DisjointEntities<FloorFurnitureType>? = null,
-    objectEntities: DisjointEntities<ObjectType>? = null,
-    entityWithoutFloorEntities: DisjointEntities<EntityWithoutFloorType>? = null,
+data class LayeredEntities(
+    val floorEntities: Set<PlacedEntity<FloorType>> = emptySet(),
+    val floorFurnitureEntities: Set<PlacedEntity<FloorFurnitureType>> = emptySet(),
+    val objectEntities: Set<PlacedEntity<ObjectType>> = emptySet(),
+    val entityWithoutFloorEntities: Set<PlacedEntity<EntityWithoutFloorType>> = emptySet(),
 ) {
 
-    private val entitiesMap = mapOf(
-        LayerType.Floor to (floorEntities ?: emptyDisjointRectObjects()),
-        LayerType.FloorFurniture to (floorFurnitureEntities ?: emptyDisjointRectObjects()),
-        LayerType.Object to (objectEntities ?: emptyDisjointRectObjects()),
-        LayerType.EntityWithoutFloor to (entityWithoutFloorEntities ?: emptyDisjointRectObjects()),
+    val all: List<Pair<LayerType<*>, Set<PlacedEntity<*>>>> = listOf(
+        LayerType.Floor to floorEntities,
+        LayerType.FloorFurniture to floorFurnitureEntities,
+        LayerType.Object to objectEntities,
+        LayerType.EntityWithoutFloor to entityWithoutFloorEntities,
     )
-
-    init {
-        val withFloorCs = entitiesMap
-            .filter { (layerType) -> layerType in LayerType.withFloor }
-            .flatMapTo(mutableSetOf()) { (_, es) -> es.coordinates }
-
-        val withoutFloorCs = entitiesMap.asSequence()
-            .filter { (layerType) -> layerType in LayerType.withoutFloor }
-            .flatMapTo(mutableSetOf()) { (_, es) -> es.coordinates }
-
-        require(withoutFloorCs notOverlapsWith withFloorCs) {
-            "Wrong `LayeredEntities` definition."
-        }
-    }
-
-
-    val all: List<Pair<LayerType<*>, DisjointEntities<*>>> = entitiesMap.toList()
-
-    fun <EType : EntityType> entitiesBy(layerType: LayerType<EType>): DisjointEntities<EType> =
-        entitiesMap.getValue(layerType) as DisjointEntities<EType>
 }
 
-fun layeredEntities(entitiesSelector: (LayerType<*>) -> List<PlacedEntity<*>>): LayeredEntities =
-    LayerType.all.associateWith { entitiesSelector(it).asDisjointUnsafe() }.asLayeredEntities()
 
+// Utils
 
-// Conversions
+fun LayeredEntities.isEmpty(): Boolean = all.sumOf { it.second.size } == 0
+
+fun LayeredEntities.filter(visibleLayers: Set<LayerType<*>>): LayeredEntities = LayeredEntities(
+    if (LayerType.Floor in visibleLayers) floorEntities else emptySet(),
+    if (LayerType.FloorFurniture in visibleLayers) floorFurnitureEntities else emptySet(),
+    if (LayerType.Object in visibleLayers) objectEntities else emptySet(),
+    if (LayerType.EntityWithoutFloor in visibleLayers) entityWithoutFloorEntities else emptySet(),
+)
 
 fun LayeredEntities.flatten(): List<PlacedEntity<*>> = all.flatMap { (_, es) -> es }
 
 fun LayeredEntities.flattenSequence(): Sequence<PlacedEntity<*>> = all.asSequence().flatMap { (_, es) -> es }
 
-fun <C : MutableCollection<in PlacedEntity<*>>> LayeredEntities.flattenTo(destination: C): C =
-    all.flatMapTo(destination) { (_, es) -> es }
-
-fun Iterable<PlacedEntity<*>>.layered(): LayeredEntities =
-    groupBy(PlacedEntity<*>::layerType).mapValues { (_, es) -> es.asDisjointUnsafe() }.asLayeredEntities()
-
-fun Sequence<PlacedEntity<*>>.layered(): LayeredEntities =
-    groupBy(PlacedEntity<*>::layerType).mapValues { (_, es) -> es.asDisjointUnsafe() }.asLayeredEntities()
+fun Iterable<PlacedEntity<*>>.layered(): LayeredEntities = customGroupByTo(
+    destination = mutableMapOf(),
+    keySelector = PlacedEntity<*>::layerType,
+    valuesCollectionGenerator = ::mutableSetOf
+).asLayeredEntities()
 
 
-// Private utils
+// Internal utils
 
-private fun Map<LayerType<*>, DisjointEntities<*>>.asLayeredEntities() = LayeredEntities(
-    floorEntities = get(LayerType.Floor) as DisjointEntities<FloorType>?,
-    floorFurnitureEntities = get(LayerType.FloorFurniture) as DisjointEntities<FloorFurnitureType>?,
-    objectEntities = get(LayerType.Object) as DisjointEntities<ObjectType>?,
-    entityWithoutFloorEntities = get(LayerType.EntityWithoutFloor) as DisjointEntities<EntityWithoutFloorType>?,
+internal inline fun layeredEntities(
+    layers: Set<LayerType<*>> = LayerType.all,
+    entitiesSelector: (LayerType<*>) -> Set<PlacedEntity<*>>,
+): LayeredEntities = layers
+    .associateWith(entitiesSelector)
+    .asLayeredEntities()
+
+@Suppress("UNCHECKED_CAST")
+private fun Map<LayerType<*>, Set<PlacedEntity<*>>>.asLayeredEntities() = LayeredEntities(
+    floorEntities = get(LayerType.Floor) as Set<PlacedEntity<FloorType>>? ?: emptySet(),
+    floorFurnitureEntities = get(LayerType.FloorFurniture) as Set<PlacedEntity<FloorFurnitureType>>? ?: emptySet(),
+    objectEntities = get(LayerType.Object) as Set<PlacedEntity<ObjectType>>? ?: emptySet(),
+    entityWithoutFloorEntities = get(LayerType.EntityWithoutFloor) as Set<PlacedEntity<EntityWithoutFloorType>>?
+        ?: emptySet(),
 )

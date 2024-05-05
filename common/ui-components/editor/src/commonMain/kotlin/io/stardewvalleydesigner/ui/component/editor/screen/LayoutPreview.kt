@@ -31,8 +31,7 @@ import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.geometry.*
-import io.stardewvalleydesigner.engine.layer.LayerType
-import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
+import io.stardewvalleydesigner.engine.layers.LayeredEntities
 import io.stardewvalleydesigner.engine.layout.Layout
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResources
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.layoutSpriteBy
@@ -47,7 +46,7 @@ import kotlin.math.roundToInt
 fun BoxScope.LayoutPreview(
     layout: Layout,
     season: Season,
-    entities: LayeredEntitiesData,
+    entities: LayeredEntities,
     wallpaper: Wallpaper?,
     flooring: Flooring?,
 ) {
@@ -56,7 +55,7 @@ fun BoxScope.LayoutPreview(
     val walls2 = ImageResources.walls2
     val floors2 = ImageResources.floors2
 
-    val (nW, nH) = layout.size
+    val (nW, nH) = layout.area
     val layoutSprite = layoutSpriteBy(layout.type, season)
 
     var cellSide by remember { mutableStateOf(-1f) }
@@ -96,7 +95,6 @@ fun BoxScope.LayoutPreview(
             entityMaps = entityMaps,
             season = season,
             entities = entities,
-            visibleLayers = LayerType.all,
             renderSpritesFully = true,
             grid = grid
         )

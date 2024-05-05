@@ -16,17 +16,12 @@
 
 package io.stardewvalleydesigner.engine.entity
 
-import io.stardewvalleydesigner.engine.layer.*
+import io.stardewvalleydesigner.engine.geometry.Rect
 
 
-sealed interface Entity<out EType : EntityType> : RectObject {
+sealed interface Entity<out T : EntityType> {
 
-    val type: EType
+    val type: T
+
+    val size: Rect
 }
-
-typealias PlacedEntity<EType> = PlacedRectObject<Entity<EType>>
-
-typealias DisjointEntities<EType> = DisjointRectObjects<Entity<EType>>
-
-
-val <EType : EntityType> PlacedEntity<EType>.type get() = rectObject.type
