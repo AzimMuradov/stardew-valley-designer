@@ -21,11 +21,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.stardewvalleydesigner.cmplib.tooltip.TooltipArea
 import io.stardewvalleydesigner.cmplib.tooltip.TooltipPlacement
-import io.stardewvalleydesigner.ui.component.editor.screen.MenuIconButton
 
 
 @Composable
-fun BottomMenuIconButton(
+fun TopMenuIconButtonWithTooltip(
     tooltip: String,
     icon: ImageVector,
     enabled: Boolean = true,
@@ -34,10 +33,10 @@ fun BottomMenuIconButton(
     TooltipArea(
         tooltip,
         tooltipPlacement = TooltipPlacement.ComponentRect(
-            anchor = Alignment.TopCenter,
-            alignment = Alignment.TopCenter,
+            anchor = Alignment.BottomCenter,
+            alignment = Alignment.BottomCenter,
         ),
     ) {
-        MenuIconButton(icon, enabled, onClick)
+        TopMenuIconButton(icon, enabled, onClick)
     }
 }

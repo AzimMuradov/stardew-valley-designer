@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu
+package io.stardewvalleydesigner.ui.component.editor.screen.topmenu
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
@@ -33,7 +33,6 @@ import io.stardewvalleydesigner.component.dialog.opensvsave.OpenSvSaveIntent
 import io.stardewvalleydesigner.component.dialog.opensvsave.OpenSvSaveState
 import io.stardewvalleydesigner.ui.component.designdialogs.*
 import io.stardewvalleydesigner.ui.component.editor.res.SaveOpen
-import io.stardewvalleydesigner.ui.component.editor.screen.topmenu.BottomMenuIconButton
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 
@@ -45,7 +44,7 @@ fun OpenSvSaveButton(
 ) {
     val wordList = GlobalSettings.strings
 
-    BottomMenuIconButton(
+    TopMenuIconButtonWithTooltip(
         tooltip = wordList.buttonSaveImportText,
         icon = Icons.Filled.SaveOpen,
         onClick = { intentConsumer(OpenSvSaveIntent.OpenMenu) },

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesignasimg
+package io.stardewvalleydesigner.ui.component.editor.screen.topmenu.savedesignas
 
 import kotlinx.datetime.*
 

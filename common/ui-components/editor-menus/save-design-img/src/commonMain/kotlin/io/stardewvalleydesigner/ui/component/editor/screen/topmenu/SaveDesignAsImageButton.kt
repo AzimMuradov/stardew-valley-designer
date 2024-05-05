@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu
+package io.stardewvalleydesigner.ui.component.editor.screen.topmenu
 
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.icons.Icons
@@ -31,9 +31,8 @@ import io.stardewvalleydesigner.kmplib.fs.getSvdImagesDir
 import io.stardewvalleydesigner.kmplib.png.PNG_FORMAT
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResources
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider
-import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesignasimg.DesignRenderer
-import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesignasimg.nowFormatted
-import io.stardewvalleydesigner.ui.component.editor.screen.topmenu.BottomMenuIconButton
+import io.stardewvalleydesigner.ui.component.editor.screen.topmenu.savedesignasimg.DesignRenderer
+import io.stardewvalleydesigner.ui.component.editor.screen.topmenu.savedesignasimg.nowFormatted
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -53,7 +52,7 @@ fun SaveDesignAsImageButton(
 
     var showFileSaver by remember { mutableStateOf(false) }
 
-    BottomMenuIconButton(
+    TopMenuIconButtonWithTooltip(
         tooltip = wordList.buttonSaveDesignAsImageTooltip,
         icon = Icons.Filled.Image,
         onClick = {

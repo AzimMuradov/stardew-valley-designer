@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu
+package io.stardewvalleydesigner.ui.component.editor.screen.topmenu
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -27,7 +27,6 @@ import androidx.compose.ui.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import io.stardewvalleydesigner.ui.component.editor.screen.topmenu.BottomMenuIconButton
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -35,7 +34,7 @@ import io.stardewvalleydesigner.ui.component.editor.screen.topmenu.BottomMenuIco
 fun HelpButton() {
     var show by remember { mutableStateOf(false) }
 
-    BottomMenuIconButton(
+    TopMenuIconButtonWithTooltip(
         tooltip = "Help",
         icon = Icons.AutoMirrored.Filled.Help,
         onClick = { show = true },

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu
+package io.stardewvalleydesigner.ui.component.editor.screen.topmenu
 
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.icons.Icons
@@ -26,8 +26,7 @@ import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.designformat.models.Options
 import io.stardewvalleydesigner.designformat.models.Palette
 import io.stardewvalleydesigner.kmplib.dispatcher.PlatformDispatcher
-import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesign.DesignSaver
-import io.stardewvalleydesigner.ui.component.editor.screen.topmenu.BottomMenuIconButton
+import io.stardewvalleydesigner.ui.component.editor.screen.topmenu.savedesign.DesignSaver
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -51,7 +50,7 @@ fun SaveDesignButton(
 
     val scope = rememberCoroutineScope()
 
-    BottomMenuIconButton(
+    TopMenuIconButtonWithTooltip(
         tooltip = wordList.buttonSaveDesignTooltip,
         icon = Icons.Rounded.Save,
         enabled = designSaveAbsolutePath != null && File(designSaveAbsolutePath).run { exists() && isFile },

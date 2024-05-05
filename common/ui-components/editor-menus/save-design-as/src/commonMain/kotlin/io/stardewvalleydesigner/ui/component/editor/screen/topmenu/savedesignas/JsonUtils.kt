@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesignas
+package io.stardewvalleydesigner.ui.component.editor.screen.topmenu.savedesignas
 
 
 internal const val JSON_FORMAT: String = "json"

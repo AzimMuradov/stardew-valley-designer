@@ -43,7 +43,7 @@ import io.stardewvalleydesigner.settings.Lang
 import io.stardewvalleydesigner.settings.SettingsInterpreter
 import io.stardewvalleydesigner.ui.component.editor.EditorScreen
 import io.stardewvalleydesigner.ui.component.editor.res.WithImageResources
-import io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.*
+import io.stardewvalleydesigner.ui.component.editor.screen.topmenu.*
 import io.stardewvalleydesigner.ui.component.settings.WithSettings
 import io.stardewvalleydesigner.ui.component.themes.AppTheme
 import io.stardewvalleydesigner.ui.component.themes.ThemeVariant

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.ui.component.editor.screen
+package io.stardewvalleydesigner.ui.component.editor.screen.topmenu
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-internal fun MenuIconButton(
+internal fun TopMenuIconButton(
     icon: ImageVector,
     enabled: Boolean = true,
     onClick: () -> Unit,

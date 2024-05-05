@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesignas
+package io.stardewvalleydesigner.ui.component.editor.screen.topmenu.savedesign
 
 import io.stardewvalleydesigner.component.editor.modules.map.MapState
 import io.stardewvalleydesigner.data.Season
@@ -24,16 +24,16 @@ import io.stardewvalleydesigner.designformat.models.*
 
 internal object DesignSaver {
 
-    fun serializeDesignToBytes(
+    fun serializeDesignToString(
         map: MapState,
         playerName: String,
         farmName: String,
         season: Season,
         palette: Palette,
         options: Options,
-    ): ByteArray = DesignFormatSerializer.serialize(
+    ): String = DesignFormatSerializer.serialize(
         design = convertToDesign(map, playerName, farmName, season, palette, options),
-    ).encodeToByteArray()
+    )
 
 
     private fun convertToDesign(

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu
+package io.stardewvalleydesigner.ui.component.editor.screen.topmenu
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.size
@@ -30,7 +30,6 @@ import androidx.compose.ui.window.DialogProperties
 import io.stardewvalleydesigner.component.dialog.newdesign.NewDesignIntent
 import io.stardewvalleydesigner.component.dialog.newdesign.NewDesignState
 import io.stardewvalleydesigner.ui.component.designdialogs.*
-import io.stardewvalleydesigner.ui.component.editor.screen.topmenu.BottomMenuIconButton
 import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 
@@ -42,7 +41,7 @@ fun NewDesignButton(
 ) {
     val wordList = GlobalSettings.strings
 
-    BottomMenuIconButton(
+    TopMenuIconButtonWithTooltip(
         tooltip = wordList.buttonNewDesignText,
         icon = Icons.Filled.Add,
         onClick = { intentConsumer(NewDesignIntent.OpenMenu) },

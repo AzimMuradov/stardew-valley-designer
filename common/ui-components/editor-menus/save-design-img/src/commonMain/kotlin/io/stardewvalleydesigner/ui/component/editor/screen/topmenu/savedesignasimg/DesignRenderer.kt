@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.stardewvalleydesigner.ui.component.editor.screen.bottommenu.savedesignasimg
+package io.stardewvalleydesigner.ui.component.editor.screen.topmenu.savedesignasimg
 
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.IntOffset
