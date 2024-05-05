@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.stardewvalleydesigner.component.editor.EditorIntent
 import io.stardewvalleydesigner.component.editor.modules.history.HistoryState
-import io.stardewvalleydesigner.ui.component.editor.screen.MenuIconButton
 
 
 @Composable
@@ -38,13 +37,13 @@ internal fun History(
         modifier = Modifier.wrapContentWidth().fillMaxHeight(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        MenuIconButton(
+        TopMenuIconButton(
             icon = Icons.AutoMirrored.Rounded.ArrowBack,
             enabled = history.canGoBack,
             onClick = { intentConsumer(EditorIntent.History.GoBack) }
         )
         Spacer(Modifier.size(4.dp))
-        MenuIconButton(
+        TopMenuIconButton(
             icon = Icons.AutoMirrored.Rounded.ArrowForward,
             enabled = history.canGoForward,
             onClick = { intentConsumer(EditorIntent.History.GoForward) }

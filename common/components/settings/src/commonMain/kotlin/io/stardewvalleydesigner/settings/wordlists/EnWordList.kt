@@ -16,7 +16,6 @@
 
 package io.stardewvalleydesigner.settings.wordlists
 
-import io.stardewvalleydesigner.component.editor.menus.EntitySelectionRoot
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ShapeType
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolType
 import io.stardewvalleydesigner.designformat.models.OptionsItemValue
@@ -168,71 +167,6 @@ data object EnWordList : WordList {
 
 
     // Editor Screen
-
-    override fun menuTitle(root: EntitySelectionRoot): String = menuTitles[root] ?: when (root) {
-
-        // Buildings Menu
-
-        EntitySelectionRoot.Buildings -> "Buildings"
-        EntitySelectionRoot.BuildingsBarns -> "Barns"
-        EntitySelectionRoot.BuildingsCoops -> "Coops"
-        EntitySelectionRoot.BuildingsSheds -> "Sheds"
-        EntitySelectionRoot.BuildingsCabins -> "Cabins"
-        EntitySelectionRoot.BuildingsMagical -> "Magical Buildings"
-
-
-        // Common Equipment Menu
-
-        EntitySelectionRoot.CommonEquipment -> "Common Equipment"
-
-
-        // Furniture Menu
-
-        EntitySelectionRoot.Furniture -> "Furniture"
-        EntitySelectionRoot.FurnitureOutdoor -> "Outdoor Furniture"
-        EntitySelectionRoot.FurnitureUniversal -> "Universal Furniture"
-        EntitySelectionRoot.FurnitureUniversalChairs -> "Chairs"
-        EntitySelectionRoot.FurnitureUniversalBenches -> "Benches"
-        EntitySelectionRoot.FurnitureUniversalTables -> "Tables"
-        EntitySelectionRoot.FurnitureUniversalHousePlants -> "House Plants"
-        EntitySelectionRoot.FurnitureUniversalFreestandingDecorativePlants -> "Freestanding Decorative Plants"
-        EntitySelectionRoot.FurnitureUniversalTorches -> "Torches"
-        EntitySelectionRoot.FurnitureUniversalOtherDecorations -> "Other Decorations"
-        EntitySelectionRoot.FurnitureUniversalCatalogues -> "Catalogues"
-        EntitySelectionRoot.FurnitureIndoor -> "Indoor Furniture"
-        EntitySelectionRoot.FurnitureIndoorBookcases -> "Bookcases"
-        EntitySelectionRoot.FurnitureIndoorFireplaces -> "Fireplaces"
-        EntitySelectionRoot.FurnitureIndoorLamps -> "Lamps"
-        EntitySelectionRoot.FurnitureIndoorTVs -> "TVs"
-        EntitySelectionRoot.FurnitureIndoorFishTanks -> "Fish Tanks"
-        EntitySelectionRoot.FurnitureIndoorCouches -> "Couches"
-        EntitySelectionRoot.FurnitureIndoorArmchairs -> "Armchairs"
-        EntitySelectionRoot.FurnitureIndoorDressers -> "Dressers"
-        EntitySelectionRoot.FurnitureHouse -> "House Furniture"
-        EntitySelectionRoot.FurnitureFloor -> "Rugs"
-
-
-        // Farm Elements
-
-        EntitySelectionRoot.FarmElements -> "Farm Elements"
-        EntitySelectionRoot.FarmElementsCrops -> "Crops"
-        EntitySelectionRoot.FarmElementsCropsSpring -> "Spring Crops"
-        EntitySelectionRoot.FarmElementsCropsSummer -> "Summer Crops"
-        EntitySelectionRoot.FarmElementsCropsFall -> "Fall Crops"
-        EntitySelectionRoot.FarmElementsCropsSpecial -> "Special Crops"
-        EntitySelectionRoot.FarmElementsForaging -> "Foraging"
-        EntitySelectionRoot.FarmElementsScarecrows -> "Scarecrows"
-        EntitySelectionRoot.FarmElementsSprinklers -> "Sprinklers"
-
-
-        // Terrain Elements Menu
-
-        EntitySelectionRoot.TerrainElements -> "Terrain Elements"
-        EntitySelectionRoot.TerrainElementsFloors -> "Floors"
-        EntitySelectionRoot.TerrainElementsFences -> "Fences"
-        EntitySelectionRoot.TerrainElementsSigns -> "Signs"
-        EntitySelectionRoot.TerrainElementsLighting -> "Lighting"
-    }.also { menuTitles[root] = it }
 
     override fun optionTitle(option: OptionsItemValue): String = when (option) {
         OptionsItemValue.Toggleable.ShowAxis -> "Show axis"
@@ -834,6 +768,18 @@ data object EnWordList : WordList {
         LayerType.EntityWithoutFloor -> "Buildings and crops layer"
     }.also { layers[type] = it }
 
+    override val searchFieldPlaceholder: String = "Search for..."
+
+    override val buildingsTabTitle: String = "Buildings"
+
+    override val cropsTabTitle: String = "Crops"
+
+    override val equipmentTabTitle: String = "Equipment"
+
+    override val floorTabTitle: String = "Floor"
+
+    override val furnitureTabTitle: String = "Furniture"
+
     override val wallpapersTabTitle: String = "Wallpapers"
 
     override val flooringTabTitle: String = "Flooring"
@@ -850,8 +796,6 @@ data object EnWordList : WordList {
 
 
     // Private
-
-    private val menuTitles: MutableMap<EntitySelectionRoot, String> = mutableMapOf()
 
     private val entities: MutableMap<Entity<*>, String> = mutableMapOf()
 

@@ -16,7 +16,6 @@
 
 package io.stardewvalleydesigner.settings.wordlists
 
-import io.stardewvalleydesigner.component.editor.menus.EntitySelectionRoot
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ShapeType
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolType
 import io.stardewvalleydesigner.designformat.models.OptionsItemValue
@@ -166,11 +165,6 @@ sealed interface WordList {
 
     // Editor Screen
 
-    /**
-     * Get menu title by its root.
-     */
-    fun menuTitle(root: EntitySelectionRoot): String
-
     fun optionTitle(option: OptionsItemValue): String
 
     /**
@@ -223,6 +217,18 @@ sealed interface WordList {
      * Get layer name by its type.
      */
     fun layer(type: LayerType<*>): String
+
+    val searchFieldPlaceholder: String
+
+    val buildingsTabTitle: String
+
+    val cropsTabTitle: String
+
+    val equipmentTabTitle: String
+
+    val floorTabTitle: String
+
+    val furnitureTabTitle: String
 
     val wallpapersTabTitle: String
 
