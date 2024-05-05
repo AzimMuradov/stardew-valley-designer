@@ -21,7 +21,7 @@ import io.stardewvalleydesigner.engine.entity.EntityType
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.layer.*
 import io.stardewvalleydesigner.engine.layers.Layers
-import io.stardewvalleydesigner.engine.layers.layeredEntitiesData
+import io.stardewvalleydesigner.engine.layers.layeredEntities
 import io.stardewvalleydesigner.engine.layout.Layout
 import io.stardewvalleydesigner.engine.layout.respects
 
@@ -34,7 +34,7 @@ private class EditorEngineImpl(override val layout: Layout) : EditorEngine {
     private val layers = Layers()
 
 
-    override fun getEntities() = layeredEntitiesData {
+    override fun getEntities() = layeredEntities {
         layers.layerBy(it).placedEntities
     }
 

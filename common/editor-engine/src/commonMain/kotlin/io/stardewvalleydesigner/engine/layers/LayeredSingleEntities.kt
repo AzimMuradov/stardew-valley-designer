@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNCHECKED_CAST")
-
 package io.stardewvalleydesigner.engine.layers
 
 import io.stardewvalleydesigner.engine.entity.*
@@ -23,7 +21,7 @@ import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layer.PlacedEntity
 
 
-data class LayeredSingleEntitiesData(
+data class LayeredSingleEntities(
     val floorEntity: PlacedEntity<FloorType>? = null,
     val floorFurnitureEntity: PlacedEntity<FloorFurnitureType>? = null,
     val objectEntity: PlacedEntity<ObjectType>? = null,
@@ -43,22 +41,22 @@ data class LayeredSingleEntitiesData(
 
 // Utils
 
-fun LayeredSingleEntitiesData.flatten(): List<PlacedEntity<*>> = all.mapNotNull { (_, entity) -> entity }
+fun LayeredSingleEntities.flatten(): List<PlacedEntity<*>> = all.mapNotNull { (_, entity) -> entity }
 
-fun LayeredSingleEntitiesData.topmost(): PlacedEntity<*>? = flatten().lastOrNull()
+fun LayeredSingleEntities.topmost(): PlacedEntity<*>? = flatten().lastOrNull()
 
 
 // Internal utils
 
-internal inline fun layeredSingleEntitiesData(
+internal inline fun layeredSingleEntities(
     layers: Set<LayerType<*>> = LayerType.all,
     entitiesSelector: (LayerType<*>) -> PlacedEntity<*>?,
-): LayeredSingleEntitiesData = layers
+): LayeredSingleEntities = layers
     .associateWith(entitiesSelector)
-    .asLayeredSingleEntitiesData()
+    .asLayeredSingleEntities()
 
 @Suppress("UNCHECKED_CAST")
-private fun Map<LayerType<*>, PlacedEntity<*>?>.asLayeredSingleEntitiesData() = LayeredSingleEntitiesData(
+private fun Map<LayerType<*>, PlacedEntity<*>?>.asLayeredSingleEntities() = LayeredSingleEntities(
     floorEntity = get(LayerType.Floor) as PlacedEntity<FloorType>?,
     floorFurnitureEntity = get(LayerType.FloorFurniture) as PlacedEntity<FloorFurnitureType>?,
     objectEntity = get(LayerType.Object) as PlacedEntity<ObjectType>?,

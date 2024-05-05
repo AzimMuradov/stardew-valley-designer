@@ -25,7 +25,7 @@ import io.stardewvalleydesigner.engine.entity.Equipment.SimpleEquipment.*
 import io.stardewvalleydesigner.engine.entity.Floor
 import io.stardewvalleydesigner.engine.geometry.*
 import io.stardewvalleydesigner.engine.layer.PlacedEntity
-import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
+import io.stardewvalleydesigner.engine.layers.LayeredEntities
 import io.stardewvalleydesigner.engine.layers.flatten
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.spriteBy
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.placedEntityComparator
@@ -35,7 +35,7 @@ object SpriteUtils {
 
     fun calculateSprite(
         spriteMaps: Map<SpritePage, ImageBitmap>,
-        entities: LayeredEntitiesData,
+        entities: LayeredEntities,
         season: Season,
     ): List<Pair<PlacedEntity<*>, Sprite>> {
         val sorted = entities.flatten().sortedWith(placedEntityComparator)

@@ -29,7 +29,7 @@ import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.layer.PlacedEntity
 import io.stardewvalleydesigner.engine.layer.toLayerType
-import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
+import io.stardewvalleydesigner.engine.layers.LayeredEntities
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.flooringSpriteBy
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.wallpaperSpriteBy
 import io.stardewvalleydesigner.ui.component.editor.res.Sprite
@@ -153,7 +153,7 @@ object DrawerUtils {
 
     internal fun DrawScope.drawVisibleEntities(
         entityMaps: Map<SpritePage, ImageBitmap>,
-        entities: LayeredEntitiesData,
+        entities: LayeredEntities,
         season: Season,
         renderSpritesFully: Boolean,
         grid: CoordinateGrid,

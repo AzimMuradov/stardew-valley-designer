@@ -30,7 +30,7 @@ interface EditorEngine {
 
     val layout: Layout
 
-    fun getEntities(): LayeredEntitiesData
+    fun getEntities(): LayeredEntities
 
     var wallpaper: Wallpaper?
 
@@ -63,14 +63,14 @@ interface EditorEngine {
 fun EditorEngine.get(
     c: Coordinate,
     layers: Set<LayerType<*>> = LayerType.all,
-): LayeredSingleEntitiesData = layeredSingleEntitiesData(layers) { layer ->
+): LayeredSingleEntities = layeredSingleEntities(layers) { layer ->
     get(layer, c)
 }
 
 fun EditorEngine.remove(
     c: Coordinate,
     layers: Set<LayerType<*>> = LayerType.all,
-): LayeredSingleEntitiesData = layeredSingleEntitiesData(layers) { layer ->
+): LayeredSingleEntities = layeredSingleEntities(layers) { layer ->
     remove(layer, c)
 }
 
@@ -84,18 +84,18 @@ fun <T : EntityType> EditorEngine.remove(
 fun EditorEngine.getAll(
     cs: Iterable<Coordinate>,
     layers: Set<LayerType<*>> = LayerType.all,
-): LayeredEntitiesData = layeredEntitiesData(layers) { layer ->
+): LayeredEntities = layeredEntities(layers) { layer ->
     getAll(layer, cs)
 }
 
-fun EditorEngine.putAll(entities: LayeredEntitiesData) {
+fun EditorEngine.putAll(entities: LayeredEntities) {
     entities.flattenSequence().forEach(this::put)
 }
 
 fun EditorEngine.removeAll(
     cs: Iterable<Coordinate>,
     layers: Set<LayerType<*>> = LayerType.all,
-): LayeredEntitiesData = layeredEntitiesData(layers) { layer ->
+): LayeredEntities = layeredEntities(layers) { layer ->
     removeAll(layer, cs)
 }
 

@@ -27,7 +27,7 @@ import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.designformat.models.Options
 import io.stardewvalleydesigner.designformat.models.OptionsItemValue.Toggleable
 import io.stardewvalleydesigner.designformat.models.Palette
-import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
+import io.stardewvalleydesigner.engine.layers.LayeredEntities
 import io.stardewvalleydesigner.engine.layers.isEmpty
 import io.stardewvalleydesigner.component.editor.EditorIntent as Intent
 
@@ -36,7 +36,7 @@ import io.stardewvalleydesigner.component.editor.EditorIntent as Intent
 internal fun LeftSideMenus(
     toolkit: ToolkitState,
     palette: Palette,
-    entities: LayeredEntitiesData,
+    entities: LayeredEntities,
     season: Season,
     options: Options,
     width: Dp,

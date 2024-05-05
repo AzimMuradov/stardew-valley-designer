@@ -21,7 +21,7 @@ import io.stardewvalleydesigner.engine.entity.*
 import io.stardewvalleydesigner.engine.layer.*
 
 
-data class LayeredEntitiesData(
+data class LayeredEntities(
     val floorEntities: Set<PlacedEntity<FloorType>> = emptySet(),
     val floorFurnitureEntities: Set<PlacedEntity<FloorFurnitureType>> = emptySet(),
     val objectEntities: Set<PlacedEntity<ObjectType>> = emptySet(),
@@ -39,37 +39,37 @@ data class LayeredEntitiesData(
 
 // Utils
 
-fun LayeredEntitiesData.isEmpty(): Boolean = all.sumOf { it.second.size } == 0
+fun LayeredEntities.isEmpty(): Boolean = all.sumOf { it.second.size } == 0
 
-fun LayeredEntitiesData.filter(visibleLayers: Set<LayerType<*>>): LayeredEntitiesData = LayeredEntitiesData(
+fun LayeredEntities.filter(visibleLayers: Set<LayerType<*>>): LayeredEntities = LayeredEntities(
     if (LayerType.Floor in visibleLayers) floorEntities else emptySet(),
     if (LayerType.FloorFurniture in visibleLayers) floorFurnitureEntities else emptySet(),
     if (LayerType.Object in visibleLayers) objectEntities else emptySet(),
     if (LayerType.EntityWithoutFloor in visibleLayers) entityWithoutFloorEntities else emptySet(),
 )
 
-fun LayeredEntitiesData.flatten(): List<PlacedEntity<*>> = all.flatMap { (_, es) -> es }
+fun LayeredEntities.flatten(): List<PlacedEntity<*>> = all.flatMap { (_, es) -> es }
 
-fun LayeredEntitiesData.flattenSequence(): Sequence<PlacedEntity<*>> = all.asSequence().flatMap { (_, es) -> es }
+fun LayeredEntities.flattenSequence(): Sequence<PlacedEntity<*>> = all.asSequence().flatMap { (_, es) -> es }
 
-fun Iterable<PlacedEntity<*>>.layeredData(): LayeredEntitiesData = customGroupByTo(
+fun Iterable<PlacedEntity<*>>.layered(): LayeredEntities = customGroupByTo(
     destination = mutableMapOf(),
     keySelector = PlacedEntity<*>::layerType,
     valuesCollectionGenerator = ::mutableSetOf
-).asLayeredEntitiesData()
+).asLayeredEntities()
 
 
 // Internal utils
 
-internal inline fun layeredEntitiesData(
+internal inline fun layeredEntities(
     layers: Set<LayerType<*>> = LayerType.all,
     entitiesSelector: (LayerType<*>) -> Set<PlacedEntity<*>>,
-): LayeredEntitiesData = layers
+): LayeredEntities = layers
     .associateWith(entitiesSelector)
-    .asLayeredEntitiesData()
+    .asLayeredEntities()
 
 @Suppress("UNCHECKED_CAST")
-private fun Map<LayerType<*>, Set<PlacedEntity<*>>>.asLayeredEntitiesData() = LayeredEntitiesData(
+private fun Map<LayerType<*>, Set<PlacedEntity<*>>>.asLayeredEntities() = LayeredEntities(
     floorEntities = get(LayerType.Floor) as Set<PlacedEntity<FloorType>>? ?: emptySet(),
     floorFurnitureEntities = get(LayerType.FloorFurniture) as Set<PlacedEntity<FloorFurnitureType>>? ?: emptySet(),
     objectEntities = get(LayerType.Object) as Set<PlacedEntity<ObjectType>>? ?: emptySet(),
