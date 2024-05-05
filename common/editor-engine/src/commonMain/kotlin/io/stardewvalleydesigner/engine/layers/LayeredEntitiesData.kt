@@ -39,8 +39,7 @@ data class LayeredEntitiesData(
 
 // Utils
 
-fun layeredEntitiesData(entitiesSelector: (LayerType<*>) -> Set<PlacedEntity<*>>): LayeredEntitiesData =
-    LayerType.all.associateWith(entitiesSelector).asLayeredEntitiesData()
+fun LayeredEntitiesData.isEmpty(): Boolean = all.sumOf { it.second.size } == 0
 
 fun LayeredEntitiesData.filter(visibleLayers: Set<LayerType<*>>): LayeredEntitiesData = LayeredEntitiesData(
     if (LayerType.Floor in visibleLayers) floorEntities else emptySet(),
@@ -59,16 +58,15 @@ fun Iterable<PlacedEntity<*>>.layeredData(): LayeredEntitiesData = customGroupBy
     valuesCollectionGenerator = ::mutableSetOf
 ).asLayeredEntitiesData()
 
-fun Sequence<PlacedEntity<*>>.layeredData(): LayeredEntitiesData = customGroupByTo(
-    destination = mutableMapOf(),
-    keySelector = PlacedEntity<*>::layerType,
-    valuesCollectionGenerator = ::mutableSetOf
-).asLayeredEntitiesData()
 
-fun LayeredEntitiesData.isEmpty(): Boolean = all.sumOf { it.second.size } == 0
+// Internal utils
 
-
-// Private utils
+internal inline fun layeredEntitiesData(
+    layers: Set<LayerType<*>> = LayerType.all,
+    entitiesSelector: (LayerType<*>) -> Set<PlacedEntity<*>>,
+): LayeredEntitiesData = layers
+    .associateWith(entitiesSelector)
+    .asLayeredEntitiesData()
 
 @Suppress("UNCHECKED_CAST")
 private fun Map<LayerType<*>, Set<PlacedEntity<*>>>.asLayeredEntitiesData() = LayeredEntitiesData(

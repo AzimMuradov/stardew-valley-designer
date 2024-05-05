@@ -44,7 +44,8 @@ import io.stardewvalleydesigner.engine.entity.Equipment.SimpleEquipment.*
 import io.stardewvalleydesigner.engine.geometry.*
 import io.stardewvalleydesigner.engine.geometry.shapes.*
 import io.stardewvalleydesigner.engine.layer.*
-import io.stardewvalleydesigner.engine.layers.*
+import io.stardewvalleydesigner.engine.layers.filter
+import io.stardewvalleydesigner.engine.layers.flattenSequence
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResources
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.layoutSpriteBy
 import io.stardewvalleydesigner.ui.component.editor.res.SpriteUtils
@@ -260,7 +261,7 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
     scale: Float,
     cellSize: Size,
 ) {
-    for (c in map.selectedEntities.flatten().coordinates) {
+    for (c in map.selectedEntities.coordinates) {
         drawRect(
             color = Color.Blue,
             topLeft = grid[c],
@@ -273,7 +274,7 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
         is ToolkitState.Drag.Point.Acting -> {
             val spriteMaps = SpriteUtils.calculateSprite(
                 spriteMaps = entityMaps,
-                entities = toolkit.heldEntities.flatten().sortedWith(placedEntityComparator),
+                entities = toolkit.heldEntities.sortedWith(placedEntityComparator),
                 season = season,
             )
 
@@ -331,7 +332,7 @@ private fun DrawScope.drawAreasOfEffects(
     grid: CoordinateGrid,
     cellSize: Size,
 ) {
-    val es = (map.entities.flattenSequence() + map.selectedEntities.flattenSequence())
+    val es = (map.entities.flattenSequence() + map.selectedEntities.asSequence())
         .toList()
         .asSequence()
 

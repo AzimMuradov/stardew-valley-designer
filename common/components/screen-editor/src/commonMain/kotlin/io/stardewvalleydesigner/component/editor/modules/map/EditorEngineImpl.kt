@@ -18,7 +18,7 @@ package io.stardewvalleydesigner.component.editor.modules.map
 
 import io.stardewvalleydesigner.component.editor.utils.toState
 import io.stardewvalleydesigner.engine.*
-import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
+import io.stardewvalleydesigner.engine.layer.PlacedEntity
 
 
 internal class EditorEngineImpl(engine: EditorEngine) : EditorEngine by engine {
@@ -30,9 +30,9 @@ internal class EditorEngineImpl(engine: EditorEngine) : EditorEngine by engine {
         flooring = state.flooring
     }
 
-    fun pullState(selectedEntities: LayeredEntitiesData? = null) = MapState(
+    fun pullState(selectedEntities: List<PlacedEntity<*>>? = null) = MapState(
         entities = getEntities(),
-        selectedEntities = selectedEntities ?: LayeredEntitiesData(),
+        selectedEntities = selectedEntities ?: emptyList(),
         wallpaper = wallpaper,
         flooring = flooring,
         layout = layout.toState()

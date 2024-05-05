@@ -34,12 +34,10 @@ class Layer<T : EntityType> {
 
     operator fun get(c: Coordinate): PlacedEntity<T>? = map[c]
 
-    fun put(entity: PlacedEntity<T>): Set<PlacedEntity<T>> {
+    fun put(entity: PlacedEntity<T>) {
         val cs = entity.coordinates
-        val replaced = removeAll(cs)
+        removeAll(cs)
         map.putAll(cs.associateWith { entity })
-
-        return replaced
     }
 
     fun remove(c: Coordinate): PlacedEntity<T>? {
@@ -55,9 +53,9 @@ class Layer<T : EntityType> {
         cs: Iterable<Coordinate>,
     ): Set<PlacedEntity<T>> = cs.mapNotNullTo(mutableSetOf(), map::get)
 
-    fun putAll(
-        entities: List<PlacedEntity<T>>,
-    ): Set<PlacedEntity<T>> = entities.flatMapTo(mutableSetOf(), this::put)
+    fun putAll(entities: Iterable<PlacedEntity<T>>) {
+        entities.forEach(this::put)
+    }
 
     fun removeAll(
         cs: Iterable<Coordinate>,

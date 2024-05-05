@@ -22,8 +22,6 @@ import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.getReplacedBy
 import io.stardewvalleydesigner.engine.layer.*
-import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
-import io.stardewvalleydesigner.engine.layers.flatten
 import io.stardewvalleydesigner.engine.layout.respects
 import kotlin.properties.Delegates
 
@@ -38,7 +36,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
     override fun start(
         coordinate: Coordinate,
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn? {
         start = coordinate
@@ -58,7 +56,6 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
                     entitiesToDraw = entitiesToDraw,
                     entitiesToDelete = engine
                         .getReplacedBy(entitiesToDraw)
-                        .flatten()
                         .coordinates
                 ),
                 currentEntity = currentEntity,
@@ -72,7 +69,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
     override fun keep(
         coordinate: Coordinate,
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
         val placedShape = shape.projectTo(start, coordinate)
@@ -100,7 +97,6 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
                 entitiesToDraw = entitiesToDraw,
                 entitiesToDelete = engine
                     .getReplacedBy(entitiesToDraw)
-                    .flatten()
                     .coordinates
             ),
             currentEntity = currentEntity,
@@ -110,7 +106,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
 
     override fun end(
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
         engine.putAll(entitiesToDraw)

@@ -22,7 +22,7 @@ import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.get
 import io.stardewvalleydesigner.engine.layer.LayerType
-import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
+import io.stardewvalleydesigner.engine.layer.PlacedEntity
 import io.stardewvalleydesigner.engine.layers.topmost
 
 
@@ -31,7 +31,7 @@ class EyeDropper(private val engine: EditorEngine) : Tool {
     override fun start(
         coordinate: Coordinate,
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn = ActionReturn(
         toolkit = ToolkitState.EyeDropper.Point.Acting,
@@ -42,7 +42,7 @@ class EyeDropper(private val engine: EditorEngine) : Tool {
     override fun keep(
         coordinate: Coordinate,
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn = ActionReturn(
         toolkit = ToolkitState.EyeDropper.Point.Acting,
@@ -52,7 +52,7 @@ class EyeDropper(private val engine: EditorEngine) : Tool {
 
     override fun end(
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn = ActionReturn(
         toolkit = ToolkitState.EyeDropper.Point.Idle,

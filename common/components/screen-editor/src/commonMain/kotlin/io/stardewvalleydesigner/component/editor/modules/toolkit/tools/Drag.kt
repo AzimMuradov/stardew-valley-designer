@@ -20,41 +20,39 @@ import io.stardewvalleydesigner.component.editor.modules.toolkit.*
 import io.stardewvalleydesigner.engine.*
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.geometry.*
-import io.stardewvalleydesigner.engine.layer.LayerType
-import io.stardewvalleydesigner.engine.layer.coordinates
-import io.stardewvalleydesigner.engine.layers.*
+import io.stardewvalleydesigner.engine.layer.*
+import io.stardewvalleydesigner.engine.layers.flatten
 import io.stardewvalleydesigner.engine.layout.respects
 import kotlin.properties.Delegates
 
 
 class Drag(private val engine: EditorEngine) : Tool {
 
-    private lateinit var initMovedEntities: LayeredEntitiesData
+    private lateinit var initMovedEntities: List<PlacedEntity<*>>
 
     private var start: Coordinate by Delegates.notNull()
 
     private var isSelected: Boolean by Delegates.notNull()
 
-    private lateinit var heldEntities: LayeredEntitiesData
+    private lateinit var heldEntities: List<PlacedEntity<*>>
 
 
     override fun start(
         coordinate: Coordinate,
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn? {
-        val flattenSelectedEntities = selectedEntities.flatten()
         start = coordinate
-        isSelected = coordinate in flattenSelectedEntities.coordinates
+        isSelected = coordinate in selectedEntities.coordinates
         initMovedEntities = if (isSelected) {
-            engine.removeAll(flattenSelectedEntities)
+            engine.removeAll(selectedEntities)
         } else {
-            engine.remove(coordinate, visLayers).toLayeredEntitiesData()
+            engine.remove(coordinate, visLayers).flatten()
         }
         heldEntities = initMovedEntities
 
-        return if (heldEntities.flattenSequence().any()) {
+        return if (heldEntities.isNotEmpty()) {
             ActionReturn(
                 toolkit = ToolkitState.Drag.Point.Acting(heldEntities),
                 currentEntity = currentEntity,
@@ -68,14 +66,14 @@ class Drag(private val engine: EditorEngine) : Tool {
     override fun keep(
         coordinate: Coordinate,
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
         heldEntities = initMovedEntities
-            .flattenSequence()
+            .asSequence()
             .map { it.copy(place = it.place + (coordinate - start)) }
             .filter { it respects engine.layout }
-            .layeredData()
+            .toList()
 
         return ActionReturn(
             toolkit = ToolkitState.Drag.Point.Acting(heldEntities),
@@ -86,22 +84,22 @@ class Drag(private val engine: EditorEngine) : Tool {
 
     override fun end(
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
         engine.putAll(heldEntities)
         return ActionReturn(
             toolkit = ToolkitState.Drag.Point.Idle,
             currentEntity = currentEntity,
-            selectedEntities = if (isSelected) heldEntities else LayeredEntitiesData()
+            selectedEntities = if (isSelected) heldEntities else emptyList()
         )
     }
 
 
     override fun dispose() {
-        initMovedEntities = LayeredEntitiesData()
+        initMovedEntities = emptyList()
         start = Coordinate.ZERO
         isSelected = false
-        heldEntities = LayeredEntitiesData()
+        heldEntities = emptyList()
     }
 }

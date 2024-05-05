@@ -17,13 +17,12 @@
 package io.stardewvalleydesigner.component.editor.modules.toolkit.tools
 
 import io.stardewvalleydesigner.component.editor.modules.toolkit.*
-import io.stardewvalleydesigner.engine.*
+import io.stardewvalleydesigner.engine.EditorEngine
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.geometry.Coordinate
-import io.stardewvalleydesigner.engine.layer.LayerType
-import io.stardewvalleydesigner.engine.layer.placeIt
-import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
+import io.stardewvalleydesigner.engine.layer.*
 import io.stardewvalleydesigner.engine.layout.respects
+import io.stardewvalleydesigner.engine.notOverlapsWith
 
 
 class PenPoint(private val engine: EditorEngine) : Tool {
@@ -34,7 +33,7 @@ class PenPoint(private val engine: EditorEngine) : Tool {
     override fun start(
         coordinate: Coordinate,
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
         val entity = currentEntity?.placeIt(there = coordinate)
@@ -52,7 +51,7 @@ class PenPoint(private val engine: EditorEngine) : Tool {
     override fun keep(
         coordinate: Coordinate,
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
         val entity = currentEntity?.placeIt(there = coordinate)
@@ -73,7 +72,7 @@ class PenPoint(private val engine: EditorEngine) : Tool {
 
     override fun end(
         currentEntity: Entity<*>?,
-        selectedEntities: LayeredEntitiesData,
+        selectedEntities: List<PlacedEntity<*>>,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
         return ActionReturn(

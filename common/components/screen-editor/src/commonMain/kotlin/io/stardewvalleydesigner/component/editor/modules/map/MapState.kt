@@ -19,6 +19,7 @@ package io.stardewvalleydesigner.component.editor.modules.map
 import io.stardewvalleydesigner.component.editor.utils.toState
 import io.stardewvalleydesigner.designformat.models.Design
 import io.stardewvalleydesigner.engine.*
+import io.stardewvalleydesigner.engine.layer.PlacedEntity
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layout.Layout
 import io.stardewvalleydesigner.engine.layout.LayoutsProvider
@@ -26,7 +27,7 @@ import io.stardewvalleydesigner.engine.layout.LayoutsProvider
 
 data class MapState(
     val entities: LayeredEntitiesData,
-    val selectedEntities: LayeredEntitiesData,
+    val selectedEntities: List<PlacedEntity<*>>,
     val wallpaper: Wallpaper?,
     val flooring: Flooring?,
     val layout: LayoutState,
@@ -36,7 +37,7 @@ data class MapState(
 
         fun default(layout: Layout) = MapState(
             entities = LayeredEntitiesData(),
-            selectedEntities = LayeredEntitiesData(),
+            selectedEntities = emptyList(),
             wallpaper = null,
             flooring = null,
             layout = layout.toState(),
@@ -44,7 +45,7 @@ data class MapState(
 
         fun from(design: Design) = MapState(
             entities = design.entities,
-            selectedEntities = LayeredEntitiesData(),
+            selectedEntities = emptyList(),
             wallpaper = design.wallpaper,
             flooring = design.flooring,
             layout = LayoutsProvider.layoutOf(design.layout).toState(),

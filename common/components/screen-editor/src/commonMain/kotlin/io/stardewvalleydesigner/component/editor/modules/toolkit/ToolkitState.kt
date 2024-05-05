@@ -20,7 +20,6 @@ import io.stardewvalleydesigner.engine.geometry.BoundVector
 import io.stardewvalleydesigner.engine.geometry.Coordinate
 import io.stardewvalleydesigner.engine.geometry.shapes.PlacedShape
 import io.stardewvalleydesigner.engine.layer.PlacedEntity
-import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 
 
 sealed class ToolkitState(val tool: ToolType) {
@@ -43,7 +42,7 @@ sealed class ToolkitState(val tool: ToolType) {
 
             data object Idle : Point(isIdle = true)
 
-            data class Acting(val heldEntities: LayeredEntitiesData) : Point(isIdle = false)
+            data class Acting(val heldEntities: List<PlacedEntity<*>>) : Point(isIdle = false)
 
             final override val shape: ShapeType? = null
 

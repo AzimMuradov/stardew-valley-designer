@@ -31,7 +31,6 @@ import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
 import io.stardewvalleydesigner.engine.geometry.*
-import io.stardewvalleydesigner.engine.layer.LayerType
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layout.Layout
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResources

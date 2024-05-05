@@ -25,10 +25,10 @@ class Layers {
 
     @Suppress("UNCHECKED_CAST")
     fun <T : EntityType> layerBy(type: LayerType<T>): Layer<T> =
-        layersMap.getValue(type) as Layer<T>
+        all.getValue(type) as Layer<T>
 
 
-    private val layersMap = mapOf(
+    private val all = mapOf(
         LayerType.Floor to Layer<FloorType>(),
         LayerType.FloorFurniture to Layer<FloorFurnitureType>(),
         LayerType.Object to Layer<ObjectType>(),

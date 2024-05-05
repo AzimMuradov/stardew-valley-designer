@@ -38,29 +38,26 @@ data class LayeredSingleEntitiesData(
     )
 }
 
-fun layeredSingleEntitiesData(entitiesSelector: (LayerType<*>) -> PlacedEntity<*>?): LayeredSingleEntitiesData =
-    LayerType.all.associateWith { entitiesSelector(it) }.asLayeredSingleEntitiesData()
-
-
-// Conversions
-
-fun LayeredSingleEntitiesData.flatten(): List<PlacedEntity<*>> = all.mapNotNull { (_, entity) -> entity }
-
-fun LayeredSingleEntitiesData.toLayeredEntitiesData(): LayeredEntitiesData = LayeredEntitiesData(
-    floorEntities = floorEntity?.let(::setOf) ?: emptySet(),
-    floorFurnitureEntities = floorFurnitureEntity?.let(::setOf) ?: emptySet(),
-    objectEntities = objectEntity?.let(::setOf) ?: emptySet(),
-    entityWithoutFloorEntities = entityWithoutFloorEntity?.let(::setOf) ?: emptySet()
-)
+// sort held es
 
 
 // Utils
 
+fun LayeredSingleEntitiesData.flatten(): List<PlacedEntity<*>> = all.mapNotNull { (_, entity) -> entity }
+
 fun LayeredSingleEntitiesData.topmost(): PlacedEntity<*>? = flatten().lastOrNull()
 
 
-// Private utils
+// Internal utils
 
+internal inline fun layeredSingleEntitiesData(
+    layers: Set<LayerType<*>> = LayerType.all,
+    entitiesSelector: (LayerType<*>) -> PlacedEntity<*>?,
+): LayeredSingleEntitiesData = layers
+    .associateWith(entitiesSelector)
+    .asLayeredSingleEntitiesData()
+
+@Suppress("UNCHECKED_CAST")
 private fun Map<LayerType<*>, PlacedEntity<*>?>.asLayeredSingleEntitiesData() = LayeredSingleEntitiesData(
     floorEntity = get(LayerType.Floor) as PlacedEntity<FloorType>?,
     floorFurnitureEntity = get(LayerType.FloorFurniture) as PlacedEntity<FloorFurnitureType>?,
