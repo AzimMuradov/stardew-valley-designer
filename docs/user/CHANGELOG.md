@@ -11,9 +11,17 @@ I should note that versions before [0.8.0](#rocket-080---2023-07-08) don't have 
 
 ### Desktop & Web
 
+#### Added
+
+- :sparkles: Provide better entity selection menus
+  - Add search field
+  - Use tabs instead of dropdown menus
+  - Arrange entities as grid instead of list
+
 #### Fixed
 
 - :zap: Improve editor loading performance
+- :zap: Improve editor engine performance
 
 ### Web
 
