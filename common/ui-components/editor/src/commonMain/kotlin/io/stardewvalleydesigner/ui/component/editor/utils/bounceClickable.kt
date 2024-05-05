@@ -45,15 +45,15 @@ internal fun Modifier.bounceClickable(
     )
 
     return@composed this
-        .graphicsLayer {
-            scaleX = scale
-            scaleY = scale
-        }
         .clickable(
             interactionSource = interactionSource,
             indication = indication,
             onClick = onClick,
         )
+        .graphicsLayer {
+            scaleX = scale
+            scaleY = scale
+        }
         .pointerInput(buttonState) {
             awaitPointerEventScope {
                 buttonState = when (buttonState) {
