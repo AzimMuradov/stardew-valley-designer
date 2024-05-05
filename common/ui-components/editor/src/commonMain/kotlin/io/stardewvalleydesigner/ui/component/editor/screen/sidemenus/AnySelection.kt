@@ -32,7 +32,10 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import io.stardewvalleydesigner.cmplib.tooltip.TooltipArea
+import io.stardewvalleydesigner.cmplib.tooltip.TooltipPlacement
 import io.stardewvalleydesigner.data.Season
 import io.stardewvalleydesigner.engine.Flooring
 import io.stardewvalleydesigner.engine.Wallpaper
@@ -43,6 +46,7 @@ import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.f
 import io.stardewvalleydesigner.ui.component.editor.res.ImageResourcesProvider.wallpaperSpriteBy
 import io.stardewvalleydesigner.ui.component.editor.utils.*
 import io.stardewvalleydesigner.ui.component.editor.utils.DrawerUtils.drawSpriteStretched
+import io.stardewvalleydesigner.ui.component.settings.GlobalSettings
 
 
 @Composable
@@ -54,6 +58,8 @@ internal fun ColumnScope.AnySelection(
     onWallpaperSelection: (Wallpaper) -> Unit,
     onFlooringSelection: (Flooring) -> Unit,
 ) {
+    val wordList = GlobalSettings.strings
+
     val spriteMaps = ImageResources.entities
     val wallsAndFloors = ImageResources.wallsAndFloors
     val walls2 = ImageResources.walls2
@@ -64,18 +70,22 @@ internal fun ColumnScope.AnySelection(
             Tab.Building to TabData(
                 rowSize = 16u,
                 icon = SpriteUtils.calculateSprite(spriteMaps, Building.Shed2(), season),
+                title = wordList.buildingsTabTitle,
             ),
             Tab.Crop to TabData(
                 rowSize = 8u,
                 icon = SpriteUtils.calculateSprite(spriteMaps, Crop.SimpleCrop.Parsnip, season),
+                title = wordList.cropsTabTitle,
             ),
             Tab.Equipment to TabData(
                 rowSize = 8u,
                 icon = SpriteUtils.calculateSprite(spriteMaps, Equipment.SimpleEquipment.FarmComputer, season),
+                title = wordList.equipmentTabTitle,
             ),
             Tab.Floor to TabData(
                 rowSize = 6u,
                 icon = SpriteUtils.calculateSprite(spriteMaps, Floor.CobblestonePath, season),
+                title = wordList.floorTabTitle,
             ),
             Tab.Furniture to TabData(
                 rowSize = 8u,
@@ -84,14 +94,17 @@ internal fun ColumnScope.AnySelection(
                     UniversalFurniture.SimpleUniversalFurniture.JunimoPlush,
                     season,
                 ),
+                title = wordList.furnitureTabTitle,
             ),
             Tab.Wallpaper to TabData(
                 rowSize = 8u,
                 icon = wallpaperSpriteBy(wallsAndFloors, walls2, Wallpaper(n = 0u)),
+                title = wordList.wallpapersTabTitle,
             ),
             Tab.Flooring to TabData(
                 rowSize = 8u,
                 icon = flooringSpriteBy(wallsAndFloors, floors2, Flooring(n = 0u)),
+                title = wordList.flooringTabTitle,
             ),
         )
     }
@@ -139,6 +152,7 @@ internal fun ColumnScope.AnySelection(
         contentColor = MaterialTheme.colors.primarySurface,
     ) {
         tabs.forEach { tab ->
+            val (_, icon, title) = tabsData.getValue(tab)
             val bg by animateColorAsState(
                 if (chosenTab == tab) {
                     MaterialTheme.colors.primarySurface.copy(alpha = 0.15f)
@@ -146,15 +160,25 @@ internal fun ColumnScope.AnySelection(
                     Color.Transparent
                 },
             )
-            Tab(
-                selected = chosenTab == tab,
-                onClick = { chosenTab = tab },
-                modifier = Modifier.weight(1f).fillMaxHeight().background(bg),
+
+            TooltipArea(
+                title,
+                delayMillis = 0,
+                tooltipPlacement = TooltipPlacement.ComponentRect(
+                    anchor = Alignment.TopCenter,
+                    offset = DpOffset(x = 0.dp, y = (-4).dp)
+                ),
             ) {
-                Sprite(
-                    sprite = tabsData.getValue(tab).icon,
-                    modifier = Modifier.fillMaxSize().padding(3.dp),
-                )
+                Tab(
+                    selected = chosenTab == tab,
+                    onClick = { chosenTab = tab },
+                    modifier = Modifier.weight(1f).fillMaxHeight().background(bg),
+                ) {
+                    Sprite(
+                        sprite = icon,
+                        modifier = Modifier.fillMaxSize().padding(3.dp),
+                    )
+                }
             }
         }
     }
@@ -263,6 +287,7 @@ private enum class Tab {
 private data class TabData(
     val rowSize: UInt,
     val icon: Sprite,
+    val title: String,
 )
 
 private object CustomRippleTheme : RippleTheme {

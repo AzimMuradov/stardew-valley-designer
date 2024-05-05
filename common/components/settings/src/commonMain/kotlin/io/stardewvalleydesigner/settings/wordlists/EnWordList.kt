@@ -768,6 +768,18 @@ data object EnWordList : WordList {
         LayerType.EntityWithoutFloor -> "Buildings and crops layer"
     }.also { layers[type] = it }
 
+    override val searchFieldPlaceholder: String = "Search for..."
+
+    override val buildingsTabTitle: String = "Buildings"
+
+    override val cropsTabTitle: String = "Crops"
+
+    override val equipmentTabTitle: String = "Equipment"
+
+    override val floorTabTitle: String = "Floor"
+
+    override val furnitureTabTitle: String = "Furniture"
+
     override val wallpapersTabTitle: String = "Wallpapers"
 
     override val flooringTabTitle: String = "Flooring"

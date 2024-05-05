@@ -108,7 +108,7 @@ fun EntitiesGrid(
             Row(modifier = Modifier.fillMaxWidth()) {
                 SearchField(
                     initName = text,
-                    placeholder = "search field",
+                    placeholder = wordList.searchFieldPlaceholder,
                     onNameChanged = { text = it },
                 )
             }

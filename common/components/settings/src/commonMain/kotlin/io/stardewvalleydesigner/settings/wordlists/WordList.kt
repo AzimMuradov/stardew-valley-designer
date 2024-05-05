@@ -218,6 +218,18 @@ sealed interface WordList {
      */
     fun layer(type: LayerType<*>): String
 
+    val searchFieldPlaceholder: String
+
+    val buildingsTabTitle: String
+
+    val cropsTabTitle: String
+
+    val equipmentTabTitle: String
+
+    val floorTabTitle: String
+
+    val furnitureTabTitle: String
+
     val wallpapersTabTitle: String
 
     val flooringTabTitle: String
