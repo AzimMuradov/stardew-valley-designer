@@ -115,7 +115,7 @@ Ability to save and import designs.
 
 [CHANGELOG](docs/user/CHANGELOG.md)
 
-[ROADMAP](docs/user/ROADMAP.md)
+[ROADMAP (TODO LIST)](docs/user/ROADMAP.md)
 
 ## :speech_balloon: Support
 
