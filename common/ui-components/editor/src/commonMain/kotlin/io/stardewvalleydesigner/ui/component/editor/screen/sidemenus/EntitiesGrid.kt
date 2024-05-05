@@ -73,7 +73,7 @@ fun EntitiesGrid(
         }
     }
 
-    val rows: List<List<Pair<Entity<*>, Sprite>?>> = remember(filteredEntities, season) {
+    val rows: List<List<Pair<Entity<*>, Sprite>?>> = remember(filteredEntities, season, spriteMaps) {
         buildList {
             var row = mutableListOf<Pair<Entity<*>, Sprite>?>()
             var rowSize = 0

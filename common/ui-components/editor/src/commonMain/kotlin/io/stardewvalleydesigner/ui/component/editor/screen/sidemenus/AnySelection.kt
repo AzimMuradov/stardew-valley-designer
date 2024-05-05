@@ -59,7 +59,7 @@ internal fun ColumnScope.AnySelection(
     val walls2 = ImageResources.walls2
     val floors2 = ImageResources.floors2
 
-    val tabsData = remember(disallowedTypes) {
+    val tabsData = remember(disallowedTypes, spriteMaps, wallsAndFloors, walls2, floors2) {
         mapOf(
             Tab.Building to TabData(
                 rowSize = 16u,
