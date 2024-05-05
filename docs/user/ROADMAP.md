@@ -1,13 +1,12 @@
-# :steam_locomotive: Roadmap
+# :steam_locomotive: Roadmap (TODO List)
 
 ## 0.13.0
 
 ### Desktop & Web
 
+- Support Stardew Valley 1.6 features
 - Support greenhouse and farmhouse
 - Trees and fruit trees
-- Search fields for various types of items
-- Rework entity selection menus
 - Help section
 
 ## 1.0.0
