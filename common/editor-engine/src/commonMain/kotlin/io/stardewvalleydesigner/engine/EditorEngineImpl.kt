@@ -72,7 +72,7 @@ private class EditorEngineImpl(override val layout: Layout) : EditorEngine {
     override fun <T : EntityType> getAll(layer: LayerType<T>, cs: Iterable<Coordinate>) =
         layers.layerBy(layer).getAll(cs)
 
-    override fun <T : EntityType> putAll(entities: DisjointEntities<T>) =
+    override fun <T : EntityType> putAll(entities: Iterable<PlacedEntity<T>>) =
         entities.asSequence().flatMap { put(it).flattenSequence() }.layeredData()
 
     override fun <T : EntityType> removeAll(layer: LayerType<T>, cs: Iterable<Coordinate>) =

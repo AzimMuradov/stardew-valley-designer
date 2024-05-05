@@ -89,7 +89,7 @@ class Drag(private val engine: EditorEngine) : Tool {
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
-        engine.putAll(heldEntities.toLayeredEntities())
+        engine.putAll(heldEntities)
         return ActionReturn(
             toolkit = ToolkitState.Drag.Point.Idle,
             currentEntity = currentEntity,

@@ -50,7 +50,7 @@ interface EditorEngine {
 
     fun <T : EntityType> getAll(layer: LayerType<T>, cs: Iterable<Coordinate>): Set<PlacedEntity<T>>
 
-    fun <T : EntityType> putAll(entities: DisjointEntities<T>): LayeredEntitiesData
+    fun <T : EntityType> putAll(entities: Iterable<PlacedEntity<T>>): LayeredEntitiesData
 
     fun <T : EntityType> removeAll(layer: LayerType<T>, cs: Iterable<Coordinate>): Set<PlacedEntity<T>>
 
@@ -89,7 +89,7 @@ fun EditorEngine.getAll(
 }
 
 fun EditorEngine.putAll(
-    entities: LayeredEntities,
+    entities: LayeredEntitiesData,
 ): LayeredEntitiesData = entities
     .flattenSequence()
     .flatMap { put(it).flattenSequence() }

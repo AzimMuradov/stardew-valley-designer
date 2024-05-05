@@ -17,9 +17,10 @@
 package io.stardewvalleydesigner.component.editor.modules.toolkit.tools
 
 import io.stardewvalleydesigner.component.editor.modules.toolkit.*
-import io.stardewvalleydesigner.engine.*
+import io.stardewvalleydesigner.engine.EditorEngine
 import io.stardewvalleydesigner.engine.entity.Entity
 import io.stardewvalleydesigner.engine.geometry.Coordinate
+import io.stardewvalleydesigner.engine.getReplacedBy
 import io.stardewvalleydesigner.engine.layer.*
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
 import io.stardewvalleydesigner.engine.layers.flatten
@@ -56,7 +57,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
                     placedShape = placedShape,
                     entitiesToDraw = entitiesToDraw,
                     entitiesToDelete = engine
-                        .getReplacedBy(entitiesToDraw.toList().asDisjointUnsafe())
+                        .getReplacedBy(entitiesToDraw)
                         .flatten()
                         .coordinates
                 ),
@@ -98,7 +99,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
                 placedShape = placedShape,
                 entitiesToDraw = entitiesToDraw,
                 entitiesToDelete = engine
-                    .getReplacedBy(entitiesToDraw.toList().asDisjointUnsafe())
+                    .getReplacedBy(entitiesToDraw)
                     .flatten()
                     .coordinates
             ),
@@ -112,7 +113,7 @@ class PenShape(private val engine: EditorEngine, private val shape: ShapeType) :
         selectedEntities: LayeredEntitiesData,
         visLayers: Set<LayerType<*>>,
     ): ActionReturn {
-        engine.putAll(entitiesToDraw.toList().asDisjointUnsafe())
+        engine.putAll(entitiesToDraw)
         return ActionReturn(
             toolkit = ToolkitState.Pen.Shape.Idle(shape),
             currentEntity = currentEntity,

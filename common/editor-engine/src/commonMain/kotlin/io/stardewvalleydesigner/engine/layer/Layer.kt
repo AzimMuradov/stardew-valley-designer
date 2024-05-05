@@ -56,7 +56,7 @@ class Layer<T : EntityType> {
     ): Set<PlacedEntity<T>> = cs.mapNotNullTo(mutableSetOf(), map::get)
 
     fun putAll(
-        entities: DisjointEntities<T>,
+        entities: List<PlacedEntity<T>>,
     ): Set<PlacedEntity<T>> = entities.flatMapTo(mutableSetOf(), this::put)
 
     fun removeAll(

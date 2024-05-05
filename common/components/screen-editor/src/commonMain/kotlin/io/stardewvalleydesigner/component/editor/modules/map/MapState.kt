@@ -20,7 +20,6 @@ import io.stardewvalleydesigner.component.editor.utils.toState
 import io.stardewvalleydesigner.designformat.models.Design
 import io.stardewvalleydesigner.engine.*
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
-import io.stardewvalleydesigner.engine.layers.toLayeredEntities
 import io.stardewvalleydesigner.engine.layout.Layout
 import io.stardewvalleydesigner.engine.layout.LayoutsProvider
 
@@ -57,7 +56,7 @@ data class MapState(
 fun MapState.generateEngine(): EditorEngine = editorEngineOf(
     layout = LayoutsProvider.layoutOf(layout.type),
 ).apply {
-    putAll(this@generateEngine.entities.toLayeredEntities())
+    putAll(this@generateEngine.entities)
     wallpaper = this@generateEngine.wallpaper
     flooring = this@generateEngine.flooring
 }

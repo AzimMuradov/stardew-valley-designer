@@ -19,14 +19,13 @@ package io.stardewvalleydesigner.component.editor.modules.map
 import io.stardewvalleydesigner.component.editor.utils.toState
 import io.stardewvalleydesigner.engine.*
 import io.stardewvalleydesigner.engine.layers.LayeredEntitiesData
-import io.stardewvalleydesigner.engine.layers.toLayeredEntities
 
 
 internal class EditorEngineImpl(engine: EditorEngine) : EditorEngine by engine {
 
     fun pushState(state: MapState) {
         clear()
-        putAll(state.entities.toLayeredEntities())
+        putAll(state.entities)
         wallpaper = state.wallpaper
         flooring = state.flooring
     }

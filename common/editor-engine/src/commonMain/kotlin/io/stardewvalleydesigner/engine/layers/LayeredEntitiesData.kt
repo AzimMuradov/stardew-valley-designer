@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("UNCHECKED_CAST")
-
 package io.stardewvalleydesigner.engine.layers
 
 import io.stardewvalleydesigner.engine.customGroupByTo
@@ -38,11 +36,18 @@ data class LayeredEntitiesData(
     )
 }
 
+
+// Utils
+
 fun layeredEntitiesData(entitiesSelector: (LayerType<*>) -> Set<PlacedEntity<*>>): LayeredEntitiesData =
-    LayerType.all.associateWith { entitiesSelector(it) }.asLayeredEntitiesData()
+    LayerType.all.associateWith(entitiesSelector).asLayeredEntitiesData()
 
-
-// Conversions
+fun LayeredEntitiesData.filter(visibleLayers: Set<LayerType<*>>): LayeredEntitiesData = LayeredEntitiesData(
+    if (LayerType.Floor in visibleLayers) floorEntities else emptySet(),
+    if (LayerType.FloorFurniture in visibleLayers) floorFurnitureEntities else emptySet(),
+    if (LayerType.Object in visibleLayers) objectEntities else emptySet(),
+    if (LayerType.EntityWithoutFloor in visibleLayers) entityWithoutFloorEntities else emptySet(),
+)
 
 fun LayeredEntitiesData.flatten(): List<PlacedEntity<*>> = all.flatMap { (_, es) -> es }
 
@@ -60,28 +65,12 @@ fun Sequence<PlacedEntity<*>>.layeredData(): LayeredEntitiesData = customGroupBy
     valuesCollectionGenerator = ::mutableSetOf
 ).asLayeredEntitiesData()
 
-fun LayeredEntitiesData.filter(visibleLayers: Set<LayerType<*>>): LayeredEntitiesData = LayeredEntitiesData(
-    if (LayerType.Floor in visibleLayers) floorEntities else emptySet(),
-    if (LayerType.FloorFurniture in visibleLayers) floorFurnitureEntities else emptySet(),
-    if (LayerType.Object in visibleLayers) objectEntities else emptySet(),
-    if (LayerType.EntityWithoutFloor in visibleLayers) entityWithoutFloorEntities else emptySet(),
-)
-
-fun LayeredEntitiesData.toLayeredEntities(): LayeredEntities = LayeredEntities(
-    floorEntities.toList().asDisjointUnsafe(),
-    floorFurnitureEntities.toList().asDisjointUnsafe(),
-    objectEntities.toList().asDisjointUnsafe(),
-    entityWithoutFloorEntities.toList().asDisjointUnsafe(),
-)
-
-
-// Utils
-
-fun LayeredEntitiesData.isEmpty() = all.sumOf { it.second.size } == 0
+fun LayeredEntitiesData.isEmpty(): Boolean = all.sumOf { it.second.size } == 0
 
 
 // Private utils
 
+@Suppress("UNCHECKED_CAST")
 private fun Map<LayerType<*>, Set<PlacedEntity<*>>>.asLayeredEntitiesData() = LayeredEntitiesData(
     floorEntities = get(LayerType.Floor) as Set<PlacedEntity<FloorType>>? ?: emptySet(),
     floorFurnitureEntities = get(LayerType.FloorFurniture) as Set<PlacedEntity<FloorFurnitureType>>? ?: emptySet(),
