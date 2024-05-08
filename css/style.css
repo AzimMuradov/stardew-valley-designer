@@ -5,6 +5,7 @@
   --navbar-color: #d6d6d6;
   --content-link-color-hover: #23b370;
   --body-color: #F8F8F8;
+  --transition-speed: 0.2s;
 }
 
 body {
@@ -50,6 +51,10 @@ body {
   color: var(--navbar-color);
 }
 
+.navbar-nav .nav-item .nav-link:hover {
+  transition: color var(--transition-speed) ease-in-out;
+}
+
 .navbar-nav .nav-item .nav-link:visited,
 .navbar-nav .nav-item .nav-link:focus,
 .navbar-nav .nav-item .nav-link:active {
@@ -70,7 +75,7 @@ body {
   width: 23px;
   height: 2px;
   background: var(--navbar-color);
-  transition: all 0.2s ease-in-out;
+  transition: all var(--transition-speed) ease-in-out;
 }
 
 .navbar-toggler .icon-bar + .icon-bar {
@@ -87,6 +92,36 @@ body {
 
 .navbar-toggler:not(.collapsed) .icon-bar:nth-of-type(3) {
   transform: translateY(-8px) rotate(-45deg);
+}
+
+.dropdown-menu {
+  background-color: #212529;
+  border: none;
+}
+
+.dropdown-menu .dropdown-item {
+  color: #A8A9AA;
+  transition: color var(--transition-speed) ease-in-out;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #2f353a;
+  color: var(--bright-green);
+}
+
+.dropdown-menu.show {
+  animation: slideDown 0.5s ease forwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -122,5 +157,9 @@ body {
 
   .navbar-collapse {
       text-align: center;
+  }
+
+  .dropdown-menu {
+    text-align: center;
   }
 }
