@@ -297,7 +297,7 @@ private fun DrawScope.drawSpecificSpritesAndEffects(
 
             val spriteMaps = SpriteUtils.calculateSprite(
                 spriteMaps = entityMaps,
-                entities = toolkit.entitiesToDraw,
+                entities = toolkit.entitiesToDraw.sortedWith(placedEntityComparator),
                 season = season,
             )
 
