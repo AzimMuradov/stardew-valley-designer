@@ -112,7 +112,7 @@ fun main() {
 
         AppTheme(themeVariant = ThemeVariant.LIGHT) {
             WithSettings(lang) {
-                WithImageResources(themeVariant = ThemeVariant.LIGHT) {
+                WithImageResources {
                     WithMeasuredWindowSize(windowWidth = LocalWindowInfo.current.containerSize.width) {
                         Box(
                             Modifier

@@ -22,5 +22,5 @@ import io.stardewvalleydesigner.engine.entity.HouseFurniture
 
 
 internal fun houseFurniture(qe: QualifiedEntity<HouseFurniture>): QualifiedEntityData {
-    TODO()
+    TODO(reason = "Currently no `QualifiedEntityData` for \"$qe\"")
 }
