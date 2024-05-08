@@ -50,7 +50,7 @@ fun main() {
     application {
         AppTheme(themeVariant = ThemeVariant.LIGHT) {
             WithSettings(lang = Lang.EN) {
-                WithImageResources(themeVariant = ThemeVariant.LIGHT) {
+                WithImageResources {
                     Root(root, ::exitApplication)
                 }
             }

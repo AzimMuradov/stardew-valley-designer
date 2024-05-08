@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.ImageBitmap
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ShapeType
 import io.stardewvalleydesigner.component.editor.modules.toolkit.ToolType
 import io.stardewvalleydesigner.data.SpritePage
-import io.stardewvalleydesigner.ui.component.themes.ThemeVariant
 
 
 object ImageResources {
@@ -43,7 +42,7 @@ object ImageResources {
 }
 
 @Composable
-fun WithImageResources(themeVariant: ThemeVariant, content: @Composable () -> Unit) {
+fun WithImageResources(content: @Composable () -> Unit) {
     val data = ImagesResourcesData(
         entities = ImageResourcesProvider.entitySpriteMaps(),
         wallsAndFloors = ImageResourcesProvider.wallsAndFloorsSprite(),
@@ -53,7 +52,7 @@ fun WithImageResources(themeVariant: ThemeVariant, content: @Composable () -> Un
         shapes = ImageResourcesProvider.shapeImages(),
     )
     CompositionLocalProvider(
-        LocalImageResources provides data,
+        value = LocalImageResources provides data,
         content = content
     )
 }
