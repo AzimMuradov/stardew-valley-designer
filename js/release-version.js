@@ -1,6 +1,6 @@
 const OWNER = "AzimMuradov";
 const REPO = "stardew-valley-designer";
-const CACHE_TIME = 60; // 1 minute timeout for GitHub API requests
+const CACHE_TIME = 60 * 1000; // 1 minute timeout for GitHub API requests
 
 
 function fetchLatestRelease(owner, repo) {
@@ -15,8 +15,8 @@ function fetchLatestRelease(owner, repo) {
 
     const now = new Date();
 
-    if (cache && cache.latestVersion && (now - new Date(cache.lastCheck)) / 1000 < CACHE_TIME) {
-        updateUI(cache.version, url);
+    if (cache && cache.version && now - new Date(cache.lastCheck) < CACHE_TIME) {
+        updateUI(cache.version);
         return;
     }
 
@@ -27,22 +27,27 @@ function fetchLatestRelease(owner, repo) {
             }
             return response.json();
         })
-        .then(data => {
-            const version = data.tag_name.slice(1);
-
-            const newCache = {
-                lastCheck: new Date().toISOString(),
-                version: version,
-            };
-
-            localStorage.setItem("apiCache", JSON.stringify(newCache));
-            updateUI(version, url);
-        })
+        .then(data => handleApiResponse(data))
         .catch(error => {
             console.error("There was a problem with the fetch operation:", error);
+            if (cache && cache.version) {
+                updateUI(cache.version);
+            }
+            return;
         });
 }
 
+
+function handleApiResponse(data) {
+    const version = data.tag_name.slice(1);
+    const newCache = {
+        lastCheck: new Date().toISOString(),
+        version: version,
+    };
+
+    localStorage.setItem("apiCache", JSON.stringify(newCache));
+    updateUI(version);
+}
 
 function updateUI(version) {
     const updateText = (id, text) => {
