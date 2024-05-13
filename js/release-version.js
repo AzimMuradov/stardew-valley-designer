@@ -1,6 +1,6 @@
 const OWNER = "AzimMuradov";
 const REPO = "stardew-valley-designer";
-const CACHE_TIME = 60; // 1 minute timeout for GitHub API requests
+const CACHE_TIME = 60 * 1000; // 1 minute timeout for GitHub API requests
 
 
 function fetchLatestRelease(owner, repo) {
@@ -15,7 +15,7 @@ function fetchLatestRelease(owner, repo) {
 
     const now = new Date();
 
-    if (cache && cache.version && (now - new Date(cache.lastCheck)) / 1000 < CACHE_TIME) {
+    if (cache && cache.version && now - new Date(cache.lastCheck) < CACHE_TIME) {
         updateUI(cache.version);
         return;
     }
