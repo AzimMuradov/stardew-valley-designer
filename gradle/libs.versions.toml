@@ -30,6 +30,10 @@ kotlinx-datetime = "0.5.0"
 kotlinlogging = "6.0.3"
 log4j = "2.22.0"
 
+# Gradle Utils
+
+tasktree = "3.0.0"
+
 
 [libraries]
 
@@ -96,3 +100,5 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization-plugin" }
 
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+
+tasktree = { id = "com.dorongold.task-tree", version.ref = "tasktree" }
