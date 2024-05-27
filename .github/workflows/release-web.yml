@@ -27,6 +27,7 @@ jobs:
       - name: "Test web app"
         run: ./gradlew :app-web:allTests --stacktrace
   release:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"

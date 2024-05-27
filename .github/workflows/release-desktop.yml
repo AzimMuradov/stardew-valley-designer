@@ -28,6 +28,7 @@ jobs:
       - name: "Test desktop app"
         run: ./gradlew :app-desktop:allTests --stacktrace
   release:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
