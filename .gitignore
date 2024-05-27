@@ -12,6 +12,10 @@ build/
 !gradle-wrapper.jar
 
 
+### Kotlin ###
+/.kotlin/
+
+
 ### Deployment ###
 
 /output/

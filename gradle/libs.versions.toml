@@ -1,34 +1,39 @@
 [versions]
 
-kotlin = "1.9.22"
+kotlin = "2.0.0"
 
-compose = "1.6.0"
+# UI
+
+compose = "1.6.10"
 
 lwjgl = "3.3.3"
 
-mvikotlin = "4.0.0-alpha02"
+# MVI
 
-kotlinx-coroutines = "1.8.0"
+mvikotlin = "4.0.0"
+
+# Coroutines
+
+kotlinx-coroutines = "1.8.1"
+
+# Serialization
+
+kotlinx-serialization = "1.7.0-RC"
+xmlutil = "0.86.3"
 
 # File System
 
 kfswatch = "1.0.0"
 directories = "26"
 
-# Serialization
-
-kotlinx-serialization-plugin = "1.9.22"
-kotlinx-serialization-json = "1.6.3"
-xmlutil = "0.86.3"
-
 # Date & Time
 
-kotlinx-datetime = "0.5.0"
+kotlinx-datetime = "0.6.0"
 
 # Logging
 
-kotlinlogging = "6.0.3"
-log4j = "2.22.0"
+kotlinlogging = "6.0.9"
+log4j = "2.23.1"
 
 # Gradle Utils
 
@@ -61,7 +66,7 @@ directories = { module = "dev.dirs:directories", version.ref = "directories" }
 
 # Serialization
 
-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
 xmlutil-core = { module = "io.github.pdvrieze.xmlutil:core", version.ref = "xmlutil" }
 xmlutil-serialization = { module = "io.github.pdvrieze.xmlutil:serialization", version.ref = "xmlutil" }
@@ -97,7 +102,9 @@ xmlutil = [
 
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 
-kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization-plugin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 
